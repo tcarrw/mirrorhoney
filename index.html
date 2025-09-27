@@ -126,7 +126,6 @@
   .titleline{display:flex;align-items:center;gap:8px}
   .titleline .laneEmoji{opacity:.9;flex:0 0 auto}
   .titleline .ttl{
-    /* Multi-line clamp (2) with wrapping in normal mode */
     display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
     overflow:hidden; white-space:normal; word-break:break-word; line-height:1.25;
   }
@@ -339,7 +338,7 @@
             <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat imagery.</li><li>Pop sheen nudges you to move.</li></ul>
           </div>
         </div>
-        <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. ⚡ Neon inserts 🌉 between lanes. τ is the <em>Illumina symbol</em> for the light theme.</p>
+        <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. ⚡ Neon inserts 🌉 between lanes. τ is the <em>Illumina symbol</em> — a light theme for clarity.</p>
       </section>
 
       <!-- Logs -->
@@ -786,9 +785,9 @@ var QUEUE=(function(){
 
   function applyCompactClass(){
     const d=MH.get();
-    const autoCompact = window.innerWidth < 860;
-    const on = d.settings.compactQueue || autoCompact;
-    setPressed(compactBtn, !!d.settings.compactQueue);
+    // Remove auto-compact. User chooses.
+    const on = !!d.settings.compactQueue;
+    setPressed(compactBtn, on);
     qEl.classList.toggle("compact", on);
   }
   window.addEventListener("resize", applyCompactClass);
@@ -833,7 +832,13 @@ var QUEUE=(function(){
       // Actions
       const acts=document.createElement("div"); acts.className="acts";
       const play=document.createElement("button"); play.className="qbtn"; play.textContent="Play now";
-      play.onclick=function(){ if(it.id){ ALTERNATOR.setLane(it.lane); PLAYER.load(it.id, it.lane, true); } };
+      play.onclick=function(){
+        if(it.id){
+          ALTERNATOR.setLane(it.lane);
+          PLAYER.load(it.id, it.lane, true);
+          ALTERNATOR.setNow(it.lane, it); // ensure header 'Now/Next' updates on manual play
+        }
+      };
       const del=document.createElement("button"); del.className="qbtn"; del.textContent= it.pinned ? "—" : "Remove";
       del.disabled = !!it.pinned;
       del.title = it.pinned ? "Pinned friend (can’t remove)" : "Remove from queue";
@@ -1015,10 +1020,17 @@ var PLAYER=(function(){
   document.getElementById("prev").onclick=function(){ ALTERNATOR.prev(); };
   document.getElementById("next").onclick=function(){ ALTERNATOR.next(); };
 
-  // loop toggles
+  // loop toggles (initialized from saved settings)
   const lt=document.getElementById("loop-track"); const lq=document.getElementById("loop-queue");
-  lt.onclick=function(){ const on=lt.getAttribute("aria-pressed")==="true"; setPressed(lt,!on); setLoopTrack(!on); };
-  lq.onclick=function(){ const on=lq.getAttribute("aria-pressed")==="true"; setPressed(lq,!on); setLoopQueue(!on); };
+  (function initLoopsFromSettings(){
+    const d=MH.get();
+    setPressed(lt, !!d.settings.loopTrack);
+    setPressed(lq, !!d.settings.loopQueue);
+    setLoopTrack(!!d.settings.loopTrack);
+    setLoopQueue(!!d.settings.loopQueue);
+  })();
+  lt.onclick=function(){ const on=lt.getAttribute("aria-pressed")==="true"; setPressed(lt,!on); setLoopTrack(!on); const d=MH.get(); d.settings.loopTrack=!on; MH.put(d); };
+  lq.onclick=function(){ const on=lq.getAttribute("aria-pressed")==="true"; setPressed(lq,!on); setLoopQueue(!on); const d=MH.get(); d.settings.loopQueue=!on; MH.put(d); };
 
   return { cue, load:(id,lane,autoplay)=>load(id,lane,autoplay), toggle, setVolume, getLoopQueue, setLoopQueue, setLoopTrack, getLane, setLane, nowNext, getId };
 })();
@@ -1058,21 +1070,35 @@ var ALTERNATOR=(function(){
     }
   }
 
+  function findNextPlayableLane(start){
+    // Look ahead up to 6 hops to find a lane that has items.
+    let steps = 0, lane = start;
+    while(steps < 6){
+      const has = (QUEUE.scopeItems(lane)||[]).length > 0;
+      if(has) return lane;
+      lane = laneAfter(lane);
+      steps++;
+    }
+    return start; // fallback
+  }
+
   function loadFromLane(lane){
-    const it = (lane==="A")? QUEUE.next("A", PLAYER.getLoopQueue()) :
-               (lane==="B")? QUEUE.next("B", PLAYER.getLoopQueue()) :
-                              QUEUE.next("D", true);
+    const playableLane = findNextPlayableLane(lane);
+    const it = (playableLane==="A")? QUEUE.next("A", PLAYER.getLoopQueue()) :
+               (playableLane==="B")? QUEUE.next("B", PLAYER.getLoopQueue()) :
+                                      QUEUE.next("D", true);
     if(it && it.id){
-      PLAYER.load(it.id, lane, true);
-      lastLane=lane;
-      updateStatus({now:{tag:lane,title:it.title||it.id}, nextTag: laneAfter(lane)});
+      PLAYER.load(it.id, playableLane, true);
+      lastLane=playableLane;
+      updateStatus({now:{tag:playableLane,title:it.title||it.id}, nextTag: laneAfter(playableLane)});
     }else{
       updateStatus(null);
     }
   }
 
   function onEnded(endedLane){
-    loadFromLane(laneAfter(endedLane || lastLane || (mode==="MIRROR"?"B":"A")));
+    const nextLane = laneAfter(endedLane || lastLane || (mode==="MIRROR"?"B":"A"));
+    loadFromLane(nextLane);
   }
 
   function ensureKick(){
@@ -1103,10 +1129,11 @@ var ALTERNATOR=(function(){
       }else if(mode==="MIRROR"){ return tag==="B"?"A":"B"; }
       else { return tag==="A"?"B":"A"; }
     })(cur);
-    const it = (prevLane==="A")? QUEUE.prev("A", PLAYER.getLoopQueue()) :
-               (prevLane==="B")? QUEUE.prev("B", PLAYER.getLoopQueue()) :
-                                  QUEUE.prev("D", true);
-    if(it && it.id){ PLAYER.load(it.id, prevLane, true); lastLane=prevLane; updateStatus({now:{tag:prevLane,title:it.title||it.id}, nextTag: laneAfter(prevLane)}); }
+    const playableLane = findNextPlayableLane(prevLane);
+    const it = (playableLane==="A")? QUEUE.prev("A", PLAYER.getLoopQueue()) :
+               (playableLane==="B")? QUEUE.prev("B", PLAYER.getLoopQueue()) :
+                                      QUEUE.prev("D", true);
+    if(it && it.id){ PLAYER.load(it.id, playableLane, true); lastLane=playableLane; updateStatus({now:{tag:playableLane,title:it.title||it.id}, nextTag: laneAfter(playableLane)}); }
   }
   function next(){
     const nextLane = laneAfter(lastLane || (mode==="MIRROR"?"B":"A"));
@@ -1114,19 +1141,20 @@ var ALTERNATOR=(function(){
   }
 
   function updateStatus(info){
-    const nowNext=PLAYER.nowNext;
-    if(!info){ nowNext.textContent="Ready"; return; }
+    const nn=PLAYER.nowNext;
+    if(!info){ nn.textContent="Ready"; return; }
     const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"🌉";
     const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"🌉";
-    nowNext.textContent = "Now: "+em+" "+(info.now.title||"…")+" · Next: "+ne;
+    nn.textContent = "Now: "+em+" "+(info.now.title||"…")+" · Next: "+ne;
   }
 
   function setLane(l){ lastLane=l; PLAYER.setLane(l); }
   function getCurrentId(){ return PLAYER.getId(); }
+  function setNow(lane, it){ lastLane=lane; updateStatus({now:{tag:lane,title:(it&&it.title)||'…'}, nextTag: laneAfter(lane)}); }
 
   (function initMode(){ const d=MH.get(); setMode(d.settings.mode||"MIRROR"); })();
 
-  return { onEnded, ensureKick, prev, next, setLane, getCurrentId };
+  return { onEnded, ensureKick, prev, next, setLane, getCurrentId, setNow };
 })();
 
 /* ===== ADD FORM (single entry point) ===== */
@@ -1204,8 +1232,13 @@ var ALTERNATOR=(function(){
   if(!haveSab){ try{ await QUEUE.add("Sabrina Carpenter","cF1Na4AIecM","A"); }catch(_){ } }
   if(!haveDoe){ try{ await QUEUE.add("Doechii","phtcAd8j6Ro","D"); }catch(_){ } }
   MH.put(d,"upgrade");
-  // Pre-cue MARINA friend for quick start
+  // Pre-cue MARINA friend for quick start + show header status
   if(window.YT && window.YT.Player){ PLAYER.cue("Cr-SqRWImmI","B"); }
+  // Ensure header has Now/Next immediately
+  try{
+    const ohno = (MH.get().queue||[]).find(q=>q.id===MH.FRIEND_ID);
+    if(ohno) { ALTERNATOR.setNow("B", ohno); }
+  }catch(_){}
 })();
 
 /* ===== Minimal app-shell Service Worker (UI offline only, not YouTube) ===== */
