@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mirror × Honey — Sabrina (🍯) × Marina (🪞) · Visitor: Doechii (🔥)</title>
-<meta name="description" content="A gentle, guided experience to understand Honey (Sabrina) vs Mirror (Marina), try a hybrid, log reflections, and spark Doechii’s Safe Chaos — with a tagged YouTube queue and dual A/B players.">
+<meta name="description" content="A guided Honey (Sabrina) × Mirror (Marina) practice with Safe Chaos sparks for Doechii — dual players, crossfader, tagged queue, and local logs.">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
@@ -17,8 +17,8 @@
   header{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 0}
   header .brand{font-weight:700;letter-spacing:.5px}
   header nav a{margin-left:16px;color:var(--muted)} header nav a:hover{color:var(--ink)}
-  .mastctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
-  .mastctl input[type="range"]{width:120px}
+  .mastctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
+  .mastctl input[type="range"]{width:140px}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
   .glyph{font-size:1.05rem}
   .cta,.btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
@@ -40,14 +40,8 @@
   .quickstart{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
   @media (max-width:900px){.quickstart{grid-template-columns:1fr}}
   .quick{border:1px dashed var(--line);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
-  .chaos-frame{position:relative;height:60vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
-  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
-  .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
-  .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
-  details summary{cursor:pointer}
-  footer{color:var(--muted);font-size:.9rem;margin:28px 0}
 
-  /* Dock: players only (queue moved to drawer) */
+  /* Dock: players only (queue in drawer) */
   .dock{position:sticky;bottom:0;z-index:50;background:rgba(11,15,25,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
   .dock-inner{max-width:980px;margin:0 auto;padding:14px 28px;display:grid;gap:12px}
   .players{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -75,19 +69,46 @@
 
   /* Keep player height visible before first load */
   #playerA,#playerB{min-height:180px}
+
+  /* Meters */
+  .vumeters{display:flex;align-items:center;gap:12px;margin-left:6px}
+  .vu{display:flex;align-items:center;gap:6px}
+  .vu-emoji{font-size:1rem}
+  .vu-track{width:96px;height:8px;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .vu-fill{height:100%;width:0%}
+  .vuA .vu-fill{background:linear-gradient(90deg,var(--honey),#ffe39c)}
+  .vuB .vu-fill{background:linear-gradient(90deg,var(--mirror),#e9f2ff)}
+  .vu-val{font-size:.86rem;color:var(--muted);min-width:34px;text-align:right}
 </style>
 </head>
 <body>
 <header class="wrap">
   <div>
     <div class="brand">mirrorhoney</div>
-    <!-- Master playback controls in the header -->
+    <!-- Master playback controls with crossfader + visual meters -->
     <div class="mastctl" id="mastctl" aria-label="Master playback controls">
       <button class="qbtn" id="masterPlay">Play/Pause Both</button>
       <button class="qbtn" id="masterStop">Stop</button>
-      <label class="pill">🍯</label><input id="volA" type="range" min="0" max="100" value="70" aria-label="Volume A">
-      <label class="pill">🪞</label><input id="volB" type="range" min="0" max="100" value="70" aria-label="Volume B">
-      <label class="pill">Mix</label><input id="xfader" type="range" min="0" max="100" value="50" title="🍯↔🪞 mix" aria-label="Crossfade A to B">
+      <label class="pill">🍯</label><input id="volA" type="range" min="0" max="100" value="70" aria-label="Volume 🍯">
+      <label class="pill">🪞</label><input id="volB" type="range" min="0" max="100" value="70" aria-label="Volume 🪞">
+      <label class="pill">Mix</label>
+      <input id="xfader" type="range" min="0" max="100" value="50" title="🍯↔🪞 mix" aria-label="Crossfade 🍯 to 🪞">
+      <div class="vumeters" aria-label="Output meters">
+        <div class="vu vuA" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="🍯 output level">
+          <span class="vu-emoji" aria-hidden="true">🍯</span>
+          <div class="vu-track"><div class="vu-fill" id="vuA"></div></div>
+          <span class="vu-val" id="vuAVal">0%</span>
+        </div>
+        <div class="vu vuB" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="🪞 output level">
+          <span class="vu-emoji" aria-hidden="true">🪞</span>
+          <div class="vu-track"><div class="vu-fill" id="vuB"></div></div>
+          <span class="vu-val" id="vuBVal">0%</span>
+        </div>
+      </div>
+      <button class="qbtn" id="xfadeNow" title="Smoothly crossfade to the other deck">⇄ Crossfade now</button>
+      <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
+        <input type="checkbox" id="autoXfadeToggle" aria-label="Auto crossfade at track end"> auto xfade at end
+      </label>
       <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
         <input type="checkbox" id="autoPlayToggle" checked aria-label="Auto play on add"> auto‑play on add
       </label>
@@ -196,7 +217,7 @@
         <ul><li>Bridge flips perspective (mask ↔ mirror).</li><li>Verse introduces identity/power tension.</li><li>A prismatic break spotlights the idea.</li></ul>
       </div>
     </div>
-    <p class="hint"><em>Tag rule (optional):</em> Body led → <strong>Honey-primary</strong> (tag 🍯). Frame first → <strong>Mirror-primary</strong> (tag 🪞). Doechii sparks → <strong>🔥</strong>.</p>
+    <p class="hint"><em>Tag rule (optional):</em> Body led → <strong>Honey-primary</strong> (🍯). Frame first → <strong>Mirror-primary</strong> (🪞). Doechii sparks → <strong>🔥</strong>.</p>
   </section>
 
   <!-- HONEY LOG -->
@@ -298,7 +319,7 @@
   </section>
 </main>
 
-<!-- PLAYER DOCK (players only) -->
+<!-- PLAYER DOCK -->
 <section class="dock" aria-label="Players">
   <div class="dock-inner">
     <div class="players">
@@ -312,7 +333,6 @@
           <button class="qbtn" data-loopqueue="A" aria-pressed="true">Loop Queue</button>
           <button class="qbtn" data-vol="A">Vol–</button>
           <button class="qbtn" data-volup="A">Vol+</button>
-          <button class="qbtn" data-xfade>Crossfade 🍯→🪞</button>
         </div>
         <div id="playerA"></div>
       </div>
@@ -333,7 +353,7 @@
   </div>
 </section>
 
-<!-- QUEUE DRAWER (moved off the dock) -->
+<!-- QUEUE DRAWER -->
 <aside class="qdrawer" id="qdrawer" aria-label="Tagged Queue Drawer" aria-hidden="true">
   <div class="qhead">
     <strong>Queue</strong>
@@ -360,21 +380,6 @@
   © mirrorhoney — Sabrina (🍯) × Marina (🪞). Visitor: Doechii (🔥).
 </footer>
 
-<!-- Guided Tour Overlay -->
-<div class="tour" id="tour">
-  <div class="tour-box">
-    <div class="row" style="justify-content:space-between;align-items:center">
-      <h3 style="margin:0">Quick Tour (5 steps)</h3>
-      <button class="btn" id="tourSkip">Skip</button>
-    </div>
-    <div class="tour-steps" id="tourSteps"></div>
-    <div class="row" style="justify-content:space-between;margin-top:10px">
-      <button class="btn" id="tourBack">Back</button>
-      <div class="row"><span class="pill" id="tourProgress"></span><button class="cta" id="tourNext">Next</button></div>
-    </div>
-  </div>
-</div>
-
 <!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
@@ -384,7 +389,8 @@ function timeISO(){ return new Date().toISOString(); }
 function lsGet(k,f){ try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)} }
 function lsSet(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} }
 function setPressed(el,on){ el.setAttribute("aria-pressed", on?"true":"false"); }
-/* Robust YouTube ID detection: exact 11 chars */
+function isIOS(){ return /iPad|iPhone|iPod/.test(navigator.userAgent); }
+/* Strict 11-char YouTube ID detection */
 function ytIdFrom(u){
   if(!u) return null; u=String(u).trim();
   var patterns=[/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/,/^([A-Za-z0-9_-]{11})$/];
@@ -465,25 +471,13 @@ async function fetchYTMeta(id){
 
 /* ===== Tagged Queue & Players ===== */
 var QUEUE=(function(){
-  var KEY="mirrorhoney_queue_v5";
+  var KEY="mirrorhoney_queue_v7";
   var items=lsGet(KEY,"[]")||[], filter="ALL", scopeIndex={A:0,B:0,D:0};
   var qEl=document.getElementById("queue"), status=document.getElementById("q-status");
   var clearBtn=document.getElementById("q-clear");
 
   function save(){ lsSet(KEY,items); render(); }
-  function human(it){ var t=it.title||it.id||"Untitled", a=it.author?(" — "+it.author):""; return t+a; }
   function matches(it){ return filter==="ALL" || (it.tags||[]).includes(filter); }
-
-  function toHoney(it){
-    var s=document.getElementById("hlog-song"), n=document.getElementById("hlog-notes");
-    if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||"");
-    if(n) n.focus();
-  }
-  function toChaos(it){
-    var s=document.getElementById("dlog-song"), n=document.getElementById("dlog-notes");
-    if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||"");
-    if(n) n.focus();
-  }
 
   function render(){
     qEl.innerHTML="";
@@ -513,8 +507,8 @@ var QUEUE=(function(){
 
       playA.onclick=function(){ if(it.id){ PLAYERS.load("A",it.id,true); bumpTo("A",it);} };
       playB.onclick=function(){ if(it.id){ PLAYERS.load("B",it.id,true); bumpTo("B",it);} };
-      toH.onclick=function(){ toHoney(it); };
-      toD.onclick=function(){ toChaos(it); };
+      toH.onclick=function(){ var s=document.getElementById("hlog-song"), n=document.getElementById("hlog-notes"); if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||""); if(n) n.focus(); };
+      toD.onclick=function(){ var s=document.getElementById("dlog-song"), n=document.getElementById("dlog-notes"); if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||""); if(n) n.focus(); };
       tagA.onclick=function(){ tag(it,"A")}; tagB.onclick=function(){ tag(it,"B")}; tagD.onclick=function(){ tag(it,"D")};
       rmA.onclick=function(){ untag(it,"A")}; rmB.onclick=function(){ untag(it,"B")}; rmD.onclick=function(){ untag(it,"D")};
       del.onclick=function(){ var ix=items.indexOf(it); if(ix>-1){ items.splice(ix,1); save(); } };
@@ -617,7 +611,7 @@ var QUEUE=(function(){
 
   // seed on first load
   (function seed(){
-    if(localStorage.getItem("mirrorhoney_seeded_v2")==="1") { render(); return; }
+    if(localStorage.getItem("mirrorhoney_seeded_v4")==="1") { render(); return; }
     var seeds=[
       {url:"https://www.youtube.com/watch?v=cF1Na4AIecM", tags:["A"]}, // Sabrina — Please Please Please
       {url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", tags:["B"]}, // MARINA — Oh No!
@@ -625,7 +619,7 @@ var QUEUE=(function(){
     ];
     (async function run(){
       for (var i=0;i<seeds.length;i++){ await add(seeds[i].url, seeds[i].tags); }
-      localStorage.setItem("mirrorhoney_seeded_v2","1");
+      localStorage.setItem("mirrorhoney_seeded_v4","1");
     })();
   })();
 
@@ -639,27 +633,22 @@ var QUEUE=(function(){
   };
 })();
 
-/* ===== Players A/B (no fallback; stronger toggle; load default if empty) ===== */
+/* ===== Players A/B (toggle, loop) ===== */
 var PLAYERS=(function(){
-  var A=null,B=null, cfg={A:{loopTrack:false,loopQueue:true},B:{loopTrack:false,loopQueue:true}}, XF=false;
+  var A=null,B=null, cfg={A:{loopTrack:false,loopQueue:true},B:{loopTrack:false,loopQueue:true}};
 
   function create(which,elId){
     return new YT.Player(elId,{
       width:'100%',
-      height: (window.innerWidth<900 ? '180' : '260'),
+      height:(window.innerWidth<900?'180':'260'),
       playerVars:{rel:0,modestbranding:1,playsinline:1},
       events:{
         onReady:function(){ try{ this.setVolume(70); }catch(_){ } },
         onStateChange:function(e){
-          var ended = (e.data===YT.PlayerState.ENDED || e.data===0);
-          if(ended){
+          var ENDED=(e.data===YT.PlayerState.ENDED || e.data===0);
+          if(ENDED){
             if(cfg[which].loopTrack){ this.playVideo(); return; }
-            if(which==="A" && XF && B){
-              try{
-                B.setVolume(0); B.playVideo();
-                var v=0; var f=setInterval(function(){ v+=10; B.setVolume(Math.min(100,v)); if(v>=100) clearInterval(f); },150);
-              }catch(_){}
-            }
+            if(which==="A"){ window.maybeAutoCrossfadeToB && window.maybeAutoCrossfadeToB(); }
             var nxt=QUEUE.next(which,cfg[which].loopQueue);
             if(nxt && nxt.id){ this.loadVideoById(nxt.id); }
           }
@@ -668,19 +657,10 @@ var PLAYERS=(function(){
     });
   }
 
-  function ensureLoaded(which){
-    var p = which==="A"?A:B;
-    try{
-      var st=p && p.getPlayerState ? p.getPlayerState() : null;
-      return (st!==null);
-    }catch(_){ return false; }
-  }
-
   function load(which,id,autoPlay){
     var p = which==="A"?A:B; if(!p) return;
     p.loadVideoById(id);
     if(autoPlay!==false){ try{ p.playVideo(); }catch(_){ } }
-    var dock=document.querySelector('.dock'); if(dock){ try{ dock.scrollIntoView({behavior:'smooth',block:'end'}); }catch(_){ } }
   }
 
   function toggle(which){
@@ -689,7 +669,6 @@ var PLAYERS=(function(){
       var st=p.getPlayerState();
       if(st===1){ p.pauseVideo(); return; }
       if(st===-1 || st===5 || typeof st==="undefined"){
-        // nothing loaded yet → load first item from that lane
         var first=(QUEUE.scopeItems(which)[0]||{}).id;
         if(first){ load(which, first, true); return; }
       }
@@ -697,70 +676,122 @@ var PLAYERS=(function(){
     }catch(_){}
   }
 
-  // Buttons in the dock
-  document.querySelectorAll('[data-prev]').forEach(function(btn){ btn.onclick=function(){
-    var w=this.getAttribute("data-prev"); var it=QUEUE.prev(w,cfg[w].loopQueue); if(it&&it.id){ load(w,it.id,true); }
-  }});
-  document.querySelectorAll('[data-next]').forEach(function(btn){ btn.onclick=function(){
-    var w=this.getAttribute("data-next"); var it=QUEUE.next(w,cfg[w].loopQueue); if(it&&it.id){ load(w,it.id,true); }
-  }});
-  document.querySelectorAll('[data-play]').forEach(function(btn){ btn.onclick=function(){
-    var w=this.getAttribute("data-play"); toggle(w);
-  }});
-  document.querySelectorAll('[data-looptrack]').forEach(function(btn){ btn.onclick=function(){
-    var w=this.getAttribute("data-looptrack"); cfg[w].loopTrack=!cfg[w].loopTrack; setPressed(this,cfg[w].loopTrack);
-  }});
-  document.querySelectorAll('[data-loopqueue]').forEach(function(btn){ btn.onclick=function(){
-    var w=this.getAttribute("data-loopqueue"); cfg[w].loopQueue=!cfg[w].loopQueue; setPressed(this,cfg[w].loopQueue);
-  }});
-  document.querySelector('[data-vol="A"]') && (document.querySelector('[data-vol="A"]').onclick=function(){ var p=window._playerA; if(!p) p=A; if(p && p.getVolume){ p.setVolume(Math.max(0,(p.getVolume()||100)-10)); } });
-  document.querySelector('[data-volup="A"]') && (document.querySelector('[data-volup="A"]').onclick=function(){ var p=A; if(p && p.getVolume){ p.setVolume(Math.min(100,(p.getVolume()||100)+10)); } });
-  document.querySelector('[data-vol="B"]') && (document.querySelector('[data-vol="B"]').onclick=function(){ var p=B; if(p && p.getVolume){ p.setVolume(Math.max(0,(p.getVolume()||100)-10)); } });
-  document.querySelector('[data-volup="B"]') && (document.querySelector('[data-volup="B"]').onclick=function(){ var p=B; if(p && p.getVolume){ p.setVolume(Math.min(100,(p.getVolume()||100)+10)); } });
-  document.querySelector('[data-xfade]') && (document.querySelector('[data-xfade]').onclick=function(){ XF=!XF; setPressed(this,XF); });
-
-  // Create players when API is ready
-  window.onYouTubeIframeAPIReady=function(){ A=create("A","playerA"); window._playerA=A; B=create("B","playerB"); };
+  window.onYouTubeIframeAPIReady=function(){ A=create("A","playerA"); B=create("B","playerB"); };
 
   return { load:load, get:function(w){ return (w==="A"?A:B); }, toggle:toggle };
 })();
 
-/* ===== Header Master Controls, Auto-play on add, Mobile Unlock, Shortcuts ===== */
+/* ===== Crossfader + meters (desktop mix + iOS smart switch) ===== */
 (function(){
-  var AUTO_KEY = "mirrorhoney_autoPlay_v1";
-  var $ = function(sel){ return document.querySelector(sel); };
+  var AUTO_KEY="mirrorhoney_autoPlay_v1";
+  var VOL_KEY="mirrorhoney_vols_v1";
+  var XF_KEY="mirrorhoney_xfader_v1";
+  var XFAUTO_KEY="mirrorhoney_autoXfade_v1";
 
-  var masterPlay = $("#masterPlay");
-  var masterStop = $("#masterStop");
-  var volA = $("#volA");
-  var volB = $("#volB");
-  var xfade = $("#xfader");
-  var autoToggle = $("#autoPlayToggle");
+  var $=function(s){ return document.querySelector(s); };
+  var masterPlay=$("#masterPlay"), masterStop=$("#masterStop");
+  var volA=$("#volA"), volB=$("#volB"), xfade=$("#xfader");
+  var xfadeNow=$("#xfadeNow");
+  var autoXfadeToggle=$("#autoXfadeToggle");
+  var autoPlayToggle=$("#autoPlayToggle");
+
+  var vuA=$("#vuA"), vuB=$("#vuB"), vuAVal=$("#vuAVal"), vuBVal=$("#vuBVal");
+  function updateMeters(outA,outB){
+    if(vuA){ vuA.style.width=Math.max(0,Math.min(100,outA))+"%"; vuA.parentElement.parentElement.setAttribute("aria-valuenow", String(Math.round(outA))); }
+    if(vuB){ vuB.style.width=Math.max(0,Math.min(100,outB))+"%"; vuB.parentElement.parentElement.setAttribute("aria-valuenow", String(Math.round(outB))); }
+    if(vuAVal){ vuAVal.textContent=Math.round(outA)+"%"; }
+    if(vuBVal){ vuBVal.textContent=Math.round(outB)+"%"; }
+  }
+
+  // Restore persisted settings
+  try{
+    var vols=lsGet(VOL_KEY,'{"A":70,"B":70}'); volA.value=+vols.A||70; volB.value=+vols.B||70;
+    var xf=lsGet(XF_KEY,'"50"'); xfade.value=+xf||50;
+    var ax=lsGet(XFAUTO_KEY,'"false"'); autoXfadeToggle.checked=(ax==="true");
+    var ap=lsGet(AUTO_KEY,'"true"'); autoPlayToggle.checked=(ap==="true");
+  }catch(_){}
+
+  function baseOut(mix, baseA, baseB){
+    var a=100-mix, b=mix;
+    return {outA:Math.round(a*baseA/100), outB:Math.round(b*baseB/100)};
+  }
 
   function applyFader(){
-    var mix = +xfade.value; var a=100-mix, b=mix;
-    var baseA = +volA.value, baseB = +volB.value;
-    var outA = Math.round(a*baseA/100);
-    var outB = Math.round(b*baseB/100);
-    var pA = PLAYERS.get("A"), pB = PLAYERS.get("B");
-    if(pA && pA.setVolume) try{ pA.setVolume(outA); }catch(_){}
-    if(pB && pB.setVolume) try{ pB.setVolume(outB); }catch(_){}
+    var pA=PLAYERS.get("A"), pB=PLAYERS.get("B");
+    var mix=+xfade.value, baseVA=+volA.value, baseVB=+volB.value;
+    var o=baseOut(mix, baseVA, baseVB);
+    if(pA && pA.setVolume) try{ pA.setVolume(o.outA); }catch(_){}
+    if(pB && pB.setVolume) try{ pB.setVolume(o.outB); }catch(_){}
+    // meters + persist
+    updateMeters(o.outA, o.outB);
+    lsSet(VOL_KEY,{A:baseVA,B:baseVB}); lsSet(XF_KEY,String(mix));
   }
 
-  if(autoToggle){
-    try{ autoToggle.checked = (lsGet(AUTO_KEY,"\"true\"")==="true"); }catch(_){}
-    autoToggle.onchange = function(){ lsSet(AUTO_KEY, autoToggle.checked?"true":"false"); };
+  function animateXF(to, ms){
+    var from=+xfade.value; var start=null;
+    function step(ts){
+      if(!start) start=ts;
+      var t=Math.min(1,(ts-start)/ms);
+      xfade.value = Math.round(from + (to-from)*t);
+      applyFader();
+      if(t<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
 
-  masterPlay && (masterPlay.onclick = function(){
-    ["A","B"].forEach(function(w){ PLAYERS.toggle(w); });
+  function ensureDeckLoaded(which){
+    var p=PLAYERS.get(which);
+    try{
+      var st=p.getPlayerState();
+      if(st===-1 || st===5 || typeof st==="undefined"){
+        var first=(QUEUE.scopeItems(which)[0]||{}).id;
+        if(first){ PLAYERS.load(which, first, true); return true; }
+      }
+      return true;
+    }catch(_){ return false; }
+  }
+
+  // Manual crossfade button
+  function crossfadeNow(direction){ // "toA" or "toB"
+    var to = (direction==="toA")?0:100;
+    if(direction==="toB"){ ensureDeckLoaded("B"); try{ PLAYERS.get("B").playVideo(); }catch(_){ } }
+    if(direction==="toA"){ ensureDeckLoaded("A"); try{ PLAYERS.get("A").playVideo(); }catch(_){ } }
+
+    if(isIOS()){
+      // Smart switch: quick out then switch
+      animateXF(to, 600);
+      setTimeout(function(){
+        try{
+          if(direction==="toB"){ PLAYERS.get("A").pauseVideo(); }
+          else { PLAYERS.get("B").pauseVideo(); }
+        }catch(_){}
+      }, 650);
+    }else{
+      animateXF(to, 1800);
+    }
+  }
+
+  function maybeAutoCrossfadeToB(){
+    if(!autoXfadeToggle.checked) return;
+    crossfadeNow("toB");
+  }
+  window.maybeAutoCrossfadeToB = maybeAutoCrossfadeToB;
+
+  // Master controls
+  masterPlay && (masterPlay.onclick=function(){ ["A","B"].forEach(function(w){ PLAYERS.toggle(w); }); });
+  masterStop && (masterStop.onclick=function(){ ["A","B"].forEach(function(w){ var p=PLAYERS.get(w); if(p && p.stopVideo) try{p.stopVideo();}catch(_){ } }); });
+
+  // Sliders + fader
+  volA && (volA.oninput=applyFader);
+  volB && (volB.oninput=applyFader);
+  xfade && (xfade.oninput=applyFader);
+  xfadeNow && (xfadeNow.onclick=function(){
+    var dir = (+xfade.value<50) ? "toB" : "toA";
+    crossfadeNow(dir);
   });
 
-  masterStop && (masterStop.onclick = function(){ ["A","B"].forEach(function(w){ var p=PLAYERS.get(w); if(p && p.stopVideo) try{p.stopVideo();}catch(_){ } }); });
-
-  volA && (volA.oninput = applyFader);
-  volB && (volB.oninput = applyFader);
-  xfade && (xfade.oninput = applyFader);
+  autoXfadeToggle && (autoXfadeToggle.onchange=function(){ lsSet(XFAUTO_KEY, autoXfadeToggle.checked?"true":"false"); });
+  autoPlayToggle && (autoPlayToggle.onchange=function(){ lsSet(AUTO_KEY, autoPlayToggle.checked?"true":"false"); });
 
   // Auto-play on add
   document.addEventListener("mh:queueAdded", function(e){
@@ -770,7 +801,15 @@ var PLAYERS=(function(){
     var tags=it.tags||[];
     if(tags.indexOf("A")>-1){ PLAYERS.load("A", it.id, true); }
     else if(tags.indexOf("B")>-1){ PLAYERS.load("B", it.id, true); }
+    setTimeout(applyFader, 50);
   });
+
+  // Override deck Vol+/– buttons to keep base sliders + meters in sync
+  var btn;
+  btn = document.querySelector('[data-vol="A"]'); if(btn) btn.onclick=function(){ volA.value = Math.max(0, +volA.value - 10); applyFader(); };
+  btn = document.querySelector('[data-volup="A"]'); if(btn) btn.onclick=function(){ volA.value = Math.min(100, +volA.value + 10); applyFader(); };
+  btn = document.querySelector('[data-vol="B"]'); if(btn) btn.onclick=function(){ volB.value = Math.max(0, +volB.value - 10); applyFader(); };
+  btn = document.querySelector('[data-volup="B"]'); if(btn) btn.onclick=function(){ volB.value = Math.min(100, +volB.value + 10); applyFader(); };
 
   // Mobile audio unlock — prime players on first tap/click
   function unlock(){
@@ -780,19 +819,27 @@ var PLAYERS=(function(){
     });
     document.removeEventListener("touchstart", unlock);
     document.removeEventListener("click", unlock);
+    setTimeout(applyFader, 150);
   }
   document.addEventListener("touchstart", unlock, {once:true});
   document.addEventListener("click", unlock, {once:true});
 
-  // Keyboard shortcuts: Space = 🍯 Play/Pause, Shift+Space = 🪞
-  document.addEventListener('keydown',function(e){
+  // Keyboard shortcuts for fader: 1=🍯, 2=center, 3=🪞, X=crossfade now
+  document.addEventListener("keydown",function(e){
     if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
+    if(e.key==='1'){ xfade.value=0; applyFader(); }
+    if(e.key==='2'){ xfade.value=50; applyFader(); }
+    if(e.key==='3'){ xfade.value=100; applyFader(); }
+    if(e.key.toLowerCase()==='x'){ var dir=(+xfade.value<50)?"toB":"toA"; crossfadeNow(dir); }
     if(e.code==='Space'){ e.preventDefault(); var a=document.querySelector('[data-play="A"]'); a && a.click(); }
     if(e.shiftKey && e.code==='Space'){ e.preventDefault(); var b=document.querySelector('[data-play="B"]'); b && b.click(); }
   });
+
+  // Initial mix apply on load
+  applyFader();
 })();
 
-/* ===== Guided Tour ===== */
+/* ===== Guided Tour (unchanged) ===== */
 (function(){
   var KEY="mirrorhoney_seenTour_v1";
   var tour=document.getElementById("tour"), stepsBox=document.getElementById("tourSteps");
@@ -801,8 +848,8 @@ var PLAYERS=(function(){
     {title:"Honey vs Mirror (the idea)",body:"Honey = sweet pull & body first. Mirror = reflective angle & mind first. You’ll learn to spot each and save one seed."},
     {title:"Try a song",body:"Paste a YouTube link (or title) in the Honey Log and click Add to 🍯 or 🪞. We’ll fetch the title and thumbnail."},
     {title:"Write one page",body:"Start the 5-minute timer. Write messy. Circle one sentence — that’s your seed for continuity."},
-    {title:"Play with dual decks",body:"Queue songs in 🍯 (Honey) and 🪞 (Mirror). Use Play/Pause, Loop Track, Loop Queue, and mix with the header crossfader."},
-    {title:"Open Doechii’s spark",body:"Scroll to the visitor section. Add one wild edge to 🔥, free-write fragments, shuffle the spark if you like."}
+    {title:"Dual players + crossfader",body:"Queue songs in 🍯 and 🪞. Use Play/Pause, Loop, and the header crossfader to blend or switch."},
+    {title:"Doechii’s spark",body:"Open the visitor section. Add one wild edge to 🔥, free-write fragments, and keep one seed."}
   ];
   var i=0;
   function renderStep(){
@@ -823,7 +870,7 @@ var PLAYERS=(function(){
   if(localStorage.getItem(KEY)!=="1"){ show(); }
 })();
 
-/* ===== Secret, bee-coded hint (unchanged) ===== */
+/* ===== Secret note (unchanged, harmless) ===== */
 (function secret(){
   var target=document.getElementById("doechii"); if(!target) return;
   var hidden=document.createElement("div");
@@ -831,19 +878,6 @@ var PLAYERS=(function(){
   hidden.style.cssText="position:absolute;left:-9999px;opacity:0;pointer-events:none";
   hidden.textContent = atob("TkVYVCBTVEVQOiBCb2R5IC8gRWRnZSAvIEVjaG8uIFNlZWQgPT4gMzIuIDMwcyBtdXRlIC0+IHVubXV0ZS4gTWlycm9yIDE1cy4gSG9uZXkgMSBsaW5lLiBObyBib2FyZGNhc3Qu");
   target.appendChild(hidden);
-
-  var seq=[];
-  document.addEventListener("keydown",function(e){
-    seq.push((e.key||"").toLowerCase()); seq=seq.slice(-8);
-    if(seq.join("").includes("bee")){
-      var msg=document.createElement("div");
-      msg.className="pill";
-      msg.style.cssText="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:rgba(255,255,255,.06);border:1px solid var(--line);backdrop-filter:blur(4px)";
-      msg.textContent="next: body→edge→echo";
-      document.body.appendChild(msg);
-      setTimeout(function(){ try{ document.body.removeChild(msg); }catch(_){ } }, 1500);
-    }
-  });
 })();
 </script>
 </body>
