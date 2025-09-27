@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mirror × Honey — Sabrina (🍯) × Marina (🪞) · Visitor: Doechii (🔥)</title>
-<meta name="description" content="Mirror × Honey keeps continuity between creative cycles with Honey (Sabrina), Mirror (Marina), and a Safe Chaos lane for Doechii — plus a tagged YouTube queue with dual A/B players.">
+<meta name="description" content="A gentle, guided experience to understand Honey (Sabrina) vs Mirror (Marina), try a hybrid, log reflections, and spark Doechii’s Safe Chaos — with a tagged YouTube queue and dual A/B players.">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
 <style>
   :root{--bg:#0B0F19;--ink:#E6EAF2;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;--shadow:0 10px 30px rgba(0,0,0,.45)}
@@ -39,32 +40,60 @@
   .quickstart{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
   @media (max-width:900px){.quickstart{grid-template-columns:1fr}}
   .quick{border:1px dashed var(--line);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
+  .chaos-frame{position:relative;height:60vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
+  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
+  .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
+  .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
+  details summary{cursor:pointer}
+  footer{color:var(--muted);font-size:.9rem;margin:28px 0}
 
-  /* Dock */
+  /* Dock: players only (queue moved to drawer) */
   .dock{position:sticky;bottom:0;z-index:50;background:rgba(11,15,25,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
   .dock-inner{max-width:980px;margin:0 auto;padding:14px 28px;display:grid;gap:12px}
   .players{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media (max-width:900px){.players{grid-template-columns:1fr}}
   .player{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
   .pbar{display:flex;gap:8px;align-items:center;padding:8px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
-  .qbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .qbtn{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);cursor:pointer}
-  .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
-  .queue{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
-  .qitem{border:1px solid var(--line);border-radius:10px;padding:6px 10px;white-space:nowrap;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.02)}
-  .qitem img{width:56px;height:32px;object-fit:cover;border-radius:6px}
-  .qitem b{font-weight:600}
-  .qitem small{color:var(--muted)}
-  .tag{border:1px solid var(--line);padding:2px 6px;border-radius:8px;font-size:.8rem;opacity:.9}
-  .tag.A{border-color:#7CD4FF} .tag.B{border-color:#F8D34A} .tag.D{border-color:#FF3EB5}
 
-  /* Keep player area visible even before a video loads */
+  /* Queue Drawer */
+  .qopen{margin-left:12px}
+  .qdrawer{position:fixed;top:0;right:0;height:100vh;width:min(420px,92vw);background:#0B0F19;border-left:1px solid var(--line);box-shadow:var(--shadow);transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column}
+  .qdrawer.open{transform:translateX(0)}
+  .qhead{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
+  .qtools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line)}
+  .qlist{flex:1;overflow:auto;padding:12px 10px;display:grid;gap:8px}
+  .qitem{border:1px solid var(--line);border-radius:12px;padding:8px;background:rgba(255,255,255,.02);display:grid;grid-template-columns:auto 1fr;gap:8px}
+  .qthumb{width:80px;height:48px;border-radius:8px;object-fit:cover;background:#000}
+  .qmeta{display:grid;gap:6px}
+  .qrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .tag{border:1px solid var(--line);padding:2px 8px;border-radius:999px;font-size:.85rem;opacity:.95}
+  .tag.A::before{content:"🍯";margin-right:6px}
+  .tag.B::before{content:"🪞";margin-right:6px}
+  .tag.D::before{content:"🔥";margin-right:6px}
+  .pillsmall{font-size:.82rem;color:var(--muted)}
+
+  /* Keep player height visible before first load */
   #playerA,#playerB{min-height:180px}
 </style>
 </head>
 <body>
 <header class="wrap">
-  <div class="brand">mirrorhoney</div>
+  <div>
+    <div class="brand">mirrorhoney</div>
+    <!-- Master playback controls in the header -->
+    <div class="mastctl" id="mastctl" aria-label="Master playback controls">
+      <button class="qbtn" id="masterPlay">Play/Pause Both</button>
+      <button class="qbtn" id="masterStop">Stop</button>
+      <label class="pill">🍯</label><input id="volA" type="range" min="0" max="100" value="70" aria-label="Volume A">
+      <label class="pill">🪞</label><input id="volB" type="range" min="0" max="100" value="70" aria-label="Volume B">
+      <label class="pill">Mix</label><input id="xfader" type="range" min="0" max="100" value="50" title="🍯↔🪞 mix" aria-label="Crossfade A to B">
+      <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
+        <input type="checkbox" id="autoPlayToggle" checked aria-label="Auto play on add"> auto‑play on add
+      </label>
+      <button class="qbtn qopen" id="openQueue" aria-haspopup="true" aria-controls="qdrawer">Open Queue</button>
+    </div>
+  </div>
   <nav>
     <a href="#what">what</a>
     <a href="#identify">identify</a>
@@ -73,157 +102,278 @@
     <a href="#doechii">doechii</a>
     <a href="#faq">faq</a>
   </nav>
-
-  <!-- Master playback controls in the header -->
-  <div class="mastctl" id="mastctl" aria-label="Master playback controls">
-    <button class="qbtn" id="masterPlay">Play/Pause Both</button>
-    <button class="qbtn" id="masterStop">Stop</button>
-    <label class="pill">A</label><input id="volA" type="range" min="0" max="100" value="70" aria-label="Volume A">
-    <label class="pill">B</label><input id="volB" type="range" min="0" max="100" value="70" aria-label="Volume B">
-    <label class="pill">Mix</label><input id="xfader" type="range" min="0" max="100" value="50" title="A↔B mix" aria-label="Crossfade A to B">
-    <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
-      <input type="checkbox" id="autoPlayToggle" checked aria-label="Auto play on add"> auto‑play on add
-    </label>
-  </div>
 </header>
 
 <main class="wrap stack">
+  <!-- WELCOME + QUICK START -->
   <section class="card hero" id="welcome">
-    <div class="pill"><span class="glyph">🍯</span> Sabrina — Honey · <span class="glyph">🪞</span> Marina — Mirror</div>
+    <div class="pill"><span class="glyph">🍯</span> Sabrina — Honey <span aria-hidden="true">·</span> <span class="glyph">🪞</span> Marina — Mirror/Butterfly</div>
     <h1>Welcome. We’ll guide you. (2–3 minutes)</h1>
+    <p>
+      <strong>Mirror × Honey</strong> is a tiny practice that keeps continuity between creative cycles.
+      Sabrina (Honey) brings the <em>pull &amp; joy</em>; Marina (Mirror) brings the <em>angle &amp; reflection</em>.
+      You’ll learn to spot each, try a hybrid, and save a personal log. Then, if you like, you’ll open a special visitor space for Doechii (Safe Chaos).
+    </p>
+    <p><strong>Why this matters:</strong> Big artists don’t need more noise; they need a simple way to keep threads alive between cycles.
+       This is that way — body (Honey), angle (Mirror), and a safe lane for your chaos.</p>
+
     <div class="quickstart">
-      <div class="quick"><strong>Step 1</strong><br>Skim “What & Why” → <a href="#what">start here</a></div>
+      <div class="quick"><strong>Step 1</strong><br>Skim “What &amp; Why” → <a href="#what">start here</a></div>
       <div class="quick"><strong>Step 2</strong><br>Use “How to spot Honey vs Mirror” → <a href="#identify">learn the tells</a></div>
       <div class="quick"><strong>Step 3</strong><br>Paste a YouTube song and save a log → <a href="#honey-log">try the Honey Log</a></div>
     </div>
+
+    <div class="row" style="margin-top:10px">
+      <button class="cta" id="startTour">Take the 5-step tour</button>
+      <a class="btn" href="#doechii">Skip to Doechii sparks</a>
+    </div>
   </section>
 
+  <!-- WHAT -->
   <section class="card" id="what">
     <h2 style="margin:.2rem 0 0">What this is (and why)</h2>
     <div class="two-col">
       <div>
-        <p><strong>Problem:</strong> continuity between cycles, an honest peer mirror, and a safe place to play without PR stakes.</p>
-        <p><strong>Solution:</strong> listen, tag Honey (A) or Mirror (B), write one page, circle one <em>seed</em>. That seed carries forward.</p>
-        <p><strong>Promise:</strong> No tracking. Logs live in your browser. Export any time.</p>
+        <p><strong>Problem:</strong> Big artists have attention. What they lack is <em>continuity</em> when promo ends, a <em>peer mirror outside the machine</em>, and a <em>place to play without PR stakes</em>.</p>
+        <p><strong>Solution:</strong> A gentle rhythm you can keep: listen, notice (Honey or Mirror?), write one page, circle one <em>seed</em>. That seed carries forward to the next cycle.</p>
+        <p><strong>Promise:</strong> No asks, no pressure, no tracking. Private logs stay in your browser.</p>
       </div>
-      <div class="card" style="margin-top:12px;background:rgba(255,255,255,.01);border-left:4px solid var(--honey);padding-left:12px;border-radius:10px">
-        <strong>What Sabrina/Marina don’t give you:</strong> Honey is pull and joy; Mirror is angle and clarity. The <em>third lane</em> here holds the raw switchy bits — Bee energy: gather, carry, build.
+      <div>
+        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">This is not</summary>
+          <ul style="margin:10px 0 0"><li>Outreach, clout, or press.</li><li>A fan-control lever or rumor mill.</li><li>A definition of anyone. It’s a mirror and a page of honey.</li></ul>
+        </details>
+        <details class="card" style="margin-top:12px;background:rgba(255,255,255,.01)"><summary class="pill">Privacy</summary>
+          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). You can export at any time.</p>
+        </details>
+        <div class="card" style="margin-top:12px;background:rgba(255,255,255,.01);border-left:4px solid var(--honey);padding-left:12px;border-radius:10px">
+          <strong>What Sabrina/Marina don’t give you:</strong> Honey is pull and joy; Mirror is angle and clarity.
+          The <em>third lane</em> here is for what won’t fit either — sharp switches, raw edges, fast identity flips — held without PR stakes.
+          That’s Bee energy: gather, carry, build.
+        </div>
       </div>
     </div>
+  </section>
+
+  <!-- IDENTIFY -->
+  <section class="card" id="identify">
+    <div class="pill"><strong>How to identify the two halves</strong></div>
+    <div class="twins">
+      <div class="honey-box">
+        <h3 style="margin-top:8px">🍯 HONEY — Sweet / Magnetic / Immediate</h3>
+        <ul>
+          <li><strong>Feel:</strong> warm pull, flirt, joy — “come closer.”</li>
+          <li><strong>Body:</strong> head-nod, dance instinct; easy hook.</li>
+          <li><strong>Lyrics:</strong> taste / skin / heat; present-tense and playful.</li>
+          <li><strong>Production:</strong> glossy pop; bass/beat invite movement.</li>
+          <li><strong>Aftertaste:</strong> you want repeat; syrupy hook remains.</li>
+        </ul>
+        <p class="hint">Shortcut: if <u>taste/touch</u> hits first and your body moves → Honey.</p>
+      </div>
+      <div class="mirror-box">
+        <h3 style="margin-top:8px">🪞 MIRROR — Reflection / Angle / Identity</h3>
+        <ul>
+          <li><strong>Feel:</strong> thoughtful tilt, self-regard, critique — “look again.”</li>
+          <li><strong>Mind:</strong> a lyric clicks; meaning unfolds on pass two.</li>
+          <li><strong>Lyrics:</strong> persona, roles, masks, power/culture, self-myth.</li>
+          <li><strong>Production:</strong> prismatic/art-pop; arrangement foregrounds the idea.</li>
+          <li><strong>Afterimage:</strong> you leave with a frame or question.</li>
+        </ul>
+        <p class="hint">Shortcut: if it <u>changes what you see</u> more than how you move → Mirror.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HYBRID EXAMPLE -->
+  <section class="card" id="hybrid">
+    <div class="pill"><strong>How a Honey × Mirror hybrid feels</strong></div>
+    <div class="two-col">
+      <div class="card honey-box" style="background:rgba(243,201,78,.06)">
+        <h3 style="margin-top:0">Honey layer</h3>
+        <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat/skin imagery.</li><li>Pop sheen nudges you to move.</li></ul>
+      </div>
+      <div class="card mirror-box" style="background:rgba(193,215,255,.06)">
+        <h3 style="margin-top:0">Mirror layer</h3>
+        <ul><li>Bridge flips perspective (mask ↔ mirror).</li><li>Verse introduces identity/power tension.</li><li>A prismatic break spotlights the idea.</li></ul>
+      </div>
+    </div>
+    <p class="hint"><em>Tag rule (optional):</em> Body led → <strong>Honey-primary</strong> (tag 🍯). Frame first → <strong>Mirror-primary</strong> (tag 🪞). Doechii sparks → <strong>🔥</strong>.</p>
   </section>
 
   <!-- HONEY LOG -->
   <section class="card" id="honey-log">
     <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — Sabrina × Marina</strong></div>
-    <p>Paste a YouTube link or title, tag it (A/B/AB/D), press <em>Start</em>, write for 5–10 min, circle one sentence — your <strong>seed</strong>.</p>
+    <p>Paste a YouTube link or just a title, tag it (🍯/🪞/🍯+🪞/🔥), press <em>Start</em>, write for 5–10 min, and circle one sentence — your <strong>seed</strong> for continuity.</p>
     <div class="stack" style="gap:10px">
       <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or YouTube link)</span>
         <input id="hlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Song">
-        <div class="hint">Click “Add to A/B” to hear it while you write.</div>
+        <div class="hint">Tip: click “Add to 🍯/🪞” to hear it while you write. We auto-fetch title and thumbnail.</div>
       </label>
       <div class="row">
         <span class="pill">Tag to:</span>
-        <button class="btn" data-addq="A">Add to A</button>
-        <button class="btn" data-addq="B">Add to B</button>
-        <button class="btn" data-addq="AB">Add to A+B</button>
-        <button class="btn" data-addq="D">Add to D</button>
+        <button class="btn" data-addq="A">Add to 🍯</button>
+        <button class="btn" data-addq="B">Add to 🪞</button>
+        <button class="btn" data-addq="AB">Add to 🍯+🪞</button>
+        <button class="btn" data-addq="D">Add to 🔥</button>
         <button class="btn" id="hlog-start">Start 5-min timer</button>
       </div>
       <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
         <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
+        <div class="hint">Write messy. Circle one sentence when done — that’s your seed.</div>
       </label>
       <div class="row">
         <button id="hlog-save" class="btn">Save entry</button>
         <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
       </div>
+      <details class="card" style="background:rgba(255,255,255,.01);border:1px dashed var(--line)">
+        <summary class="pill">View saved entries</summary>
+        <div id="hlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
+      </details>
     </div>
   </section>
+
+  <div class="divider"></div>
 
   <!-- DOECHII -->
   <section class="card hero" id="doechii">
     <div class="pill"><span class="glyph">🔥</span><strong>&nbsp;Visitor — Doechii</strong></div>
     <h2 style="margin:0">Safe Chaos Mirror — instant inspiration, zero asks</h2>
-    <p><strong>The opportunity:</strong> a repeating, no‑pressure ritual that protects your weird while making it portable. 30–90 seconds, one seed per session.</p>
+    <p><strong>What it is:</strong> A page that holds chaos safely. You can go louder and stranger — it still holds. No outreach. No PR. Just resonance.</p>
+    <p><strong>The opportunity for you:</strong> a repeating, no‑pressure ritual that protects your weird while making it portable. 30–90 seconds, one seed per session, always something to bring forward.</p>
+
+    <!-- DOECHII LOG -->
     <section class="card" style="margin-top:14px" id="dlog">
       <div class="pill"><span class="glyph">🔥</span><strong>&nbsp;Safe Chaos Log — Doechii</strong></div>
+      <p>Paste a YouTube link or title, tag it (🔥 or 🍯/🪞), write fragments for 5–10 min, <u>don’t resolve</u>. Circle one fragment — your seed.</p>
       <div class="stack" style="gap:10px">
         <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Track (title or YouTube link)</span>
           <input id="dlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Track">
+          <div class="hint">Tip: Add to 🔥 for a Doechii-only queue, or to 🍯/🪞 to audition side-by-side.</div>
         </label>
         <div class="row">
           <span class="pill">Tag to:</span>
-          <button class="btn" data-addq="D">Add to D</button>
-          <button class="btn" data-addq="A">Add to A</button>
-          <button class="btn" data-addq="B">Add to B</button>
-          <button class="btn" data-addq="AB">Add to A+B</button>
+          <button class="btn" data-addq="D">Add to 🔥</button>
+          <button class="btn" data-addq="A">Add to 🍯</button>
+          <button class="btn" data-addq="B">Add to 🪞</button>
+          <button class="btn" data-addq="AB">Add to 🍯+🪞</button>
           <button class="btn" id="dlog-start">Start 5-min timer</button>
         </div>
         <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments (no syntax)</span>
           <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
+          <div class="hint">Leave it messy. The mess is the message. Only the seed stays.</div>
         </label>
         <div class="row">
           <button id="dlog-save" class="btn">Save entry</button>
           <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
         </div>
+        <details class="card" style="background:rgba(255,255,255,.01);border:1px dashed var(--line)">
+          <summary class="pill">View saved entries</summary>
+          <div id="dlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
+        </details>
       </div>
-      <section id="doechii-chaos-embed" style="display:none"></section>
     </section>
+  </section>
+
+  <!-- FAQ / Glossary -->
+  <section class="card" id="faq">
+    <h2 style="margin-top:0">FAQ &amp; Glossary</h2>
+    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What is a “seed”?</summary>
+      <p>A single circled sentence (Honey) or fragment (Chaos) you carry to the next cycle. It’s continuity, not content.</p>
+    </details>
+    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">Where are my entries saved?</summary>
+      <p>In your browser’s <code>localStorage</code>, on this device only. Use Export in the queue to back up.</p>
+    </details>
+    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">How do 🍯 / 🪞 / 🔥 tags work?</summary>
+      <p>🍯 = Honey lane, 🪞 = Mirror lane, 🔥 = Doechii lane. Filter the queue to focus; each player advances in its own lane.</p>
+    </details>
+    <div class="twins" style="margin-top:12px">
+      <div class="card honey-box">
+        <strong>Glossary — Honey</strong>
+        <p>Sweet, immediate pull; taste/touch metaphors; hook-forward; body leads.</p>
+      </div>
+      <div class="card mirror-box">
+        <strong>Glossary — Mirror</strong>
+        <p>Reflection, angle, identity; persona/role lyrics; frame-forward; mind leads.</p>
+      </div>
+    </div>
   </section>
 </main>
 
-<!-- PLAYER & QUEUE DOCK -->
-<section class="dock" aria-label="Players and Tagged Queue">
+<!-- PLAYER DOCK (players only) -->
+<section class="dock" aria-label="Players">
   <div class="dock-inner">
-    <div class="qbar">
-      <span class="pill">Show:</span>
-      <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
-      <button class="qbtn" data-filter="A" aria-pressed="false">A</button>
-      <button class="qbtn" data-filter="B" aria-pressed="false">B</button>
-      <button class="qbtn" data-filter="D" aria-pressed="false">D</button>
-      <button class="qbtn" id="q-clear">Clear queue</button>
-      <button class="qbtn" id="q-export">Export</button>
-      <input type="file" id="q-import" accept="application/json" style="display:none">
-      <button class="qbtn" id="q-import-btn">Import</button>
-      <span class="pill" id="q-status" style="margin-left:6px"></span>
-    </div>
-
     <div class="players">
       <div class="player">
         <div class="pbar">
-          <strong style="margin-right:8px">Player A</strong>
-          <button class="qbtn" data-prev="A">Prev A</button>
-          <button class="qbtn" data-next="A">Next A</button>
+          <strong style="margin-right:8px">Player 🍯</strong>
+          <button class="qbtn" data-prev="A">Prev 🍯</button>
+          <button class="qbtn" data-next="A">Next 🍯</button>
           <button class="qbtn" data-play="A">Play/Pause</button>
           <button class="qbtn" data-looptrack="A" aria-pressed="false">Loop Track</button>
           <button class="qbtn" data-loopqueue="A" aria-pressed="true">Loop Queue</button>
           <button class="qbtn" data-vol="A">Vol–</button>
           <button class="qbtn" data-volup="A">Vol+</button>
-          <button class="qbtn" data-xfade>Crossfade A→B</button>
+          <button class="qbtn" data-xfade>Crossfade 🍯→🪞</button>
         </div>
-        <div id="playerA"><div class="pill" style="padding:10px">Add or play a track for A…</div></div>
+        <div id="playerA"></div>
       </div>
       <div class="player">
         <div class="pbar">
-          <strong style="margin-right:8px">Player B</strong>
-          <button class="qbtn" data-prev="B">Prev B</button>
-          <button class="qbtn" data-next="B">Next B</button>
+          <strong style="margin-right:8px">Player 🪞</strong>
+          <button class="qbtn" data-prev="B">Prev 🪞</button>
+          <button class="qbtn" data-next="B">Next 🪞</button>
           <button class="qbtn" data-play="B">Play/Pause</button>
           <button class="qbtn" data-looptrack="B" aria-pressed="false">Loop Track</button>
           <button class="qbtn" data-loopqueue="B" aria-pressed="true">Loop Queue</button>
           <button class="qbtn" data-vol="B">Vol–</button>
           <button class="qbtn" data-volup="B">Vol+</button>
         </div>
-        <div id="playerB"><div class="pill" style="padding:10px">Add or play a track for B…</div></div>
+        <div id="playerB"></div>
       </div>
     </div>
-
-    <div class="queue" id="queue"></div>
   </div>
 </section>
+
+<!-- QUEUE DRAWER (moved off the dock) -->
+<aside class="qdrawer" id="qdrawer" aria-label="Tagged Queue Drawer" aria-hidden="true">
+  <div class="qhead">
+    <strong>Queue</strong>
+    <div class="row">
+      <button class="qbtn" id="q-close">Close</button>
+    </div>
+  </div>
+  <div class="qtools">
+    <span class="pill">Show:</span>
+    <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
+    <button class="qbtn" data-filter="A" aria-pressed="false">🍯</button>
+    <button class="qbtn" data-filter="B" aria-pressed="false">🪞</button>
+    <button class="qbtn" data-filter="D" aria-pressed="false">🔥</button>
+    <button class="qbtn" id="q-clear">Clear</button>
+    <button class="qbtn" id="q-export">Export</button>
+    <input type="file" id="q-import" accept="application/json" style="display:none">
+    <button class="qbtn" id="q-import-btn">Import</button>
+    <span class="pill" id="q-status"></span>
+  </div>
+  <div class="qlist" id="queue"></div>
+</aside>
 
 <footer class="wrap" style="color:var(--muted);font-size:.9rem;margin:18px auto 28px">
   © mirrorhoney — Sabrina (🍯) × Marina (🪞). Visitor: Doechii (🔥).
 </footer>
+
+<!-- Guided Tour Overlay -->
+<div class="tour" id="tour">
+  <div class="tour-box">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h3 style="margin:0">Quick Tour (5 steps)</h3>
+      <button class="btn" id="tourSkip">Skip</button>
+    </div>
+    <div class="tour-steps" id="tourSteps"></div>
+    <div class="row" style="justify-content:space-between;margin-top:10px">
+      <button class="btn" id="tourBack">Back</button>
+      <div class="row"><span class="pill" id="tourProgress"></span><button class="cta" id="tourNext">Next</button></div>
+    </div>
+  </div>
+</div>
 
 <!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -234,6 +384,13 @@ function timeISO(){ return new Date().toISOString(); }
 function lsGet(k,f){ try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)} }
 function lsSet(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} }
 function setPressed(el,on){ el.setAttribute("aria-pressed", on?"true":"false"); }
+/* Robust YouTube ID detection: exact 11 chars */
+function ytIdFrom(u){
+  if(!u) return null; u=String(u).trim();
+  var patterns=[/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/,/^([A-Za-z0-9_-]{11})$/];
+  for(var i=0;i<patterns.length;i++){ var m=u.match(patterns[i]); if(m&&m[1]) return m[1]; }
+  return null;
+}
 async function fetchYTMeta(id){
   try{
     var r=await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id);
@@ -243,25 +400,19 @@ async function fetchYTMeta(id){
   }catch(e){ return null; }
 }
 
-/* STRICT 11-char YouTube ID detection (fixes false positives) */
-function ytIdFrom(u){
-  if(!u) return null; u=String(u).trim();
-  var patterns=[
-    /(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/,
-    /^([A-Za-z0-9_-]{11})$/
-  ];
-  for(var i=0;i<patterns.length;i++){ var m=u.match(patterns[i]); if(m&&m[1]) return m[1]; }
-  return null;
-}
-
 /* ===== Honey Log ===== */
 (function(){
   var KEY="mirrorhoney_honeylog_v1";
   var song=document.getElementById("hlog-song"), notes=document.getElementById("hlog-notes");
   var start=document.getElementById("hlog-start"), save=document.getElementById("hlog-save");
-  var timer=document.getElementById("hlog-timer"), t=0;
+  var timer=document.getElementById("hlog-timer"), list=document.getElementById("hlog-list"), t=0;
   function fmt(s){return s<10?"0"+s:s}
   function tick(){ if(t<=0){timer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
+  function render(){ list.innerHTML=""; (lsGet(KEY,"[]")||[]).slice().reverse().forEach(function(e){
+    var c=document.createElement("div"); c.className="card"; c.style.padding="12px";
+    c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div><div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
+    list.appendChild(c);
+  });}
   document.querySelectorAll('#honey-log [data-addq]').forEach(function(btn){
     btn.addEventListener("click", async function(){
       var tag=this.getAttribute("data-addq"), input=song.value.trim(); if(!input) return;
@@ -272,11 +423,8 @@ function ytIdFrom(u){
     if(e.key==="Enter"){ e.preventDefault(); var v=song.value.trim(); if(v) QUEUE.add(v,["A"]); }
   });
   start && (start.onclick=function(){ t=5*60; tick(); });
-  save && (save.onclick=function(){
-    var e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()};
-    var data=lsGet(KEY,"[]"); data.push(e); lsSet(KEY,data);
-    song.value=""; notes.value=""; timer.textContent="";
-  });
+  save && (save.onclick=function(){ var e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()}; var data=lsGet(KEY,"[]"); data.push(e); lsSet(KEY,data); song.value=""; notes.value=""; render(); });
+  render();
 })();
 
 /* ===== Doechii Log ===== */
@@ -284,9 +432,14 @@ function ytIdFrom(u){
   var KEY="mirrorhoney_safechaos_v1";
   var song=document.getElementById("dlog-song"), notes=document.getElementById("dlog-notes");
   var start=document.getElementById("dlog-start"), save=document.getElementById("dlog-save");
-  var timer=document.getElementById("dlog-timer"), t=0;
+  var timer=document.getElementById("dlog-timer"), list=document.getElementById("dlog-list"), t=0;
   function fmt(s){return s<10?"0"+s:s}
   function tick(){ if(t<=0){timer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
+  function render(){ list.innerHTML=""; (lsGet(KEY,"[]")||[]).slice().reverse().forEach(function(e){
+    var c=document.createElement("div"); c.className="card"; c.style.padding="12px";
+    c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div><div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
+    list.appendChild(c);
+  });}
   document.querySelectorAll('#dlog [data-addq]').forEach(function(btn){
     btn.addEventListener("click", async function(){
       var tag=this.getAttribute("data-addq"), input=song.value.trim(); if(!input) return;
@@ -297,75 +450,94 @@ function ytIdFrom(u){
     if(e.key==="Enter"){ e.preventDefault(); var v=song.value.trim(); if(v) QUEUE.add(v,["D"]); }
   });
   start && (start.onclick=function(){ t=5*60; tick(); });
-  save && (save.onclick=function(){
-    var e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()};
-    var data=lsGet(KEY,"[]"); data.push(e); lsSet(KEY,data);
-    song.value=""; notes.value=""; timer.textContent="";
-  });
+  save && (save.onclick=function(){ var e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()}; var data=lsGet(KEY,"[]"); data.push(e); lsSet(KEY,data); song.value=""; notes.value=""; render(); });
+  render();
+})();
+
+/* ===== Queue Drawer open/close ===== */
+(function(){
+  var open=document.getElementById("openQueue"), drawer=document.getElementById("qdrawer"), close=document.getElementById("q-close");
+  function show(){ drawer.classList.add("open"); drawer.setAttribute("aria-hidden","false"); }
+  function hide(){ drawer.classList.remove("open"); drawer.setAttribute("aria-hidden","true"); }
+  open && (open.onclick=show); close && (close.onclick=hide);
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") hide(); });
 })();
 
 /* ===== Tagged Queue & Players ===== */
 var QUEUE=(function(){
-  var KEY="mirrorhoney_queue_v4";
+  var KEY="mirrorhoney_queue_v5";
   var items=lsGet(KEY,"[]")||[], filter="ALL", scopeIndex={A:0,B:0,D:0};
   var qEl=document.getElementById("queue"), status=document.getElementById("q-status");
   var clearBtn=document.getElementById("q-clear");
+
   function save(){ lsSet(KEY,items); render(); }
   function human(it){ var t=it.title||it.id||"Untitled", a=it.author?(" — "+it.author):""; return t+a; }
   function matches(it){ return filter==="ALL" || (it.tags||[]).includes(filter); }
+
+  function toHoney(it){
+    var s=document.getElementById("hlog-song"), n=document.getElementById("hlog-notes");
+    if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||"");
+    if(n) n.focus();
+  }
+  function toChaos(it){
+    var s=document.getElementById("dlog-song"), n=document.getElementById("dlog-notes");
+    if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||"");
+    if(n) n.focus();
+  }
 
   function render(){
     qEl.innerHTML="";
     var vis=items.filter(matches);
     status.textContent=items.length?("Queue: "+vis.length+" shown / "+items.length+" total"):"Queue empty";
     vis.forEach(function(it, idx){
-      var d=document.createElement("div"); d.className="qitem"; d.dataset.key=it.id||it.title||idx;
-      if(it.thumbnail){ var img=document.createElement("img"); img.src=it.thumbnail; img.alt=""; d.appendChild(img); }
-      var label=document.createElement("span"); label.innerHTML=human(it);
-
-      var tags=document.createElement("span");
-      (it.tags||[]).forEach(function(t){ var s=document.createElement("span"); s.className="tag "+t; s.textContent=t; tags.appendChild(s); });
-
-      var playA=document.createElement("button"); playA.className="qbtn"; playA.textContent="Play A";
-      var playB=document.createElement("button"); playB.className="qbtn"; playB.textContent="Play B";
+      var wrap=document.createElement("div"); wrap.className="qitem"; wrap.dataset.key=it.id||it.title||String(idx);
+      var img=document.createElement("img"); img.className="qthumb"; img.alt=""; img.src=it.thumbnail||"";
+      var meta=document.createElement("div"); meta.className="qmeta";
+      var title=document.createElement("div"); title.innerHTML="<strong>"+(it.title||it.id||"Untitled")+"</strong>"+(it.author?(" <span class='pillsmall'>— "+it.author+"</span>"):"");
+      var row1=document.createElement("div"); row1.className="qrow";
+      var playA=document.createElement("button"); playA.className="qbtn"; playA.textContent="Play 🍯";
+      var playB=document.createElement("button"); playB.className="qbtn"; playB.textContent="Play 🪞";
       var toH=document.createElement("button"); toH.className="qbtn"; toH.textContent="→Honey log";
       var toD=document.createElement("button"); toD.className="qbtn"; toD.textContent="→Chaos log";
-      var tagA=document.createElement("button"); tagA.className="qbtn"; tagA.textContent="+A";
-      var tagB=document.createElement("button"); tagB.className="qbtn"; tagB.textContent="+B";
-      var tagD=document.createElement("button"); tagD.className="qbtn"; tagD.textContent="+D";
-      var rmA=document.createElement("button"); rmA.className="qbtn"; rmA.textContent="–A";
-      var rmB=document.createElement("button"); rmB.className="qbtn"; rmB.textContent="–B";
-      var rmD=document.createElement("button"); rmD.className="qbtn"; rmD.textContent="–D";
+
+      var row2=document.createElement("div"); row2.className="qrow";
+      var tags=document.createElement("span");
+      (it.tags||[]).forEach(function(t){ var s=document.createElement("span"); s.className="tag "+t; s.textContent=(t==="A"?"🍯":t==="B"?"🪞":"🔥"); tags.appendChild(s); });
+      var tagA=document.createElement("button"); tagA.className="qbtn"; tagA.textContent="+🍯";
+      var tagB=document.createElement("button"); tagB.className="qbtn"; tagB.textContent="+🪞";
+      var tagD=document.createElement("button"); tagD.className="qbtn"; tagD.textContent="+🔥";
+      var rmA=document.createElement("button"); rmA.className="qbtn"; rmA.textContent="–🍯";
+      var rmB=document.createElement("button"); rmB.className="qbtn"; rmB.textContent="–🪞";
+      var rmD=document.createElement("button"); rmD.className="qbtn"; rmD.textContent="–🔥";
       var del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove";
 
       playA.onclick=function(){ if(it.id){ PLAYERS.load("A",it.id,true); bumpTo("A",it);} };
       playB.onclick=function(){ if(it.id){ PLAYERS.load("B",it.id,true); bumpTo("B",it);} };
-      toH.onclick=function(){ var s=document.getElementById("hlog-song"), n=document.getElementById("hlog-notes"); if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||""); if(n) n.focus(); };
-      toD.onclick=function(){ var s=document.getElementById("dlog-song"), n=document.getElementById("dlog-notes"); if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||""); if(n) n.focus(); };
+      toH.onclick=function(){ toHoney(it); };
+      toD.onclick=function(){ toChaos(it); };
       tagA.onclick=function(){ tag(it,"A")}; tagB.onclick=function(){ tag(it,"B")}; tagD.onclick=function(){ tag(it,"D")};
       rmA.onclick=function(){ untag(it,"A")}; rmB.onclick=function(){ untag(it,"B")}; rmD.onclick=function(){ untag(it,"D")};
       del.onclick=function(){ var ix=items.indexOf(it); if(ix>-1){ items.splice(ix,1); save(); } };
 
-      d.draggable=true;
-      d.addEventListener('dragstart',function(e){ e.dataTransfer.setData('text/plain', d.dataset.key); });
+      // drag & drop vertical
+      wrap.draggable=true;
+      wrap.addEventListener('dragstart',function(e){ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData('text/plain', wrap.dataset.key); });
       qEl.addEventListener('dragover',function(e){ e.preventDefault(); });
       qEl.addEventListener('drop',function(e){
         e.preventDefault();
         var fromKey=e.dataTransfer.getData('text/plain');
         var toKey=(e.target.closest('.qitem')||{}).dataset.key;
-        var from=items.findIndex(function(x,ix){return (x.id||x.title||ix)==fromKey});
-        var to=items.findIndex(function(x,ix){return (x.id||x.title||ix)==toKey});
+        var from=items.findIndex(function(x,ix){return (x.id||x.title||String(ix))===fromKey});
+        var to=items.findIndex(function(x,ix){return (x.id||x.title||String(ix))===toKey});
         if(from<0||to<0||from===to) return;
         var moved=items.splice(from,1)[0]; items.splice(to,0,moved); save();
       });
 
-      d.appendChild(label); d.appendChild(tags);
-      d.appendChild(playA); d.appendChild(playB);
-      d.appendChild(toH); d.appendChild(toD);
-      d.appendChild(tagA); d.appendChild(tagB); d.appendChild(tagD);
-      d.appendChild(rmA); d.appendChild(rmB); d.appendChild(rmD);
-      d.appendChild(del);
-      qEl.appendChild(d);
+      row1.appendChild(playA); row1.appendChild(playB); row1.appendChild(toH); row1.appendChild(toD);
+      row2.appendChild(tags); row2.appendChild(tagA); row2.appendChild(tagB); row2.appendChild(tagD); row2.appendChild(rmA); row2.appendChild(rmB); row2.appendChild(rmD); row2.appendChild(del);
+      meta.appendChild(title); meta.appendChild(row1); meta.appendChild(row2);
+      wrap.appendChild(img); wrap.appendChild(meta);
+      qEl.appendChild(wrap);
     });
   }
 
@@ -443,17 +615,17 @@ var QUEUE=(function(){
     });
   });
 
-  // seed on first load (Sabrina → A, Marina → B, Doechii → D)
+  // seed on first load
   (function seed(){
-    if(localStorage.getItem("mirrorhoney_seeded_v1")==="1") { render(); return; }
+    if(localStorage.getItem("mirrorhoney_seeded_v2")==="1") { render(); return; }
     var seeds=[
-      {url:"https://www.youtube.com/watch?v=cF1Na4AIecM", tags:["A"]}, // Sabrina Carpenter – Please Please Please
-      {url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", tags:["B"]}, // MARINA – Oh No! (Official)
-      {url:"https://www.youtube.com/watch?v=phtcAd8j6Ro", tags:["D"]}  // Doechii – What It Is (Block Boy)
+      {url:"https://www.youtube.com/watch?v=cF1Na4AIecM", tags:["A"]}, // Sabrina — Please Please Please
+      {url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", tags:["B"]}, // MARINA — Oh No!
+      {url:"https://www.youtube.com/watch?v=phtcAd8j6Ro", tags:["D"]}  // Doechii — What It Is
     ];
     (async function run(){
       for (var i=0;i<seeds.length;i++){ await add(seeds[i].url, seeds[i].tags); }
-      localStorage.setItem("mirrorhoney_seeded_v1","1");
+      localStorage.setItem("mirrorhoney_seeded_v2","1");
     })();
   })();
 
@@ -467,63 +639,73 @@ var QUEUE=(function(){
   };
 })();
 
-/* ===== Players A/B (robust init + fallback, loop, volume, crossfade, mobile unlock, auto-play) ===== */
+/* ===== Players A/B (no fallback; stronger toggle; load default if empty) ===== */
 var PLAYERS=(function(){
   var A=null,B=null, cfg={A:{loopTrack:false,loopQueue:true},B:{loopTrack:false,loopQueue:true}}, XF=false;
 
-  function fallbackEmbed(which,id){
-    var el=document.getElementById(which==="A"?"playerA":"playerB"); if(!el) return;
-    el.innerHTML='<iframe width="100%" height="'+(window.innerWidth<900?180:260)+'" src="https://www.youtube.com/embed/'+id+'?rel=0&modestbranding=1&playsinline=1" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
-  }
-
   function create(which,elId){
-    try{
-      return new YT.Player(elId,{
-        width:'100%',
-        height: (window.innerWidth<900 ? '180' : '260'),
-        playerVars:{rel:0,modestbranding:1,playsinline:1},
-        events:{
-          onReady:function(){ try{ this.setVolume(70); }catch(_){ } },
-          onStateChange:function(e){
-            var ended = (e.data===YT.PlayerState.ENDED || e.data===0);
-            if(ended){
-              if(cfg[which].loopTrack){ this.playVideo(); return; }
-              if(which==="A" && XF && B){
-                try{
-                  B.setVolume(0); B.playVideo();
-                  var v=0; var f=setInterval(function(){ v+=10; B.setVolume(Math.min(100,v)); if(v>=100) clearInterval(f); },150);
-                }catch(_){}
-              }
-              var nxt=QUEUE.next(which,cfg[which].loopQueue);
-              if(nxt && nxt.id){ this.loadVideoById(nxt.id); }
+    return new YT.Player(elId,{
+      width:'100%',
+      height: (window.innerWidth<900 ? '180' : '260'),
+      playerVars:{rel:0,modestbranding:1,playsinline:1},
+      events:{
+        onReady:function(){ try{ this.setVolume(70); }catch(_){ } },
+        onStateChange:function(e){
+          var ended = (e.data===YT.PlayerState.ENDED || e.data===0);
+          if(ended){
+            if(cfg[which].loopTrack){ this.playVideo(); return; }
+            if(which==="A" && XF && B){
+              try{
+                B.setVolume(0); B.playVideo();
+                var v=0; var f=setInterval(function(){ v+=10; B.setVolume(Math.min(100,v)); if(v>=100) clearInterval(f); },150);
+              }catch(_){}
             }
+            var nxt=QUEUE.next(which,cfg[which].loopQueue);
+            if(nxt && nxt.id){ this.loadVideoById(nxt.id); }
           }
         }
-      });
-    }catch(e){ return null; }
+      }
+    });
+  }
+
+  function ensureLoaded(which){
+    var p = which==="A"?A:B;
+    try{
+      var st=p && p.getPlayerState ? p.getPlayerState() : null;
+      return (st!==null);
+    }catch(_){ return false; }
   }
 
   function load(which,id,autoPlay){
-    var p = which==="A"?A:B;
-    if(p && p.loadVideoById){
-      p.loadVideoById(id);
-      if(autoPlay!==false){ try{ p.playVideo(); }catch(_){} }
-    }else{
-      fallbackEmbed(which,id);
-    }
+    var p = which==="A"?A:B; if(!p) return;
+    p.loadVideoById(id);
+    if(autoPlay!==false){ try{ p.playVideo(); }catch(_){ } }
     var dock=document.querySelector('.dock'); if(dock){ try{ dock.scrollIntoView({behavior:'smooth',block:'end'}); }catch(_){ } }
   }
 
-  // Wire up dock controls
+  function toggle(which){
+    var p = which==="A"?A:B; if(!p) return;
+    try{
+      var st=p.getPlayerState();
+      if(st===1){ p.pauseVideo(); return; }
+      if(st===-1 || st===5 || typeof st==="undefined"){
+        // nothing loaded yet → load first item from that lane
+        var first=(QUEUE.scopeItems(which)[0]||{}).id;
+        if(first){ load(which, first, true); return; }
+      }
+      p.playVideo();
+    }catch(_){}
+  }
+
+  // Buttons in the dock
   document.querySelectorAll('[data-prev]').forEach(function(btn){ btn.onclick=function(){
-    var w=this.getAttribute("data-prev"); var p=w==="A"?A:B; var it=QUEUE.prev(w,cfg[w].loopQueue); if(it&&it.id){ load(w,it.id,true); }
+    var w=this.getAttribute("data-prev"); var it=QUEUE.prev(w,cfg[w].loopQueue); if(it&&it.id){ load(w,it.id,true); }
   }});
   document.querySelectorAll('[data-next]').forEach(function(btn){ btn.onclick=function(){
-    var w=this.getAttribute("data-next"); var p=w==="A"?A:B; var it=QUEUE.next(w,cfg[w].loopQueue); if(it&&it.id){ load(w,it.id,true); }
+    var w=this.getAttribute("data-next"); var it=QUEUE.next(w,cfg[w].loopQueue); if(it&&it.id){ load(w,it.id,true); }
   }});
   document.querySelectorAll('[data-play]').forEach(function(btn){ btn.onclick=function(){
-    var w=this.getAttribute("data-play"); var p=w==="A"?A:B; if(!p||!p.getPlayerState){ return; }
-    var st=p.getPlayerState(); if(st===1){p.pauseVideo();} else {p.playVideo();}
+    var w=this.getAttribute("data-play"); toggle(w);
   }});
   document.querySelectorAll('[data-looptrack]').forEach(function(btn){ btn.onclick=function(){
     var w=this.getAttribute("data-looptrack"); cfg[w].loopTrack=!cfg[w].loopTrack; setPressed(this,cfg[w].loopTrack);
@@ -531,29 +713,16 @@ var PLAYERS=(function(){
   document.querySelectorAll('[data-loopqueue]').forEach(function(btn){ btn.onclick=function(){
     var w=this.getAttribute("data-loopqueue"); cfg[w].loopQueue=!cfg[w].loopQueue; setPressed(this,cfg[w].loopQueue);
   }});
-  document.querySelector('[data-vol="A"]') && (document.querySelector('[data-vol="A"]').onclick=function(){ if(A&&A.getVolume){ A.setVolume(Math.max(0,(A.getVolume()||100)-10)); } });
-  document.querySelector('[data-volup="A"]') && (document.querySelector('[data-volup="A"]').onclick=function(){ if(A&&A.getVolume){ A.setVolume(Math.min(100,(A.getVolume()||100)+10)); } });
-  document.querySelector('[data-vol="B"]') && (document.querySelector('[data-vol="B"]').onclick=function(){ if(B&&B.getVolume){ B.setVolume(Math.max(0,(B.getVolume()||100)-10)); } }});
-  document.querySelector('[data-volup="B"]') && (document.querySelector('[data-volup="B"]').onclick=function(){ if(B&&B.getVolume){ B.setVolume(Math.min(100,(B.getVolume()||100)+10)); } }});
+  document.querySelector('[data-vol="A"]') && (document.querySelector('[data-vol="A"]').onclick=function(){ var p=window._playerA; if(!p) p=A; if(p && p.getVolume){ p.setVolume(Math.max(0,(p.getVolume()||100)-10)); } });
+  document.querySelector('[data-volup="A"]') && (document.querySelector('[data-volup="A"]').onclick=function(){ var p=A; if(p && p.getVolume){ p.setVolume(Math.min(100,(p.getVolume()||100)+10)); } });
+  document.querySelector('[data-vol="B"]') && (document.querySelector('[data-vol="B"]').onclick=function(){ var p=B; if(p && p.getVolume){ p.setVolume(Math.max(0,(p.getVolume()||100)-10)); } });
+  document.querySelector('[data-volup="B"]') && (document.querySelector('[data-volup="B"]').onclick=function(){ var p=B; if(p && p.getVolume){ p.setVolume(Math.min(100,(p.getVolume()||100)+10)); } });
   document.querySelector('[data-xfade]') && (document.querySelector('[data-xfade]').onclick=function(){ XF=!XF; setPressed(this,XF); });
 
-  // Robust init: handle API ready race + periodic check + fallback
-  function initPlayersOnce(){
-    if(window._mhPlayersReady) return;
-    window._mhPlayersReady=true;
-    A=create("A","playerA"); B=create("B","playerB");
-    if(!A || !B){
-      // as a fallback, embed first items if present
-      var a0=(QUEUE.scopeItems("A")[0]||{}).id; if(a0) fallbackEmbed("A",a0);
-      var b0=(QUEUE.scopeItems("B")[0]||{}).id; if(b0) fallbackEmbed("B",b0);
-    }
-  }
-  if(window.YT && YT.Player){ initPlayersOnce(); }
-  window.onYouTubeIframeAPIReady = initPlayersOnce;
-  var check=setInterval(function(){ if(window.YT && YT.Player){ clearInterval(check); initPlayersOnce(); } }, 500);
-  setTimeout(function(){ try{ clearInterval(check); }catch(_){ } }, 8000);
+  // Create players when API is ready
+  window.onYouTubeIframeAPIReady=function(){ A=create("A","playerA"); window._playerA=A; B=create("B","playerB"); };
 
-  return { load:load, get:function(w){ return (w==="A"?A:B); } };
+  return { load:load, get:function(w){ return (w==="A"?A:B); }, toggle:toggle };
 })();
 
 /* ===== Header Master Controls, Auto-play on add, Mobile Unlock, Shortcuts ===== */
@@ -584,11 +753,7 @@ var PLAYERS=(function(){
   }
 
   masterPlay && (masterPlay.onclick = function(){
-    ["A","B"].forEach(function(w){
-      var p = PLAYERS.get(w); if(!p || !p.getPlayerState) return;
-      var st; try{ st=p.getPlayerState(); }catch(_){ st=null; }
-      if(st===1){ try{p.pauseVideo();}catch(_){}} else { try{ p.playVideo(); }catch(_){ } }
-    });
+    ["A","B"].forEach(function(w){ PLAYERS.toggle(w); });
   });
 
   masterStop && (masterStop.onclick = function(){ ["A","B"].forEach(function(w){ var p=PLAYERS.get(w); if(p && p.stopVideo) try{p.stopVideo();}catch(_){ } }); });
@@ -619,7 +784,7 @@ var PLAYERS=(function(){
   document.addEventListener("touchstart", unlock, {once:true});
   document.addEventListener("click", unlock, {once:true});
 
-  // Keyboard shortcuts: Space = A Play/Pause, Shift+Space = B
+  // Keyboard shortcuts: Space = 🍯 Play/Pause, Shift+Space = 🪞
   document.addEventListener('keydown',function(e){
     if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
     if(e.code==='Space'){ e.preventDefault(); var a=document.querySelector('[data-play="A"]'); a && a.click(); }
@@ -627,7 +792,38 @@ var PLAYERS=(function(){
   });
 })();
 
-/* ===== Secret note (unchanged, harmless) ===== */
+/* ===== Guided Tour ===== */
+(function(){
+  var KEY="mirrorhoney_seenTour_v1";
+  var tour=document.getElementById("tour"), stepsBox=document.getElementById("tourSteps");
+  var back=document.getElementById("tourBack"), next=document.getElementById("tourNext"), skip=document.getElementById("tourSkip"), prog=document.getElementById("tourProgress");
+  var steps=[
+    {title:"Honey vs Mirror (the idea)",body:"Honey = sweet pull & body first. Mirror = reflective angle & mind first. You’ll learn to spot each and save one seed."},
+    {title:"Try a song",body:"Paste a YouTube link (or title) in the Honey Log and click Add to 🍯 or 🪞. We’ll fetch the title and thumbnail."},
+    {title:"Write one page",body:"Start the 5-minute timer. Write messy. Circle one sentence — that’s your seed for continuity."},
+    {title:"Play with dual decks",body:"Queue songs in 🍯 (Honey) and 🪞 (Mirror). Use Play/Pause, Loop Track, Loop Queue, and mix with the header crossfader."},
+    {title:"Open Doechii’s spark",body:"Scroll to the visitor section. Add one wild edge to 🔥, free-write fragments, shuffle the spark if you like."}
+  ];
+  var i=0;
+  function renderStep(){
+    stepsBox.innerHTML="";
+    var s=steps[i];
+    var el=document.createElement("div"); el.className="tour-steps";
+    el.innerHTML='\
+    <div class="card" style="border:1px dashed var(--line)"><strong>'+s.title+'</strong><p style="margin:.5rem 0 0">'+s.body+'</p></div>\
+    <div class="card" style="border:1px dashed var(--line)"><em>Tip:</em> Your logs and queue stay on this device. Use Export in the queue to back up.</div>';
+    stepsBox.appendChild(el); prog.textContent=(i+1)+" / "+steps.length; back.disabled=i===0; next.textContent=i===steps.length-1?"Finish":"Next";
+  }
+  function show(){ tour.classList.add("show"); renderStep(); }
+  function hide(){ tour.classList.remove("show"); localStorage.setItem(KEY,"1"); }
+  document.getElementById("startTour").onclick=show;
+  back.onclick=function(){ if(i>0){ i--; renderStep(); } };
+  next.onclick=function(){ if(i<steps.length-1){ i++; renderStep(); } else { hide(); } };
+  skip.onclick=hide;
+  if(localStorage.getItem(KEY)!=="1"){ show(); }
+})();
+
+/* ===== Secret, bee-coded hint (unchanged) ===== */
 (function secret(){
   var target=document.getElementById("doechii"); if(!target) return;
   var hidden=document.createElement("div");
@@ -640,8 +836,8 @@ var PLAYERS=(function(){
   document.addEventListener("keydown",function(e){
     seq.push((e.key||"").toLowerCase()); seq=seq.slice(-8);
     if(seq.join("").includes("bee")){
-      var root=document.getElementById("doechii-chaos-embed"); if(!root) return;
-      var msg=document.createElement("div"); msg.className="pill";
+      var msg=document.createElement("div");
+      msg.className="pill";
       msg.style.cssText="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:rgba(255,255,255,.06);border:1px solid var(--line);backdrop-filter:blur(4px)";
       msg.textContent="next: body→edge→echo";
       document.body.appendChild(msg);
