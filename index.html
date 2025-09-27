@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Mirror × Honey — Sabrina (🍯) × Marina (🪞)</title>
-<meta name="description" content="Mirror × Honey is a resonance frame for Sabrina (Honey) and Marina (Mirror/Butterfly): context, how-to ritual, and a low-stakes Honey Log. After you understand, an optional visitor (Doechii) appears.">
+<meta name="description" content="Mirror × Honey: a clear guide to Honey (Sabrina) vs Mirror (Marina), a 5–10 minute Honey Log, and an optional visitor (Doechii).">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
@@ -13,7 +13,7 @@
 <style>
   :root{
     --bg:#0B0F19; --ink:#E6EAF2; --muted:#A0A7B3;
-    --line:#1B2433; --accent:#7CD4FF; --rose:#FF3EB5; --gold:#F8D34A;
+    --line:#1B2433; --accent:#7CD4FF; --rose:#FF3EB5; --gold:#F8D34A; --honey:#F3C94E; --mirror:#C1D7FF;
     --shadow:0 10px 30px rgba(0,0,0,.45);
   }
   *{box-sizing:border-box}
@@ -33,16 +33,16 @@
   .hero h1{font-size:1.7rem;margin:0}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
   .glyph{font-size:1.05rem}
-
   .cta{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;border:1px solid var(--accent);color:var(--accent)}
   .cta:hover{background:rgba(124,212,255,.1);text-decoration:none}
   .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
   .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
   .divider{height:1px;background:var(--line);margin:22px 0}
 
-  /* sections */
+  /* grids */
   .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
-  @media (max-width:900px){.two-col{grid-template-columns:1fr}}
+  .twins{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:900px){.two-col{grid-template-columns:1fr} .twins{grid-template-columns:1fr}}
 
   /* inputs */
   input[type="text"], textarea{
@@ -62,6 +62,9 @@
   .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
   .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
 
+  /* accent blocks */
+  .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,rgba(243,201,78,.07),transparent);border-radius:10px}
+  .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,rgba(193,215,255,.08),transparent);border-radius:10px}
   details summary{cursor:pointer}
   footer{color:var(--muted);font-size:.9rem;margin:28px 0}
 </style>
@@ -71,74 +74,124 @@
   <div class="brand">mirrorhoney</div>
   <nav>
     <a href="#what">what</a>
-    <a href="#how">how-to</a>
+    <a href="#identify">identify</a>
     <a href="#honey-log">honey log</a>
     <a href="#visitor">visitor</a>
   </nav>
 </header>
 
 <main class="wrap stack">
-  <!-- WHAT: Fuller explanation -->
+  <!-- WHAT -->
   <section class="card hero" id="what">
     <div class="pill">
       <span class="glyph">🍯</span><span>Sabrina — Honey</span>
       <span aria-hidden="true">·</span>
       <span class="glyph">🪞</span><span>Marina — Mirror/Butterfly</span>
     </div>
-    <h1>Mirror × Honey — a resonance frame (not PR)</h1>
+    <h1>Mirror × Honey — a resonance frame, not PR</h1>
     <div class="two-col">
       <div>
         <p>
           Mirror × Honey is a small, repeatable way to hold space for <strong>Sabrina</strong> and <strong>Marina</strong> across cycles —
-          even if they never see this page. It assumes they already have platform and attention.
-          What they don’t always have:
+          even if they never see this page. It assumes they already have platform and attention. What they don’t always have:
         </p>
         <ul>
           <li><strong>Continuity between cycles</strong> — a through-line when promo ends.</li>
           <li><strong>A peer mirror outside industry bubbles</strong> — reflection that isn’t transactional.</li>
           <li><strong>A place to play without PR stakes</strong> — a sandbox where experiments can breathe.</li>
         </ul>
-        <p>
-          Mirror × Honey is that sandbox: <em>journal first, publish never required.</em> It’s a rhythm you can keep so they
-          have continuity and a clean mirror held for them from the outside.
-        </p>
+        <p>Mirror × Honey provides that sandbox: <em>journal first; publishing is optional.</em></p>
       </div>
       <div>
         <details class="card" style="background:rgba(255,255,255,.01)">
           <summary class="pill">What this is not</summary>
           <ul style="margin:10px 0 0">
-            <li>Not outreach, not clout chasing, not a press pitch.</li>
-            <li>Not a fan-control mechanism or parasocial gambit.</li>
-            <li>Not a leak or rumor mill.</li>
+            <li>Not outreach, clout-chasing, or a press pitch.</li>
+            <li>Not a fan-control mechanism or rumor mill.</li>
+            <li>Not trying to “define” either artist — it’s a mirror and a page of honey.</li>
           </ul>
         </details>
         <details class="card" style="margin-top:12px;background:rgba(255,255,255,.01)">
           <summary class="pill">Privacy</summary>
-          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Nothing is uploaded.</p>
+          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Nothing uploads.</p>
         </details>
       </div>
     </div>
     <div class="row" style="margin-top:10px">
-      <a class="btn" href="#how">How to use it</a>
+      <a class="btn" href="#identify">How to spot Honey vs Mirror</a>
       <a id="continueTop" class="cta" href="#visitor">I understand — show visitor</a>
     </div>
   </section>
 
-  <!-- HOW-TO: Practical ritual -->
-  <section class="card" id="how">
-    <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;How to use Mirror × Honey (5–10 min)</strong></div>
-    <ol style="margin:10px 0 0">
-      <li><strong>Pick one song</strong> that bridges Sabrina × Marina (any era).</li>
-      <li><strong>Set a timer</strong> (5–10 min). Free-write on a blank page. Fragments are welcome.</li>
-      <li><strong>Circle one sentence</strong> that feels like continuity. That’s your seed for the next cycle.</li>
-    </ol>
-    <p class="pill" style="margin-top:8px">Then log it below. You can do this once per week, or whenever a bridge appears.</p>
+  <!-- IDENTIFY: the super clear part -->
+  <section class="card" id="identify">
+    <div class="pill"><strong>How to identify the two halves</strong></div>
+    <div class="twins">
+      <div class="honey-box">
+        <h3 style="margin-top:8px">🍯 HONEY (Sabrina) — Sweet / Magnetic / Immediate</h3>
+        <ul>
+          <li><strong>Feel</strong>: warm pull, flirt, charm, joy, “come closer.”</li>
+          <li><strong>Body</strong>: head-nod, hum along, dance instinct; easy sing-along hooks.</li>
+          <li><strong>Lyrics</strong>: sensory, taste/skin/heat, playfully direct, present-tense.</li>
+          <li><strong>Production</strong>: glossy/pop-forward; bass + beat invite movement.</li>
+          <li><strong>Aftertaste</strong>: you want to hit repeat; the hook sticks like syrup.</li>
+        </ul>
+        <p style="margin:.6rem 0 0"><em>Shortcut:</em> If the song feels like <u>taste + touch</u> and you move without thinking → it’s Honey.</p>
+      </div>
+      <div class="mirror-box">
+        <h3 style="margin-top:8px">🪞 MIRROR (Marina) — Reflection / Angle / Identity</h3>
+        <ul>
+          <li><strong>Feel</strong>: thoughtful tilt, self-regard, critique, “look again.”</li>
+          <li><strong>Mind</strong>: you parse lines; the meaning unfolds on the second pass.</li>
+          <li><strong>Lyrics</strong>: persona, roles, masks, power, fame, culture, self-myth.</li>
+          <li><strong>Production</strong>: prismatic/art-pop edges; arrangement carries the idea.</li>
+          <li><strong>Afterimage</strong>: you leave with a <u>frame</u> or question rather than a hook.</li>
+        </ul>
+        <p style="margin:.6rem 0 0"><em>Shortcut:</em> If the song makes you <u>see yourself or culture differently</u> → it’s Mirror.</p>
+      </div>
+    </div>
+
+    <div class="twins" style="margin-top:12px">
+      <div class="card" style="background:rgba(255,255,255,.01)">
+        <div class="pill">30-second test</div>
+        <ol style="margin:.5rem 0 0">
+          <li>Play the chorus once.</li>
+          <li>Ask: “Did my body move first (Honey) or did a thought click first (Mirror)?”</li>
+          <li>If both, which feeling is <u>primary</u>? That’s your tag.</li>
+        </ol>
+      </div>
+      <div class="card" style="background:rgba(255,255,255,.01)">
+        <div class="pill">Edge cases & tie-breakers</div>
+        <ul style="margin:.5rem 0 0">
+          <li><strong>Sweet lyrics, reflective bridge</strong> → still Honey if the <em>pull</em> leads.</li>
+          <li><strong>Danceable production, heavy critique</strong> → still Mirror if the <em>angle</em> leads.</li>
+          <li><strong>Unsure?</strong> Circle the lyric that hit hardest. If it’s <em>touch/taste</em> → Honey. If it’s <em>role/idea</em> → Mirror.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:12px">
+      <a class="btn" href="#honey-log">Log one now</a>
+      <button id="classifyOpen" class="btn" type="button" aria-expanded="false">Quick classify widget</button>
+    </div>
+
+    <!-- tiny helper widget -->
+    <section id="classify" class="card" style="display:none;margin-top:10px">
+      <label class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or link)</label>
+      <input id="c-song" type="text" placeholder="Artist — Title or URL" aria-label="Classify song">
+      <label class="pill" style="display:block;margin:12px 0 6px;color:var(--muted)">First hit: body or mind?</label>
+      <div class="row">
+        <button id="c-body" class="btn" type="button">Body moved first</button>
+        <button id="c-mind" class="btn" type="button">Mind clicked first</button>
+      </div>
+      <p id="c-result" class="pill" style="margin-top:8px"></p>
+    </section>
   </section>
 
   <!-- HONEY LOG -->
   <section class="card" id="honey-log">
     <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — Sabrina × Marina</strong></div>
-    <p style="margin:.4rem 0 1rem">Low-stakes journal. Saves privately in your browser.</p>
+    <p style="margin:.4rem 0 1rem">Pick a bridge song, write for 5–10 min, circle one sentence (your continuity seed). Saved privately in your browser.</p>
 
     <div class="stack" style="gap:10px">
       <label>
@@ -174,8 +227,8 @@
   <section id="visitor" class="reveal card" aria-live="polite" aria-atomic="true">
     <div class="pill"><span class="glyph">🔥</span><strong> Visitor — Doechii: Safe Chaos Mirror</strong></div>
     <p style="margin:8px 0 0">
-      The visitor is separate from Mirror × Honey. It’s included here because once you understand Honey × Mirror,
-      you may want to hold a similar space for Doechii — but tuned to chaos. The layout changes on every load; one “seed” is always held.
+      Mirror × Honey is about Sabrina and Marina. The visitor is separate: once you understand Honey × Mirror,
+      you can hold a similar space for Doechii — tuned to chaos. The layout changes on every load; one “seed” is always held.
     </p>
 
     <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Doechii Chaos Scatter"></section>
@@ -191,7 +244,7 @@
 </main>
 
 <script>
-/* ---------- Onboarding: keep Mirror × Honey primary ---------- */
+/* ---------- Onboarding: reveal visitor after understanding ---------- */
 (function initOnboard(){
   var KEY="mirrorhoney_seenIntro";
   var seen=localStorage.getItem(KEY)==="1";
@@ -223,6 +276,31 @@
     while(root.firstChild) root.removeChild(root.firstChild);
     visitor.classList.remove("show");
     if(location.hash!=="#what") location.hash="#what";
+  });
+})();
+
+/* ---------- Identify: quick classify widget ---------- */
+(function classify(){
+  var open=document.getElementById("classifyOpen");
+  var box=document.getElementById("classify");
+  var out=document.getElementById("c-result");
+  var song=document.getElementById("c-song");
+  var body=document.getElementById("c-body");
+  var mind=document.getElementById("c-mind");
+
+  open.addEventListener("click",function(){
+    var vis=box.style.display==="block";
+    box.style.display=vis?"none":"block";
+    open.setAttribute("aria-expanded", !vis);
+  });
+
+  body.addEventListener("click",function(){
+    out.textContent="Result: 🍯 Honey — led by taste/touch/joy. Log it below.";
+    out.style.color="#F3C94E";
+  });
+  mind.addEventListener("click",function(){
+    out.textContent="Result: 🪞 Mirror — led by reflection/angle/identity. Log it below.";
+    out.style.color="#C1D7FF";
   });
 })();
 
@@ -275,7 +353,7 @@
 function mountChaos(targetId){
   var root=document.getElementById(targetId); if(!root) return;
   var fragments=["raw","wild","unfinished","go louder","stranger","mirror shard","seed","🔥","untamed","glitch","off-script","unboxed","discord","spark"];
-  var seedIndex=5; // "mirror shard"
+  var seedIndex=5; /* "mirror shard" */
   var w=root.clientWidth, h=root.clientHeight;
 
   function put(el,x,y,angle,op){
