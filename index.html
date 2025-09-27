@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mirror × Honey — Sabrina (🍯) × Marina (🪞) · Visitor: Doechii (🔥)</title>
-<meta name="description" content="Clear Honey (Sabrina) vs Mirror (Marina) guide, hybrid example, Honey Log, non-transactional Doechii space with Safe Chaos Log, and a YouTube player + saved queue.">
+<meta name="description" content="Honey vs Mirror guide, hybrid example, Honey Log, Safe Chaos Log, and a tagged YouTube queue with autoplay, per-player loop, volume, crossfade, and oEmbed titles.">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
@@ -29,9 +29,9 @@
   .hero h1{font-size:1.7rem;margin:0}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
   .glyph{font-size:1.05rem}
-  .cta{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;border:1px solid var(--accent);color:var(--accent)}
-  .cta:hover{background:rgba(124,212,255,.1);text-decoration:none}
-  .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
+  .cta,.btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
+  .cta{border-color:var(--accent);color:var(--accent)}
+  .cta:hover{background:rgba(124,212,255,.1)}
   .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
   .divider{height:1px;background:var(--line);margin:22px 0}
   .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
@@ -45,23 +45,25 @@
   .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
   .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
   .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
-  .reveal{display:none}.reveal.show{display:block;animation:fade .5s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   details summary{cursor:pointer}
   footer{color:var(--muted);font-size:.9rem;margin:28px 0}
-
-  /* Player & Queue dock */
-  .dock{position:sticky;bottom:0;z-index:50;background:rgba(11,15,25,.9);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+  /* Dock */
+  .dock{position:sticky;bottom:0;z-index:50;background:rgba(11,15,25,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
   .dock-inner{max-width:980px;margin:0 auto;padding:14px 28px;display:grid;gap:12px}
   .players{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media (max-width:900px){.players{grid-template-columns:1fr}}
   .player{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
+  .pbar{display:flex;gap:8px;align-items:center;padding:8px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
   .qbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .qbtn{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink)}
+  .qbtn{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);cursor:pointer}
+  .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
   .queue{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
   .qitem{border:1px solid var(--line);border-radius:10px;padding:6px 10px;white-space:nowrap;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.02)}
+  .qitem img{width:56px;height:32px;object-fit:cover;border-radius:6px}
   .qitem b{font-weight:600}
   .qitem small{color:var(--muted)}
+  .tag{border:1px solid var(--line);padding:2px 6px;border-radius:8px;font-size:.8rem;opacity:.9}
+  .tag.A{border-color:#7CD4FF} .tag.B{border-color:#F8D34A} .tag.D{border-color:#FF3EB5}
 </style>
 </head>
 <body>
@@ -84,11 +86,7 @@
     <div class="two-col">
       <div>
         <p>Hold space for <strong>Sabrina</strong> and <strong>Marina</strong> across cycles — even if they never see this page. They already have attention. What they don’t always have:</p>
-        <ul>
-          <li><strong>Continuity</strong> when promo ends.</li>
-          <li><strong>A peer mirror outside the machine.</strong></li>
-          <li><strong>A place to play with no PR stakes.</strong></li>
-        </ul>
+        <ul><li><strong>Continuity</strong> when promo ends.</li><li><strong>A peer mirror outside the machine.</strong></li><li><strong>A place to play with no PR stakes.</strong></li></ul>
         <p>Mirror × Honey is that sandbox: <em>journal first; publishing optional.</em></p>
       </div>
       <div>
@@ -99,10 +97,6 @@
           <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>).</p>
         </details>
       </div>
-    </div>
-    <div class="row" style="margin-top:10px">
-      <a class="btn" href="#identify">How to spot Honey vs Mirror</a>
-      <a class="cta" href="#doechii">Skip to Doechii (visitor)</a>
     </div>
   </section>
 
@@ -144,18 +138,22 @@
         <ul><li>Bridge flips perspective (mask ↔ mirror).</li><li>Verse introduces role/identity tension.</li><li>Arrangement adds a prismatic break to spotlight the idea.</li></ul>
       </div>
     </div>
-    <p style="margin:.6rem 0 0"><em>How to tag:</em> Body led → <strong>Honey-primary</strong> (Mirror arc). Frame hit first → <strong>Mirror-primary</strong> (Honey sheen).</p>
+    <p style="margin:.6rem 0 0"><em>Tag rule (optional):</em> Body led → <strong>Honey-primary</strong> (tag A). Frame first → <strong>Mirror-primary</strong> (tag B). Doechii sparks → <strong>D</strong>.</p>
   </section>
 
   <!-- HONEY LOG -->
   <section class="card" id="honey-log">
     <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — Sabrina × Marina</strong></div>
-    <p style="margin:.4rem 0 1rem">Pick a bridge song, write for 5–10 min, circle one sentence (your continuity seed). Saved locally.</p>
+    <p style="margin:.4rem 0 1rem">Paste a YouTube link or title, tag it (A/B/AB/D), write for 5–10 min, circle one sentence (seed). Saved locally.</p>
     <div class="stack" style="gap:10px">
       <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or YouTube link)</span>
         <input id="hlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Song"></label>
       <div class="row">
-        <button class="btn" id="hlog-addq">Add to Queue</button>
+        <span class="pill">Tag to:</span>
+        <button class="btn" data-addq="A">Add to A</button>
+        <button class="btn" data-addq="B">Add to B</button>
+        <button class="btn" data-addq="AB">Add to A+B</button>
+        <button class="btn" data-addq="D">Add to D</button>
         <button class="btn" id="hlog-start">Start 5-min timer</button>
       </div>
       <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
@@ -173,31 +171,25 @@
 
   <div class="divider"></div>
 
-  <!-- DOECHII (NON-TRANSACTIONAL VISITOR) -->
+  <!-- DOECHII -->
   <section class="card hero" id="doechii">
     <div class="pill"><span class="glyph">🔥</span><strong>&nbsp;Visitor — Doechii</strong></div>
     <h2 style="margin:0">Safe Chaos Mirror — instant inspiration, zero asks</h2>
-    <div class="two-col">
-      <div>
-        <p><strong>What it is:</strong> A held space that says “you can go louder, stranger — it still holds.” Not outreach. Not branding. A page where chaos doesn’t have to resolve.</p>
-        <ul><li><strong>Continuity</strong> between breakout moments.</li><li><strong>A mirror</strong> that amplifies chaos safely.</li><li><strong>A stage</strong> without premature definition.</li></ul>
-      </div>
-      <div class="card" style="background:rgba(255,255,255,.01)">
-        <div class="pill">How to spot “Safe Chaos” quickly</div>
-        <ul style="margin:.5rem 0 0"><li><strong>Texture:</strong> crooked lines, glitch edges, intentional mess.</li><li><strong>Impulse:</strong> push it further, don’t tidy.</li><li><strong>Seed:</strong> one fragment worth keeping even if all else is smoke.</li></ul>
-        <p style="margin:.6rem 0 0"><em>30s test:</em> If it feels <u>too wild for radio but too true to ignore</u> → log it here.</p>
-      </div>
-    </div>
+    <p><strong>What it is:</strong> A held space that says “you can go louder, stranger — it still holds.” Not outreach. Not branding. A page where chaos doesn’t have to resolve.</p>
 
     <!-- DOECHII LOG -->
     <section class="card" style="margin-top:14px" id="dlog">
       <div class="pill"><span class="glyph">🔥</span><strong>&nbsp;Safe Chaos Log — Doechii</strong></div>
-      <p style="margin:.4rem 0 1rem">Loop a track (hers or adjacent), write fragments for 5–10 min, <u>don’t resolve</u>. Circle one fragment as the seed. Saved locally.</p>
+      <p style="margin:.4rem 0 1rem">Paste a YouTube link or title, tag it (D or A/B), write 5–10 min, don’t resolve. Saved locally.</p>
       <div class="stack" style="gap:10px">
         <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Track (title or YouTube link)</span>
           <input id="dlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Track"></label>
         <div class="row">
-          <button class="btn" id="dlog-addq">Add to Queue</button>
+          <span class="pill">Tag to:</span>
+          <button class="btn" data-addq="D">Add to D</button>
+          <button class="btn" data-addq="A">Add to A</button>
+          <button class="btn" data-addq="B">Add to B</button>
+          <button class="btn" data-addq="AB">Add to A+B</button>
           <button class="btn" id="dlog-start">Start 5-min timer</button>
         </div>
         <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments (no syntax)</span>
@@ -212,25 +204,62 @@
         </details>
       </div>
 
-      <!-- Optional spark: Chaos scatter -->
+      <!-- Chaos spark + shuffle -->
       <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Doechii Chaos Scatter"></section>
+      <div class="row" style="margin-top:8px"><button class="btn" id="seed-shuffle">Shuffle spark</button></div>
     </section>
   </section>
 </main>
 
 <!-- PLAYER & QUEUE DOCK -->
-<section class="dock" aria-label="Player and Queue">
+<section class="dock" aria-label="Players and Tagged Queue">
   <div class="dock-inner">
+    <!-- Filters -->
     <div class="qbar">
-      <button class="qbtn" id="q-prev">Prev</button>
-      <button class="qbtn" id="q-next">Next</button>
+      <span class="pill">Show:</span>
+      <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
+      <button class="qbtn" data-filter="A" aria-pressed="false">A</button>
+      <button class="qbtn" data-filter="B" aria-pressed="false">B</button>
+      <button class="qbtn" data-filter="D" aria-pressed="false">D</button>
       <button class="qbtn" id="q-clear">Clear queue</button>
+      <button class="qbtn" id="q-export">Export</button>
+      <input type="file" id="q-import" accept="application/json" style="display:none">
+      <button class="qbtn" id="q-import-btn">Import</button>
       <span class="pill" id="q-status" style="margin-left:6px"></span>
     </div>
+
     <div class="players">
-      <div class="player"><div id="playerA"></div></div>
-      <div class="player"><div id="playerB"></div></div>
+      <!-- Player A -->
+      <div class="player">
+        <div class="pbar">
+          <strong style="margin-right:8px">Player A</strong>
+          <button class="qbtn" data-prev="A">Prev A</button>
+          <button class="qbtn" data-next="A">Next A</button>
+          <button class="qbtn" data-play="A">Play/Pause</button>
+          <button class="qbtn" data-looptrack="A" aria-pressed="false">Loop Track</button>
+          <button class="qbtn" data-loopqueue="A" aria-pressed="true">Loop Queue</button>
+          <button class="qbtn" data-vol="A">Vol–</button>
+          <button class="qbtn" data-volup="A">Vol+</button>
+          <button class="qbtn" data-xfade>Crossfade A→B</button>
+        </div>
+        <div id="playerA"></div>
+      </div>
+      <!-- Player B -->
+      <div class="player">
+        <div class="pbar">
+          <strong style="margin-right:8px">Player B</strong>
+          <button class="qbtn" data-prev="B">Prev B</button>
+          <button class="qbtn" data-next="B">Next B</button>
+          <button class="qbtn" data-play="B">Play/Pause</button>
+          <button class="qbtn" data-looptrack="B" aria-pressed="false">Loop Track</button>
+          <button class="qbtn" data-loopqueue="B" aria-pressed="true">Loop Queue</button>
+          <button class="qbtn" data-vol="B">Vol–</button>
+          <button class="qbtn" data-volup="B">Vol+</button>
+        </div>
+        <div id="playerB"></div>
+      </div>
     </div>
+
     <div class="queue" id="queue"></div>
   </div>
 </section>
@@ -239,29 +268,39 @@
   © mirrorhoney — Sabrina (🍯) × Marina (🪞). Visitor: Doechii (🔥). · <a href="/robots.txt">robots</a>
 </footer>
 
-<!-- YT IFrame API -->
+<!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-/* ---------- Utilities ---------- */
+/* ---------- Helpers ---------- */
 function ytIdFrom(url){
   if(!url) return null;
   var u = url.trim();
   var m = u.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{6,})/);
   if(m && m[1]) return m[1];
-  // allow raw IDs too
   if(/^[A-Za-z0-9_-]{6,}$/.test(u)) return u;
   return null;
 }
 function timeISO(){ return new Date().toISOString(); }
 function lsGet(k, fallback){ try{ return JSON.parse(localStorage.getItem(k) || fallback); }catch(e){ return JSON.parse(fallback); } }
 function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+function setPressed(el, on){ el.setAttribute("aria-pressed", on ? "true" : "false"); }
+
+/* ---------- oEmbed title fetch ---------- */
+async function fetchYTMeta(id){
+  try{
+    var res = await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id);
+    if(!res.ok) return null;
+    var j = await res.json();
+    return { title: j.title || "", author: j.author_name || "", thumbnail: j.thumbnail_url || "" };
+  }catch(e){ return null; }
+}
 
 /* ---------- Honey Log ---------- */
 (function HoneyLog(){
   var KEY="mirrorhoney_honeylog_v1";
   var song=document.getElementById("hlog-song"), notes=document.getElementById("hlog-notes");
-  var addq=document.getElementById("hlog-addq"), start=document.getElementById("hlog-start"), save=document.getElementById("hlog-save");
+  var start=document.getElementById("hlog-start"), save=document.getElementById("hlog-save");
   var timerEl=document.getElementById("hlog-timer"), list=document.getElementById("hlog-list");
   var remain=0;
   function fmt(s){return s<10?"0"+s:s}
@@ -273,9 +312,12 @@ function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e)
                   +"<div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
     list.appendChild(card);
   }); }
-  addq.addEventListener("click", function(){
-    if(!song.value.trim()) return;
-    QUEUE.add(song.value.trim());
+  document.querySelectorAll('#honey-log [data-addq]').forEach(function(btn){
+    btn.addEventListener("click", async function(){
+      var tag = this.getAttribute("data-addq");
+      var input = song.value.trim(); if(!input) return;
+      if(tag==="AB"){ await QUEUE.add(input, ["A","B"]); } else { await QUEUE.add(input, [tag]); }
+    });
   });
   start.addEventListener("click",function(){remain=5*60;tick()});
   save.addEventListener("click",function(){
@@ -290,7 +332,7 @@ function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e)
 (function DLog(){
   var KEY="mirrorhoney_safechaos_v1";
   var song=document.getElementById("dlog-song"), notes=document.getElementById("dlog-notes");
-  var addq=document.getElementById("dlog-addq"), start=document.getElementById("dlog-start"), save=document.getElementById("dlog-save");
+  var start=document.getElementById("dlog-start"), save=document.getElementById("dlog-save");
   var timerEl=document.getElementById("dlog-timer"), list=document.getElementById("dlog-list");
   var remain=0;
   function fmt(s){return s<10?"0"+s:s}
@@ -302,9 +344,12 @@ function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e)
                   +"<div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
     list.appendChild(card);
   }); }
-  addq.addEventListener("click", function(){
-    if(!song.value.trim()) return;
-    QUEUE.add(song.value.trim());
+  document.querySelectorAll('#dlog [data-addq]').forEach(function(btn){
+    btn.addEventListener("click", async function(){
+      var tag = this.getAttribute("data-addq");
+      var input = song.value.trim(); if(!input) return;
+      if(tag==="AB"){ await QUEUE.add(input, ["A","B"]); } else { await QUEUE.add(input, [tag]); }
+    });
   });
   start.addEventListener("click",function(){remain=5*60;tick()});
   save.addEventListener("click",function(){
@@ -315,106 +360,279 @@ function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e)
   render();
 })();
 
-/* ---------- Optional visual: Doechii Chaos scatter ---------- */
-(function mountChaos(targetId){
-  var root=document.getElementById(targetId); if(!root) return;
-  function scatter(){
-    var fragments=["raw","wild","unfinished","go louder","stranger","mirror shard","seed","🔥","untamed","glitch","off-script","unboxed","discord","spark"];
-    var seedIndex=5, w=root.clientWidth, h=root.clientHeight;
+/* ---------- Doechii Chaos scatter + shuffle ---------- */
+(function(){
+  var SPARK_SETS=[
+    ["raw","wild","glitch","seed","mirror shard","🔥"],
+    ["off-script","too true","unboxed","go louder","shadow cut","spark"],
+    ["unfinished","stranger","crooked line","noise bloom","flash","trace"]
+  ];
+  function scatter(set){
+    var root=document.getElementById("doechii-chaos-embed"); if(!root) return;
+    while(root.firstChild) root.removeChild(root.firstChild);
+    var frags=set||SPARK_SETS[0], seedIndex=Math.min(5, Math.floor(frags.length/2));
+    var w=root.clientWidth, h=root.clientHeight;
     function put(el,x,y,angle,op){ el.style.left=Math.floor(x)+"px"; el.style.top=Math.floor(y)+"px"; el.style.setProperty("--angle",angle+"deg"); if(op!=null) el.style.opacity=op; root.appendChild(el); }
-    var seed=document.createElement("div"); seed.className="seed"; seed.textContent=fragments[seedIndex]; put(seed,w/2,h/2,0,1);
-    for(var i=0;i<fragments.length;i++){ if(i===seedIndex) continue; var f=document.createElement("div"); f.className="fragment"; f.textContent=fragments[i];
+    var seed=document.createElement("div"); seed.className="seed"; seed.textContent=frags[seedIndex]||"seed"; put(seed,w/2,h/2,0,1);
+    for(var i=0;i<frags.length;i++){ if(i===seedIndex) continue; var f=document.createElement("div"); f.className="fragment"; f.textContent=frags[i];
       var x=Math.random()*w, y=Math.random()*h, angle=Math.floor(Math.random()*120-60), op=(0.6+Math.random()*0.4).toFixed(2);
       put(f,x,y,angle,op); f.onmouseenter=function(){this.style.color="#FF3EB5";this.style.textShadow="0 0 10px #FF3EB5"}; f.onmouseleave=function(){this.style.color="";this.style.textShadow=""}; }
   }
-  scatter();
-  window.addEventListener("resize",function(){ while(root.firstChild) root.removeChild(root.firstChild); scatter(); }, {once:true});
-})("doechii-chaos-embed");
+  window.scatterChaos = scatter;
+  scatter(SPARK_SETS[0]);
+  window.addEventListener("resize",function(){ scatter(SPARK_SETS[0]); }, {once:true});
+  var shuffle=document.getElementById("seed-shuffle");
+  if(shuffle){ shuffle.onclick=function(){ var set=SPARK_SETS[Math.floor(Math.random()*SPARK_SETS.length)]; scatter(set); }; }
+})();
 
-/* ---------- Queue & Players ---------- */
+/* ---------- Tagged Queue & Players ---------- */
 var QUEUE=(function(){
-  var KEY="mirrorhoney_queue_v1";
+  var KEY="mirrorhoney_queue_v3";
+  var items = lsGet(KEY,"[]")||[];
+  var filter = "ALL";
+  var scopeIndex = { A:0, B:0, D:0 };
   var qEl=document.getElementById("queue"), status=document.getElementById("q-status");
-  var prevBtn=document.getElementById("q-prev"), nextBtn=document.getElementById("q-next"), clearBtn=document.getElementById("q-clear");
-  var state = { items: lsGet(KEY,"[]")||[], index: 0 };
+  var clearBtn=document.getElementById("q-clear");
 
-  function normalize(input){
-    var title=input, id=ytIdFrom(input);
-    // if user typed "Artist — Title", allow queue without ID (won't be playable until edited)
-    return { title: title, id: id, added: timeISO() };
+  function save(){ lsSet(KEY, items); render(); }
+  function human(it){
+    var t = it.title || it.id || "Untitled";
+    var a = it.author ? " — "+it.author : "";
+    return t+a;
   }
-  function save(){ lsSet(KEY, state.items); render(); }
-  function setIndex(i){
-    if(state.items.length===0){ state.index=0; render(); return; }
-    state.index = Math.max(0, Math.min(i, state.items.length-1));
-    render();
-  }
+  function matchesFilter(it){ return filter==="ALL" ? true : (it.tags||[]).includes(filter); }
+
   function render(){
     qEl.innerHTML="";
-    status.textContent = state.items.length ? ("Queue: "+(state.index+1)+"/"+state.items.length) : "Queue empty";
-    state.items.forEach(function(it, i){
-      var d=document.createElement("div"); d.className="qitem";
-      var label = document.createElement("span");
-      label.innerHTML = (i===state.index?"<b>▶</b> ":"") + (it.title || (it.id||"Untitled"));
-      var small=document.createElement("small"); small.textContent = it.id ? "" : " (no YouTube id)";
-      var playBtn=document.createElement("button"); playBtn.className="qbtn"; playBtn.textContent="Play A"; playBtn.onclick=function(){ if(it.id){ PLAYERS.load("A", it.id); setIndex(i);} };
-      var playBtnB=document.createElement("button"); playBtnB.className="qbtn"; playBtnB.textContent="Play B"; playBtnB.onclick=function(){ if(it.id){ PLAYERS.load("B", it.id); setIndex(i);} };
-      var del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove"; del.onclick=function(){ state.items.splice(i,1); if(state.index>=state.items.length){ state.index = Math.max(0, state.items.length-1); } save(); };
-      d.appendChild(label); d.appendChild(small); d.appendChild(playBtn); d.appendChild(playBtnB); d.appendChild(del);
+    var visible = items.filter(matchesFilter);
+    status.textContent = items.length ? ("Queue: "+visible.length+" shown / "+items.length+" total") : "Queue empty";
+
+    visible.forEach(function(it){
+      var d=document.createElement("div"); d.className="qitem"; d.setAttribute("aria-label", "Queue item "+human(it)+" tags "+((it.tags||[]).join(',')||'none'));
+      if(it.thumbnail){ var img=document.createElement("img"); img.src=it.thumbnail; img.alt=""; d.appendChild(img); }
+      var label=document.createElement("span"); label.innerHTML = human(it);
+      var tags=document.createElement("span");
+      (it.tags||[]).forEach(function(tag){ var s=document.createElement("span"); s.className="tag "+tag; s.textContent=tag; tags.appendChild(s); });
+      var playA=document.createElement("button"); playA.className="qbtn"; playA.textContent="Play A";
+      var playB=document.createElement("button"); playB.className="qbtn"; playB.textContent="Play B";
+      var tagA=document.createElement("button"); tagA.className="qbtn"; tagA.textContent="+A";
+      var tagB=document.createElement("button"); tagB.className="qbtn"; tagB.textContent="+B";
+      var tagD=document.createElement("button"); tagD.className="qbtn"; tagD.textContent="+D";
+      var rmA=document.createElement("button"); rmA.className="qbtn"; rmA.textContent="–A";
+      var rmB=document.createElement("button"); rmB.className="qbtn"; rmB.textContent="–B";
+      var rmD=document.createElement("button"); rmD.className="qbtn"; rmD.textContent="–D";
+      var del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove";
+
+      playA.onclick=function(){ if(it.id){ PLAYERS.load("A", it.id); bumpToItem("A", it); } };
+      playB.onclick=function(){ if(it.id){ PLAYERS.load("B", it.id); bumpToItem("B", it); } };
+      tagA.onclick=function(){ tag(it,"A"); };
+      tagB.onclick=function(){ tag(it,"B"); };
+      tagD.onclick=function(){ tag(it,"D"); };
+      rmA.onclick=function(){ untag(it,"A"); };
+      rmB.onclick=function(){ untag(it,"B"); };
+      rmD.onclick=function(){ untag(it,"D"); };
+      del.onclick=function(){ var ix=items.indexOf(it); if(ix>-1){ items.splice(ix,1); save(); } };
+
+      /* drag-to-reorder */
+      d.draggable = true;
+      d.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', items.indexOf(it)); });
+      qEl.addEventListener('dragover', e => e.preventDefault());
+      qEl.addEventListener('drop', e => {
+        e.preventDefault();
+        const from = +e.dataTransfer.getData('text/plain');
+        const to = Array.from(qEl.children).indexOf(d);
+        if(from===to || from<0 || to<0) return;
+        const [moved] = items.splice(from,1);
+        items.splice(to,0,moved);
+        save();
+      });
+
+      d.appendChild(label); d.appendChild(tags);
+      d.appendChild(playA); d.appendChild(playB);
+      d.appendChild(tagA); d.appendChild(tagB); d.appendChild(tagD);
+      d.appendChild(rmA); d.appendChild(rmB); d.appendChild(rmD);
+      d.appendChild(del);
       qEl.appendChild(d);
     });
   }
-  prevBtn.onclick=function(){ if(state.items.length){ setIndex(state.index-1); var it=state.items[state.index]; if(it.id){ PLAYERS.load("A", it.id);} } };
-  nextBtn.onclick=function(){ if(state.items.length){ setIndex(state.index+1); var it=state.items[state.index]; if(it.id){ PLAYERS.load("A", it.id);} } };
-  clearBtn.onclick=function(){ state.items=[]; state.index=0; save(); };
+  function tag(it, t){ it.tags = Array.from(new Set([...(it.tags||[]), t])); save(); }
+  function untag(it, t){ it.tags = (it.tags||[]).filter(function(x){return x!==t}); save(); }
 
-  function add(input){
-    var item = normalize(input);
-    state.items.push(item); save();
-    if(state.items.length===1 && item.id){ PLAYERS.load("A", item.id); }
+  document.querySelectorAll('[data-filter]').forEach(function(btn){
+    btn.addEventListener("click",function(){
+      document.querySelectorAll('[data-filter]').forEach(function(b){ setPressed(b,false); });
+      setPressed(this,true);
+      filter = this.getAttribute("data-filter");
+      render();
+    });
+  });
+
+  clearBtn.onclick=function(){ items=[]; scopeIndex={A:0,B:0,D:0}; save(); };
+
+  function scopeItems(scope){ return items.filter(function(it){ return (it.tags||[]).includes(scope); }); }
+  function bumpToItem(scope, it){
+    var sc = scopeItems(scope);
+    var pos = sc.findIndex(function(x){ return x===it; });
+    scopeIndex[scope] = (pos<0?0:pos);
   }
-  function nextAuto(){
-    if(state.items.length<2) return;
-    var ni = state.index+1;
-    if(ni < state.items.length){
-      setIndex(ni);
-      var it=state.items[state.index]; if(it.id){ PLAYERS.load("A", it.id); }
-    }
+  function seekItem(scope, step, loopQueue){
+    var sc = scopeItems(scope);
+    if(!sc.length) return null;
+    var i = scopeIndex[scope] + step;
+    if(i>=sc.length){ if(loopQueue){ i=0; } else { return null; } }
+    if(i<0){ if(loopQueue){ i=sc.length-1; } else { return null; } }
+    scopeIndex[scope]=i;
+    return sc[i] || null;
   }
+
+  async function add(input, tags){
+    var id = ytIdFrom(input);
+    var meta = id ? (await fetchYTMeta(id) || {}) : {};
+    var item = { id:id, title: meta.title || input, author: meta.author || "", thumbnail: meta.thumbnail || "", tags: tags||[], added: timeISO() };
+    items.push(item); save();
+    return item;
+  }
+
+  /* export/import */
+  document.getElementById('q-export').onclick=()=>{
+    const blob=new Blob([JSON.stringify({
+      queue: items, honey: lsGet('mirrorhoney_honeylog_v1',"[]"), doechii: lsGet('mirrorhoney_safechaos_v1',"[]")
+    },null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mirrorhoney_export.json'; a.click();
+  };
+  document.getElementById('q-import-btn').onclick=()=>document.getElementById('q-import').click();
+  document.getElementById('q-import').onchange=e=>{
+    const file=e.target.files[0]; if(!file) return;
+    file.text().then(txt=>{
+      try{
+        const j=JSON.parse(txt);
+        if(j.queue){ items=j.queue; }
+        if(j.honey){ localStorage.setItem('mirrorhoney_honeylog_v1', JSON.stringify(j.honey)); }
+        if(j.doechii){ localStorage.setItem('mirrorhoney_safechaos_v1', JSON.stringify(j.doechii)); }
+        save();
+      }catch(_){}
+    });
+  };
+
+  /* deeplink seed */
+  (function(){
+    const P=new URLSearchParams(location.search);
+    const q=P.get('q'); const t=P.get('tag');
+    if(q){ add(q, t ? (t==="AB"?["A","B"]:[t]) : []); }
+  })();
 
   render();
-  return { add:add, nextAuto:nextAuto };
+  return {
+    add:add,
+    next: (scope, loop) => seekItem(scope, +1, loop),
+    prev: (scope, loop) => seekItem(scope, -1, loop),
+    bumpToItem:bumpToItem,
+    scopeItems:scopeItems
+  };
 })();
 
-/* ---------- YouTube Players (A & B) ---------- */
+/* ---------- YouTube Players with per-player loop, volume, crossfade ---------- */
 var PLAYERS=(function(){
   var A=null,B=null;
-  function create(id, el){
+  var cfg={ A:{loopTrack:false, loopQueue:true}, B:{loopTrack:false, loopQueue:true} };
+  var XF=false; /* crossfade A->B toggle */
+
+  function create(which, el){
     return new YT.Player(el, {
-      width: '100%', height: '260',
-      videoId: null,
+      width: '100%', height: '260', videoId: null,
       playerVars: { rel:0, modestbranding:1, playsinline:1 },
       events: {
         onStateChange: function(e){
-          // 0 = ended
-          if(e.data===0 && id==="A"){ QUEUE.nextAuto(); }
+          if(e.data===0){ // ended
+            if(cfg[which].loopTrack){ this.playVideo(); return; }
+            if(which==="A" && XF && B){ // crossfade to whatever B currently has
+              try{
+                B.setVolume(0); B.playVideo();
+                var v=0; var f=setInterval(()=>{ v+=10; B.setVolume(Math.min(100,v)); if(v>=100) clearInterval(f); },150);
+              }catch(_){}
+            }
+            var nextItem = QUEUE.next(which, cfg[which].loopQueue);
+            if(nextItem && nextItem.id){ this.loadVideoById(nextItem.id); }
+          }
         }
       }
     });
   }
   function load(which, videoId){
-    if(which==="A" && A){ A.loadVideoById(videoId); }
-    if(which==="B" && B){ B.loadVideoById(videoId); }
+    var p = which==="A"?A:B;
+    if(p){ p.loadVideoById(videoId); }
   }
-  function onReady(){
-    // noop
-  }
+
+  /* Bind per-player buttons */
+  document.querySelectorAll('[data-prev]').forEach(function(btn){
+    btn.onclick=function(){
+      var which=this.getAttribute("data-prev");
+      var p = which==="A"?A:B;
+      var item = QUEUE.prev(which, cfg[which].loopQueue);
+      if(item && item.id){ p.loadVideoById(item.id); }
+    };
+  });
+  document.querySelectorAll('[data-next]').forEach(function(btn){
+    btn.onclick=function(){
+      var which=this.getAttribute("data-next");
+      var p = which==="A"?A:B;
+      var item = QUEUE.next(which, cfg[which].loopQueue);
+      if(item && item.id){ p.loadVideoById(item.id); }
+    };
+  });
+  document.querySelectorAll('[data-play]').forEach(function(btn){
+    btn.onclick=function(){
+      var which=this.getAttribute("data-play");
+      var p = which==="A"?A:B;
+      if(!p) return;
+      var st=p.getPlayerState();
+      if(st===1){ p.pauseVideo(); } else { p.playVideo(); }
+    };
+  });
+  document.querySelectorAll('[data-looptrack]').forEach(function(btn){
+    btn.onclick=function(){
+      var which=this.getAttribute("data-looptrack");
+      cfg[which].loopTrack = !cfg[which].loopTrack;
+      setPressed(this, cfg[which].loopTrack);
+    };
+  });
+  document.querySelectorAll('[data-loopqueue]').forEach(function(btn){
+    btn.onclick=function(){
+      var which=this.getAttribute("data-loopqueue");
+      cfg[which].loopQueue = !cfg[which].loopQueue;
+      setPressed(this, cfg[which].loopQueue);
+    };
+  });
+  document.querySelector('[data-vol="A"]').onclick=()=>{ if(A){ A.setVolume(Math.max(0,(A.getVolume()||100)-10)); } };
+  document.querySelector('[data-volup="A"]').onclick=()=>{ if(A){ A.setVolume(Math.min(100,(A.getVolume()||100)+10)); } };
+  document.querySelector('[data-vol="B"]').onclick=()=>{ if(B){ B.setVolume(Math.max(0,(B.getVolume()||100)-10)); } };
+  document.querySelector('[data-volup="B"]').onclick=()=>{ if(B){ B.setVolume(Math.min(100,(B.getVolume()||100)+10)); } };
+  document.querySelector('[data-xfade"]').onclick=function(){ XF=!XF; setPressed(this, XF); };
+
   window.onYouTubeIframeAPIReady = function(){
     A = create("A","playerA");
     B = create("B","playerB");
   };
-  return { load:load };
+  return { load:load, get:(w)=> (w==="A"?A:B) };
 })();
+
+/* ---------- Keyboard shortcuts ---------- */
+document.addEventListener('keydown',e=>{
+  if(e.target && (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA')) return;
+  if(e.code==='Space'){ e.preventDefault(); document.querySelector('[data-play="A"]')?.click(); }
+  if(e.shiftKey && e.code==='Space'){ e.preventDefault(); document.querySelector('[data-play="B"]')?.click(); }
+});
+
+/* ---------- PWA-lite Service Worker (inline registration) ---------- */
+if('serviceWorker' in navigator){
+  const code = `
+self.addEventListener('install',e=>e.waitUntil(caches.open('mh-v1').then(c=>c.addAll(['./']))));
+self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
+  `.trim();
+  const blob = new Blob([code], {type:'application/javascript'});
+  const url = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(url);
+}
 </script>
 </body>
 </html>
