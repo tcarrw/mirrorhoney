@@ -1,35 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Mirror × Honey — Sabrina (🍯) × Marina (🪞)</title>
-<meta name="description" content="Mirror × Honey: a clear guide to Honey (Sabrina) vs Mirror (Marina), a 5–10 minute Honey Log, and an optional visitor (Doechii).">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mirror × Honey — Sabrina (🍯) × Marina (🪞) · Visitor: Doechii (🔥)</title>
+<meta name="description" content="A clear guide to Honey (Sabrina) vs Mirror (Marina), a hybrid example, a 5–10 minute Honey Log, and a non-transactional Doechii space with a Safe Chaos Log.">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
-
 <style>
   :root{
-    --bg:#0B0F19; --ink:#E6EAF2; --muted:#A0A7B3;
-    --line:#1B2433; --accent:#7CD4FF; --rose:#FF3EB5; --gold:#F8D34A; --honey:#F3C94E; --mirror:#C1D7FF;
+    --bg:#0B0F19; --ink:#E6EAF2; --muted:#A0A7B3; --line:#1B2433;
+    --accent:#7CD4FF; --rose:#FF3EB5; --honey:#F3C94E; --mirror:#C1D7FF;
     --shadow:0 10px 30px rgba(0,0,0,.45);
   }
   *{box-sizing:border-box}
-  html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
+  html,body{height:100%} body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   .wrap{max-width:980px;margin:0 auto;padding:28px}
   header{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
   header .brand{font-weight:700;letter-spacing:.5px}
-  header nav a{margin-left:16px;color:var(--muted)}
-  header nav a:hover{color:var(--ink)}
-
+  header nav a{margin-left:16px;color:var(--muted)} header nav a:hover{color:var(--ink)}
   .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px}
   .stack{display:grid;gap:16px}
-  .hero{display:grid;gap:12px;padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(248,211,74,.06),transparent)}
+  .hero{display:grid;gap:12px;padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(243,201,78,.06),transparent)}
   .hero h1{font-size:1.7rem;margin:0}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
   .glyph{font-size:1.05rem}
@@ -38,33 +32,19 @@
   .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
   .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
   .divider{height:1px;background:var(--line);margin:22px 0}
-
-  /* grids */
   .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
   .twins{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  @media (max-width:900px){.two-col{grid-template-columns:1fr} .twins{grid-template-columns:1fr}}
-
-  /* inputs */
-  input[type="text"], textarea{
-    width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);
-    background:rgba(255,255,255,.02);color:var(--ink)
-  }
+  @media (max-width:900px){.two-col,.twins{grid-template-columns:1fr}}
+  input[type="text"], textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
   textarea{resize:vertical}
-
-  /* reveal */
-  .reveal{display:none}
-  .reveal.show{display:block;animation:fade .5s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-  /* chaos embed */
+  .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,rgba(243,201,78,.07),transparent);border-radius:10px}
+  .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,rgba(193,215,255,.08),transparent);border-radius:10px}
   .chaos-frame{position:relative;height:60vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
   .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
   .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
   .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
-
-  /* accent blocks */
-  .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,rgba(243,201,78,.07),transparent);border-radius:10px}
-  .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,rgba(193,215,255,.08),transparent);border-radius:10px}
+  .reveal{display:none} .reveal.show{display:block;animation:fade .5s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   details summary{cursor:pointer}
   footer{color:var(--muted);font-size:.9rem;margin:28px 0}
 </style>
@@ -75,8 +55,9 @@
   <nav>
     <a href="#what">what</a>
     <a href="#identify">identify</a>
+    <a href="#hybrid">hybrid</a>
     <a href="#honey-log">honey log</a>
-    <a href="#visitor">visitor</a>
+    <a href="#doechii">doechii</a>
   </nav>
 </header>
 
@@ -91,66 +72,62 @@
     <h1>Mirror × Honey — a resonance frame, not PR</h1>
     <div class="two-col">
       <div>
-        <p>
-          Mirror × Honey is a small, repeatable way to hold space for <strong>Sabrina</strong> and <strong>Marina</strong> across cycles —
-          even if they never see this page. It assumes they already have platform and attention. What they don’t always have:
-        </p>
+        <p>Hold space for <strong>Sabrina</strong> and <strong>Marina</strong> across cycles — even if they never see this page. They already have attention. What they don’t always have:</p>
         <ul>
-          <li><strong>Continuity between cycles</strong> — a through-line when promo ends.</li>
-          <li><strong>A peer mirror outside industry bubbles</strong> — reflection that isn’t transactional.</li>
-          <li><strong>A place to play without PR stakes</strong> — a sandbox where experiments can breathe.</li>
+          <li><strong>Continuity</strong> when promo ends.</li>
+          <li><strong>A peer mirror outside the machine.</strong></li>
+          <li><strong>A place to play with no PR stakes.</strong></li>
         </ul>
-        <p>Mirror × Honey provides that sandbox: <em>journal first; publishing is optional.</em></p>
+        <p>Mirror × Honey is that sandbox: <em>journal first; publishing optional.</em></p>
       </div>
       <div>
         <details class="card" style="background:rgba(255,255,255,.01)">
           <summary class="pill">What this is not</summary>
           <ul style="margin:10px 0 0">
-            <li>Not outreach, clout-chasing, or a press pitch.</li>
+            <li>Not outreach or clout-seeking.</li>
             <li>Not a fan-control mechanism or rumor mill.</li>
-            <li>Not trying to “define” either artist — it’s a mirror and a page of honey.</li>
+            <li>Not defining anyone — it’s a mirror and a page of honey.</li>
           </ul>
         </details>
         <details class="card" style="margin-top:12px;background:rgba(255,255,255,.01)">
           <summary class="pill">Privacy</summary>
-          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Nothing uploads.</p>
+          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>).</p>
         </details>
       </div>
     </div>
     <div class="row" style="margin-top:10px">
       <a class="btn" href="#identify">How to spot Honey vs Mirror</a>
-      <a id="continueTop" class="cta" href="#visitor">I understand — show visitor</a>
+      <a class="cta" href="#doechii">Skip to Doechii (visitor)</a>
     </div>
   </section>
 
-  <!-- IDENTIFY: the super clear part -->
+  <!-- IDENTIFY -->
   <section class="card" id="identify">
     <div class="pill"><strong>How to identify the two halves</strong></div>
     <div class="twins">
       <div class="honey-box">
         <h3 style="margin-top:8px">🍯 HONEY (Sabrina) — Sweet / Magnetic / Immediate</h3>
         <ul>
-          <li><strong>Feel</strong>: warm pull, flirt, charm, joy, “come closer.”</li>
-          <li><strong>Body</strong>: head-nod, hum along, dance instinct; easy sing-along hooks.</li>
-          <li><strong>Lyrics</strong>: sensory, taste/skin/heat, playfully direct, present-tense.</li>
-          <li><strong>Production</strong>: glossy/pop-forward; bass + beat invite movement.</li>
-          <li><strong>Aftertaste</strong>: you want to hit repeat; the hook sticks like syrup.</li>
+          <li><strong>Feel:</strong> warm pull, flirt, joy, “come closer.”</li>
+          <li><strong>Body:</strong> head-nod, dance instinct; easy sing-along hooks.</li>
+          <li><strong>Lyrics:</strong> taste/skin/heat; playful and present-tense.</li>
+          <li><strong>Production:</strong> glossy/pop-forward; beat invites movement.</li>
+          <li><strong>Aftertaste:</strong> hook lingers; you want repeat.</li>
         </ul>
-        <p style="margin:.6rem 0 0"><em>Shortcut:</em> If the song feels like <u>taste + touch</u> and you move without thinking → it’s Honey.</p>
+        <p><em>Shortcut:</em> If <u>taste/touch</u> hits first and your body moves → it’s Honey.</p>
       </div>
       <div class="mirror-box">
         <h3 style="margin-top:8px">🪞 MIRROR (Marina) — Reflection / Angle / Identity</h3>
         <ul>
-          <li><strong>Feel</strong>: thoughtful tilt, self-regard, critique, “look again.”</li>
-          <li><strong>Mind</strong>: you parse lines; the meaning unfolds on the second pass.</li>
-          <li><strong>Lyrics</strong>: persona, roles, masks, power, fame, culture, self-myth.</li>
-          <li><strong>Production</strong>: prismatic/art-pop edges; arrangement carries the idea.</li>
-          <li><strong>Afterimage</strong>: you leave with a <u>frame</u> or question rather than a hook.</li>
+          <li><strong>Feel:</strong> thoughtful tilt, self-regard, critique — “look again.”</li>
+          <li><strong>Mind:</strong> a line clicks; meaning unfolds on pass two.</li>
+          <li><strong>Lyrics:</strong> persona, roles, masks, power/culture, self-myth.</li>
+          <li><strong>Production:</strong> prismatic/art-pop; arrangement carries idea.</li>
+          <li><strong>Afterimage:</strong> you leave with a frame or question.</li>
         </ul>
-        <p style="margin:.6rem 0 0"><em>Shortcut:</em> If the song makes you <u>see yourself or culture differently</u> → it’s Mirror.</p>
+        <p><em>Shortcut:</em> If it <u>changes what you see</u> more than how you move → it’s Mirror.</p>
       </div>
     </div>
-
     <div class="twins" style="margin-top:12px">
       <div class="card" style="background:rgba(255,255,255,.01)">
         <div class="pill">30-second test</div>
@@ -161,81 +138,114 @@
         </ol>
       </div>
       <div class="card" style="background:rgba(255,255,255,.01)">
-        <div class="pill">Edge cases & tie-breakers</div>
+        <div class="pill">Edge cases</div>
         <ul style="margin:.5rem 0 0">
-          <li><strong>Sweet lyrics, reflective bridge</strong> → still Honey if the <em>pull</em> leads.</li>
-          <li><strong>Danceable production, heavy critique</strong> → still Mirror if the <em>angle</em> leads.</li>
-          <li><strong>Unsure?</strong> Circle the lyric that hit hardest. If it’s <em>touch/taste</em> → Honey. If it’s <em>role/idea</em> → Mirror.</li>
+          <li>Sweet lyric + reflective bridge → still Honey if the <em>pull</em> leads.</li>
+          <li>Danceable but heavy critique → still Mirror if the <em>angle</em> leads.</li>
+          <li>Unsure? Circle the line that hit hardest: touch/taste → Honey; role/idea → Mirror.</li>
         </ul>
       </div>
     </div>
-
     <div class="row" style="margin-top:12px">
+      <a class="btn" href="#hybrid">See a hybrid example</a>
       <a class="btn" href="#honey-log">Log one now</a>
-      <button id="classifyOpen" class="btn" type="button" aria-expanded="false">Quick classify widget</button>
     </div>
+  </section>
 
-    <!-- tiny helper widget -->
-    <section id="classify" class="card" style="display:none;margin-top:10px">
-      <label class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or link)</label>
-      <input id="c-song" type="text" placeholder="Artist — Title or URL" aria-label="Classify song">
-      <label class="pill" style="display:block;margin:12px 0 6px;color:var(--muted)">First hit: body or mind?</label>
-      <div class="row">
-        <button id="c-body" class="btn" type="button">Body moved first</button>
-        <button id="c-mind" class="btn" type="button">Mind clicked first</button>
+  <!-- HYBRID EXAMPLE -->
+  <section class="card" id="hybrid">
+    <div class="pill"><strong>Example that is BOTH Honey × Mirror (how bridging feels)</strong></div>
+    <div class="two-col">
+      <div class="card honey-box" style="background:rgba(243,201,78,.06)">
+        <h3 style="margin-top:0">Honey layer (what you’d notice)</h3>
+        <ul>
+          <li>Immediate groove; chorus is singable on first listen.</li>
+          <li>Lyric images of taste/heat/skin (“sugar on my lips”, “heat in your hands”).</li>
+          <li>Production leans pop; bass/beat nudge you to move.</li>
+        </ul>
       </div>
-      <p id="c-result" class="pill" style="margin-top:8px"></p>
-    </section>
+      <div class="card mirror-box" style="background:rgba(193,215,255,.06)">
+        <h3 style="margin-top:0">Mirror layer (what reframes it)</h3>
+        <ul>
+          <li>Bridge flips perspective (“am I the mask or the mirror?”).</li>
+          <li>Second verse introduces role/identity tension (fame, control, agency).</li>
+          <li>Arrangement adds a prismatic chord or stark break to spotlight the idea.</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin:.6rem 0 0"><em>How to tag:</em> If your body led and the reflection arrived second → tag as <strong>Honey-primary (with Mirror arc)</strong>. If the frame hit first, then you noticed it also slaps → <strong>Mirror-primary (with Honey sheen)</strong>.</p>
   </section>
 
   <!-- HONEY LOG -->
   <section class="card" id="honey-log">
     <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — Sabrina × Marina</strong></div>
     <p style="margin:.4rem 0 1rem">Pick a bridge song, write for 5–10 min, circle one sentence (your continuity seed). Saved privately in your browser.</p>
-
     <div class="stack" style="gap:10px">
-      <label>
-        <span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (bridge)</span>
-        <input id="hlog-song" type="text" placeholder="Artist — Title or URL" aria-label="Song">
-      </label>
-
-      <label>
-        <span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
-        <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
-      </label>
-
+      <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (bridge)</span>
+        <input id="hlog-song" type="text" placeholder="Artist — Title or URL" aria-label="Song"></label>
+      <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
+        <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea></label>
       <div class="row">
         <button id="hlog-start" class="btn">Start 5-min timer</button>
         <button id="hlog-save" class="btn">Save entry</button>
         <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
       </div>
-
       <details class="card" style="background:rgba(255,255,255,.01);border:1px dashed var(--line)">
         <summary class="pill">View saved entries</summary>
         <div id="hlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
       </details>
     </div>
-
-    <div class="row" style="margin-top:12px">
-      <a id="continue" href="#visitor" class="cta">I understand — continue</a>
-    </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- VISITOR: Doechii appears after understanding -->
-  <section id="visitor" class="reveal card" aria-live="polite" aria-atomic="true">
-    <div class="pill"><span class="glyph">🔥</span><strong> Visitor — Doechii: Safe Chaos Mirror</strong></div>
-    <p style="margin:8px 0 0">
-      Mirror × Honey is about Sabrina and Marina. The visitor is separate: once you understand Honey × Mirror,
-      you can hold a similar space for Doechii — tuned to chaos. The layout changes on every load; one “seed” is always held.
-    </p>
-
-    <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Doechii Chaos Scatter"></section>
-
-    <div class="row">
-      <a class="btn" href="#what" id="reset-onboard">Reset intro flow</a>
+  <!-- DOECHII (NON-TRANSACTIONAL VISITOR) -->
+  <section class="card hero" id="doechii">
+    <div class="pill"><span class="glyph">🔥</span><strong>&nbsp;Visitor — Doechii</strong></div>
+    <h2 style="margin:0">Safe Chaos Mirror — instant inspiration, zero asks</h2>
+    <div class="two-col">
+      <div>
+        <p><strong>What it is:</strong> A held space that says “you can go louder, stranger — it still holds.” Not outreach. Not branding. A page where chaos doesn’t have to resolve.</p>
+        <ul>
+          <li><strong>Continuity between breakout moments</strong> (not just “a viral era”).</li>
+          <li><strong>A mirror that amplifies chaos safely</strong> (edges aren’t trimmed).</li>
+          <li><strong>A stage without premature definition</strong> (no “final identity” pressure).</li>
+        </ul>
+      </div>
+      <div class="card" style="background:rgba(255,255,255,.01)">
+        <div class="pill">How to spot “Safe Chaos” quickly</div>
+        <ul style="margin:.5rem 0 0">
+          <li><strong>Texture:</strong> crooked lines, glitch edges, intentional mess.</li>
+          <li><strong>Impulse:</strong> you want to push it further, not tidy it.</li>
+          <li><strong>Seed:</strong> one fragment worth keeping even if everything else is smoke.</li>
+        </ul>
+        <p style="margin:.6rem 0 0"><em>30-second test:</em> If the most honest version feels <u>too wild for radio but too true to ignore</u> → log it here.</p>
+      </div>
     </div>
+
+    <!-- DOECHII LOG -->
+    <section class="card" style="margin-top:14px" id="dlog">
+      <div class="pill"><span class="glyph">🔥</span><strong>&nbsp;Safe Chaos Log — Doechii</strong></div>
+      <p style="margin:.4rem 0 1rem">Loop a track (hers or adjacent), write fragments for 5–10 min, <u>don’t resolve</u>. Circle one fragment as the seed. Saved locally.</p>
+      <div class="stack" style="gap:10px">
+        <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Track (wild edge)</span>
+          <input id="dlog-song" type="text" placeholder="Artist — Title or URL" aria-label="Track"></label>
+        <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments (no syntax)</span>
+          <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea></label>
+        <div class="row">
+          <button id="dlog-start" class="btn">Start 5-min timer</button>
+          <button id="dlog-save" class="btn">Save entry</button>
+          <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
+        </div>
+        <details class="card" style="background:rgba(255,255,255,.01);border:1px dashed var(--line)">
+          <summary class="pill">View saved entries</summary>
+          <div id="dlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
+        </details>
+      </div>
+
+      <!-- Optional: visual scatter embed for instant spark -->
+      <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Doechii Chaos Scatter"></section>
+    </section>
   </section>
 
   <footer>
@@ -244,148 +254,65 @@
 </main>
 
 <script>
-/* ---------- Onboarding: reveal visitor after understanding ---------- */
-(function initOnboard(){
-  var KEY="mirrorhoney_seenIntro";
-  var seen=localStorage.getItem(KEY)==="1";
-  var visitor=document.getElementById("visitor");
-  var continueBtns=[document.getElementById("continue"), document.getElementById("continueTop")];
-  var resetBtn=document.getElementById("reset-onboard");
-
-  function revealVisitor(){
-    visitor.classList.add("show");
-    mountChaos("doechii-chaos-embed");
-    if(location.hash!=="#visitor") location.hash="#visitor";
-  }
-
-  if(seen){ revealVisitor(); }
-
-  continueBtns.forEach(function(btn){
-    if(!btn) return;
-    btn.addEventListener("click",function(e){
-      e.preventDefault();
-      localStorage.setItem(KEY,"1");
-      revealVisitor();
-    });
-  });
-
-  resetBtn.addEventListener("click",function(e){
-    e.preventDefault();
-    localStorage.removeItem(KEY);
-    var root=document.getElementById("doechii-chaos-embed");
-    while(root.firstChild) root.removeChild(root.firstChild);
-    visitor.classList.remove("show");
-    if(location.hash!=="#what") location.hash="#what";
-  });
-})();
-
-/* ---------- Identify: quick classify widget ---------- */
-(function classify(){
-  var open=document.getElementById("classifyOpen");
-  var box=document.getElementById("classify");
-  var out=document.getElementById("c-result");
-  var song=document.getElementById("c-song");
-  var body=document.getElementById("c-body");
-  var mind=document.getElementById("c-mind");
-
-  open.addEventListener("click",function(){
-    var vis=box.style.display==="block";
-    box.style.display=vis?"none":"block";
-    open.setAttribute("aria-expanded", !vis);
-  });
-
-  body.addEventListener("click",function(){
-    out.textContent="Result: 🍯 Honey — led by taste/touch/joy. Log it below.";
-    out.style.color="#F3C94E";
-  });
-  mind.addEventListener("click",function(){
-    out.textContent="Result: 🪞 Mirror — led by reflection/angle/identity. Log it below.";
-    out.style.color="#C1D7FF";
-  });
-})();
-
-/* ---------- Honey Log (local only) ---------- */
+/* ---------- Honey Log ---------- */
 (function HoneyLog(){
   var KEY="mirrorhoney_honeylog_v1";
-  var song=document.getElementById("hlog-song");
-  var notes=document.getElementById("hlog-notes");
-  var start=document.getElementById("hlog-start");
-  var save=document.getElementById("hlog-save");
-  var timerEl=document.getElementById("hlog-timer");
-  var list=document.getElementById("hlog-list");
+  var song=document.getElementById("hlog-song"), notes=document.getElementById("hlog-notes");
+  var start=document.getElementById("hlog-start"), save=document.getElementById("hlog-save");
+  var timerEl=document.getElementById("hlog-timer"), list=document.getElementById("hlog-list");
   var remain=0;
-
   function fmt(s){return s<10?"0"+s:s}
-  function tick(){
-    if(remain<=0){timerEl.textContent="done";return;}
-    remain-=1; var m=Math.floor(remain/60), s=remain%60;
-    timerEl.textContent=m+":"+fmt(s);
-    setTimeout(tick,1000);
-  }
-  function render(){
-    list.innerHTML="";
-    try{
-      var data=JSON.parse(localStorage.getItem(KEY)||"[]");
-      data.slice().reverse().forEach(function(e){
-        var card=document.createElement("div");
-        card.className="card"; card.style.padding="12px";
-        card.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div>"
-                      +"<div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div>"
-                      +"<div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
-        list.appendChild(card);
-      });
-    }catch(err){}
-  }
+  function tick(){ if(remain<=0){timerEl.textContent="done";return;} remain-=1; var m=Math.floor(remain/60), s=remain%60; timerEl.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
+  function render(){ list.innerHTML=""; try{ JSON.parse(localStorage.getItem(KEY)||"[]").slice().reverse().forEach(function(e){
+    var card=document.createElement("div"); card.className="card"; card.style.padding="12px";
+    card.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div>"
+                  +"<div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div>"
+                  +"<div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
+    list.appendChild(card); }); }catch(err){} }
   start.addEventListener("click",function(){remain=5*60;tick()});
-  save.addEventListener("click",function(){
-    var entry={date:new Date().toISOString(), song:song.value.trim(), notes:notes.value.trim()};
-    try{
-      var data=JSON.parse(localStorage.getItem(KEY)||"[]");
-      data.push(entry); localStorage.setItem(KEY, JSON.stringify(data));
-    }catch(err){}
-    song.value=""; notes.value="";
-    render();
-  });
+  save.addEventListener("click",function(){ var entry={date:new Date().toISOString(), song:song.value.trim(), notes:notes.value.trim()};
+    try{ var data=JSON.parse(localStorage.getItem(KEY)||"[]"); data.push(entry); localStorage.setItem(KEY, JSON.stringify(data)); }catch(err){}
+    song.value=""; notes.value=""; render(); });
   render();
 })();
 
-/* ---------- Visitor: Doechii Chaos embed ---------- */
-function mountChaos(targetId){
+/* ---------- Doechii Log (non-transactional) ---------- */
+(function DLog(){
+  var KEY="mirrorhoney_safechaos_v1";
+  var song=document.getElementById("dlog-song"), notes=document.getElementById("dlog-notes");
+  var start=document.getElementById("dlog-start"), save=document.getElementById("dlog-save");
+  var timerEl=document.getElementById("dlog-timer"), list=document.getElementById("dlog-list");
+  var remain=0;
+  function fmt(s){return s<10?"0"+s:s}
+  function tick(){ if(remain<=0){timerEl.textContent="done";return;} remain-=1; var m=Math.floor(remain/60), s=remain%60; timerEl.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
+  function render(){ list.innerHTML=""; try{ JSON.parse(localStorage.getItem(KEY)||"[]").slice().reverse().forEach(function(e){
+    var card=document.createElement("div"); card.className="card"; card.style.padding="12px";
+    card.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div>"
+                  +"<div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div>"
+                  +"<div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
+    list.appendChild(card); }); }catch(err){} }
+  start.addEventListener("click",function(){remain=5*60;tick()});
+  save.addEventListener("click",function(){ var entry={date:new Date().toISOString(), song:song.value.trim(), notes:notes.value.trim()};
+    try{ var data=JSON.parse(localStorage.getItem(KEY)||"[]"); data.push(entry); localStorage.setItem(KEY, JSON.stringify(data)); }catch(err){}
+    song.value=""; notes.value=""; render(); });
+  render();
+})();
+
+/* ---------- Optional visual: Doechii Chaos scatter ---------- */
+(function mountChaos(targetId){
   var root=document.getElementById(targetId); if(!root) return;
-  var fragments=["raw","wild","unfinished","go louder","stranger","mirror shard","seed","🔥","untamed","glitch","off-script","unboxed","discord","spark"];
-  var seedIndex=5; /* "mirror shard" */
-  var w=root.clientWidth, h=root.clientHeight;
-
-  function put(el,x,y,angle,op){
-    el.style.left=Math.floor(x)+"px";
-    el.style.top=Math.floor(y)+"px";
-    el.style.setProperty("--angle",angle+"deg");
-    if(op!=null) el.style.opacity=op;
-    root.appendChild(el);
+  function scatter(){
+    var fragments=["raw","wild","unfinished","go louder","stranger","mirror shard","seed","🔥","untamed","glitch","off-script","unboxed","discord","spark"];
+    var seedIndex=5, w=root.clientWidth, h=root.clientHeight;
+    function put(el,x,y,angle,op){ el.style.left=Math.floor(x)+"px"; el.style.top=Math.floor(y)+"px"; el.style.setProperty("--angle",angle+"deg"); if(op!=null) el.style.opacity=op; root.appendChild(el); }
+    var seed=document.createElement("div"); seed.className="seed"; seed.textContent=fragments[seedIndex]; put(seed,w/2,h/2,0,1);
+    for(var i=0;i<fragments.length;i++){ if(i===seedIndex) continue; var f=document.createElement("div"); f.className="fragment"; f.textContent=fragments[i];
+      var x=Math.random()*w, y=Math.random()*h, angle=Math.floor(Math.random()*120-60), op=(0.6+Math.random()*0.4).toFixed(2);
+      put(f,x,y,angle,op); f.onmouseenter=function(){this.style.color="#FF3EB5";this.style.textShadow="0 0 10px #FF3EB5"}; f.onmouseleave=function(){this.style.color="";this.style.textShadow=""}; }
   }
-  var seed=document.createElement("div");
-  seed.className="seed";
-  seed.textContent=fragments[seedIndex];
-  put(seed,w/2,h/2,0,1);
-
-  for(var i=0;i<fragments.length;i++){
-    if(i===seedIndex) continue;
-    var f=document.createElement("div");
-    f.className="fragment";
-    f.textContent=fragments[i];
-    var x=Math.random()*w, y=Math.random()*h;
-    var angle=Math.floor(Math.random()*120-60);
-    var op=(0.6+Math.random()*0.4).toFixed(2);
-    put(f,x,y,angle,op);
-    f.onmouseenter=function(){this.style.color="#FF3EB5";this.style.textShadow="0 0 10px #FF3EB5"};
-    f.onmouseleave=function(){this.style.color="";this.style.textShadow=""};
-  }
-
-  window.addEventListener("resize",function(){
-    while(root.firstChild) root.removeChild(root.firstChild);
-    mountChaos(targetId);
-  }, { once:true });
-}
+  scatter();
+  window.addEventListener("resize",function(){ while(root.firstChild) root.removeChild(root.firstChild); scatter(); }, {once:true});
+})("doechii-chaos-embed");
 </script>
 </body>
 </html>
