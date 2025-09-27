@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mirror × Honey — Mirror‑first (🪞) · Bridge (🌉) · Neon (⚡) · Jupiter (🪐)</title>
-<meta name="description" content="Mirror-first: single bottom player, one add-to-queue form (artist + YouTube + lane), stable storage, Bridge sparks & daily fragments, and themes (Mirror/Honey/Neon/Jupiter).">
+<meta name="description" content="Mirror-first: bottom player, single add-to-queue form (artist + YouTube + lane), stable storage, Bridge sparks & daily fragments, themes, fixed header controls.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 
@@ -11,28 +11,30 @@
   /* ===== THEME TOKENS ===== */
   :root{
     --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#FFFFFF;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
-    --danger:#FF6B6B;--ok:#36D399;--shadow:0 12px 34px rgba(0,0,0,.45);--railW:clamp(320px,34vw,500px)
+    --danger:#FF6B6B;--ok:#36D399;--shadow:0 12px 34px rgba(0,0,0,.45);--railW:clamp(320px,34vw,500px);
+    --hdrH: 110px;
   }
-  /* Honey theme */
   html[data-theme="honey"]{ --bg:#1B1403; --ink:#FFEFB5; --ink-strong:#FFF7CF; --muted:#E3D48A; --line:#3B2F0A; --accent:#FFD76A; --rose:#FF7AC8; --honey:#FFD454; --mirror:#E7F0FF; }
-  /* Neon theme */
   html[data-theme="neon"]{ --bg:#0A0711; --ink:#F3ECFF; --ink-strong:#FFFFFF; --muted:#C8B9EA; --line:#1E1631; --accent:#9E6CFF; --rose:#FF46C1; --honey:#FFD66F; --mirror:#C5D9FF; }
-  /* Jupiter theme (warm deep-space amber/brick) */
   html[data-theme="jupiter"]{ --bg:#120D08; --ink:#F6E7D0; --ink-strong:#FFF6E8; --muted:#D9C7AF; --line:#33261C; --accent:#F59E0B; --rose:#FF6E5A; --honey:#F2B553; --mirror:#E6D5C5; }
 
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+        padding-top: var(--hdrH);}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   .wrap{max-width:1280px;margin:0 auto;padding:20px 24px}
 
-  /* Header */
-  header{position:sticky;top:0;z-index:95;background:color-mix(in oklab, var(--bg) 88%, black);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  .hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  /* Fixed Header (always on top) */
+  header{position:fixed;inset:0 0 auto 0;z-index:9999;background:color-mix(in oklab, var(--bg) 88%, black);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .hdr{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+  @media (max-width:1100px){ .hdr{grid-template-columns:1fr} }
   .brand{font-weight:700;letter-spacing:.5px;color:var(--ink-strong)}
-  nav a{margin-left:14px;color:var(--ink)} nav a:hover{color:var(--ink-strong)}
+  nav{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center}
+  nav a{color:var(--ink)} nav a:hover{color:var(--ink-strong)}
   .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .qbtn,.btn,.chip{padding:8px 12px;border-radius:12px;border:1px solid var(--line);background:color-mix(in oklab, var(--bg) 80%, white 5%);color:var(--ink);cursor:pointer}
+  .qbtn,.btn,.chip{padding:8px 12px;border-radius:12px;border:1px solid var(--line);
+    background:color-mix(in oklab, var(--bg) 80%, white 5%);color:var(--ink);cursor:pointer}
   .chip{padding:6px 12px;border-radius:999px}
   .chip[aria-pressed="true"], .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
@@ -50,6 +52,7 @@
   textarea{resize:vertical}
   .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
   details summary{cursor:pointer;color:var(--ink)}
+  section, .card{scroll-margin-top: calc(var(--hdrH) + 8px);}
 
   /* Enhance select (desktop readability) */
   @media (min-width:900px){
@@ -66,10 +69,12 @@
   .word{font-size:1.2rem}
 
   /* Rail (modes + add form + queue) */
-  .rail{position:sticky;top:88px;display:grid;gap:10px}
+  .rail{position:sticky;top:calc(var(--hdrH) + 12px);display:grid;gap:10px}
   .rail .block{border:1px solid var(--line);border-radius:14px;background:color-mix(in oklab, var(--bg) 84%, white 8%);padding:12px}
-  .qtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .queue{display:grid;gap:10px;grid-template-columns:1fr;max-height:52vh;min-height:160px;overflow:auto;padding:4px 2px}
+  .qtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+  .qfilters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .queue{display:grid;gap:10px;grid-template-columns:1fr;max-height:52vh;min-height:160px;overflow:auto;padding:4px 2px;transition:max-height .2s}
+  .queue.compact{gap:6px;max-height:58vh}
   .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;background:color-mix(in oklab, var(--bg) 80%, white 8%)}
   .qitem img{width:84px;height:52px;object-fit:cover;border-radius:8px}
   .qitem .meta{display:flex;flex-direction:column;gap:6px}
@@ -78,6 +83,15 @@
   .lane{border:1px solid var(--line);padding:4px 12px;border-radius:999px;font-size:.82rem;opacity:.96;cursor:pointer;user-select:none}
   .lane.A::before{content:"🍯 "} .lane.B::before{content:"🪞 "} .lane.D::before{content:"🌉 "}
   .lane[aria-pressed="true"]{background:color-mix(in oklab, var(--accent), transparent 80%);border-color:var(--accent)}
+
+  /* Compact tweaks */
+  .queue.compact .qitem{grid-template-columns:1fr auto;padding:8px}
+  .queue.compact .qitem img{display:none}
+  .queue.compact .lanes .lane{padding:2px 8px;font-size:.72rem}
+  .queue.compact .acts .qbtn{padding:4px 8px;font-size:.78rem}
+  .queue.compact .titleline{display:flex;align-items:center;gap:8px}
+  .titleline .laneEmoji{opacity:.9}
+  .titleline .ttl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* Add form */
   .addq h3{margin:4px 0 8px}
@@ -108,30 +122,37 @@
 </head>
 <body>
 <header>
-  <div class="wrap hdr">
-    <div class="brand">mirrorhoney — <span class="pill">mirror‑first</span></div>
-    <nav class="row" aria-label="Page">
+  <div class="wrap hdr" id="hdr">
+    <div class="row" style="justify-content:flex-start">
+      <div class="brand">mirrorhoney</div>
+    </div>
+
+    <nav aria-label="Page">
       <a href="#writer">writer</a>
       <a href="#for-visitors">visitors</a>
       <a href="#what">what</a>
       <a href="#identify">identify</a>
       <a href="#hybrid">hybrid</a>
       <a href="#logs">logs</a>
-      <a href="#tunes">tunes</a>
       <a href="#bridge">bridge</a>
       <a href="#faq">faq</a>
     </nav>
-    <div class="row" aria-label="Theme">
-      <span class="pill">Theme:</span>
-      <button class="chip themechip" data-theme="mirror" aria-pressed="true">🪞 Mirror</button>
-      <button class="chip themechip" data-theme="honey" aria-pressed="false">🍯 Honey</button>
-      <button class="chip themechip" data-theme="neon" aria-pressed="false">⚡ Neon</button>
-      <button class="chip themechip" data-theme="jupiter" aria-pressed="false">🪐 Jupiter</button>
-    </div>
-    <div class="row" aria-label="Playback">
+
+    <div class="row" aria-label="Top Controls">
+      <!-- Theme -->
+      <span class="pill" title="Theme">🎨</span>
+      <button class="chip themechip" data-theme="mirror" aria-pressed="true">🪞</button>
+      <button class="chip themechip" data-theme="honey" aria-pressed="false">🍯</button>
+      <button class="chip themechip" data-theme="neon" aria-pressed="false">⚡</button>
+      <button class="chip themechip" data-theme="jupiter" aria-pressed="false">🪐</button>
+      <!-- Playback -->
+      <span class="pill" style="margin-left:8px" title="Playback">▶</span>
       <button class="qbtn" id="prev">⟨ Prev</button>
       <button class="qbtn" id="play">Play / Pause</button>
       <button class="qbtn" id="next">Next ⟩</button>
+      <!-- Loop toggles always on top -->
+      <button class="chip" id="loop-track" aria-pressed="false" title="Loop the current track">Loop track</button>
+      <button class="chip" id="loop-queue" aria-pressed="true" title="Loop queue">Loop queue</button>
       <span class="nowtxt" id="nowNext" aria-live="polite"></span>
     </div>
   </div>
@@ -255,31 +276,6 @@
         <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. ⚡ Neon inserts 🌉 between lanes.</p>
       </section>
 
-      <!-- Tunes for inspiration -->
-      <section class="card" id="tunes">
-        <div class="row" style="justify-content:space-between;align-items:center">
-          <h2 style="margin:0">Tunes for inspiration</h2>
-          <span class="pill">Open or add to queue</span>
-        </div>
-        <div class="stack">
-          <div class="row">
-            <a class="btn" href="https://youtu.be/Cr-SqRWImmI" target="_blank" rel="noopener">🪞 MARINA — Oh No!</a>
-            <button class="btn add-seed" data-id="Cr-SqRWImmI" data-artist="MARINA" data-lane="B">➕ Add (🪞)</button>
-          </div>
-          <div class="row">
-            <a class="btn" href="https://youtu.be/cF1Na4AIecM" target="_blank" rel="noopener">🍯 Sabrina — Please Please Please</a>
-            <button class="btn add-seed" data-id="cF1Na4AIecM" data-artist="Sabrina Carpenter" data-lane="A">➕ Add (🍯)</button>
-          </div>
-          <div class="row">
-            <a class="btn" href="https://youtu.be/phtcAd8j6Ro" target="_blank" rel="noopener">🌉 Doechii — What It Is (Block Boy)</a>
-            <button class="btn add-seed" data-id="phtcAd8j6Ro" data-artist="Doechii" data-lane="D">➕ Add (🌉)</button>
-          </div>
-        </div>
-        <details class="card" style="margin-top:12px;background:color-mix(in oklab, var(--bg) 82%, white 6%)"><summary class="pill">What’s Jupiter? (theme)</summary>
-          <p><strong>Jupiter (🪐)</strong> is a warm, low‑blue theme for <em>long writing</em>. Deep umber background, amber accents, calmer contrast — steady, grounded, less “screen glare.” It keeps the same layout and controls, just tuned for longer focus.</p>
-        </details>
-      </section>
-
       <!-- Logs -->
       <section class="card" id="logs">
         <div class="pill"><strong>Logs — write, don’t worry about tags here</strong></div>
@@ -378,8 +374,6 @@
           </div>
         </div>
         <div class="row" style="margin-top:8px">
-          <button class="chip" id="loop-track" aria-pressed="false" title="Loop the current track">Loop track</button>
-          <button class="chip" id="loop-queue" aria-pressed="true" title="Loop queue">Loop queue</button>
           <button class="chip" id="export-btn" title="Export all data">Export</button>
           <input type="file" id="import-file" accept="application/json" style="display:none">
           <button class="chip" id="import-btn" title="Import backup">Import</button>
@@ -419,15 +413,22 @@
 
       <div class="block">
         <div class="qtools">
-          <span class="pill">Queue · Show:</span>
-          <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
-          <button class="qbtn" data-filter="B" aria-pressed="false">🪞</button>
-          <button class="qbtn" data-filter="A" aria-pressed="false">🍯</button>
-          <button class="qbtn" data-filter="D" aria-pressed="false">🌉</button>
-          <button class="qbtn" id="q-clear">Clear</button>
-          <span class="pill" id="q-status"></span>
+          <div class="qfilters">
+            <span class="pill">Queue · Show:</span>
+            <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
+            <button class="qbtn" data-filter="B" aria-pressed="false">🪞</button>
+            <button class="qbtn" data-filter="A" aria-pressed="false">🍯</button>
+            <button class="qbtn" data-filter="D" aria-pressed="false">🌉</button>
+          </div>
+          <div class="row">
+            <button class="chip" id="q-compact" aria-pressed="false" title="Compact queue list">Compact</button>
+            <button class="qbtn" id="q-clear">Clear</button>
+          </div>
         </div>
         <div class="queue" id="queue"></div>
+        <div class="row" style="margin-top:8px;justify-content:space-between">
+          <span class="pill" id="q-status"></span>
+        </div>
       </div>
     </aside>
   </div>
@@ -457,12 +458,14 @@ const MH = (function(){
   const DEFAULT = {
     schema: 1,
     updatedAt: new Date().toISOString(),
-    settings: { loopTrack:false, loopQueue:true, mode:"MIRROR", theme:"mirror" },
+    settings: { loopTrack:false, loopQueue:true, mode:"MIRROR", theme:"mirror", compactQueue:false },
     seeds: { singleSeeded:false },
-    queue: [],                 // [{id,title,author,thumb,lane:"A"|"B"|"D",artist,added}]
+    queue: [],                 // [{id,title,author,thumb,lane:"A"|"B"|"D",artist,added,pinned?:bool}]
     logs: { honey:[], bridge:[], writer:[] }, // arrays of {date, text}
     fragments: { byDay:{} }    // { "YYYY-MM-DD":[{t,ts}] }
   };
+
+  const FRIEND_ID="Cr-SqRWImmI";
 
   function snapshot(reason){
     try{
@@ -492,10 +495,8 @@ const MH = (function(){
 
   function migrateFromLegacy(){
     const data = JSON.parse(JSON.stringify(DEFAULT));
-    // Attempt to migrate older queues
-    const oldQs = [
-      "mirrorhoney_queue_single_v1","mirrorhoney_queue_side_v2","mirrorhoney_queue_v3","mirrorhoney_queue_side_tags_v1"
-    ];
+    // Migrate older queues
+    const oldQs = ["mirrorhoney_queue_single_v1","mirrorhoney_queue_side_v2","mirrorhoney_queue_v3","mirrorhoney_queue_side_tags_v1"];
     let items = [];
     for(const k of oldQs){
       try{ const arr = JSON.parse(localStorage.getItem(k)||"[]"); if(Array.isArray(arr)&&arr.length){ items = items.concat(arr); } }catch(_){}
@@ -527,7 +528,21 @@ const MH = (function(){
     // Fragments
     try{ const fr = JSON.parse(localStorage.getItem("mh_bridge_fragments_single_v1")||localStorage.getItem("mh_bridge_fragments_v1")||'{"byDay":{}}'); if(fr&&fr.byDay) data.fragments.byDay = fr.byDay; }catch(_){}
 
+    // Ensure friend exists after migration
+    ensureFriend(data);
     return data;
+  }
+
+  function ensureFriend(d){
+    let idx = d.queue.findIndex(x=>x.id===FRIEND_ID);
+    if(idx===-1){
+      d.queue.unshift({ id:FRIEND_ID, title:"Oh No!", author:"MARINA",
+        thumb:"https://img.youtube.com/vi/Cr-SqRWImmI/hqdefault.jpg",
+        lane:"B", artist:"MARINA", added:new Date().toISOString(), tags:["B"], pinned:true });
+    }else{
+      const it=d.queue[idx]; it.pinned=true; it.lane="B"; it.tags=["B"];
+      if(idx!==0){ d.queue.splice(idx,1); d.queue.unshift(it); }
+    }
   }
 
   function exportJSON(){ return JSON.stringify(get(), null, 2); }
@@ -539,7 +554,7 @@ const MH = (function(){
     }catch(e){ return false; }
   }
 
-  return { get, put, exportJSON, importJSON, snapshot, DEFAULT };
+  return { get, put, exportJSON, importJSON, snapshot, DEFAULT, ensureFriend, FRIEND_ID };
 })();
 
 /* ===== Utilities ===== */
@@ -572,6 +587,19 @@ async function fetchYTMeta(id){
   }catch(e){ return null; }
 }
 
+/* ===== Set dynamic offsets for fixed header ===== */
+(function(){
+  function apply(){
+    const hdr=document.getElementById("hdr");
+    if(!hdr) return;
+    const h = hdr.getBoundingClientRect().height;
+    document.documentElement.style.setProperty('--hdrH', Math.ceil(h)+'px');
+  }
+  window.addEventListener('resize', apply);
+  document.addEventListener('DOMContentLoaded', apply);
+  apply();
+})();
+
 /* ===== Theme toggle (persist) ===== */
 (function(){
   const chips=[...document.querySelectorAll(".themechip")];
@@ -581,7 +609,6 @@ async function fetchYTMeta(id){
     const d=MH.get(); d.settings.theme=theme; MH.put(d);
   }
   chips.forEach(c=> c.onclick=()=>apply(c.getAttribute("data-theme")));
-  // restore
   const d=MH.get(); apply(d.settings.theme||"mirror");
 })();
 
@@ -714,27 +741,43 @@ var FRAGMENTS=(function(){
 })("hlog-timer","hlog-notes","hlog-save","hlog-start","logs.honey");
 setupLog("dlog-timer","dlog-notes","dlog-save","dlog-start","logs.bridge");
 
-/* ===== QUEUE (single-lane per item) ===== */
+/* ===== QUEUE (single-lane per item, compact mode, MARINA pinned friend) ===== */
 var QUEUE=(function(){
+  const FRIEND_ID=MH.FRIEND_ID; // MARINA — Oh No!
   const qEl=document.getElementById("queue"), status=document.getElementById("q-status");
   const clearBtn=document.getElementById("q-clear");
+  const compactBtn=document.getElementById("q-compact");
   let filter="ALL";
-  function data(){ return MH.get(); }
+
+  function applyCompactClass(){
+    const d=MH.get();
+    const autoCompact = window.innerWidth < 860;
+    const on = d.settings.compactQueue || autoCompact;
+    setPressed(compactBtn, !!d.settings.compactQueue);
+    qEl.classList.toggle("compact", on);
+  }
+  window.addEventListener("resize", applyCompactClass);
 
   function render(){
     const d=MH.get();
+    MH.ensureFriend(d); MH.put(d,"upgrade");
+    applyCompactClass();
     qEl.innerHTML="";
     const vis = d.queue.filter(it=> filter==="ALL" ? true : it.lane===filter);
     status.textContent=d.queue.length?("Queue: "+vis.length+" shown / "+d.queue.length+" total"):"Queue empty";
 
     vis.forEach(function(it, idx){
       const wrap=document.createElement("div"); wrap.className="qitem"; wrap.dataset.key=it.id||String(idx);
-      if(it.thumb){ const img=document.createElement("img"); img.src=it.thumb; img.alt=""; wrap.appendChild(img); }
+      if(it.thumb || it.thumbnail){ const img=document.createElement("img"); img.src=it.thumb||it.thumbnail||(""); img.alt=""; wrap.appendChild(img); }
       const meta=document.createElement("div"); meta.className="meta";
-      const title=document.createElement("div");
-      const laneEmoji = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"🌉";
-      const tlabel = (it.artist?("<b>"+it.artist+"</b> — "):"") + (it.title||it.id||"Untitled");
-      title.innerHTML=laneEmoji+"&nbsp;"+tlabel + (it.author?(" <small style='color:var(--muted)'>— "+it.author+"</small>"):"");
+
+      // Title line (works in compact too)
+      const ttl=document.createElement("div"); ttl.className="titleline";
+      const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"🌉";
+      const tlabel = document.createElement("span"); tlabel.className="ttl";
+      tlabel.innerHTML = (it.pinned? "<b>[friend]</b> " : "") + (it.artist?("<b>"+it.artist+"</b> — "):"") + (it.title||it.id||"Untitled");
+      ttl.appendChild(laneEmoji); ttl.appendChild(tlabel);
+      meta.appendChild(ttl);
 
       // Lane editor (mutually exclusive)
       const lanes=document.createElement("div"); lanes.className="lanes";
@@ -742,6 +785,7 @@ var QUEUE=(function(){
         const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"🌉 Doechii");
         b.setAttribute("aria-pressed", it.lane===L?"true":"false");
         b.onclick=function(){
+          if(it.pinned && L!=="B"){ alert("Marina is everyone’s friend (🪞). The friend stays in 🪞."); return; }
           it.lane=L; it.tags=[L];
           const d2=MH.get(); const ix=d2.queue.findIndex(x=>x.id===it.id); if(ix>-1){ d2.queue[ix]=it; MH.put(d2); }
           render();
@@ -749,19 +793,22 @@ var QUEUE=(function(){
         return b;
       };
       lanes.appendChild(mk("B")); lanes.appendChild(mk("D")); lanes.appendChild(mk("A"));
+      meta.appendChild(lanes);
 
+      // Actions
       const acts=document.createElement("div"); acts.className="acts";
       const play=document.createElement("button"); play.className="qbtn"; play.textContent="Play now";
       play.onclick=function(){ if(it.id){ ALTERNATOR.setLane(it.lane); PLAYER.load(it.id, it.lane); } };
-      const del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove";
+      const del=document.createElement("button"); del.className="qbtn"; del.textContent= it.pinned ? "—" : "Remove";
+      del.disabled = !!it.pinned;
+      del.title = it.pinned ? "Pinned friend (can’t remove)" : "Remove from queue";
       del.onclick=function(){
+        if(it.pinned){ alert("This one stays — like Tom from MySpace."); return; }
         const d2=MH.get();
         const ix=d2.queue.findIndex(x=>x.id===it.id);
         if(ix>-1){ d2.queue.splice(ix,1); MH.put(d2); render(); }
       };
 
-      meta.appendChild(title);
-      meta.appendChild(lanes);
       meta.appendChild(acts);
       acts.appendChild(play); acts.appendChild(del);
       wrap.appendChild(meta);
@@ -780,7 +827,15 @@ var QUEUE=(function(){
         const from=d3.queue.findIndex(x=>x.id===fromId);
         const to=d3.queue.findIndex(x=>x.id===toId);
         if(from<0||to<0) return;
-        const moved=d3.queue.splice(from,1)[0]; d3.queue.splice(to,0,moved); MH.put(d3); render();
+        const moved=d3.queue.splice(from,1)[0];
+        // Keep friend at top
+        const friendIdx = d3.queue.findIndex(x=>x.id===FRIEND_ID);
+        d3.queue.splice(to,0,moved);
+        if(friendIdx>0){
+          const [f] = d3.queue.splice(friendIdx,1);
+          d3.queue.unshift(f);
+        }
+        MH.put(d3); render();
       }, {once:true});
     });
   }
@@ -791,16 +846,32 @@ var QUEUE=(function(){
       setPressed(this,true); filter=this.getAttribute("data-filter"); render();
     });
   });
-  clearBtn.onclick=function(){ if(confirm("Clear entire queue?")){ const d=MH.get(); d.queue=[]; MH.put(d); render(); } };
+
+  compactBtn.onclick=function(){
+    const d=MH.get(); d.settings.compactQueue = !d.settings.compactQueue; MH.put(d); applyCompactClass();
+  };
+
+  clearBtn.onclick=function(){
+    if(!confirm("Clear the queue? (Marina stays as your friend.)")) return;
+    const d=MH.get();
+    d.queue = d.queue.filter(x=>x.id===FRIEND_ID);
+    if(!d.queue.length){
+      d.queue.unshift({ id:FRIEND_ID, title:"Oh No!", author:"MARINA",
+        thumb:"https://img.youtube.com/vi/Cr-SqRWImmI/hqdefault.jpg", lane:"B", artist:"MARINA", added:timeISO(), tags:["B"], pinned:true });
+    }
+    MH.put(d); render();
+  };
 
   async function add(artist, linkOrId, lane){
     const id = ytIdFrom(linkOrId) || linkOrId;
     if(!id || id.length<11) throw new Error("Invalid YouTube link/ID");
-    const meta = await fetchYTMeta(id) || {};
+    let meta = await fetchYTMeta(id);
     const d=MH.get();
     const ix = d.queue.findIndex(x=>x.id===id);
-    const it = { id, title:meta.title||"", author:meta.author||"", thumb:meta.thumbnail||"", lane:lane, artist:artist||"", added:timeISO(), tags:[lane] };
-    if(ix>-1){ d.queue[ix] = Object.assign(d.queue[ix], it); } else { d.queue.unshift(it); }
+    const it = { id, title:(meta&&meta.title)||artist||id, author:(meta&&meta.author)||"", thumb:(meta&&meta.thumbnail)||("https://img.youtube.com/vi/"+id+"/hqdefault.jpg"), lane:lane, artist:artist||"", added:timeISO(), tags:[lane] };
+    if(ix>-1){ d.queue[ix] = Object.assign(d.queue[ix], it); } else { d.queue.push(it); } // push (friend stays at head)
+    // Always keep friend on top
+    MH.ensureFriend(d);
     MH.put(d);
     render();
     return it;
@@ -841,8 +912,10 @@ var PLAYER=(function(){
   function onReady(){ try{ P.setVolume(70); }catch(_){ } }
 
   function create(){
+    // Preload MARINA (Oh No!) image by setting videoId at construction
     return new YT.Player("playerOne",{
       width:'100%', height:(window.innerWidth<700?'160':'220'),
+      videoId: "Cr-SqRWImmI",
       playerVars:{rel:0,modestbranding:1,playsinline:1},
       events:{
         onReady:onReady,
@@ -875,7 +948,7 @@ var PLAYER=(function(){
   document.getElementById("prev").onclick=function(){ ALTERNATOR.prev(); };
   document.getElementById("next").onclick=function(){ ALTERNATOR.next(); };
 
-  // Rail toggles
+  // Header loop toggles (always on top)
   const lt=document.getElementById("loop-track"); const lq=document.getElementById("loop-queue");
   lt.onclick=function(){ const on=lt.getAttribute("aria-pressed")==="true"; setPressed(lt,!on); setLoopTrack(!on); };
   lq.onclick=function(){ const on=lq.getAttribute("aria-pressed")==="true"; setPressed(lq,!on); setLoopQueue(!on); };
@@ -904,8 +977,6 @@ var ALTERNATOR=(function(){
   mM.onclick=()=>setMode("MIRROR");
   mH.onclick=()=>setMode("HONEY");
   mN.onclick=()=>setMode("NEON");
-
-  function hasD(){ return (QUEUE.scopeItems("D")||[]).length>0; }
 
   function laneAfter(tag){
     if(mode==="NEON"){
@@ -940,14 +1011,15 @@ var ALTERNATOR=(function(){
   function ensureKick(){
     try{
       if(PLAYER.getId()) return; // already cued/playing
-      const startLane = (mode==="MIRROR")?"B":"A";
       // Prefer MARINA "Oh No!" if present
       const d=MH.get();
-      const ohno = d.queue.find(q=>q.id==="Cr-SqRWImmI" && q.lane==="B");
-      if(ohno){ PLAYER.load(ohno.id,"B"); lastLane="B"; updateStatus({now:{tag:"B",title:ohno.title||ohno.id}, nextTag: laneAfter("B")}); return; }
+      MH.ensureFriend(d); MH.put(d,"upgrade");
+      const ohno = d.queue.find(q=>q.id===MH.FRIEND_ID);
+      if(ohno){ PLAYER.cue(ohno.id,"B"); lastLane="B"; updateStatus({now:{tag:"B",title:ohno.title||ohno.id}, nextTag: laneAfter("B")}); return; }
+      const startLane = (mode==="MIRROR")?"B":"A";
       const first = (QUEUE.scopeItems(startLane)||[])[0];
       if(first && first.id){
-        PLAYER.load(first.id, startLane);
+        PLAYER.cue(first.id, startLane);
         lastLane=startLane;
         updateStatus({now:{tag:startLane,title:first.title||first.id}, nextTag: laneAfter(startLane)});
       }
@@ -1017,7 +1089,7 @@ var ALTERNATOR=(function(){
       preview.textContent="Fetching title…";
       const m=await fetchYTMeta(id);
       if(m){ preview.innerHTML="Preview → <b>"+(artist.value?artist.value+" — ":"")+(m.title||"")+"</b>"; }
-      else { preview.innerHTML="<span class='status-err'>Couldn’t fetch preview — link might be private.</span>"; }
+      else { preview.innerHTML="<span class='status-err'>Couldn’t fetch preview — link might be private. We’ll still add it.</span>"; }
     } else { preview.textContent=""; }
     status.textContent="";
   }
@@ -1030,7 +1102,6 @@ var ALTERNATOR=(function(){
     try{
       const it = await QUEUE.add(a, lnk, L);
       status.innerHTML="<span class='status-ok'>Added: "+(it.title||it.id)+"</span>";
-      // reset link only; keep artist for batch adds
       link.value=""; laneSel.value=""; highlightChip(""); preview.textContent="";
       validate();
     }catch(e){
@@ -1038,17 +1109,6 @@ var ALTERNATOR=(function(){
     }
   };
 
-  // Inspiration "Add" buttons
-  document.querySelectorAll(".add-seed").forEach(btn=>{
-    btn.onclick=async function(){
-      const id=this.dataset.id, artist=this.dataset.artist, lane=this.dataset.lane;
-      await QUEUE.add(artist, id, lane);
-      this.textContent="✓ Added";
-      setTimeout(()=>{ this.textContent="➕ Add ("+(lane==="A"?"🍯":lane==="B"?"🪞":"🌉")+")"; }, 1200);
-    };
-  });
-
-  // initial highlight none
   highlightChip("");
 })();
 
@@ -1069,35 +1129,19 @@ var ALTERNATOR=(function(){
   };
 })();
 
-/* ===== Seed 3 example songs once (safe) — MARINA first & pre-cued ===== */
-(async function seedOnce(){
-  const data=MH.get();
-  // If queue empty or missing "Oh No!", add seeds non-destructively and ensure MARINA is first
-  const hasOhNo = (data.queue||[]).some(q=>q.id==="Cr-SqRWImmI");
-  if(!data.seeds.singleSeeded || !hasOhNo){
-    // Add in reverse so Oh No! ends up first (we unshift in QUEUE.add)
-    const seeds=[
-      {artist:"Doechii", url:"https://www.youtube.com/watch?v=phtcAd8j6Ro", lane:"D"},
-      {artist:"Sabrina Carpenter", url:"https://www.youtube.com/watch?v=cF1Na4AIecM", lane:"A"},
-      {artist:"MARINA", url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", lane:"B"}
-    ];
-    for(const s of seeds){ try{ await QUEUE.add(s.artist, s.url, s.lane); }catch(_){ } }
-    data.seeds.singleSeeded=true; MH.put(data,"upgrade");
-  }
-  // Ensure Oh No! is first B and pre‑cue
+/* ===== Seed 3 example songs & pin MARINA friend — always present ===== */
+(async function seedAndPin(){
   const d=MH.get();
-  const idx = d.queue.findIndex(q=>q.id==="Cr-SqRWImmI");
-  if(idx>0){
-    const [ohno] = d.queue.splice(idx,1);
-    d.queue.unshift(ohno);
-    MH.put(d,"upgrade");
-    QUEUE.render();
-  }
-  const firstB=(QUEUE.scopeItems("B")[0]||{}).id; if(firstB) PLAYER.cue(firstB,"B");
+  MH.ensureFriend(d);
+  // Add Sabrina & Doechii if they’re missing (non-destructive)
+  const haveSab = d.queue.some(q=>q.id==="cF1Na4AIecM");
+  const haveDoe = d.queue.some(q=>q.id==="phtcAd8j6Ro");
+  if(!haveSab){ try{ await QUEUE.add("Sabrina Carpenter","cF1Na4AIecM","A"); }catch(_){ } }
+  if(!haveDoe){ try{ await QUEUE.add("Doechii","phtcAd8j6Ro","D"); }catch(_){ } }
+  MH.put(d,"upgrade");
+  // Pre-cue MARINA friend
+  if(window.YT && window.YT.Player){ PLAYER.cue("Cr-SqRWImmI","B"); }
 })();
-
-/* ===== Orientation init ===== */
-document.addEventListener("DOMContentLoaded", ensureWriterOrientation);
 
 /* ===== Hidden notes ===== */
 (function secrets(){
@@ -1114,7 +1158,6 @@ document.addEventListener("DOMContentLoaded", ensureWriterOrientation);
   if(idBox){
     const m=document.createElement("div");
     m.style.cssText="position:absolute;left:-9999px;opacity:0;pointer-events:none";
-    // "CAT CODE: midnight whisker / 3:03 / nine lives. If the cup moves, follow the tail."
     m.textContent=atob("Q0FUIENPREU6IG1pZG5pZ2h0IHdoaXNrZXIgLyAzOjAzIC8gbmluZSBsaXZlcy4gSWYgdGhlIGN1cCBtb3ZlcywgZm9sbG93IHRoZSB0YWlsLg==");
     idBox.appendChild(m);
   }
