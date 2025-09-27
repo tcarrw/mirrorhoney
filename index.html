@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mirror × Honey — Sabrina (🍯) × Marina (🪞) · Visitor: Doechii (🔥)</title>
-<meta name="description" content="A guided Honey (Sabrina) × Mirror (Marina) practice with Safe Chaos sparks for Doechii — dual players, crossfader, tagged queue, and local logs.">
+<meta name="description" content="A guided Honey (Sabrina) × Mirror (Marina) practice with Safe Chaos sparks for Doechii — dual players, alternating rotation, local logs.">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
@@ -14,14 +14,11 @@
   body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   .wrap{max-width:980px;margin:0 auto;padding:28px}
-  header{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 0}
+  header{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:8px 0}
   header .brand{font-weight:700;letter-spacing:.5px}
   header nav a{margin-left:16px;color:var(--muted)} header nav a:hover{color:var(--ink)}
-  .mastctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:4px}
-  .mastctl input[type="range"]{width:140px}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
-  .glyph{font-size:1.05rem}
-  .cta,.btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
+  .btn,.qbtn,.cta{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
   .cta{border-color:var(--accent);color:var(--accent)} .cta:hover{background:rgba(124,212,255,.1)}
   .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px}
   .stack{display:grid;gap:16px}
@@ -40,79 +37,51 @@
   .quickstart{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
   @media (max-width:900px){.quickstart{grid-template-columns:1fr}}
   .quick{border:1px dashed var(--line);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
+  details summary{cursor:pointer}
 
-  /* Dock: players only (queue in drawer) */
-  .dock{position:sticky;bottom:0;z-index:50;background:rgba(11,15,25,.92);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+  /* Rotation tray */
+  .rot-card{display:grid;gap:12px}
+  .rot-slots{display:flex;gap:8px;flex-wrap:wrap}
+  .slot{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.02)}
+  .slot .x{opacity:.85;cursor:pointer}
+  .slot b{font-weight:600}
+  .rot-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  select, .rot-controls input[type="checkbox"]{accent-color:#7CD4FF}
+
+  /* Players dock */
+  .dock{position:sticky;bottom:0;z-index:50;background:rgba(11,15,25,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
   .dock-inner{max-width:980px;margin:0 auto;padding:14px 28px;display:grid;gap:12px}
   .players{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media (max-width:900px){.players{grid-template-columns:1fr}}
   .player{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
   .pbar{display:flex;gap:8px;align-items:center;padding:8px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
   .qbtn{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);cursor:pointer}
+  .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
 
-  /* Queue Drawer */
-  .qopen{margin-left:12px}
-  .qdrawer{position:fixed;top:0;right:0;height:100vh;width:min(420px,92vw);background:#0B0F19;border-left:1px solid var(--line);box-shadow:var(--shadow);transform:translateX(100%);transition:transform .25s ease;z-index:70;display:flex;flex-direction:column}
-  .qdrawer.open{transform:translateX(0)}
-  .qhead{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
-  .qtools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--line)}
-  .qlist{flex:1;overflow:auto;padding:12px 10px;display:grid;gap:8px}
-  .qitem{border:1px solid var(--line);border-radius:12px;padding:8px;background:rgba(255,255,255,.02);display:grid;grid-template-columns:auto 1fr;gap:8px}
-  .qthumb{width:80px;height:48px;border-radius:8px;object-fit:cover;background:#000}
-  .qmeta{display:grid;gap:6px}
-  .qrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-  .tag{border:1px solid var(--line);padding:2px 8px;border-radius:999px;font-size:.85rem;opacity:.95}
-  .tag.A::before{content:"🍯";margin-right:6px}
-  .tag.B::before{content:"🪞";margin-right:6px}
-  .tag.D::before{content:"🔥";margin-right:6px}
-  .pillsmall{font-size:.82rem;color:var(--muted)}
+  /* Header master volumes */
+  .mastctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
+  .mastctl input[type="range"]{width:130px}
 
   /* Keep player height visible before first load */
   #playerA,#playerB{min-height:180px}
 
-  /* Meters */
-  .vumeters{display:flex;align-items:center;gap:12px;margin-left:6px}
-  .vu{display:flex;align-items:center;gap:6px}
-  .vu-emoji{font-size:1rem}
-  .vu-track{width:96px;height:8px;background:rgba(255,255,255,.08);border:1px solid var(--line);border-radius:999px;overflow:hidden}
-  .vu-fill{height:100%;width:0%}
-  .vuA .vu-fill{background:linear-gradient(90deg,var(--honey),#ffe39c)}
-  .vuB .vu-fill{background:linear-gradient(90deg,var(--mirror),#e9f2ff)}
-  .vu-val{font-size:.86rem;color:var(--muted);min-width:34px;text-align:right}
+  /* Chaos scatter */
+  .chaos-frame{position:relative;height:54vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
+  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
+  .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
+  .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
+
 </style>
 </head>
 <body>
 <header class="wrap">
   <div>
     <div class="brand">mirrorhoney</div>
-    <!-- Master playback controls with crossfader + visual meters -->
-    <div class="mastctl" id="mastctl" aria-label="Master playback controls">
-      <button class="qbtn" id="masterPlay">Play/Pause Both</button>
-      <button class="qbtn" id="masterStop">Stop</button>
-      <label class="pill">🍯</label><input id="volA" type="range" min="0" max="100" value="70" aria-label="Volume 🍯">
-      <label class="pill">🪞</label><input id="volB" type="range" min="0" max="100" value="70" aria-label="Volume 🪞">
-      <label class="pill">Mix</label>
-      <input id="xfader" type="range" min="0" max="100" value="50" title="🍯↔🪞 mix" aria-label="Crossfade 🍯 to 🪞">
-      <div class="vumeters" aria-label="Output meters">
-        <div class="vu vuA" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="🍯 output level">
-          <span class="vu-emoji" aria-hidden="true">🍯</span>
-          <div class="vu-track"><div class="vu-fill" id="vuA"></div></div>
-          <span class="vu-val" id="vuAVal">0%</span>
-        </div>
-        <div class="vu vuB" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="🪞 output level">
-          <span class="vu-emoji" aria-hidden="true">🪞</span>
-          <div class="vu-track"><div class="vu-fill" id="vuB"></div></div>
-          <span class="vu-val" id="vuBVal">0%</span>
-        </div>
-      </div>
-      <button class="qbtn" id="xfadeNow" title="Smoothly crossfade to the other deck">⇄ Crossfade now</button>
-      <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
-        <input type="checkbox" id="autoXfadeToggle" aria-label="Auto crossfade at track end"> auto xfade at end
-      </label>
-      <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
-        <input type="checkbox" id="autoPlayToggle" checked aria-label="Auto play on add"> auto‑play on add
-      </label>
-      <button class="qbtn qopen" id="openQueue" aria-haspopup="true" aria-controls="qdrawer">Open Queue</button>
+    <div class="mastctl" aria-label="Master controls">
+      <label class="pill">🍯 Vol</label><input id="volA" type="range" min="0" max="100" value="70" aria-label="Volume 🍯">
+      <button class="qbtn" id="muteA" aria-pressed="false" title="Mute/unmute 🍯">Mute 🍯</button>
+      <label class="pill">🪞 Vol</label><input id="volB" type="range" min="0" max="100" value="70" aria-label="Volume 🪞">
+      <button class="qbtn" id="muteB" aria-pressed="false" title="Mute/unmute 🪞">Mute 🪞</button>
     </div>
   </div>
   <nav>
@@ -220,22 +189,47 @@
     <p class="hint"><em>Tag rule (optional):</em> Body led → <strong>Honey-primary</strong> (🍯). Frame first → <strong>Mirror-primary</strong> (🪞). Doechii sparks → <strong>🔥</strong>.</p>
   </section>
 
+  <!-- ROTATION: Selected / Category -->
+  <section class="card rot-card" id="rotation">
+    <div class="pill"><strong>Alternate Rotation (always looping)</strong></div>
+    <div class="rot-controls">
+      <label class="pill">Mode</label>
+      <select id="rotMode" aria-label="Rotation mode">
+        <option value="SELECTED">Selected (up to 3)</option>
+        <option value="CAT_ALL">Category — All (🍯+🪞+🔥)</option>
+        <option value="CAT_A">Category — 🍯 only</option>
+        <option value="CAT_B">Category — 🪞 only</option>
+        <option value="CAT_D">Category — 🔥 only</option>
+      </select>
+      <label class="pill" style="display:inline-flex;align-items:center;gap:6px">
+        <input type="checkbox" id="rotLoop" checked> loop rotation
+      </label>
+      <button class="qbtn" id="rotPrev">Prev</button>
+      <button class="qbtn" id="rotPlay">Play/Pause</button>
+      <button class="qbtn" id="rotNext">Next</button>
+      <span class="pill" id="rotStatus" aria-live="polite"></span>
+    </div>
+    <div class="rot-slots" id="rotSlots">
+      <!-- filled via JS with up to 3 slots: 🍯 🪞 🔥 -->
+    </div>
+    <p class="hint">Pick up to three tracks (one per 🍯/🪞/🔥) from your logs below. Rotation alternates decks; no simultaneous playback.</p>
+  </section>
+
   <!-- HONEY LOG -->
   <section class="card" id="honey-log">
     <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — Sabrina × Marina</strong></div>
-    <p>Paste a YouTube link or just a title, tag it (🍯/🪞/🍯+🪞/🔥), press <em>Start</em>, write for 5–10 min, and circle one sentence — your <strong>seed</strong> for continuity.</p>
+    <p>Paste a YouTube link or just a title, tag it (🍯/🪞/🍯+🪞), press <em>Start</em>, write for 5–10 min, and circle one sentence — your <strong>seed</strong> for continuity.</p>
     <div class="stack" style="gap:10px">
       <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or YouTube link)</span>
         <input id="hlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Song">
-        <div class="hint">Tip: click “Add to 🍯/🪞” to hear it while you write. We auto-fetch title and thumbnail.</div>
+        <div class="hint">Tip: use “Add to 🍯/🪞” to capture and play it later from Rotation.</div>
       </label>
       <div class="row">
         <span class="pill">Tag to:</span>
-        <button class="btn" data-addq="A">Add to 🍯</button>
-        <button class="btn" data-addq="B">Add to 🪞</button>
-        <button class="btn" data-addq="AB">Add to 🍯+🪞</button>
-        <button class="btn" data-addq="D">Add to 🔥</button>
-        <button class="btn" id="hlog-start">Start 5-min timer</button>
+        <button class="btn" data-addh="A">Add to 🍯</button>
+        <button class="btn" data-addh="B">Add to 🪞</button>
+        <button class="btn" data-addh="AB">Add to 🍯+🪞</button>
+        <button class="btn" id="hlog-start">Start 5‑min timer</button>
       </div>
       <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
         <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
@@ -268,15 +262,15 @@
       <div class="stack" style="gap:10px">
         <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Track (title or YouTube link)</span>
           <input id="dlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Track">
-          <div class="hint">Tip: Add to 🔥 for a Doechii-only queue, or to 🍯/🪞 to audition side-by-side.</div>
+          <div class="hint">Tip: Add to 🔥 to audition it in Rotation.</div>
         </label>
         <div class="row">
           <span class="pill">Tag to:</span>
-          <button class="btn" data-addq="D">Add to 🔥</button>
-          <button class="btn" data-addq="A">Add to 🍯</button>
-          <button class="btn" data-addq="B">Add to 🪞</button>
-          <button class="btn" data-addq="AB">Add to 🍯+🪞</button>
-          <button class="btn" id="dlog-start">Start 5-min timer</button>
+          <button class="btn" data-addd="D">Add to 🔥</button>
+          <button class="btn" data-addd="A">Add to 🍯</button>
+          <button class="btn" data-addd="B">Add to 🪞</button>
+          <button class="btn" data-addd="AB">Add to 🍯+🪞</button>
+          <button class="btn" id="dlog-start">Start 5‑min timer</button>
         </div>
         <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments (no syntax)</span>
           <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
@@ -292,6 +286,10 @@
         </details>
       </div>
     </section>
+
+    <!-- Chaos spark + shuffle -->
+    <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Doechii Chaos Scatter"></section>
+    <div class="row" style="margin-top:8px"><button class="btn" id="seed-shuffle">Shuffle spark</button></div>
   </section>
 
   <!-- FAQ / Glossary -->
@@ -301,51 +299,37 @@
       <p>A single circled sentence (Honey) or fragment (Chaos) you carry to the next cycle. It’s continuity, not content.</p>
     </details>
     <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">Where are my entries saved?</summary>
-      <p>In your browser’s <code>localStorage</code>, on this device only. Use Export in the queue to back up.</p>
+      <p>In your browser’s <code>localStorage</code>, on this device only. Export your text anytime.</p>
     </details>
     <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">How do 🍯 / 🪞 / 🔥 tags work?</summary>
-      <p>🍯 = Honey lane, 🪞 = Mirror lane, 🔥 = Doechii lane. Filter the queue to focus; each player advances in its own lane.</p>
+      <p>🍯 = Honey lane, 🪞 = Mirror lane, 🔥 = Doechii lane. Rotation uses your selected set (up to 3) or a category.</p>
     </details>
-    <div class="twins" style="margin-top:12px">
-      <div class="card honey-box">
-        <strong>Glossary — Honey</strong>
-        <p>Sweet, immediate pull; taste/touch metaphors; hook-forward; body leads.</p>
-      </div>
-      <div class="card mirror-box">
-        <strong>Glossary — Mirror</strong>
-        <p>Reflection, angle, identity; persona/role lyrics; frame-forward; mind leads.</p>
-      </div>
-    </div>
   </section>
 </main>
 
-<!-- PLAYER DOCK -->
+<!-- PLAYER DOCK (two videos only) -->
 <section class="dock" aria-label="Players">
   <div class="dock-inner">
     <div class="players">
       <div class="player">
         <div class="pbar">
           <strong style="margin-right:8px">Player 🍯</strong>
-          <button class="qbtn" data-prev="A">Prev 🍯</button>
-          <button class="qbtn" data-next="A">Next 🍯</button>
+          <button class="qbtn" data-prev="A">Prev</button>
           <button class="qbtn" data-play="A">Play/Pause</button>
+          <button class="qbtn" data-mute="A" aria-pressed="false">Mute</button>
           <button class="qbtn" data-looptrack="A" aria-pressed="false">Loop Track</button>
-          <button class="qbtn" data-loopqueue="A" aria-pressed="true">Loop Queue</button>
-          <button class="qbtn" data-vol="A">Vol–</button>
-          <button class="qbtn" data-volup="A">Vol+</button>
+          <button class="qbtn" data-next="A">Next</button>
         </div>
         <div id="playerA"></div>
       </div>
       <div class="player">
         <div class="pbar">
           <strong style="margin-right:8px">Player 🪞</strong>
-          <button class="qbtn" data-prev="B">Prev 🪞</button>
-          <button class="qbtn" data-next="B">Next 🪞</button>
+          <button class="qbtn" data-prev="B">Prev</button>
           <button class="qbtn" data-play="B">Play/Pause</button>
+          <button class="qbtn" data-mute="B" aria-pressed="false">Mute</button>
           <button class="qbtn" data-looptrack="B" aria-pressed="false">Loop Track</button>
-          <button class="qbtn" data-loopqueue="B" aria-pressed="true">Loop Queue</button>
-          <button class="qbtn" data-vol="B">Vol–</button>
-          <button class="qbtn" data-volup="B">Vol+</button>
+          <button class="qbtn" data-next="B">Next</button>
         </div>
         <div id="playerB"></div>
       </div>
@@ -353,32 +337,20 @@
   </div>
 </section>
 
-<!-- QUEUE DRAWER -->
-<aside class="qdrawer" id="qdrawer" aria-label="Tagged Queue Drawer" aria-hidden="true">
-  <div class="qhead">
-    <strong>Queue</strong>
-    <div class="row">
-      <button class="qbtn" id="q-close">Close</button>
-    </div>
-  </div>
-  <div class="qtools">
-    <span class="pill">Show:</span>
-    <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
-    <button class="qbtn" data-filter="A" aria-pressed="false">🍯</button>
-    <button class="qbtn" data-filter="B" aria-pressed="false">🪞</button>
-    <button class="qbtn" data-filter="D" aria-pressed="false">🔥</button>
-    <button class="qbtn" id="q-clear">Clear</button>
-    <button class="qbtn" id="q-export">Export</button>
-    <input type="file" id="q-import" accept="application/json" style="display:none">
-    <button class="qbtn" id="q-import-btn">Import</button>
-    <span class="pill" id="q-status"></span>
-  </div>
-  <div class="qlist" id="queue"></div>
-</aside>
-
 <footer class="wrap" style="color:var(--muted);font-size:.9rem;margin:18px auto 28px">
   © mirrorhoney — Sabrina (🍯) × Marina (🪞). Visitor: Doechii (🔥).
 </footer>
+
+<!-- Guided Tour Overlay -->
+<div class="tour" id="tour" style="display:none">
+  <div class="tour-box">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h3 style="margin:0">Quick Tour (5 steps)</h3>
+      <button class="btn" id="tourSkip">Close</button>
+    </div>
+    <div class="tour-steps" id="tourSteps"></div>
+  </div>
+</div>
 
 <!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -389,7 +361,6 @@ function timeISO(){ return new Date().toISOString(); }
 function lsGet(k,f){ try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)} }
 function lsSet(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} }
 function setPressed(el,on){ el.setAttribute("aria-pressed", on?"true":"false"); }
-function isIOS(){ return /iPad|iPhone|iPod/.test(navigator.userAgent); }
 /* Strict 11-char YouTube ID detection */
 function ytIdFrom(u){
   if(!u) return null; u=String(u).trim();
@@ -405,472 +376,408 @@ async function fetchYTMeta(id){
     return {title:j.title||"",author:j.author_name||"",thumbnail:j.thumbnail_url||""};
   }catch(e){ return null; }
 }
+function toast(msg){
+  try{
+    var t=document.createElement('div'); t.textContent=msg; t.style.cssText="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(255,255,255,.06);border:1px solid var(--line);padding:8px 12px;border-radius:10px;backdrop-filter:blur(4px);z-index:99";
+    document.body.appendChild(t); setTimeout(()=>{try{document.body.removeChild(t)}catch(_){}} ,1600);
+  }catch(_){}
+}
 
-/* ===== Honey Log ===== */
-(function(){
-  var KEY="mirrorhoney_honeylog_v1";
-  var song=document.getElementById("hlog-song"), notes=document.getElementById("hlog-notes");
-  var start=document.getElementById("hlog-start"), save=document.getElementById("hlog-save");
-  var timer=document.getElementById("hlog-timer"), list=document.getElementById("hlog-list"), t=0;
-  function fmt(s){return s<10?"0"+s:s}
-  function tick(){ if(t<=0){timer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
-  function render(){ list.innerHTML=""; (lsGet(KEY,"[]")||[]).slice().reverse().forEach(function(e){
-    var c=document.createElement("div"); c.className="card"; c.style.padding="12px";
-    c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div><div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
-    list.appendChild(c);
-  });}
-  document.querySelectorAll('#honey-log [data-addq]').forEach(function(btn){
-    btn.addEventListener("click", async function(){
-      var tag=this.getAttribute("data-addq"), input=song.value.trim(); if(!input) return;
-      await QUEUE.add(input, tag==="AB"?["A","B"]:[tag]);
+/* ===== Logs (Honey/Mirror & Doechii) ===== */
+var LOGS=(function(){
+  var KEY_H="mirrorhoney_honeylog_v2";
+  var KEY_D="mirrorhoney_safechaos_v2";
+  var hSong=document.getElementById("hlog-song"), hNotes=document.getElementById("hlog-notes");
+  var dSong=document.getElementById("dlog-song"), dNotes=document.getElementById("dlog-notes");
+  var hList=document.getElementById("hlog-list"), dList=document.getElementById("dlog-list");
+
+  function entriesH(){ return lsGet(KEY_H,"[]")||[]; }
+  function entriesD(){ return lsGet(KEY_D,"[]")||[]; }
+  function saveH(arr){ lsSet(KEY_H,arr); render(); }
+  function saveD(arr){ lsSet(KEY_D,arr); render(); }
+
+  async function add(where,input,tags){
+    var id=ytIdFrom(input); var meta=id?(await fetchYTMeta(id)||{}):{};
+    var e={id:id,title:(meta.title||input),author:(meta.author||""),thumbnail:(meta.thumbnail||""),tags:tags||[],notes:"",date:timeISO()};
+    if(where==="H"){ var arr=entriesH(); arr.unshift(e); saveH(arr); }
+    else { var arr2=entriesD(); arr2.unshift(e); saveD(arr2); }
+    return e;
+  }
+
+  function renderList(root, arr, which){
+    root.innerHTML="";
+    arr.forEach(function(e, idx){
+      var card=document.createElement("div"); card.className="card"; card.style.padding="12px";
+      var t=document.createElement("div");
+      var tagStr = (e.tags||[]).map(t=> t==="A"?"🍯":t==="B"?"🪞":"🔥").join(" ");
+      t.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+" · "+(tagStr||"untagged")+"</div><div><strong>"+(e.title||e.id||"Untitled")+"</strong>"+(e.author?(" <span class='pill'>— "+e.author+"</span>"):"")+"</div>";
+      var actions=document.createElement("div"); actions.className="row"; actions.style.marginTop="6px";
+      var sel=document.createElement("label"); sel.className="pill"; sel.style.gap="6px";
+      var cb=document.createElement("input"); cb.type="checkbox"; cb.setAttribute("aria-label","Select for rotation");
+      cb.checked = SELECTOR.isSelected(e);
+      cb.onchange=function(){
+        if(cb.checked){ SELECTOR.selectEntry(e); } else { SELECTOR.unselectEntry(e); }
+      };
+      sel.appendChild(cb); sel.appendChild(document.createTextNode("Select for rotation"));
+      var playBtn=document.createElement("button"); playBtn.className="qbtn"; playBtn.textContent="Play now";
+      playBtn.onclick=function(){ ROTATION.playSingle(e); };
+
+      actions.appendChild(sel); actions.appendChild(playBtn);
+      card.appendChild(t); card.appendChild(actions);
+      root.appendChild(card);
     });
-  });
-  song && song.addEventListener("keydown", function(e){
-    if(e.key==="Enter"){ e.preventDefault(); var v=song.value.trim(); if(v) QUEUE.add(v,["A"]); }
-  });
-  start && (start.onclick=function(){ t=5*60; tick(); });
-  save && (save.onclick=function(){ var e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()}; var data=lsGet(KEY,"[]"); data.push(e); lsSet(KEY,data); song.value=""; notes.value=""; render(); });
-  render();
-})();
-
-/* ===== Doechii Log ===== */
-(function(){
-  var KEY="mirrorhoney_safechaos_v1";
-  var song=document.getElementById("dlog-song"), notes=document.getElementById("dlog-notes");
-  var start=document.getElementById("dlog-start"), save=document.getElementById("dlog-save");
-  var timer=document.getElementById("dlog-timer"), list=document.getElementById("dlog-list"), t=0;
-  function fmt(s){return s<10?"0"+s:s}
-  function tick(){ if(t<=0){timer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
-  function render(){ list.innerHTML=""; (lsGet(KEY,"[]")||[]).slice().reverse().forEach(function(e){
-    var c=document.createElement("div"); c.className="card"; c.style.padding="12px";
-    c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div><div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
-    list.appendChild(c);
-  });}
-  document.querySelectorAll('#dlog [data-addq]').forEach(function(btn){
-    btn.addEventListener("click", async function(){
-      var tag=this.getAttribute("data-addq"), input=song.value.trim(); if(!input) return;
-      await QUEUE.add(input, tag==="AB"?["A","B"]:[tag]);
-    });
-  });
-  song && song.addEventListener("keydown", function(e){
-    if(e.key==="Enter"){ e.preventDefault(); var v=song.value.trim(); if(v) QUEUE.add(v,["D"]); }
-  });
-  start && (start.onclick=function(){ t=5*60; tick(); });
-  save && (save.onclick=function(){ var e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()}; var data=lsGet(KEY,"[]"); data.push(e); lsSet(KEY,data); song.value=""; notes.value=""; render(); });
-  render();
-})();
-
-/* ===== Queue Drawer open/close ===== */
-(function(){
-  var open=document.getElementById("openQueue"), drawer=document.getElementById("qdrawer"), close=document.getElementById("q-close");
-  function show(){ drawer.classList.add("open"); drawer.setAttribute("aria-hidden","false"); }
-  function hide(){ drawer.classList.remove("open"); drawer.setAttribute("aria-hidden","true"); }
-  open && (open.onclick=show); close && (close.onclick=hide);
-  document.addEventListener("keydown",function(e){ if(e.key==="Escape") hide(); });
-})();
-
-/* ===== Tagged Queue & Players ===== */
-var QUEUE=(function(){
-  var KEY="mirrorhoney_queue_v7";
-  var items=lsGet(KEY,"[]")||[], filter="ALL", scopeIndex={A:0,B:0,D:0};
-  var qEl=document.getElementById("queue"), status=document.getElementById("q-status");
-  var clearBtn=document.getElementById("q-clear");
-
-  function save(){ lsSet(KEY,items); render(); }
-  function matches(it){ return filter==="ALL" || (it.tags||[]).includes(filter); }
+  }
 
   function render(){
-    qEl.innerHTML="";
-    var vis=items.filter(matches);
-    status.textContent=items.length?("Queue: "+vis.length+" shown / "+items.length+" total"):"Queue empty";
-    vis.forEach(function(it, idx){
-      var wrap=document.createElement("div"); wrap.className="qitem"; wrap.dataset.key=it.id||it.title||String(idx);
-      var img=document.createElement("img"); img.className="qthumb"; img.alt=""; img.src=it.thumbnail||"";
-      var meta=document.createElement("div"); meta.className="qmeta";
-      var title=document.createElement("div"); title.innerHTML="<strong>"+(it.title||it.id||"Untitled")+"</strong>"+(it.author?(" <span class='pillsmall'>— "+it.author+"</span>"):"");
-      var row1=document.createElement("div"); row1.className="qrow";
-      var playA=document.createElement("button"); playA.className="qbtn"; playA.textContent="Play 🍯";
-      var playB=document.createElement("button"); playB.className="qbtn"; playB.textContent="Play 🪞";
-      var toH=document.createElement("button"); toH.className="qbtn"; toH.textContent="→Honey log";
-      var toD=document.createElement("button"); toD.className="qbtn"; toD.textContent="→Chaos log";
-
-      var row2=document.createElement("div"); row2.className="qrow";
-      var tags=document.createElement("span");
-      (it.tags||[]).forEach(function(t){ var s=document.createElement("span"); s.className="tag "+t; s.textContent=(t==="A"?"🍯":t==="B"?"🪞":"🔥"); tags.appendChild(s); });
-      var tagA=document.createElement("button"); tagA.className="qbtn"; tagA.textContent="+🍯";
-      var tagB=document.createElement("button"); tagB.className="qbtn"; tagB.textContent="+🪞";
-      var tagD=document.createElement("button"); tagD.className="qbtn"; tagD.textContent="+🔥";
-      var rmA=document.createElement("button"); rmA.className="qbtn"; rmA.textContent="–🍯";
-      var rmB=document.createElement("button"); rmB.className="qbtn"; rmB.textContent="–🪞";
-      var rmD=document.createElement("button"); rmD.className="qbtn"; rmD.textContent="–🔥";
-      var del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove";
-
-      playA.onclick=function(){ if(it.id){ PLAYERS.load("A",it.id,true); bumpTo("A",it);} };
-      playB.onclick=function(){ if(it.id){ PLAYERS.load("B",it.id,true); bumpTo("B",it);} };
-      toH.onclick=function(){ var s=document.getElementById("hlog-song"), n=document.getElementById("hlog-notes"); if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||""); if(n) n.focus(); };
-      toD.onclick=function(){ var s=document.getElementById("dlog-song"), n=document.getElementById("dlog-notes"); if(!s) return; s.value = it.id ? ("https://youtu.be/"+it.id) : (it.title||""); if(n) n.focus(); };
-      tagA.onclick=function(){ tag(it,"A")}; tagB.onclick=function(){ tag(it,"B")}; tagD.onclick=function(){ tag(it,"D")};
-      rmA.onclick=function(){ untag(it,"A")}; rmB.onclick=function(){ untag(it,"B")}; rmD.onclick=function(){ untag(it,"D")};
-      del.onclick=function(){ var ix=items.indexOf(it); if(ix>-1){ items.splice(ix,1); save(); } };
-
-      // drag & drop vertical
-      wrap.draggable=true;
-      wrap.addEventListener('dragstart',function(e){ e.dataTransfer.effectAllowed="move"; e.dataTransfer.setData('text/plain', wrap.dataset.key); });
-      qEl.addEventListener('dragover',function(e){ e.preventDefault(); });
-      qEl.addEventListener('drop',function(e){
-        e.preventDefault();
-        var fromKey=e.dataTransfer.getData('text/plain');
-        var toKey=(e.target.closest('.qitem')||{}).dataset.key;
-        var from=items.findIndex(function(x,ix){return (x.id||x.title||String(ix))===fromKey});
-        var to=items.findIndex(function(x,ix){return (x.id||x.title||String(ix))===toKey});
-        if(from<0||to<0||from===to) return;
-        var moved=items.splice(from,1)[0]; items.splice(to,0,moved); save();
-      });
-
-      row1.appendChild(playA); row1.appendChild(playB); row1.appendChild(toH); row1.appendChild(toD);
-      row2.appendChild(tags); row2.appendChild(tagA); row2.appendChild(tagB); row2.appendChild(tagD); row2.appendChild(rmA); row2.appendChild(rmB); row2.appendChild(rmD); row2.appendChild(del);
-      meta.appendChild(title); meta.appendChild(row1); meta.appendChild(row2);
-      wrap.appendChild(img); wrap.appendChild(meta);
-      qEl.appendChild(wrap);
-    });
+    renderList(hList, entriesH(), "H");
+    renderList(dList, entriesD(), "D");
+    SELECTOR.renderSlots();
   }
 
-  function tag(it,t){ it.tags=Array.from(new Set([...(it.tags||[]),t])); save(); }
-  function untag(it,t){ it.tags=(it.tags||[]).filter(function(x){return x!==t}); save(); }
-
-  document.querySelectorAll('[data-filter]').forEach(function(btn){
-    btn.addEventListener("click",function(){
-      document.querySelectorAll('[data-filter]').forEach(function(b){ setPressed(b,false); });
-      setPressed(this,true); filter=this.getAttribute("data-filter"); render();
+  // Hook up buttons
+  document.querySelectorAll('[data-addh]').forEach(function(btn){
+    btn.addEventListener("click", async function(){
+      var tag=this.getAttribute("data-addh"); var input=hSong.value.trim(); if(!input) return;
+      var tags=(tag==="AB"?["A","B"]:[tag]); await add("H",input,tags); hSong.value="";
     });
   });
+  document.getElementById("hlog-save").onclick=function(){
+    var arr=entriesH(); if(!arr.length) return;
+    arr[0].notes=hNotes.value.trim(); saveH(arr);
+    hNotes.value="";
+  };
+  (function(){ var t=0; function fmt(s){return s<10?"0"+s:s} function tick(){ if(t<=0){hTimer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; hTimer.textContent=m+":"+fmt(s); setTimeout(tick,1000);} var hTimer=document.getElementById("hlog-timer"); document.getElementById("hlog-start").onclick=function(){ t=5*60; tick(); }; })();
 
-  clearBtn && (clearBtn.onclick=function(){ items=[]; scopeIndex={A:0,B:0,D:0}; save(); });
-
-  function scope(scopeName){ return items.filter(function(it){ return (it.tags||[]).includes(scopeName); }); }
-  function bumpTo(scopeName,it){ var sc=scope(scopeName); var i=sc.findIndex(function(x){return x===it}); scopeIndex[scopeName]=(i<0?0:i); }
-
-  function seek(scopeName,step,loop){
-    var sc=scope(scopeName); if(!sc.length) return null;
-    var i=scopeIndex[scopeName]+step;
-    if(i>=sc.length){ if(loop)i=0; else return null; }
-    if(i<0){ if(loop)i=sc.length-1; else return null; }
-    scopeIndex[scopeName]=i; return sc[i]||null;
-  }
-
-  async function add(input,tags){
-    var id=ytIdFrom(input);
-    var meta=id?(await fetchYTMeta(id)||{}):{};
-    var tgs=Array.from(new Set(tags||[]));
-    var key=id || (meta.title||input).toLowerCase().trim();
-
-    // dedupe/merge
-    var findIndex=items.findIndex(function(x){ return (x.id || (x.title||"").toLowerCase().trim()) === key; });
-    var it;
-    if(findIndex>-1){
-      it = items[findIndex];
-      it.tags = Array.from(new Set([...(it.tags||[]), ...tgs]));
-      if(!it.title) it.title = meta.title || input;
-      if(!it.author) it.author = meta.author || "";
-      if(!it.thumbnail) it.thumbnail = meta.thumbnail || "";
-      items.splice(findIndex,1); items.unshift(it);
-      save();
-    }else{
-      it = { id:id, title:(meta&&meta.title)||input, author:(meta&&meta.author)||"", thumbnail:(meta&&meta.thumbnail)||"", tags:tgs, added:timeISO() };
-      items.unshift(it); save();
-    }
-    document.dispatchEvent(new CustomEvent('mh:queueAdded',{detail:{item:it}}));
-    return it;
-  }
-
-  // export/import
-  var exp=document.getElementById('q-export');
-  var imp=document.getElementById('q-import');
-  var impBtn=document.getElementById('q-import-btn');
-  exp && (exp.onclick=function(){
-    var blob=new Blob([JSON.stringify({
-      queue:items,
-      honey:lsGet('mirrorhoney_honeylog_v1',"[]"),
-      doechii:lsGet('mirrorhoney_safechaos_v1',"[]")
-    },null,2)],{type:'application/json'});
-    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mirrorhoney_export.json'; a.click();
-  });
-  impBtn && (impBtn.onclick=function(){ imp && imp.click(); });
-  imp && (imp.onchange=function(e){
-    var f=e.target.files[0]; if(!f) return;
-    f.text().then(function(txt){
-      try{
-        var j=JSON.parse(txt);
-        if(j.queue){items=j.queue}
-        if(j.honey){localStorage.setItem('mirrorhoney_honeylog_v1',JSON.stringify(j.honey))}
-        if(j.doechii){localStorage.setItem('mirrorhoney_safechaos_v1',JSON.stringify(j.doechii))}
-        save();
-      }catch(_){}
+  document.querySelectorAll('[data-addd]').forEach(function(btn){
+    btn.addEventListener("click", async function(){
+      var tag=this.getAttribute("data-addd"); var input=dSong.value.trim(); if(!input) return;
+      var tags=(tag==="AB"?["A","B"]:[tag]); await add("D",input,tags); dSong.value="";
     });
   });
+  document.getElementById("dlog-save").onclick=function(){
+    var arr=entriesD(); if(!arr.length) return;
+    arr[0].notes=dNotes.value.trim(); saveD(arr);
+    dNotes.value="";
+  };
+  (function(){ var t=0; function fmt(s){return s<10?"0"+s:s} function tick(){ if(t<=0){dTimer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; dTimer.textContent=m+":"+fmt(s); setTimeout(tick,1000);} var dTimer=document.getElementById("dlog-timer"); document.getElementById("dlog-start").onclick=function(){ t=5*60; tick(); }; })();
 
-  // seed on first load
+  // Seed once
   (function seed(){
-    if(localStorage.getItem("mirrorhoney_seeded_v4")==="1") { render(); return; }
+    if(localStorage.getItem("mirrorhoney_seeded_rot_v1")==="1") { render(); return; }
     var seeds=[
-      {url:"https://www.youtube.com/watch?v=cF1Na4AIecM", tags:["A"]}, // Sabrina — Please Please Please
-      {url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", tags:["B"]}, // MARINA — Oh No!
-      {url:"https://www.youtube.com/watch?v=phtcAd8j6Ro", tags:["D"]}  // Doechii — What It Is
+      {where:"H",url:"https://www.youtube.com/watch?v=cF1Na4AIecM", tags:["A"]}, // Sabrina — Please Please Please
+      {where:"H",url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", tags:["B"]}, // MARINA — Oh No!
+      {where:"D",url:"https://www.youtube.com/watch?v=phtcAd8j6Ro", tags:["D"]}  // Doechii — What It Is
     ];
     (async function run(){
-      for (var i=0;i<seeds.length;i++){ await add(seeds[i].url, seeds[i].tags); }
-      localStorage.setItem("mirrorhoney_seeded_v4","1");
+      for (var i=0;i<seeds.length;i++){ await add(seeds[i].where, seeds[i].url, seeds[i].tags); }
+      localStorage.setItem("mirrorhoney_seeded_rot_v1","1");
+      render();
+      // auto-select one per category
+      SELECTOR.autoselectDefaults();
+      ROTATION.ensureDefaultStarted();
     })();
   })();
 
-  render();
-  return {
-    add:add,
-    next:function(s,l){return seek(s,+1,l)},
-    prev:function(s,l){return seek(s,-1,l)},
-    bumpToItem:bumpTo,
-    scopeItems:scope
-  };
+  return { entriesH, entriesD, render };
 })();
 
-/* ===== Players A/B (toggle, loop) ===== */
-var PLAYERS=(function(){
-  var A=null,B=null, cfg={A:{loopTrack:false,loopQueue:true},B:{loopTrack:false,loopQueue:true}};
+/* ===== Selection (up to 3: one per 🍯/🪞/🔥) ===== */
+var SELECTOR=(function(){
+  var KEY="mirrorhoney_selected_v1";
+  var slotsEl=document.getElementById("rotSlots");
+  var selected = lsGet(KEY,'{"A":null,"B":null,"D":null}');
 
+  function isSelected(entry){
+    var cat = (entry.tags||[]).includes("D")?"D":(entry.tags||[]).includes("A")?"A":(entry.tags||[]).includes("B")?"B":null;
+    if(!cat||!entry.id) return false;
+    return selected[cat] && selected[cat].id===entry.id;
+  }
+
+  function selectEntry(entry){
+    var cat=null;
+    if((entry.tags||[]).includes("D")) cat="D";
+    else if((entry.tags||[]).includes("A")) cat="A";
+    else if((entry.tags||[]).includes("B")) cat="B";
+    else {
+      toast("Pick 🍯/🪞/🔥 tag first"); return;
+    }
+    if(!entry.id){ toast("Needs a YouTube link"); return; }
+    selected[cat]={ id:entry.id, title:entry.title||entry.id, tag:cat };
+    lsSet(KEY, selected); renderSlots(); ROTATION.notifySelectionChanged();
+  }
+  function unselect(cat){
+    selected[cat]=null; lsSet(KEY, selected); renderSlots(); ROTATION.notifySelectionChanged();
+  }
+  function unselectEntry(entry){
+    ["A","B","D"].forEach(function(cat){
+      if(selected[cat] && selected[cat].id===entry.id){ selected[cat]=null; }
+    });
+    lsSet(KEY, selected); renderSlots(); ROTATION.notifySelectionChanged();
+  }
+  function current(){ return selected; }
+
+  function renderSlots(){
+    slotsEl.innerHTML="";
+    ["A","B","D"].forEach(function(cat){
+      var s=document.createElement("div"); s.className="slot";
+      var emoji = cat==="A"?"🍯":(cat==="B"?"🪞":"🔥");
+      if(selected[cat]){
+        s.innerHTML = "<span>"+emoji+"</span><b>"+(selected[cat].title||selected[cat].id)+"</b> <span class='x' title='Remove'>✕</span>";
+        s.querySelector(".x").onclick=function(){ unselect(cat); };
+      }else{
+        s.innerHTML = "<span>"+emoji+"</span><span class='pill'>— empty —</span>";
+      }
+      slotsEl.appendChild(s);
+    });
+  }
+
+  function autoselectDefaults(){
+    try{
+      var H=LOGS.entriesH(), D=LOGS.entriesD();
+      var a = H.find(e=>(e.tags||[]).includes("A"));
+      var b = H.find(e=>(e.tags||[]).includes("B"));
+      var d = D.find(e=>(e.tags||[]).includes("D"));
+      if(a) selectEntry(a);
+      if(b) selectEntry(b);
+      if(d) selectEntry(d);
+    }catch(_){}
+  }
+
+  return { selectEntry, unselectEntry, isSelected, renderSlots, current, autoselectDefaults };
+})();
+
+/* ===== Players (two only) ===== */
+var PLAYERS=(function(){
+  var A=null,B=null, loopTrack={A:false,B:false};
   function create(which,elId){
     return new YT.Player(elId,{
-      width:'100%',
-      height:(window.innerWidth<900?'180':'260'),
+      width:'100%', height:(window.innerWidth<900?'180':'260'),
       playerVars:{rel:0,modestbranding:1,playsinline:1},
       events:{
         onReady:function(){ try{ this.setVolume(70); }catch(_){ } },
         onStateChange:function(e){
           var ENDED=(e.data===YT.PlayerState.ENDED || e.data===0);
           if(ENDED){
-            if(cfg[which].loopTrack){ this.playVideo(); return; }
-            if(which==="A"){ window.maybeAutoCrossfadeToB && window.maybeAutoCrossfadeToB(); }
-            var nxt=QUEUE.next(which,cfg[which].loopQueue);
-            if(nxt && nxt.id){ this.loadVideoById(nxt.id); }
+            if(loopTrack[which]){ try{ this.playVideo(); return; }catch(_){ } }
+            ROTATION.onDeckEnded(which);
           }
         }
       }
     });
   }
-
-  function load(which,id,autoPlay){
-    var p = which==="A"?A:B; if(!p) return;
-    p.loadVideoById(id);
-    if(autoPlay!==false){ try{ p.playVideo(); }catch(_){ } }
+  function load(which,id,autoplay){
+    var p=(which==="A"?A:B); if(!p||!id) return;
+    try{ p.loadVideoById(id); if(autoplay!==false){ p.playVideo(); } }catch(_){ }
   }
-
   function toggle(which){
-    var p = which==="A"?A:B; if(!p) return;
-    try{
-      var st=p.getPlayerState();
-      if(st===1){ p.pauseVideo(); return; }
-      if(st===-1 || st===5 || typeof st==="undefined"){
-        var first=(QUEUE.scopeItems(which)[0]||{}).id;
-        if(first){ load(which, first, true); return; }
-      }
-      p.playVideo();
-    }catch(_){}
+    var p=(which==="A"?A:B); if(!p) return;
+    try{ var st=p.getPlayerState(); if(st===1){p.pauseVideo();} else {p.playVideo();} }catch(_){}
   }
+  function mute(which,on){
+    var p=(which==="A"?A:B); if(!p) return;
+    try{ if(on){ p.mute(); } else { p.unMute(); } }catch(_){}
+  }
+  function setVolume(which,val){
+    var p=(which==="A"?A:B); if(!p) return;
+    try{ p.setVolume(val); }catch(_){}
+  }
+  function getVolume(which){
+    var p=(which==="A"?A:B); if(!p) return 0;
+    try{ return p.getVolume(); }catch(_){ return 0; }
+  }
+  function setLoop(which,on){ loopTrack[which]=!!on; }
 
+  // Wire deck buttons
+  document.querySelectorAll('[data-play]').forEach(btn=>btn.onclick=function(){ PLAYERS.toggle(this.getAttribute('data-play')); });
+  document.querySelectorAll('[data-prev]').forEach(btn=>btn.onclick=function(){ ROTATION.prev(); });
+  document.querySelectorAll('[data-next]').forEach(btn=>btn.onclick=function(){ ROTATION.next(); });
+  document.querySelectorAll('[data-mute]').forEach(btn=>btn.onclick=function(){ var w=this.getAttribute('data-mute'); var pressed=this.getAttribute('aria-pressed')==='true'; PLAYERS.mute(w,!pressed); setPressed(this,!pressed); });
+  document.querySelectorAll('[data-looptrack]').forEach(btn=>btn.onclick=function(){ var w=this.getAttribute('data-looptrack'); var on=this.getAttribute('aria-pressed')==='true'; setPressed(this,!on); setLoop(w,!on); });
+
+  // Master header
+  var volA=document.getElementById("volA"), volB=document.getElementById("volB");
+  var muteA=document.getElementById("muteA"), muteB=document.getElementById("muteB");
+  volA.oninput=function(){ setVolume("A", +volA.value); };
+  volB.oninput=function(){ setVolume("B", +volB.value); };
+  muteA.onclick=function(){ var on=muteA.getAttribute('aria-pressed')==='true'; setPressed(muteA,!on); mute("A",!on); };
+  muteB.onclick=function(){ var on=muteB.getAttribute('aria-pressed')==='true'; setPressed(muteB,!on); mute("B",!on); };
+
+  // Create players
   window.onYouTubeIframeAPIReady=function(){ A=create("A","playerA"); B=create("B","playerB"); };
 
-  return { load:load, get:function(w){ return (w==="A"?A:B); }, toggle:toggle };
+  return { load, toggle, mute, setVolume, getVolume };
 })();
 
-/* ===== Crossfader + meters (desktop mix + iOS smart switch) ===== */
+/* ===== Rotation (alternate between 1–3) ===== */
+var ROTATION=(function(){
+  var modeSel=document.getElementById("rotMode");
+  var btnPrev=document.getElementById("rotPrev");
+  var btnPlay=document.getElementById("rotPlay");
+  var btnNext=document.getElementById("rotNext");
+  var loopChk=document.getElementById("rotLoop");
+  var status=document.getElementById("rotStatus");
+
+  var activeDeck="A"; // toggles A ↔ B
+  var list=[]; var i=-1; var playing=false;
+
+  function buildList(){
+    var m=modeSel.value;
+    var H=LOGS.entriesH(), D=LOGS.entriesD();
+    function itemsBy(fn){ var out=[]; H.forEach(e=>{ if(fn(e)) out.push(e); }); D.forEach(e=>{ if(fn(e)) out.push(e); }); return out.filter(e=>e.id); }
+    if(m==="SELECTED"){
+      var sel=SELECTOR.current();
+      list=[];
+      ["A","B","D"].forEach(function(cat){
+        if(sel[cat]) list.push({id:sel[cat].id,title:sel[cat].title, tag:cat});
+      });
+    }else if(m==="CAT_A"){ list = itemsBy(e=>(e.tags||[]).includes("A")).map(e=>({id:e.id,title:e.title,tag:"A"})); }
+    else if(m==="CAT_B"){ list = itemsBy(e=>(e.tags||[]).includes("B")).map(e=>({id:e.id,title:e.title,tag:"B"})); }
+    else if(m==="CAT_D"){ list = itemsBy(e=>(e.tags||[]).includes("D")).map(e=>({id:e.id,title:e.title,tag:"D"})); }
+    else { // CAT_ALL
+      list = itemsBy(e=> (e.tags||[]).some(t=> t==="A"||t==="B"||t==="D")).map(e=>({id:e.id,title:e.title,tag: (e.tags||[]).includes("D")?"D":(e.tags||[]).includes("A")?"A":"B"}));
+    }
+  }
+
+  function label(now){
+    if(!now) return "—";
+    var em = now.tag==="A"?"🍯":now.tag==="B"?"🪞":"🔥";
+    return "Now: "+em+" "+(now.title||now.id);
+  }
+  function labelNext(next){
+    if(!next) return "";
+    var em = next.tag==="A"?"🍯":next.tag==="B"?"🪞":"🔥";
+    return " · Next: "+em+" "+(next.title||next.id);
+  }
+  function updateStatus(){
+    var cur = (i>=0 && list[i])?list[i]:null;
+    var nxt = (list.length? list[(i+1)%list.length] : null);
+    status.textContent = label(cur) + labelNext(nxt);
+  }
+
+  function ensureStartable(){
+    buildList();
+    if(!list.length){ toast("Select tracks or choose a category with items"); return false; }
+    return true;
+  }
+  function startIfStopped(){
+    if(!playing){ next(); playing=true; }
+  }
+
+  function next(){
+    if(!ensureStartable()) return;
+    i = (i+1) % list.length;
+    activeDeck = (activeDeck==="A")?"B":"A";
+    var current = list[i];
+    PLAYERS.load(activeDeck, current.id, true);
+    updateStatus();
+  }
+
+  function prev(){
+    if(!ensureStartable()) return;
+    i = (i-1<0)? (loopChk.checked? (list.length-1) : 0) : (i-1);
+    activeDeck = (activeDeck==="A")?"B":"A";
+    var current = list[i];
+    PLAYERS.load(activeDeck, current.id, true);
+    updateStatus();
+  }
+
+  function togglePlay(){
+    // Play/Pause the currently active deck
+    PLAYERS.toggle(activeDeck);
+  }
+
+  function onDeckEnded(which){
+    // only react if the deck that ended is the *active* one (the one that last loaded)
+    if(which!==activeDeck) return;
+    if(list.length<=1 && loopChk.checked){
+      // single-item loop
+      var cur=list[i]; PLAYERS.load(activeDeck, cur && cur.id, true); return;
+    }
+    // advance
+    if(!list.length) return;
+    if(i===list.length-1 && !loopChk.checked) { playing=false; return; }
+    next();
+  }
+
+  function playSingle(entry){
+    // immediate single play (not changing rotation list)
+    if(!entry || !entry.id) return;
+    // alternate deck to avoid cutting current
+    activeDeck = (activeDeck==="A")?"B":"A";
+    PLAYERS.load(activeDeck, entry.id, true);
+  }
+
+  function notifySelectionChanged(){
+    if(modeSel.value==="SELECTED"){
+      buildList(); updateStatus();
+    }
+  }
+
+  // Wire UI
+  btnPrev.onclick=prev; btnNext.onclick=next; btnPlay.onclick=togglePlay;
+  modeSel.onchange=function(){ buildList(); i=-1; updateStatus(); };
+  loopChk.onchange=function(){ /* state only */ };
+
+  function ensureDefaultStarted(){
+    buildList();
+    if(list.length){ i=-1; next(); playing=true; }
+  }
+
+  // Public
+  return { next, prev, togglePlay, onDeckEnded, playSingle, notifySelectionChanged, ensureDefaultStarted };
+})();
+
+/* ===== Chaos Scatter + Shuffle ===== */
 (function(){
-  var AUTO_KEY="mirrorhoney_autoPlay_v1";
-  var VOL_KEY="mirrorhoney_vols_v1";
-  var XF_KEY="mirrorhoney_xfader_v1";
-  var XFAUTO_KEY="mirrorhoney_autoXfade_v1";
-
-  var $=function(s){ return document.querySelector(s); };
-  var masterPlay=$("#masterPlay"), masterStop=$("#masterStop");
-  var volA=$("#volA"), volB=$("#volB"), xfade=$("#xfader");
-  var xfadeNow=$("#xfadeNow");
-  var autoXfadeToggle=$("#autoXfadeToggle");
-  var autoPlayToggle=$("#autoPlayToggle");
-
-  var vuA=$("#vuA"), vuB=$("#vuB"), vuAVal=$("#vuAVal"), vuBVal=$("#vuBVal");
-  function updateMeters(outA,outB){
-    if(vuA){ vuA.style.width=Math.max(0,Math.min(100,outA))+"%"; vuA.parentElement.parentElement.setAttribute("aria-valuenow", String(Math.round(outA))); }
-    if(vuB){ vuB.style.width=Math.max(0,Math.min(100,outB))+"%"; vuB.parentElement.parentElement.setAttribute("aria-valuenow", String(Math.round(outB))); }
-    if(vuAVal){ vuAVal.textContent=Math.round(outA)+"%"; }
-    if(vuBVal){ vuBVal.textContent=Math.round(outB)+"%"; }
-  }
-
-  // Restore persisted settings
-  try{
-    var vols=lsGet(VOL_KEY,'{"A":70,"B":70}'); volA.value=+vols.A||70; volB.value=+vols.B||70;
-    var xf=lsGet(XF_KEY,'"50"'); xfade.value=+xf||50;
-    var ax=lsGet(XFAUTO_KEY,'"false"'); autoXfadeToggle.checked=(ax==="true");
-    var ap=lsGet(AUTO_KEY,'"true"'); autoPlayToggle.checked=(ap==="true");
-  }catch(_){}
-
-  function baseOut(mix, baseA, baseB){
-    var a=100-mix, b=mix;
-    return {outA:Math.round(a*baseA/100), outB:Math.round(b*baseB/100)};
-  }
-
-  function applyFader(){
-    var pA=PLAYERS.get("A"), pB=PLAYERS.get("B");
-    var mix=+xfade.value, baseVA=+volA.value, baseVB=+volB.value;
-    var o=baseOut(mix, baseVA, baseVB);
-    if(pA && pA.setVolume) try{ pA.setVolume(o.outA); }catch(_){}
-    if(pB && pB.setVolume) try{ pB.setVolume(o.outB); }catch(_){}
-    // meters + persist
-    updateMeters(o.outA, o.outB);
-    lsSet(VOL_KEY,{A:baseVA,B:baseVB}); lsSet(XF_KEY,String(mix));
-  }
-
-  function animateXF(to, ms){
-    var from=+xfade.value; var start=null;
-    function step(ts){
-      if(!start) start=ts;
-      var t=Math.min(1,(ts-start)/ms);
-      xfade.value = Math.round(from + (to-from)*t);
-      applyFader();
-      if(t<1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
-  function ensureDeckLoaded(which){
-    var p=PLAYERS.get(which);
-    try{
-      var st=p.getPlayerState();
-      if(st===-1 || st===5 || typeof st==="undefined"){
-        var first=(QUEUE.scopeItems(which)[0]||{}).id;
-        if(first){ PLAYERS.load(which, first, true); return true; }
-      }
-      return true;
-    }catch(_){ return false; }
-  }
-
-  // Manual crossfade button
-  function crossfadeNow(direction){ // "toA" or "toB"
-    var to = (direction==="toA")?0:100;
-    if(direction==="toB"){ ensureDeckLoaded("B"); try{ PLAYERS.get("B").playVideo(); }catch(_){ } }
-    if(direction==="toA"){ ensureDeckLoaded("A"); try{ PLAYERS.get("A").playVideo(); }catch(_){ } }
-
-    if(isIOS()){
-      // Smart switch: quick out then switch
-      animateXF(to, 600);
-      setTimeout(function(){
-        try{
-          if(direction==="toB"){ PLAYERS.get("A").pauseVideo(); }
-          else { PLAYERS.get("B").pauseVideo(); }
-        }catch(_){}
-      }, 650);
-    }else{
-      animateXF(to, 1800);
+  var SETS=[["raw","wild","glitch","seed","mirror shard","🔥"],["off-script","too true","unboxed","go louder","shadow cut","spark"],["unfinished","stranger","crooked line","noise bloom","flash","trace"]];
+  function scatter(arr){
+    var root=document.getElementById("doechii-chaos-embed"); if(!root) return; while(root.firstChild) root.removeChild(root.firstChild);
+    var fr=arr||SETS[0], sI=Math.min(5,Math.floor(fr.length/2)), w=root.clientWidth, h=root.clientHeight;
+    function put(el,x,y,a,o){ el.style.left=Math.floor(x)+"px"; el.style.top=Math.floor(y)+"px"; el.style.setProperty("--angle",a+"deg"); if(o!=null) el.style.opacity=o; root.appendChild(el);}
+    var seed=document.createElement("div"); seed.className="seed"; seed.textContent=fr[sI]||"seed"; put(seed,w/2,h/2,0,1);
+    for(var i=0;i<fr.length;i++){ if(i===sI) continue; var f=document.createElement("div"); f.className="fragment"; f.textContent=fr[i];
+      var x=Math.random()*w,y=Math.random()*h,a=Math.floor(Math.random()*120-60),o=(0.6+Math.random()*0.4).toFixed(2); put(f,x,y,a,o);
+      f.onmouseenter=function(){this.style.color="#FF3EB5";this.style.textShadow="0 0 10px #FF3EB5"}; f.onmouseleave=function(){this.style.color="";this.style.textShadow=""};
     }
   }
+  window.scatterChaos=scatter; scatter(SETS[0]);
+  window.addEventListener("resize",()=>scatter(SETS[0]),{once:true});
+  var sh=document.getElementById("seed-shuffle"); if(sh){ sh.onclick=()=>scatter(SETS[Math.floor(Math.random()*SETS.length)]); }
+})();
 
-  function maybeAutoCrossfadeToB(){
-    if(!autoXfadeToggle.checked) return;
-    crossfadeNow("toB");
-  }
-  window.maybeAutoCrossfadeToB = maybeAutoCrossfadeToB;
+/* ===== Minimal Tour text ===== */
+(function(){
+  var tour=document.getElementById("tour"), steps=document.getElementById("tourSteps");
+  var content=[
+    ["Honey vs Mirror (the idea)","Honey = sweet pull & body first. Mirror = reflective angle & mind first."],
+    ["Try a song","Paste a link in Honey Log; tag as 🍯/🪞. In Safe Chaos, tag as 🔥."],
+    ["Write one page","Start the 5‑minute timer; circle your seed."],
+    ["Choose up to three","From the saved lists, tick up to three — one per 🍯/🪞/🔥."],
+    ["Alternate loop","Use Rotation controls above. Players are at the bottom; each has Play/Pause, Mute, Loop Track, Prev/Next."]
+  ];
+  function render(){ steps.innerHTML=""; content.forEach(([h,b])=>{ var d=document.createElement('div'); d.className='card'; d.style.padding='12px'; d.innerHTML="<strong>"+h+"</strong><p style='margin:.5rem 0 0'>"+b+"</p>"; steps.appendChild(d); }); }
+  render();
+  document.getElementById("startTour").onclick=function(){ tour.style.display='flex'; };
+  document.getElementById("tourSkip").onclick=function(){ tour.style.display='none'; };
+})();
 
-  // Master controls
-  masterPlay && (masterPlay.onclick=function(){ ["A","B"].forEach(function(w){ PLAYERS.toggle(w); }); });
-  masterStop && (masterStop.onclick=function(){ ["A","B"].forEach(function(w){ var p=PLAYERS.get(w); if(p && p.stopVideo) try{p.stopVideo();}catch(_){ } }); });
-
-  // Sliders + fader
-  volA && (volA.oninput=applyFader);
-  volB && (volB.oninput=applyFader);
-  xfade && (xfade.oninput=applyFader);
-  xfadeNow && (xfadeNow.onclick=function(){
-    var dir = (+xfade.value<50) ? "toB" : "toA";
-    crossfadeNow(dir);
-  });
-
-  autoXfadeToggle && (autoXfadeToggle.onchange=function(){ lsSet(XFAUTO_KEY, autoXfadeToggle.checked?"true":"false"); });
-  autoPlayToggle && (autoPlayToggle.onchange=function(){ lsSet(AUTO_KEY, autoPlayToggle.checked?"true":"false"); });
-
-  // Auto-play on add
-  document.addEventListener("mh:queueAdded", function(e){
-    var it=e.detail && e.detail.item; if(!it || !it.id) return;
-    var auto = true; try{ auto = (lsGet(AUTO_KEY,"\"true\"")==="true"); }catch(_){}
-    if(!auto) return;
-    var tags=it.tags||[];
-    if(tags.indexOf("A")>-1){ PLAYERS.load("A", it.id, true); }
-    else if(tags.indexOf("B")>-1){ PLAYERS.load("B", it.id, true); }
-    setTimeout(applyFader, 50);
-  });
-
-  // Override deck Vol+/– buttons to keep base sliders + meters in sync
-  var btn;
-  btn = document.querySelector('[data-vol="A"]'); if(btn) btn.onclick=function(){ volA.value = Math.max(0, +volA.value - 10); applyFader(); };
-  btn = document.querySelector('[data-volup="A"]'); if(btn) btn.onclick=function(){ volA.value = Math.min(100, +volA.value + 10); applyFader(); };
-  btn = document.querySelector('[data-vol="B"]'); if(btn) btn.onclick=function(){ volB.value = Math.max(0, +volB.value - 10); applyFader(); };
-  btn = document.querySelector('[data-volup="B"]'); if(btn) btn.onclick=function(){ volB.value = Math.min(100, +volB.value + 10); applyFader(); };
-
-  // Mobile audio unlock — prime players on first tap/click
+/* ===== Mobile audio unlock ===== */
+(function(){
   function unlock(){
-    ["A","B"].forEach(function(w){
-      var p=PLAYERS.get(w);
-      if(p && p.mute){ try{ p.mute(); p.playVideo(); p.pauseVideo(); p.unMute(); }catch(_){ } }
-    });
+    try{
+      ["A","B"].forEach(function(w){
+        var p = (w==="A")?PLAYERS.getVolume && PLAYERS.getVolume("A") : PLAYERS.getVolume && PLAYERS.getVolume("B");
+      });
+    }catch(_){}
     document.removeEventListener("touchstart", unlock);
     document.removeEventListener("click", unlock);
-    setTimeout(applyFader, 150);
   }
   document.addEventListener("touchstart", unlock, {once:true});
   document.addEventListener("click", unlock, {once:true});
-
-  // Keyboard shortcuts for fader: 1=🍯, 2=center, 3=🪞, X=crossfade now
-  document.addEventListener("keydown",function(e){
-    if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
-    if(e.key==='1'){ xfade.value=0; applyFader(); }
-    if(e.key==='2'){ xfade.value=50; applyFader(); }
-    if(e.key==='3'){ xfade.value=100; applyFader(); }
-    if(e.key.toLowerCase()==='x'){ var dir=(+xfade.value<50)?"toB":"toA"; crossfadeNow(dir); }
-    if(e.code==='Space'){ e.preventDefault(); var a=document.querySelector('[data-play="A"]'); a && a.click(); }
-    if(e.shiftKey && e.code==='Space'){ e.preventDefault(); var b=document.querySelector('[data-play="B"]'); b && b.click(); }
-  });
-
-  // Initial mix apply on load
-  applyFader();
 })();
 
-/* ===== Guided Tour (unchanged) ===== */
-(function(){
-  var KEY="mirrorhoney_seenTour_v1";
-  var tour=document.getElementById("tour"), stepsBox=document.getElementById("tourSteps");
-  var back=document.getElementById("tourBack"), next=document.getElementById("tourNext"), skip=document.getElementById("tourSkip"), prog=document.getElementById("tourProgress");
-  var steps=[
-    {title:"Honey vs Mirror (the idea)",body:"Honey = sweet pull & body first. Mirror = reflective angle & mind first. You’ll learn to spot each and save one seed."},
-    {title:"Try a song",body:"Paste a YouTube link (or title) in the Honey Log and click Add to 🍯 or 🪞. We’ll fetch the title and thumbnail."},
-    {title:"Write one page",body:"Start the 5-minute timer. Write messy. Circle one sentence — that’s your seed for continuity."},
-    {title:"Dual players + crossfader",body:"Queue songs in 🍯 and 🪞. Use Play/Pause, Loop, and the header crossfader to blend or switch."},
-    {title:"Doechii’s spark",body:"Open the visitor section. Add one wild edge to 🔥, free-write fragments, and keep one seed."}
-  ];
-  var i=0;
-  function renderStep(){
-    stepsBox.innerHTML="";
-    var s=steps[i];
-    var el=document.createElement("div"); el.className="tour-steps";
-    el.innerHTML='\
-    <div class="card" style="border:1px dashed var(--line)"><strong>'+s.title+'</strong><p style="margin:.5rem 0 0">'+s.body+'</p></div>\
-    <div class="card" style="border:1px dashed var(--line)"><em>Tip:</em> Your logs and queue stay on this device. Use Export in the queue to back up.</div>';
-    stepsBox.appendChild(el); prog.textContent=(i+1)+" / "+steps.length; back.disabled=i===0; next.textContent=i===steps.length-1?"Finish":"Next";
-  }
-  function show(){ tour.classList.add("show"); renderStep(); }
-  function hide(){ tour.classList.remove("show"); localStorage.setItem(KEY,"1"); }
-  document.getElementById("startTour").onclick=show;
-  back.onclick=function(){ if(i>0){ i--; renderStep(); } };
-  next.onclick=function(){ if(i<steps.length-1){ i++; renderStep(); } else { hide(); } };
-  skip.onclick=hide;
-  if(localStorage.getItem(KEY)!=="1"){ show(); }
-})();
-
-/* ===== Secret note (unchanged, harmless) ===== */
+/* ===== Secret, bee-coded hint (cryptic) ===== */
 (function secret(){
   var target=document.getElementById("doechii"); if(!target) return;
   var hidden=document.createElement("div");
