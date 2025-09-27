@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Doechii — Safe Chaos Mirror</title>
+<meta name="description" content="A randomized scatter spread that holds one seed fragment.">
+<link rel="canonical" href="/doechii-chaos.html">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+<meta name="theme-color" content="#0B0F19">
+<style>
+  html,body{height:100%}
+  body{margin:0;background:#0B0F19;color:#E6EAF2;font-family:ui-monospace,Menlo,Consolas,monospace;overflow:hidden}
+  .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
+  .fragment:hover{color:#FF3EB5;text-shadow:0 0 10px #FF3EB5}
+  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:#7CD4FF;text-shadow:0 0 12px #7CD4FF;border:2px solid #7CD4FF;padding:.5em 0.7em;border-radius:999px;white-space:nowrap}
+  .spray{position:absolute;inset:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="stage" aria-label="Doechii Chaos Scatter"></div>
+<svg class="spray" viewBox="0 0 100 100" preserveAspectRatio="none">
+  <defs><radialGradient id="g"><stop offset="0" stop-color="#FF3EB5" stop-opacity=".25"/><stop offset="1" stop-color="#FF3EB5" stop-opacity="0"/></radialGradient></defs>
+  <circle id="puff" cx="50" cy="50" r="18" fill="url(#g)" />
+</svg>
+<script>
+  // You can swap these for per-day JSON later
+  var fragments=["raw","wild","unfinished","go louder","stranger","mirror shard","seed","🔥","untamed","glitch","off-script","unboxed","discord","spark"];
+  var seedIndex=5; // "mirror shard" as default seed
+  var stage=document.getElementById("stage");
+  var w=window.innerWidth,h=window.innerHeight;
+
+  function scatter(){
+    for(var i=0;i<fragments.length;i++){
+      if(i===seedIndex){
+        var seed=document.createElement("div");
+        seed.className="seed";
+        seed.textContent=fragments[i];
+        stage.appendChild(seed);
+      }else{
+        var el=document.createElement("div");
+        el.className="fragment";
+        el.textContent=fragments[i];
+        el.style.left=Math.floor(Math.random()*w)+"px";
+        el.style.top=Math.floor(Math.random()*h)+"px";
+        el.style.setProperty("--angle",Math.floor(Math.random()*120-60)+"deg");
+        el.style.opacity=(0.6+Math.random()*0.4).toFixed(2);
+        stage.appendChild(el);
+      }
+    }
+  }
+
+  function puff(){
+    // very light ambient “spray” pulse
+    var svg=document.querySelector(".spray");
+    var p=svg.querySelector("#puff");
+    var x=Math.random()*100,y=Math.random()*100;
+    p.setAttribute("cx",x);p.setAttribute("cy",y);
+    p.setAttribute("r",12+Math.random()*22);
+  }
+
+  scatter();
+  setInterval(puff,1200);
+
+  window.addEventListener("resize",function(){
+    w=window.innerWidth;h=window.innerHeight;
+    while(stage.firstChild) stage.removeChild(stage.firstChild);
+    scatter();
+  });
+</script>
+</body>
+</html>
