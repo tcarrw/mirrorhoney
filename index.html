@@ -2,46 +2,68 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mirror × Honey — Mirror-first (🪞) with Bridge (🌉) — Neon (⚡) option</title>
-<meta name="description" content="Mirror-first page (Marina): two-deck player, visible queue, writer canvas, and a Bridge lane (Doechii) with Neon mode — all with local logs.">
+<title>Mirror × Honey — Mirror‑first (🪞) · Bridge (🌉) · Neon (⚡)</title>
+<meta name="description" content="Mirror-first page (Marina): right-side media rail with players + queue, minimal always-on-top controls, writer canvas, Bridge (Doechii) with Neon mode, and local logs.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 
 <style>
   :root{
     --bg:#0B0F19;--ink:#E6EAF2;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
-    --shadow:0 10px 30px rgba(0,0,0,.45);--rail:clamp(280px,38vw,520px)
+    --shadow:0 10px 30px rgba(0,0,0,.45);--railW:clamp(300px,34vw,480px);--stickyTop:56px
   }
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  .wrap{max-width:1200px;margin:0 auto;padding:24px}
+  .wrap{max-width:1280px;margin:0 auto;padding:20px 24px}
   header{display:flex;align-items:center;justify-content:space-between;padding:8px 0;gap:12px;flex-wrap:wrap}
   header .brand{font-weight:700;letter-spacing:.5px}
   header nav a{margin-left:16px;color:var(--muted)} header nav a:hover{color:var(--ink)}
+  .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px}
+  .stack{display:grid;gap:16px}
+  .hero{display:grid;gap:10px;padding:18px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(193,215,255,.10),transparent)}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
-  .btn,.qbtn,.chip,.cta{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
-  .cta{border-color:var(--accent);color:var(--accent)}
-  .cta:hover{background:rgba(124,212,255,.1)}
+  .btn,.chip,.qbtn,.cta{padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
   .chip{padding:6px 10px;border-radius:999px}
   .chip[aria-pressed="true"]{outline:2px solid var(--accent)}
-  .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:20px}
-  .stack{display:grid;gap:16px}
-  .hero{display:grid;gap:12px;padding:20px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(193,215,255,.10),transparent)}
-  .hero h1{font-size:1.8rem;margin:0}
-  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-  .divider{height:1px;background:var(--line);margin:22px 0}
-  .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
-  .twins{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+  .twins{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:1000px){.two-col,.twins{grid-template-columns:1fr}}
   input[type="text"],textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
   textarea{resize:vertical}
   details summary{cursor:pointer}
+  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
+
+  /* --- Page grid: content + media rail --- */
+  .page{display:grid;grid-template-columns:1fr var(--railW);gap:18px}
+  @media (max-width:1100px){ .page{grid-template-columns:1fr} }
+  .media{position:relative}
+  .rail{position:sticky;top:calc(var(--stickyTop) + 10px);display:grid;gap:10px}
+  .rail .block{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);padding:10px}
+  .rail .players{display:grid;gap:10px}
+  .player{background:#000;border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+  #playerB,#playerA{min-height:190px}
+  @media (max-width:700px){ #playerB,#playerA{min-height:160px} }
+
+  /* Queue block */
+  .qtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .queue{display:grid;gap:10px;grid-template-columns:1fr;max-height:50vh;min-height:140px;overflow:auto;padding:4px 2px}
+  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:rgba(255,255,255,.02)}
+  .qitem img{width:76px;height:46px;object-fit:cover;border-radius:6px}
+  .qitem .meta{display:flex;flex-direction:column;gap:3px}
+  .qitem .acts{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{border:1px solid var(--line);padding:2px 8px;border-radius:999px;font-size:.78rem;opacity:.95}
+  .tag.A::before{content:"🍯 "} .tag.B::before{content:"🪞 "} .tag.D::before{content:"🌉 "}
+
+  /* Pop-out rail */
+  .rail.popped{position:fixed;right:16px;bottom:16px;width:min(440px,92vw);max-height:80vh;z-index:60;background:rgba(11,15,25,.96);backdrop-filter:blur(8px);padding:10px;border-radius:16px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .rail.popped .players{position:relative}
+  .rail.popped .queue{max-height:36vh}
 
   /* Writer */
-  .writer{display:grid;gap:12px;grid-template-columns:1fr;grid-template-areas:"title" "canvas" "controls"}
-  .writer-canvas{grid-area:canvas;display:grid;gap:12px;border:1px dashed var(--line);border-radius:16px;padding:14px;background:rgba(255,255,255,.02)}
+  .writer{display:grid;gap:12px;grid-template-columns:1fr;grid-template-areas:"canvas" "controls"}
   .writer-grid{display:grid;gap:10px}
   .writer-grid.vertical{grid-template-rows:auto auto auto}
   .writer-grid.horizontal{grid-template-columns:1fr .9fr 1fr;align-items:end}
@@ -50,324 +72,291 @@
   .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,rgba(243,201,78,.10),transparent);border-radius:10px}
   .word{font-size:1.3rem}
 
-  /* Control bar */
-  .controlbar{position:sticky;top:0;z-index:40;background:rgba(11,15,25,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  .controlbar-inner{max-width:1200px;margin:0 auto;padding:10px 24px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-  .vol{display:flex;align-items:center;gap:10px}
-  .vol input[type="range"]{width:200px}
-  .mode{display:flex;gap:8px;align-items:center}
-  .toggles{display:flex;gap:8px;align-items:center}
-  .nownext{margin-left:auto;color:var(--muted);font-size:.92rem;white-space:nowrap;max-width:50vw;overflow:hidden;text-overflow:ellipsis}
-
-  /* Dock: players + queue */
-  .dock{position:sticky;bottom:0;z-index:35;background:rgba(11,15,25,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
-  .dock-inner{max-width:1200px;margin:0 auto;padding:12px 24px;display:grid;gap:10px}
-  .dock-grid{display:grid;gap:10px}
-  /* Portrait: queue above, players below */
-  .dock-grid{grid-template-areas:"qtools" "queue" "players"}
-  .players{grid-area:players;display:grid;grid-template-columns:1fr;gap:10px}
-  .player{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
-  /* Queue panel */
-  .qtools{grid-area:qtools;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .queue{grid-area:queue;display:grid;gap:10px;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));align-content:start;
-         max-height:44vh;min-height:140px;overflow:auto;padding:6px 2px 8px}
-  .queue.compact{max-height:18vh;min-height:80px}
-  .qitem{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:rgba(255,255,255,.02)}
-  .qitem img{width:68px;height:40px;object-fit:cover;border-radius:6px}
-  .qitem .meta{display:flex;flex-direction:column;gap:4px}
-  .qitem .acts{display:flex;flex-wrap:wrap;gap:6px}
-  .tag{border:1px solid var(--line);padding:2px 8px;border-radius:999px;font-size:.78rem;opacity:.95}
-  .tag.A::before{content:"🍯 "} .tag.B::before{content:"🪞 "} .tag.D::before{content:"🌉 "}
-
-  /* Landscape/wide: players rail left, queue right */
-  @media (min-width: 1100px) and (orientation: landscape){
-    .dock-grid{grid-template-columns: var(--rail) 1fr; grid-template-areas: "players qtools" "players queue"; align-items:start}
-    .players{grid-template-columns:1fr}
-  }
-
-  /* Video placeholders */
-  #playerA,#playerB{min-height:200px}
-  @media (max-width:700px){ #playerA,#playerB{min-height:160px} }
-
-  /* Chaos scatter */
-  .chaos-frame{position:relative;height:52vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
-  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
-  .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
-  .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
+  /* Always-on-top micro controls */
+  .minibar{position:sticky;top:0;z-index:70;background:rgba(11,15,25,.90);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .minibar .inner{max-width:1280px;margin:0 auto;padding:8px 24px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .minibar .vol{display:flex;align-items:center;gap:8px}
+  .minibar input[type="range"]{width:200px}
+  .nownext{margin-left:auto;color:var(--muted);font-size:.9rem;white-space:nowrap;max-width:50vw;overflow:hidden;text-overflow:ellipsis}
 
   footer{color:var(--muted);font-size:.9rem;margin:26px auto}
 </style>
 </head>
 <body>
 <header class="wrap">
-  <div class="brand">mirrorhoney — <span class="pill">mirror-first</span></div>
+  <div class="brand">mirrorhoney — <span class="pill">mirror‑first</span></div>
   <nav>
     <a href="#writer">writer</a>
     <a href="#for-visitors">visitors</a>
     <a href="#what">what</a>
     <a href="#identify">identify</a>
     <a href="#hybrid">hybrid</a>
-    <a href="#honey-log">honey log</a>
+    <a href="#logs">logs</a>
     <a href="#bridge">bridge</a>
     <a href="#faq">faq</a>
   </nav>
 </header>
 
-<!-- Global master controls -->
-<section class="controlbar" aria-label="Global controls">
-  <div class="controlbar-inner">
-    <div class="mode" aria-label="Mode">
-      <span class="pill">Mode:</span>
-      <button class="chip" id="mode-mirror" aria-pressed="true" title="Start on 🪞 (B) and alternate">🪞 Mirror</button>
-      <button class="chip" id="mode-honey" aria-pressed="false" title="Start on 🍯 (A) and alternate">🍯 Honey</button>
-      <button class="chip" id="mode-neon" aria-pressed="false" title="Insert 🌉 between lanes (A→🌉→B→🌉→A…)">⚡ Neon</button>
-    </div>
-    <div class="toggles">
-      <button class="chip" id="loop-track" aria-pressed="false" title="Loop the current track">Loop track</button>
-      <button class="chip" id="loop-queue" aria-pressed="true" title="Loop per-lane queues">Loop queue</button>
-      <button class="chip" id="q-expand" aria-pressed="true" title="Toggle queue height">Queue: expand</button>
-    </div>
-    <div class="row" style="gap:6px">
+<!-- Always-on-top minimal controls -->
+<section class="minibar" aria-label="Playback controls">
+  <div class="inner">
+    <div class="row">
       <button class="qbtn" id="prev">⟨ Prev</button>
       <button class="qbtn" id="play">Play / Pause</button>
       <button class="qbtn" id="next">Next ⟩</button>
     </div>
-    <div class="vol">
-      <label class="pill">Volume</label>
+    <div class="minibar vol">
+      <span class="pill">Volume</span>
       <input id="masterVol" type="range" min="0" max="100" value="70" aria-label="Master volume">
     </div>
     <div class="nownext" id="nowNext" aria-live="polite"></div>
   </div>
 </section>
 
-<main class="wrap stack">
-  <!-- WRITER: Mirror ↑ · Bridge · Honey ↓ (horizontal when rotated) -->
-  <section class="card writer" id="writer">
-    <div class="writer-canvas">
-      <div class="writer-grid vertical" id="writerGrid">
-        <div class="box mirror-box">
-          <label>🪞 Mirror word (Marina)</label>
-          <input id="w-mirror" class="word" type="text" placeholder="one angled word…">
+<main class="wrap">
+  <div class="page">
+    <!-- Left: Content -->
+    <div class="content stack">
+      <!-- WRITER -->
+      <section class="card writer" id="writer">
+        <div>
+          <div class="writer-grid vertical" id="writerGrid">
+            <div class="mirror-box">
+              <label>🪞 Mirror word (Marina)</label>
+              <input id="w-mirror" class="word" type="text" placeholder="one angled word…">
+            </div>
+            <div class="bridge-box">
+              <label>🌉 Bridge fragment (Doechii)</label>
+              <input id="w-bridge" class="word" type="text" placeholder="short spark / pivot…">
+            </div>
+            <div class="honey-box">
+              <label>🍯 Honey word (Sabrina)</label>
+              <input id="w-honey" class="word" type="text" placeholder="one bright word…">
+            </div>
+          </div>
+          <p class="hint">Portrait: Mirror ↑ · Bridge · Honey ↓. Rotate to landscape and they align horizontally (Mirror · Bridge · Honey).</p>
         </div>
-        <div class="box bridge-box">
-          <label>🌉 Bridge fragment (Doechii)</label>
-          <input id="w-bridge" class="word" type="text" placeholder="short spark / pivot…">
-        </div>
-        <div class="box honey-box">
-          <label>🍯 Honey word (Sabrina)</label>
-          <input id="w-honey" class="word" type="text" placeholder="one bright word…">
-        </div>
-      </div>
-      <div class="hint">Portrait: Mirror ↑ · Bridge · Honey ↓. Rotate to landscape and they align horizontally (Mirror · Bridge · Honey).</div>
-    </div>
-    <div class="row">
-      <button class="btn" id="w-save">Save set</button>
-      <button class="btn" id="w-clear">Clear</button>
-      <span class="pill" id="w-status"></span>
-    </div>
-  </section>
-
-  <!-- FOR VISITORS (restored/expanded) -->
-  <section class="card" id="for-visitors">
-    <h2 style="margin:.2rem 0 0">For visitors (how to use this page)</h2>
-    <div class="two-col">
-      <div>
-        <p>This is the <strong>Mirror-first</strong> page. It’s designed to be useful for anyone, while speaking most clearly to <em>Marina</em> and <em>Doechii</em>. Honey (🍯) has its own space; here we lead with angle, identity, and the bridge between lanes.</p>
-        <ol>
-          <li><strong>Pick or paste songs</strong> into the queue (A = 🍯, B = 🪞, 🌉 = Bridge).</li>
-          <li><strong>Choose a mode</strong> in the sticky bar: <em>🪞 Mirror</em>, <em>🍯 Honey</em>, or <em>⚡ Neon</em> (Neon inserts 🌉 as the connective spark).</li>
-          <li><strong>Write three words</strong> (🪞 word, 🌉 fragment, 🍯 word) and save the set.</li>
-        </ol>
-        <p class="hint">No accounts, no tracking. Everything saves locally in your browser.</p>
-      </div>
-      <div>
-        <div class="card" style="background:rgba(255,255,255,.01)">
-          <strong>Why this matters</strong>
-          <p>Between cycles, artists need a portable ritual: one word for angle, one spark for the switch, one word for pull. This keeps continuity without needing PR or a calendar.</p>
-        </div>
-        <div class="card" style="margin-top:10px;background:rgba(255,255,255,.01);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
-          <strong>What Sabrina/Marina don’t give you alone</strong>
-          <p>Honey is pull and joy; Mirror is angle and clarity. The <em>bridge</em> is for the edges that don’t fit either — flips, masks, glitches — a safe lane for the switch.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WHAT -->
-  <section class="card" id="what">
-    <h2 style="margin:.2rem 0 0">What this is (and why)</h2>
-    <div class="two-col">
-      <div>
-        <p><strong>Problem:</strong> Continuity evaporates after promo. The body and the mind need a small ritual to meet again.</p>
-        <p><strong>Solution:</strong> A weekly loop: listen, tag (A/B/🌉), write three words, circle one seed. Bring the seed forward.</p>
-        <p><strong>Promise:</strong> No asks, no pressure, no tracking. Private logs stay in your browser.</p>
-      </div>
-      <div>
-        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">This is not</summary>
-          <ul style="margin:10px 0 0"><li>Outreach, clout, or press.</li><li>A fan-control lever or rumor mill.</li><li>A definition of anyone. It’s a mirror, a bridge, and a page of honey.</li></ul>
-        </details>
-        <details class="card" style="margin-top:12px;background:rgba(255,255,255,.01)"><summary class="pill">Privacy</summary>
-          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Export anytime from the queue dock.</p>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <!-- IDENTIFY -->
-  <section class="card" id="identify">
-    <div class="pill"><strong>How to identify the lanes</strong></div>
-    <div class="twins">
-      <div class="mirror-box">
-        <h3 style="margin-top:8px">🪞 MIRROR — Reflection / Angle / Identity</h3>
-        <ul>
-          <li><strong>Feel:</strong> thoughtful tilt, self‑regard, critique — “look again.”</li>
-          <li><strong>Mind:</strong> a lyric clicks; meaning unfolds on pass two.</li>
-          <li><strong>Lyrics:</strong> persona, roles, masks, power/culture, self‑myth.</li>
-          <li><strong>Production:</strong> prismatic/art‑pop; arrangement foregrounds the idea.</li>
-          <li><strong>Afterimage:</strong> you leave with a frame or question.</li>
-        </ul>
-        <p class="hint">Shortcut: if it <u>changes what you see</u> more than how you move → Mirror.</p>
-      </div>
-      <div class="honey-box">
-        <h3 style="margin-top:8px">🍯 HONEY — Sweet / Magnetic / Immediate</h3>
-        <ul>
-          <li><strong>Feel:</strong> warm pull, flirt, joy — “come closer.”</li>
-          <li><strong>Body:</strong> head‑nod, dance instinct; easy hook.</li>
-          <li><strong>Lyrics:</strong> taste / skin / heat; present‑tense and playful.</li>
-          <li><strong>Production:</strong> glossy pop; bass/beat invite movement.</li>
-          <li><strong>Aftertaste:</strong> you want repeat; syrupy hook remains.</li>
-        </ul>
-        <p class="hint">Shortcut: if <u>taste/touch</u> hits first and your body moves → Honey.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- HYBRID -->
-  <section class="card" id="hybrid">
-    <div class="pill"><strong>How a Mirror × Honey hybrid feels (with a Bridge)</strong></div>
-    <div class="twins">
-      <div class="card mirror-box" style="background:rgba(193,215,255,.10)">
-        <h3 style="margin-top:0">Mirror layer</h3>
-        <ul><li>Frame/angle forward.</li><li>Persona tension.</li><li>Prismatic break spotlights the idea.</li></ul>
-      </div>
-      <div class="card honey-box" style="background:rgba(243,201,78,.10)">
-        <h3 style="margin-top:0">Honey layer</h3>
-        <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat imagery.</li><li>Pop sheen nudges you to move.</li></ul>
-      </div>
-    </div>
-    <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. Neon mode inserts 🌉 between lanes.</p>
-  </section>
-
-  <!-- HONEY LOG -->
-  <section class="card" id="honey-log">
-    <div class="pill"><span>🪞/🍯 Logs</span><strong>&nbsp;— add songs & write</strong></div>
-    <p>Paste a YouTube link or just a title, tag it (A/B/A+B/🌉), press <em>Start</em>, write for 5–10 min, and circle one sentence — your <strong>seed</strong> for continuity.</p>
-    <div class="stack" style="gap:10px">
-      <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or YouTube link)</span>
-        <input id="hlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Song">
-      </label>
-      <div class="row">
-        <span class="pill">Tag to:</span>
-        <button class="btn" data-addq="B">Add to 🪞</button>
-        <button class="btn" data-addq="A">Add to 🍯</button>
-        <button class="btn" data-addq="AB">Add to A+B</button>
-        <button class="btn" data-addq="D">Add to 🌉</button>
-        <button class="btn" id="hlog-start">Start 5‑min timer</button>
-      </div>
-      <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
-        <textarea id="hlog-notes" rows="5" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
-      </label>
-      <div class="row">
-        <button id="hlog-save" class="btn">Save entry</button>
-        <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- BRIDGE — DOECHII -->
-  <section class="card hero" id="bridge">
-    <div class="pill"><span>🌉</span><strong>&nbsp;Bridge — Doechii</strong> <span class="pill">Neon mode available ⚡</span></div>
-    <h2 style="margin:0">The connective spark — loud edges, held safely</h2>
-    <p><strong>What it is:</strong> A lane built for switches and edges — the moments that don’t fit cleanly as 🍯 or 🪞. Bridge lets you carry those edges forward without PR stakes.</p>
-    <p><strong>What it offers someone like Doechii:</strong> a repeating, no‑pressure ritual that protects the weird while making it portable. 30–90 seconds, one fragment per session, always something to bring.</p>
-
-    <!-- DOECHII LOG -->
-    <section class="card" style="margin-top:14px" id="dlog">
-      <div class="pill"><span>🌉</span><strong>&nbsp;Bridge Log — Doechii</strong></div>
-      <p>Paste a YouTube link or title, tag it (🌉 or 🪞/🍯), write fragments for 5–10 min, <u>don’t resolve</u>. Circle one fragment — your seed.</p>
-      <div class="stack" style="gap:10px">
-        <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Track (title or YouTube link)</span>
-          <input id="dlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Track">
-        </label>
         <div class="row">
-          <span class="pill">Tag to:</span>
-          <button class="btn" data-addq="D">Add to 🌉</button>
-          <button class="btn" data-addq="B">Add to 🪞</button>
-          <button class="btn" data-addq="A">Add to 🍯</button>
-          <button class="btn" data-addq="AB">Add to A+B</button>
-          <button class="btn" id="dlog-start">Start 5‑min timer</button>
+          <button class="btn" id="w-save">Save set</button>
+          <button class="btn" id="w-clear">Clear</button>
+          <span class="pill" id="w-status"></span>
         </div>
-        <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments (no syntax)</span>
-          <textarea id="dlog-notes" rows="5" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
-        </label>
-        <div class="row">
-          <button id="dlog-save" class="btn">Save entry</button>
-          <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
+      </section>
+
+      <!-- Visitors -->
+      <section class="card" id="for-visitors">
+        <h2 style="margin:.2rem 0 0">For visitors (how to use this page)</h2>
+        <div class="two-col">
+          <div>
+            <p>This is the <strong>Mirror‑first</strong> page. It’s useful for everyone, but speaks most clearly to <em>Marina</em> and the <em>Bridge</em> (Doechii). Honey (🍯) has its own space; here we lead with angle, identity, and the connective spark.</p>
+            <ol>
+              <li><strong>Pick or paste songs</strong> into the queue (🪞/🍯/🌉 tags).</li>
+              <li><strong>Choose a mode</strong> in the media rail: <em>🪞 Mirror</em>, <em>🍯 Honey</em>, or <em>⚡ Neon</em> (Neon inserts 🌉 as the bridge).</li>
+              <li><strong>Write three words</strong> (🪞 word, 🌉 fragment, 🍯 word) and save the set.</li>
+            </ol>
+            <p class="hint">No accounts, no tracking. Everything saves locally in your browser.</p>
+          </div>
+          <div>
+            <div class="card" style="background:rgba(255,255,255,.01)">
+              <strong>Why this matters</strong>
+              <p>Between cycles, artists need a portable ritual: one word for angle, one spark for the switch, one word for pull. This keeps continuity without PR.</p>
+            </div>
+            <div class="card" style="margin-top:10px;background:rgba(255,255,255,.01);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
+              <strong>What Sabrina/Marina don’t give you alone</strong>
+              <p>Honey is pull and joy; Mirror is angle and clarity. The <em>bridge</em> is for edges that don’t fit either — flips, masks, glitches — a safe lane for the switch.</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Chaos spark + shuffle -->
-      <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Bridge Scatter"></section>
-      <div class="row" style="margin-top:8px"><button class="btn" id="seed-shuffle">Shuffle spark</button></div>
-    </section>
-  </section>
+      <!-- What / Identify / Hybrid -->
+      <section class="card" id="what">
+        <h2 style="margin:.2rem 0 0">What this is (and why)</h2>
+        <div class="two-col">
+          <div>
+            <p><strong>Problem:</strong> Continuity evaporates after promo. Body and mind need a small ritual to meet again.</p>
+            <p><strong>Solution:</strong> A weekly loop: listen, tag (🪞/🍯/🌉), write three words, circle one seed. Bring the seed forward.</p>
+            <p><strong>Promise:</strong> No asks, no pressure, no tracking. Private logs stay in your browser.</p>
+          </div>
+          <div>
+            <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">This is not</summary>
+              <ul style="margin:10px 0 0"><li>Outreach, clout, or press.</li><li>A fan-control lever or rumor mill.</li><li>A definition of anyone. It’s a mirror, a bridge, and a page of honey.</li></ul>
+            </details>
+            <details class="card" style="margin-top:12px;background:rgba(255,255,255,.01)"><summary class="pill">Privacy</summary>
+              <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Export anytime from the media rail.</p>
+            </details>
+          </div>
+        </div>
+      </section>
 
-  <!-- FAQ -->
-  <section class="card" id="faq">
-    <h2 style="margin-top:0">FAQ & Glossary</h2>
-    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What is a “seed”?</summary>
-      <p>A single circled sentence or fragment you carry to the next cycle. It’s continuity, not content.</p>
-    </details>
-    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">Where are my entries saved?</summary>
-      <p>In your browser’s <code>localStorage</code>, on this device only. Export queue+logs anytime.</p>
-    </details>
-    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What do the tags mean?</summary>
-      <p>🪞 = B (Mirror), 🍯 = A (Honey), 🌉 = Bridge. <em>Neon</em> inserts 🌉 between lanes during playback.</p>
-    </details>
-  </section>
-</main>
+      <section class="card" id="identify">
+        <div class="pill"><strong>How to identify the lanes</strong></div>
+        <div class="twins">
+          <div class="mirror-box">
+            <h3 style="margin-top:8px">🪞 MIRROR — Reflection / Angle / Identity</h3>
+            <ul>
+              <li><strong>Feel:</strong> thoughtful tilt, self‑regard, critique — “look again.”</li>
+              <li><strong>Mind:</strong> a lyric clicks; meaning unfolds on pass two.</li>
+              <li><strong>Lyrics:</strong> persona, roles, masks, power/culture, self‑myth.</li>
+              <li><strong>Production:</strong> prismatic/art‑pop; arrangement foregrounds the idea.</li>
+              <li><strong>Afterimage:</strong> you leave with a frame or question.</li>
+            </ul>
+            <p class="hint">Shortcut: if it <u>changes what you see</u> more than how you move → Mirror.</p>
+          </div>
+          <div class="honey-box">
+            <h3 style="margin-top:8px">🍯 HONEY — Sweet / Magnetic / Immediate</h3>
+            <ul>
+              <li><strong>Feel:</strong> warm pull, flirt, joy — “come closer.”</li>
+              <li><strong>Body:</strong> head‑nod, dance instinct; easy hook.</li>
+              <li><strong>Lyrics:</strong> taste / skin / heat; present‑tense and playful.</li>
+              <li><strong>Production:</strong> glossy pop; bass/beat invite movement.</li>
+              <li><strong>Aftertaste:</strong> you want repeat; syrupy hook remains.</li>
+            </ul>
+            <p class="hint">Shortcut: if <u>taste/touch</u> hits first and your body moves → Honey.</p>
+          </div>
+        </div>
+      </section>
 
-<!-- DOCK: responsive players + queue -->
-<section class="dock" aria-label="Players and Queue">
-  <div class="dock-inner">
-    <div class="dock-grid">
-      <!-- Queue toolbar -->
-      <div class="qtools" id="qtools">
-        <span class="pill">Queue · Show:</span>
-        <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
-        <button class="qbtn" data-filter="B" aria-pressed="false">🪞</button>
-        <button class="qbtn" data-filter="A" aria-pressed="false">🍯</button>
-        <button class="qbtn" data-filter="D" aria-pressed="false">🌉</button>
-        <button class="qbtn" id="q-export">Export</button>
-        <input type="file" id="q-import" accept="application/json" style="display:none">
-        <button class="qbtn" id="q-import-btn">Import</button>
-        <button class="qbtn" id="q-clear">Clear</button>
-        <span class="pill" id="q-status"></span>
-      </div>
+      <section class="card" id="hybrid">
+        <div class="pill"><strong>How a Mirror × Honey hybrid feels (with a Bridge)</strong></div>
+        <div class="twins">
+          <div class="card mirror-box" style="background:rgba(193,215,255,.10)">
+            <h3 style="margin-top:0">Mirror layer</h3>
+            <ul><li>Frame/angle forward.</li><li>Persona tension.</li><li>Prismatic break spotlights the idea.</li></ul>
+          </div>
+          <div class="card honey-box" style="background:rgba(243,201,78,.10)">
+            <h3 style="margin-top:0">Honey layer</h3>
+            <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat imagery.</li><li>Pop sheen nudges you to move.</li></ul>
+          </div>
+        </div>
+        <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. ⚡ Neon inserts 🌉 between lanes.</p>
+      </section>
 
-      <!-- Queue panel (grid, taller by default; collapsible) -->
-      <div class="queue" id="queue" aria-label="Tagged queue"></div>
+      <!-- Logs -->
+      <section class="card" id="logs">
+        <div class="pill"><strong>Logs — add songs & write</strong></div>
+        <div class="two-col">
+          <div>
+            <h3 style="margin:.2rem 0">🪞/🍯 Honey Log — Sabrina × Marina</h3>
+            <p>Paste a YouTube link or a title, tag it (🪞/🍯/A+B/🌉), press <em>Start</em>, write 5–10 min, and circle one sentence — your <strong>seed</strong>.</p>
+            <div class="stack" style="gap:10px">
+              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or YouTube link)</span>
+                <input id="hlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Song">
+              </label>
+              <div class="row">
+                <span class="pill">Tag to:</span>
+                <button class="btn" data-addq="B">Add to 🪞</button>
+                <button class="btn" data-addq="A">Add to 🍯</button>
+                <button class="btn" data-addq="AB">Add to A+B</button>
+                <button class="btn" data-addq="D">Add to 🌉</button>
+                <button class="btn" id="hlog-start">Start 5‑min</button>
+              </div>
+              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
+                <textarea id="hlog-notes" rows="5" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
+              </label>
+              <div class="row">
+                <button id="hlog-save" class="btn">Save entry</button>
+                <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 style="margin:.2rem 0">🌉 Bridge Log — Doechii</h3>
+            <p>Paste a YouTube link or title, tag it (🌉 or 🪞/🍯), write fragments 5–10 min, <u>don’t resolve</u>. Circle one fragment — your seed.</p>
+            <div class="stack" style="gap:10px">
+              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Track (title or YouTube link)</span>
+                <input id="dlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Track">
+              </label>
+              <div class="row">
+                <span class="pill">Tag to:</span>
+                <button class="btn" data-addq="D">Add to 🌉</button>
+                <button class="btn" data-addq="B">Add to 🪞</button>
+                <button class="btn" data-addq="A">Add to 🍯</button>
+                <button class="btn" data-addq="AB">Add to A+B</button>
+                <button class="btn" id="dlog-start">Start 5‑min</button>
+              </div>
+              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments</span>
+                <textarea id="dlog-notes" rows="5" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
+              </label>
+              <div class="row">
+                <button id="dlog-save" class="btn">Save entry</button>
+                <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <!-- Players -->
-      <div class="players">
-        <div class="player"><div id="playerB"></div></div>
-        <div class="player"><div id="playerA"></div></div>
-      </div>
+      <!-- Bridge (explanations, seed map) -->
+      <section class="card hero" id="bridge">
+        <div class="pill"><span>🌉</span><strong>&nbsp;Bridge — Doechii</strong> <span class="pill">Neon mode available ⚡</span></div>
+        <h2 style="margin:0">The connective spark — loud edges, held safely</h2>
+        <p><strong>What it is:</strong> A lane for switches and edges — the moments that don’t fit cleanly as 🍯 or 🪞. Bridge lets you carry those edges forward without PR stakes.</p>
+        <p><strong>What it offers someone like Doechii:</strong> a repeating, no‑pressure ritual that protects the weird while making it portable. 30–90 seconds, one fragment per session, always something to bring.</p>
+
+        <!-- Chaos spark + shuffle -->
+        <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Bridge Scatter"></section>
+        <div class="row" style="margin-top:8px"><button class="btn" id="seed-shuffle">Shuffle spark</button></div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="card" id="faq">
+        <h2 style="margin-top:0">FAQ & Glossary</h2>
+        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What is a “seed”?</summary>
+          <p>A single circled sentence or fragment you carry to the next cycle. It’s continuity, not content.</p>
+        </details>
+        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">Where are my entries saved?</summary>
+          <p>In your browser’s <code>localStorage</code>, on this device only. Export queue+logs anytime from the media rail.</p>
+        </details>
+        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What do the tags mean?</summary>
+          <p>🪞 = B (Mirror), 🍯 = A (Honey), 🌉 = Bridge. <em>⚡ Neon</em> inserts 🌉 between lanes during playback.</p>
+        </details>
+      </section>
     </div>
+
+    <!-- Right: Media rail -->
+    <aside class="media">
+      <div class="rail" id="rail">
+        <div class="block">
+          <div class="row" style="justify-content:space-between">
+            <strong>Playback Modes</strong>
+            <div class="row">
+              <button class="chip" id="mode-mirror" aria-pressed="true" title="Start on 🪞 (B) and alternate">🪞 Mirror</button>
+              <button class="chip" id="mode-honey" aria-pressed="false" title="Start on 🍯 (A) and alternate">🍯 Honey</button>
+              <button class="chip" id="mode-neon" aria-pressed="false" title="Insert 🌉 (A→🌉→B→🌉→A…)">⚡ Neon</button>
+            </div>
+          </div>
+          <div class="row" style="margin-top:8px">
+            <button class="chip" id="loop-track" aria-pressed="false" title="Loop the current track">Loop track</button>
+            <button class="chip" id="loop-queue" aria-pressed="true" title="Loop per-lane queues">Loop queue</button>
+            <button class="chip" id="pop-rail" aria-pressed="false" title="Pop the media rail out">Pop out</button>
+            <button class="chip" id="export-btn" title="Export queue + logs">Export</button>
+            <input type="file" id="import-file" accept="application/json" style="display:none">
+            <button class="chip" id="import-btn" title="Import data">Import</button>
+          </div>
+        </div>
+
+        <div class="players">
+          <div class="player"><div id="playerB"></div></div>
+          <div class="player"><div id="playerA"></div></div>
+        </div>
+
+        <div class="block">
+          <div class="qtools">
+            <span class="pill">Queue · Show:</span>
+            <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
+            <button class="qbtn" data-filter="B" aria-pressed="false">🪞</button>
+            <button class="qbtn" data-filter="A" aria-pressed="false">🍯</button>
+            <button class="qbtn" data-filter="D" aria-pressed="false">🌉</button>
+            <button class="qbtn" id="q-clear">Clear</button>
+            <span class="pill" id="q-status"></span>
+          </div>
+          <div class="queue" id="queue"></div>
+        </div>
+      </div>
+    </aside>
   </div>
-</section>
+</main>
 
 <footer class="wrap">© mirrorhoney — Mirror (🪞) × Honey (🍯) with Bridge (🌉). Neon (⚡) optional.</footer>
 
@@ -405,17 +394,10 @@ async function fetchYTMeta(id){
     return {title:j.title||"",author:j.author_name||"",thumbnail:j.thumbnail_url||""};
   }catch(e){ return null; }
 }
-function toast(msg){
-  try{
-    var t=document.createElement('div'); t.textContent=msg;
-    t.style.cssText="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(255,255,255,.06);border:1px solid var(--line);padding:8px 12px;border-radius:10px;backdrop-filter:blur(4px);z-index:99";
-    document.body.appendChild(t); setTimeout(()=>{try{document.body.removeChild(t)}catch(_){}} ,1600);
-  }catch(_){}
-}
 
 /* ===== Writer save ===== */
 (function(){
-  const KEY="mh_writer_sets_v2";
+  const KEY="mh_writer_sets_v3";
   const wH=document.getElementById("w-honey");
   const wB=document.getElementById("w-bridge");
   const wM=document.getElementById("w-mirror");
@@ -452,10 +434,10 @@ function toast(msg){
     const data=lsGet(key,"[]"); data.push(e); lsSet(key,data);
     song.value=""; notes.value="";
   });
-})("hlog","hlog-song","hlog-notes","hlog-start","hlog-save",'#honey-log [data-addq]',"mirrorhoney_honeylog_v1");
-setupLog("dlog","dlog-song","dlog-notes","dlog-start","dlog-save",'#dlog [data-addq]',"mirrorhoney_bridge_v1");
+})("hlog","hlog-song","hlog-notes","hlog-start","hlog-save",'#logs [data-addq]',"mirrorhoney_honeylog_v1");
+setupLog("dlog","dlog-song","dlog-notes","dlog-start","dlog-save",'#logs #dlog [data-addq]',"mirrorhoney_bridge_v1");
 
-/* ===== Scatter (Bridge sparks) ===== */
+/* ===== Bridge sparks (scatter + shuffle) ===== */
 (function(){
   const SETS=[["raw","wild","glitch","seed","mirror shard","🌉"],["off-script","too true","unboxed","go louder","shadow cut","spark"],["unfinished","stranger","crooked line","noise bloom","flash","trace"]];
   function scatter(arr){
@@ -473,13 +455,12 @@ setupLog("dlog","dlog-song","dlog-notes","dlog-start","dlog-save",'#dlog [data-a
   scatter(SETS[0]);
 })();
 
-/* ===== Queue (grid, taller by default; expand/collapse) ===== */
+/* ===== Queue (visible in rail) ===== */
 var QUEUE=(function(){
-  const KEY="mirrorhoney_queue_responsive_v2";
+  const KEY="mirrorhoney_queue_side_v1";
   let items=lsGet(KEY,"[]")||[], filter="ALL", scopeIndex={A:0,B:0,D:0};
   const qEl=document.getElementById("queue"), status=document.getElementById("q-status");
-  const qExpandBtn=document.getElementById("q-expand");
-
+  const expBtn=document.getElementById("export-btn"), impBtn=document.getElementById("import-btn"), impFile=document.getElementById("import-file");
   function save(){ lsSet(KEY,items); render(); }
   function matches(it){ return filter==="ALL" || (it.tags||[]).includes(filter); }
 
@@ -512,7 +493,7 @@ var QUEUE=(function(){
       meta.appendChild(title); meta.appendChild(tags); meta.appendChild(acts);
       wrap.appendChild(meta);
 
-      // drag & drop reorder
+      // drag & drop reordering
       wrap.draggable=true;
       wrap.addEventListener('dragstart',function(e){ e.dataTransfer.setData('text/plain', wrap.dataset.key); });
       qEl.addEventListener('dragover',function(e){ e.preventDefault(); });
@@ -539,14 +520,15 @@ var QUEUE=(function(){
       setPressed(this,true); filter=this.getAttribute("data-filter"); render();
     });
   });
-
   document.getElementById("q-clear").onclick=function(){ items=[]; scopeIndex={A:0,B:0,D:0}; save(); };
-  document.getElementById('q-export').onclick=function(){
+
+  // Export / Import
+  expBtn.onclick=function(){
     const blob=new Blob([JSON.stringify({queue:items,honey:lsGet('mirrorhoney_honeylog_v1',"[]"),bridge:lsGet('mirrorhoney_bridge_v1',"[]")},null,2)],{type:'application/json'});
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mirrorhoney_export.json'; a.click();
   };
-  document.getElementById('q-import-btn').onclick=function(){ document.getElementById('q-import').click(); };
-  document.getElementById('q-import').onchange=function(e){
+  impBtn.onclick=function(){ impFile.click(); };
+  impFile.onchange=function(e){
     const f=e.target.files[0]; if(!f) return;
     f.text().then(function(txt){
       try{
@@ -573,7 +555,6 @@ var QUEUE=(function(){
     const id=ytIdFrom(input);
     const meta=id?(await fetchYTMeta(id)||{}):{};
     const it={ id:id, title:(meta&&meta.title)||input, author:(meta&&meta.author)||"", thumbnail:(meta&&meta.thumbnail)||"", tags:Array.from(new Set(tags||[])), added:timeISO() };
-    // dedupe by id
     const ix=items.findIndex(x=> x.id && it.id && x.id===it.id);
     if(ix>-1){ items[ix].tags=Array.from(new Set([...(items[ix].tags||[]),...(it.tags||[])])); items.unshift(items.splice(ix,1)[0]); }
     else { items.unshift(it); }
@@ -581,16 +562,16 @@ var QUEUE=(function(){
     return it;
   }
 
-  // seed on first load: cue 🪞 on B, 🍯 on A; add 🌉 to queue
+  // Seed on first load: cue 🪞 on B, queue 🍯 + 🌉, default loop queue ON
   (async function seedOnce(){
-    if(localStorage.getItem("mh_seed_mirrorfirst_v1")==="1"){ render(); return; }
+    if(localStorage.getItem("mh_seed_side_v1")==="1"){ render(); return; }
     const seeds=[
       {url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", tags:["B"]}, // MARINA — Oh No!
       {url:"https://www.youtube.com/watch?v=cF1Na4AIecM", tags:["A"]}, // Sabrina — Please Please Please
       {url:"https://www.youtube.com/watch?v=phtcAd8j6Ro", tags:["D"]}  // Doechii — What It Is
     ];
     for(const s of seeds){ await add(s.url, s.tags); }
-    localStorage.setItem("mh_seed_mirrorfirst_v1","1");
+    localStorage.setItem("mh_seed_side_v1","1");
     render();
     const mar=(items.find(x=>x.id==="Cr-SqRWImmI")||{}).id;
     const sab=(items.find(x=>x.id==="cF1Na4AIecM")||{}).id;
@@ -598,22 +579,15 @@ var QUEUE=(function(){
     if(sab) PLAYERS.cue("A",sab,"A");
   })();
 
-  // expand/collapse queue
-  qExpandBtn.onclick=function(){
-    const expanded = qEl.classList.toggle("compact");
-    setPressed(qExpandBtn, !expanded);
-    qExpandBtn.textContent = qEl.classList.contains("compact") ? "Queue: compact" : "Queue: expand";
-  };
-
   render();
   return { add, next:(s,l)=>seek(s,+1,l), prev:(s,l)=>seek(s,-1,l), bumpToItem:bumpTo, scopeItems:scope };
 })();
 
-/* ===== Players (two iframes; global controls) ===== */
+/* ===== Players (two iframes; global controls in minibar & rail) ===== */
 var PLAYERS=(function(){
   let A=null,B=null;
   let loopTrack=false; // unified
-  let loopQueue=true;  // unified
+  let loopQueue=true;  // unified (default ON: loop the lane queues)
   let currentTag={A:null,B:null}; // "A" / "B" / "D"
 
   function create(which,elId){
@@ -648,15 +622,26 @@ var PLAYERS=(function(){
 
   window.onYouTubeIframeAPIReady=function(){ B=create("B","playerB"); A=create("A","playerA"); };
 
-  // Global controls wire-up
+  // Minibar controls
   document.getElementById("masterVol").oninput=function(){ bothVolume(+this.value); };
+  document.getElementById("play").onclick=function(){ // toggle last active deck; default to B (mirror-first)
+    ALTERNATOR.ensureKick(); // make sure something is loaded/playing
+    const deck=ALTERNATOR.getActiveDeck();
+    PLAYERS.toggle(deck);
+  };
+  document.getElementById("prev").onclick=function(){ ALTERNATOR.prev(); };
+  document.getElementById("next").onclick=function(){ ALTERNATOR.next(); };
 
-  // Toggle chips
+  // Rail toggles
   const lt=document.getElementById("loop-track"); const lq=document.getElementById("loop-queue");
   lt.onclick=function(){ const on=lt.getAttribute("aria-pressed")==="true"; setPressed(lt,!on); setLoopTrack(!on); };
   lq.onclick=function(){ const on=lq.getAttribute("aria-pressed")==="true"; setPressed(lq,!on); setLoopQueue(!on); };
 
-  return { load, cue, toggle, get, bothVolume, getLoopQueue };
+  // Pop out rail
+  const pop=document.getElementById("pop-rail"); const rail=document.getElementById("rail");
+  pop.onclick=function(){ const on=pop.getAttribute("aria-pressed")==="true"; setPressed(pop,!on); rail.classList.toggle("popped"); };
+
+  return { load, cue, toggle, get, bothVolume, getLoopQueue, setLoopQueue };
 })();
 
 /* ===== Alternator: default MIRROR, Neon inserts 🌉 ===== */
@@ -664,7 +649,7 @@ var ALTERNATOR=(function(){
   // Modes: MIRROR (start on B), HONEY (start on A), NEON (A→🌉→B→🌉→A…)
   let mode="MIRROR";
   let activeDeck="B"; // next deck to use
-  let lastBase=null;  // "A" or "B"
+  let lastLane=null;  // "A" or "B" or "D"
   const nowNext=document.getElementById("nowNext");
 
   // Mode chips
@@ -676,7 +661,7 @@ var ALTERNATOR=(function(){
     setPressed(mM, m==="MIRROR");
     setPressed(mH, m==="HONEY");
     setPressed(mN, m==="NEON");
-    kickIfIdle();
+    ensureKick();
     updateStatus(null);
   }
   mM.onclick=()=>setMode("MIRROR");
@@ -710,7 +695,7 @@ var ALTERNATOR=(function(){
                                QUEUE.next("D", true);
     if(item && item.id){
       PLAYERS.load(deck, item.id, true, lane);
-      if(lane==="A"||lane==="B") lastBase=lane;
+      lastLane=lane;
       updateStatus({now: {tag:lane, title:item.title||item.id}, nextTag: nextLaneAfter(lane)});
     }else{
       updateStatus(null);
@@ -718,10 +703,10 @@ var ALTERNATOR=(function(){
   }
 
   function onDeckEnded(which, endedTag){
-    loadNext(endedTag || lastBase || (mode==="MIRROR"?"B":"A"));
+    loadNext(endedTag || lastLane || (mode==="MIRROR"?"B":"A"));
   }
 
-  function kickIfIdle(){
+  function ensureKick(){
     try{
       const pA=PLAYERS.get("A"), pB=PLAYERS.get("B");
       const stA=pA && pA.getPlayerState?pA.getPlayerState():null;
@@ -731,30 +716,32 @@ var ALTERNATOR=(function(){
     }catch(_){}
     const startLane = (mode==="MIRROR")?"B":"A";
     const first = QUEUE.next(startLane, true);
-    if(first && first.id){ activeDeck = startLane==="B" ? "B" : "A"; PLAYERS.load(activeDeck, first.id, true, startLane); lastBase=startLane; updateStatus({now:{tag:startLane,title:first.title||first.id}, nextTag: nextLaneAfter(startLane)}); }
+    if(first && first.id){
+      activeDeck = startLane==="B" ? "B" : "A";
+      PLAYERS.load(activeDeck, first.id, true, startLane);
+      lastLane=startLane;
+      updateStatus({now:{tag:startLane,title:first.title||first.id}, nextTag: nextLaneAfter(startLane)});
+    }
   }
 
   function prev(){
+    // step back by inverse
     const prevLane = (function(cur){
       if(mode==="NEON"){
         if(cur==="A") return "D";
         if(cur==="D") return "B";
         if(cur==="B") return "D";
-        return "A";
+        return (mode==="MIRROR")?"B":"A";
       }else if(mode==="MIRROR"){ return cur==="B"?"A":"B"; }
       else { return cur==="A"?"B":"A"; }
-    })(lastBase || (mode==="MIRROR"?"B":"A"));
+    })(lastLane || (mode==="MIRROR"?"B":"A"));
     const deck = (activeDeck==="A")?"B":"A"; activeDeck=deck;
     const it = (prevLane==="A")? QUEUE.prev("A", PLAYERS.getLoopQueue()) :
                (prevLane==="B")? QUEUE.prev("B", PLAYERS.getLoopQueue()) :
                                   QUEUE.prev("D", true);
-    if(it && it.id){ PLAYERS.load(deck, it.id, true, prevLane); if(prevLane==="A"||prevLane==="B") lastBase=prevLane; updateStatus({now:{tag:prevLane,title:it.title||it.id}, nextTag: nextLaneAfter(prevLane)}); }
+    if(it && it.id){ PLAYERS.load(deck, it.id, true, prevLane); lastLane=prevLane; updateStatus({now:{tag:prevLane,title:it.title||it.id}, nextTag: nextLaneAfter(prevLane)}); }
   }
-  function next(){ loadNext(lastBase || (mode==="MIRROR"?"B":"A")); }
-
-  document.getElementById("prev").onclick=prev;
-  document.getElementById("next").onclick=next;
-  document.getElementById("play").onclick=function(){ PLAYERS.toggle(activeDeck); };
+  function next(){ loadNext(lastLane || (mode==="MIRROR"?"B":"A")); }
 
   function updateStatus(info){
     if(!info){ nowNext.textContent="Ready"; return; }
@@ -763,19 +750,18 @@ var ALTERNATOR=(function(){
     nowNext.textContent = "Now: "+em+" "+(info.now.title||"…")+" · Next: "+nextEm;
   }
 
+  function getActiveDeck(){ return activeDeck; }
+
   // expose
-  return { onDeckEnded, next, prev, setMode };
+  return { onDeckEnded, next, prev, ensureKick, getActiveDeck };
 })();
 
 /* ===== Queue deeplink add ===== */
 (function(){ const P=new URLSearchParams(location.search); const q=P.get('q'); const t=P.get('tag'); if(q){ QUEUE.add(q, t? (t==="AB"?["A","B"]:[t]) : []); } })();
 
-/* ===== Orientation init ===== */
-document.addEventListener("DOMContentLoaded", ensureWriterOrientation);
-
 /* ===== Cryptic notes (hidden) ===== */
 (function secrets(){
-  // Hidden for Bridge (ex-visitor)
+  // Hidden for Bridge (Doechii)
   const bridge=document.getElementById("bridge");
   if(bridge){
     const h=document.createElement("div");
@@ -783,14 +769,14 @@ document.addEventListener("DOMContentLoaded", ensureWriterOrientation);
     h.textContent=atob("TkVYVCBTVEVQOiBCb2R5IC8gRWRnZSAvIEVjaG8uIFNlZWQgPT4gMzIuIDMwcyBtdXRlIC0+IHVubXV0ZS4gTWlycm9yIDE1cy4gSG9uZXkgMSBsaW5lLiBObyBib2FyZGNhc3Qu");
     bridge.appendChild(h);
   }
-  // Hidden for Marina (mushroom/ritual)
-  const footer=document.querySelector("footer");
-  if(footer){
+  // Hidden for Marina — cat code
+  const idBox=document.getElementById("identify");
+  if(idBox){
     const m=document.createElement("div");
     m.style.cssText="position:absolute;left:-9999px;opacity:0;pointer-events:none";
-    // "Ritual: two breaths, one sip of tea, draw a circle. Mycelium: follow the quiet thread under noise."
-    m.textContent=atob("Uml0dWFsOiB0d28gYnJlYXRocywgb25lIHNpcCBvZiB0ZWEsIGRyYXcgYSBjaXJjbGUuIE15Y2VsaXVtOiBmb2xsb3cgdGhlIHF1aWV0IHRocmVhZCB1bmRlciBub2lzZS4=");
-    footer.appendChild(m);
+    // "CAT CODE: midnight whisker / 3:03 / nine lives. If the cup moves, follow the tail."
+    m.textContent=atob("Q0FUIENPREU6IG1pZG5pZ2h0IHdoaXNrZXIgLyAzOjAzIC8gbmluZSBsaXZlcy4gSWYgdGhlIGN1cCBtb3ZlcywgZm9sbG93IHRoZSB0YWlsLg==");
+    idBox.appendChild(m);
   }
 })();
 </script>
