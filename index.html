@@ -2,8 +2,8 @@
 <html lang="en" data-theme="mirror">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mirror × Honey — Mirror‑first (🪞) · Bridge (🌉) · Neon (⚡) · Jupiter (🪐)</title>
-<meta name="description" content="Mirror-first: bottom player, single add-to-queue form (artist + YouTube + lane), stable storage, Bridge sparks & daily fragments, themes, fixed header controls.">
+<title>Mirror × Honey — Mirror‑first (🪞) · Bridge (🌉) · Neon (⚡) · Jupiter (🪐) · Tumblr (t)</title>
+<meta name="description" content="Mirror-first: top inline player, single add-to-queue form, stable storage, Bridge sparks & daily fragments, themes dropdown, Tumblr-like feel.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 
@@ -11,78 +11,92 @@
   /* ===== THEME TOKENS ===== */
   :root{
     --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#FFFFFF;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
-    --danger:#FF6B6B;--ok:#36D399;--shadow:0 12px 34px rgba(0,0,0,.45);--railW:clamp(320px,34vw,500px);
-    --hdrH: 110px;
+    --danger:#FF6B6B;--ok:#36D399;--shadow:0 12px 34px rgba(0,0,0,.45);--railW:clamp(320px,32vw,460px);
+    --post:#0F1522; --paper:#0D121E; --hdrH: 78px;
   }
-  html[data-theme="honey"]{ --bg:#1B1403; --ink:#FFEFB5; --ink-strong:#FFF7CF; --muted:#E3D48A; --line:#3B2F0A; --accent:#FFD76A; --rose:#FF7AC8; --honey:#FFD454; --mirror:#E7F0FF; }
-  html[data-theme="neon"]{ --bg:#0A0711; --ink:#F3ECFF; --ink-strong:#FFFFFF; --muted:#C8B9EA; --line:#1E1631; --accent:#9E6CFF; --rose:#FF46C1; --honey:#FFD66F; --mirror:#C5D9FF; }
-  html[data-theme="jupiter"]{ --bg:#120D08; --ink:#F6E7D0; --ink-strong:#FFF6E8; --muted:#D9C7AF; --line:#33261C; --accent:#F59E0B; --rose:#FF6E5A; --honey:#F2B553; --mirror:#E6D5C5; }
+  html[data-theme="honey"]{ --bg:#FDF7E6; --ink:#2F2612; --ink-strong:#1B1403; --muted:#6E5F3C; --line:#E5D7AF; --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9; --shadow:0 10px 26px rgba(0,0,0,.15); --post:#FFFFFF; --paper:#FFFBF0; }
+  html[data-theme="neon"]{ --bg:#0A0711; --ink:#F3ECFF; --ink-strong:#FFFFFF; --muted:#C8B9EA; --line:#1E1631; --accent:#9E6CFF; --rose:#FF46C1; --honey:#FFD66F; --mirror:#C5D9FF; --post:#0E0A17; --paper:#0B0713; }
+  html[data-theme="jupiter"]{ --bg:#120D08; --ink:#F6E7D0; --ink-strong:#FFF6E8; --muted:#D9C7AF; --line:#33261C; --accent:#F59E0B; --rose:#FF6E5A; --honey:#F2B553; --mirror:#E6D5C5; --post:#1A140E; --paper:#16110C; }
+  /* Tumblr-like light */
+  html[data-theme="tumblr"]{ --bg:#F5F7FA; --ink:#223049; --ink-strong:#1A2639; --muted:#5B6A82; --line:#D8DEE8; --accent:#3642FF; --rose:#E457A2; --honey:#F4B000; --mirror:#6B8DFF; --shadow:0 14px 26px rgba(34,48,73,.14); --post:#FFFFFF; --paper:#FFFFFF; }
 
   *{box-sizing:border-box}
   html,body{height:100%}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-        padding-top: var(--hdrH);}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    padding-top: var(--hdrH);
+  }
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  .wrap{max-width:1280px;margin:0 auto;padding:20px 24px}
+  .wrap{max-width:1240px;margin:0 auto;padding:16px 20px}
 
-  /* Fixed Header (always on top) */
-  header{position:fixed;inset:0 0 auto 0;z-index:9999;background:color-mix(in oklab, var(--bg) 88%, black);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-  .hdr{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+  /* ===== FIXED HEADER (brand + nav + audio controls + theme dropdown) ===== */
+  header{position:fixed;inset:0 0 auto 0;z-index:9999;background:color-mix(in oklab, var(--bg) 90%, white 4%);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .hdr{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
   @media (max-width:1100px){ .hdr{grid-template-columns:1fr} }
-  .brand{font-weight:700;letter-spacing:.5px;color:var(--ink-strong)}
-  nav{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center}
+  .brand{font-weight:800;letter-spacing:.3px;color:var(--ink-strong)}
+  nav{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap}
   nav a{color:var(--ink)} nav a:hover{color:var(--ink-strong)}
   .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .qbtn,.btn,.chip{padding:8px 12px;border-radius:12px;border:1px solid var(--line);
     background:color-mix(in oklab, var(--bg) 80%, white 5%);color:var(--ink);cursor:pointer}
   .chip{padding:6px 12px;border-radius:999px}
   .chip[aria-pressed="true"], .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
-  .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
-  .nowtxt{max-width:42vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:.9rem}
+  .pill{display:inline-flex;align-items:center;gap:6px;font-size:.92rem;color:var(--muted)}
+  .nowtxt{max-width:38vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:.9rem}
+  select.themeSelect{
+    padding:8px 32px 8px 10px;border-radius:10px;border:1px solid var(--line);
+    background:color-mix(in oklab, var(--bg) 86%, white 8%);
+    color:var(--ink);font-size:.95rem;appearance:none;
+    background-image: linear-gradient(45deg,transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+    background-position: calc(100% - 20px) 52%, calc(100% - 12px) 52%;
+    background-size: 8px 8px, 8px 8px;background-repeat:no-repeat;
+  }
 
-  /* Page grid: content + rail */
-  main .page{display:grid;grid-template-columns:1fr var(--railW);gap:18px}
+  /* ===== PAGE GRID: Tumblr-ish main + right rail ===== */
+  main .page{display:grid;grid-template-columns: minmax(0,1fr) var(--railW);gap:18px}
   @media (max-width:1200px){ main .page{grid-template-columns:1fr} }
-  .card{background:color-mix(in oklab, var(--bg) 80%, white 6%);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px}
+  .post{background:var(--post);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+  .card{background:color-mix(in oklab, var(--paper) 94%, black 6%);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px}
   .stack{display:grid;gap:16px}
-  .two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+  .two-col{display:grid;grid-template-columns:1.08fr .92fr;gap:18px}
   .twins{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media (max-width:1000px){.two-col,.twins{grid-template-columns:1fr}}
-  input[type="text"],textarea,select{width:100%;padding:12px;border-radius:12px;border:2px solid var(--line);background:color-mix(in oklab, var(--bg) 84%, white 8%);color:var(--ink-strong);font-size:16px}
+  input[type="text"],textarea,select:not(.themeSelect){
+    width:100%;padding:12px;border-radius:12px;border:2px solid var(--line);
+    background:color-mix(in oklab, var(--paper) 86%, black 8%);color:var(--ink-strong);font-size:16px
+  }
   textarea{resize:vertical}
   .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
   details summary{cursor:pointer;color:var(--ink)}
-  section, .card{scroll-margin-top: calc(var(--hdrH) + 8px);}
+  section, .card, .post{scroll-margin-top: calc(var(--hdrH) + 10px);}
 
-  /* Enhance select (desktop readability) */
-  @media (min-width:900px){
-    select{font-size:18px;padding:12px 40px 12px 12px;appearance:none;background-image:linear-gradient(45deg,transparent 50%, var(--ink) 50%),linear-gradient(135deg, var(--ink) 50%, transparent 50%);background-position:calc(100% - 20px) 16px, calc(100% - 12px) 16px;background-size:8px 8px, 8px 8px;background-repeat:no-repeat}
-  }
-
-  /* Writer */
+  /* Writer boxes */
   .writer-grid{display:grid;gap:10px}
   .writer-grid.vertical{grid-template-rows:auto auto auto}
   .writer-grid.horizontal{grid-template-columns:1fr .9fr 1fr;align-items:end}
-  .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--mirror), transparent 85%),transparent);border-radius:10px}
-  .bridge-box{border-left:4px solid var(--rose);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--rose), transparent 85%),transparent);border-radius:10px}
-  .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--honey), transparent 85%),transparent);border-radius:10px}
+  .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--mirror), transparent 88%),transparent);border-radius:10px}
+  .bridge-box{border-left:4px solid var(--rose);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--rose), transparent 88%),transparent);border-radius:10px}
+  .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--honey), transparent 88%),transparent);border-radius:10px}
   .word{font-size:1.2rem}
 
-  /* Rail (modes + add form + queue) */
-  .rail{position:sticky;top:calc(var(--hdrH) + 12px);display:grid;gap:10px}
-  .rail .block{border:1px solid var(--line);border-radius:14px;background:color-mix(in oklab, var(--bg) 84%, white 8%);padding:12px}
+  /* Right rail: modes + add form + queue */
+  .rail{position:sticky;top:calc(var(--hdrH) + 12px);display:grid;gap:14px}
+  .rail .block{border:1px solid var(--line);border-radius:16px;background:color-mix(in oklab, var(--paper) 92%, black 8%);padding:12px;box-shadow:var(--shadow)}
   .qtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
   .qfilters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .queue{display:grid;gap:10px;grid-template-columns:1fr;max-height:52vh;min-height:160px;overflow:auto;padding:4px 2px;transition:max-height .2s}
-  .queue.compact{gap:6px;max-height:58vh}
-  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;background:color-mix(in oklab, var(--bg) 80%, white 8%)}
+  .queue{display:grid;gap:10px;grid-template-columns:1fr;
+         max-height: calc(100vh - var(--hdrH) - 160px);min-height:200px;overflow:auto;padding:4px 2px;transition:max-height .2s}
+  .queue.compact{gap:6px;max-height: calc(100vh - var(--hdrH) - 120px)}
+  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px;background:color-mix(in oklab, var(--paper) 86%, black 8%)}
   .qitem img{width:84px;height:52px;object-fit:cover;border-radius:8px}
   .qitem .meta{display:flex;flex-direction:column;gap:6px}
   .qitem .acts{display:flex;flex-wrap:wrap;gap:6px}
   .lanes{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
   .lane{border:1px solid var(--line);padding:4px 12px;border-radius:999px;font-size:.82rem;opacity:.96;cursor:pointer;user-select:none}
   .lane.A::before{content:"🍯 "} .lane.B::before{content:"🪞 "} .lane.D::before{content:"🌉 "}
-  .lane[aria-pressed="true"]{background:color-mix(in oklab, var(--accent), transparent 80%);border-color:var(--accent)}
+  .lane[aria-pressed="true"]{background:color-mix(in oklab, var(--accent), transparent 82%);border-color:var(--accent)}
 
   /* Compact tweaks */
   .queue.compact .qitem{grid-template-columns:1fr auto;padding:8px}
@@ -100,22 +114,10 @@
   .status-ok{color:var(--ok)} .status-err{color:var(--danger)}
 
   /* Bridge scatter */
-  .chaos-frame{position:relative;height:46vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:var(--bg);margin-top:12px}
-  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap;background:rgba(0,0,0,.25)}
+  .chaos-frame{position:relative;height:46vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:var(--post);margin-top:12px}
+  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap;background:rgba(0,0,0,.08)}
   .fragment{position:absolute;font-size:1rem;opacity:.96;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
   .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
-
-  /* Daily fragments */
-  .fragments{display:grid;gap:10px}
-  .frag-list{display:grid;gap:6px;max-height:260px;overflow:auto;padding-right:4px}
-  .frag-item{display:flex;justify-content:space-between;gap:8px;border:1px dashed var(--line);border-radius:10px;padding:6px 10px;background:color-mix(in oklab, var(--bg) 80%, white 8%)}
-  .frag-item small{color:var(--muted)}
-
-  /* Bottom single player dock */
-  .dock{position:sticky;bottom:0;z-index:90;background:color-mix(in oklab, var(--bg) 88%, black);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
-  .dock-inner{max-width:1280px;margin:0 auto;padding:10px 24px;display:grid;gap:8px}
-  .playerOne{background:#000;border-radius:12px;overflow:hidden;border:1px solid var(--line);min-height:200px}
-  @media (max-width:700px){ .playerOne{min-height:160px} }
 
   footer{color:var(--muted);font-size:.9rem;margin:26px auto}
 </style>
@@ -128,6 +130,7 @@
     </div>
 
     <nav aria-label="Page">
+      <a href="#player">player</a>
       <a href="#writer">writer</a>
       <a href="#for-visitors">visitors</a>
       <a href="#what">what</a>
@@ -139,18 +142,18 @@
     </nav>
 
     <div class="row" aria-label="Top Controls">
-      <!-- Theme -->
-      <span class="pill" title="Theme">🎨</span>
-      <button class="chip themechip" data-theme="mirror" aria-pressed="true">🪞</button>
-      <button class="chip themechip" data-theme="honey" aria-pressed="false">🍯</button>
-      <button class="chip themechip" data-theme="neon" aria-pressed="false">⚡</button>
-      <button class="chip themechip" data-theme="jupiter" aria-pressed="false">🪐</button>
+      <!-- Theme dropdown -->
+      <select id="theme-select" class="themeSelect" title="Theme">
+        <option value="mirror">🪞 Mirror</option>
+        <option value="honey">🍯 Honey</option>
+        <option value="neon">⚡ Neon</option>
+        <option value="jupiter">🪐 Jupiter</option>
+        <option value="tumblr">t Tumblr</option>
+      </select>
       <!-- Playback -->
-      <span class="pill" style="margin-left:8px" title="Playback">▶</span>
-      <button class="qbtn" id="prev">⟨ Prev</button>
-      <button class="qbtn" id="play">Play / Pause</button>
-      <button class="qbtn" id="next">Next ⟩</button>
-      <!-- Loop toggles always on top -->
+      <button class="qbtn" id="prev" title="Previous">⟨</button>
+      <button class="qbtn" id="play" title="Play/Pause">Play</button>
+      <button class="qbtn" id="next" title="Next">⟩</button>
       <button class="chip" id="loop-track" aria-pressed="false" title="Loop the current track">Loop track</button>
       <button class="chip" id="loop-queue" aria-pressed="true" title="Loop queue">Loop queue</button>
       <span class="nowtxt" id="nowNext" aria-live="polite"></span>
@@ -160,8 +163,27 @@
 
 <main class="wrap">
   <div class="page">
-    <!-- Left: Content -->
+    <!-- ===== Main column ===== -->
     <div class="content stack">
+
+      <!-- Inline top player (visible on load) -->
+      <section class="post" id="player">
+        <h2 style="margin:0 0 8px">Player</h2>
+        <div id="playerTop" style="background:#000;border:1px solid var(--line);border-radius:12px;overflow:hidden;min-height:220px">
+          <iframe
+            id="yt-frame"
+            title="MARINA — Oh No!"
+            width="100%" height="260"
+            src="https://www.youtube.com/embed/Cr-SqRWImmI?enablejsapi=1&rel=0&modestbranding=1&playsinline=1"
+            referrerpolicy="origin"
+            allow="autoplay; encrypted-media; picture-in-picture; web-share"
+            allowfullscreen
+            style="border:0;display:block;width:100%;height:100%;background:#000">
+          </iframe>
+        </div>
+        <p class="hint" style="margin-top:8px">“Oh No!” is cued by default. Use the controls in the header; the queue lives on the right.</p>
+      </section>
+
       <!-- Writer -->
       <section class="card" id="writer">
         <div class="writer-grid vertical" id="writerGrid">
@@ -201,11 +223,11 @@
             <p class="hint">No accounts, no tracking. Everything saves locally in your browser — with auto‑snapshots and export to be safe.</p>
           </div>
           <div>
-            <div class="card" style="background:color-mix(in oklab, var(--bg) 82%, white 6%)">
+            <div class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)">
               <strong>Why this matters</strong>
               <p>Between cycles, artists need a portable ritual: one word for angle, one spark for the switch, one word for pull. This keeps continuity without PR.</p>
             </div>
-            <div class="card" style="margin-top:10px;background:color-mix(in oklab, var(--bg) 82%, white 6%);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
+            <div class="card" style="margin-top:10px;background:color-mix(in oklab, var(--paper) 96%, black 4%);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
               <strong>What Sabrina/Marina don’t give you alone</strong>
               <p>Honey is pull and joy; Mirror is angle and clarity. The <em>bridge</em> is for edges that don’t fit either — flips, masks, glitches — a safe lane for the switch.</p>
             </div>
@@ -223,10 +245,10 @@
             <p><strong>Promise:</strong> No asks, no pressure, no tracking. Private logs stay in your browser.</p>
           </div>
           <div>
-            <details class="card" style="background:color-mix(in oklab, var(--bg) 82%, white 6%)"><summary class="pill">This is not</summary>
+            <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">This is not</summary>
               <ul style="margin:10px 0 0"><li>Outreach, clout, or press.</li><li>A fan-control lever or rumor mill.</li><li>A definition of anyone. It’s a mirror, a bridge, and a page of honey.</li></ul>
             </details>
-            <details class="card" style="margin-top:12px;background:color-mix(in oklab, var(--bg) 82%, white 6%)"><summary class="pill">Privacy</summary>
+            <details class="card" style="margin-top:12px;background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">Privacy</summary>
               <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Export anytime from the right rail. We also snapshot automatically on upgrades.</p>
             </details>
           </div>
@@ -264,11 +286,11 @@
       <section class="card" id="hybrid">
         <div class="pill"><strong>How a Mirror × Honey hybrid feels (with a Bridge)</strong></div>
         <div class="twins">
-          <div class="card mirror-box" style="background:color-mix(in oklab, var(--mirror), transparent 90%)">
+          <div class="card mirror-box" style="background:color-mix(in oklab,var(--mirror), transparent 92%)">
             <h3 style="margin-top:0">Mirror layer</h3>
             <ul><li>Frame/angle forward.</li><li>Persona tension.</li><li>Prismatic break spotlights the idea.</li></ul>
           </div>
-          <div class="card honey-box" style="background:color-mix(in oklab, var(--honey), transparent 88%)">
+          <div class="card honey-box" style="background:color-mix(in oklab,var(--honey), transparent 90%)">
             <h3 style="margin-top:0">Honey layer</h3>
             <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat imagery.</li><li>Pop sheen nudges you to move.</li></ul>
           </div>
@@ -292,7 +314,7 @@
                 <button id="hlog-save" class="btn">Save entry</button>
                 <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
               </div>
-              <details class="card" style="background:color-mix(in oklab, var(--bg) 82%, white 6%);border:1px dashed var(--line)">
+              <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%);border:1px dashed var(--line)">
                 <summary class="pill">View saved entries</summary>
                 <div id="hlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
               </details>
@@ -310,7 +332,7 @@
                 <button id="dlog-save" class="btn">Save entry</button>
                 <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
               </div>
-              <details class="card" style="background:color-mix(in oklab, var(--bg) 82%, white 6%);border:1px dashed var(--line)">
+              <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%);border:1px dashed var(--line)">
                 <summary class="pill">View saved entries</summary>
                 <div id="dlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
               </details>
@@ -332,7 +354,7 @@
           <button class="btn" id="spark-to-daily">Use center spark → Daily</button>
         </div>
 
-        <div class="card" style="margin-top:12px;background:color-mix(in oklab, var(--bg) 82%, white 6%)">
+        <div class="card" style="margin-top:12px;background:color-mix(in oklab, var(--paper) 96%, black 4%)">
           <div class="row" style="justify-content:space-between;align-items:center">
             <strong>Bridge Daily Fragments</strong>
             <span class="pill" id="frag-streak">Streak: 0</span>
@@ -350,19 +372,19 @@
       <!-- FAQ -->
       <section class="card" id="faq">
         <h2 style="margin-top:0">FAQ & Glossary</h2>
-        <details class="card" style="background:color-mix(in oklab, var(--bg) 82%, white 6%)"><summary class="pill">What is a “seed”?</summary>
+        <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">What is a “seed”?</summary>
           <p>A single circled sentence or fragment you carry to the next cycle. It’s continuity, not content.</p>
         </details>
-        <details class="card" style="background:color-mix(in oklab, var(--bg) 82%, white 6%)"><summary class="pill">Where are my entries saved?</summary>
+        <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">Where are my entries saved?</summary>
           <p>In your browser’s <code>localStorage</code> (schema <code>mh_data_v1</code>), on this device only. Export/import in the right rail. On upgrades we snapshot automatically.</p>
         </details>
-        <details class="card" style="background:color-mix(in oklab, var(--bg) 82%, white 6%)"><summary class="pill">How do 🪞/🍯/🌉 work?</summary>
+        <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">How do 🪞/🍯/🌉 work?</summary>
           <p>Pick exactly one lane per song. 🪞 = B (Mirror/Marina), 🍯 = A (Honey/Sabrina), 🌉 = Bridge (Doechii). ⚡ Neon inserts 🌉 between lanes during playback.</p>
         </details>
       </section>
     </div>
 
-    <!-- Right: Rail (modes + ADD FORM + queue) -->
+    <!-- ===== Right rail ===== -->
     <aside class="rail">
       <div class="block">
         <div class="row" style="justify-content:space-between">
@@ -434,14 +456,7 @@
   </div>
 </main>
 
-<!-- Single bottom player -->
-<section class="dock" aria-label="Player">
-  <div class="dock-inner">
-    <div id="playerOne" class="playerOne"></div>
-  </div>
-</section>
-
-<footer class="wrap">© mirrorhoney — Mirror (🪞) × Honey (🍯) with Bridge (🌉). Neon (⚡) and Jupiter (🪐) themes optional.</footer>
+<footer class="wrap">© mirrorhoney — Mirror (🪞) × Honey (🍯) with Bridge (🌉). Neon (⚡), Jupiter (🪐), Tumblr (t) themes available.</footer>
 
 <!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -454,18 +469,16 @@ const MH = (function(){
   const KEY = "mh_data_v1";      // consolidated schema key
   const SNAPKEY = "mh_snapshots";// array of snapshots {ts, data}
   const MAX_SNAPS = 5;
+  const FRIEND_ID="Cr-SqRWImmI"; // MARINA — Oh No!
 
   const DEFAULT = {
     schema: 1,
     updatedAt: new Date().toISOString(),
     settings: { loopTrack:false, loopQueue:true, mode:"MIRROR", theme:"mirror", compactQueue:false },
-    seeds: { singleSeeded:false },
     queue: [],                 // [{id,title,author,thumb,lane:"A"|"B"|"D",artist,added,pinned?:bool}]
     logs: { honey:[], bridge:[], writer:[] }, // arrays of {date, text}
     fragments: { byDay:{} }    // { "YYYY-MM-DD":[{t,ts}] }
   };
-
-  const FRIEND_ID="Cr-SqRWImmI";
 
   function snapshot(reason){
     try{
@@ -495,13 +508,11 @@ const MH = (function(){
 
   function migrateFromLegacy(){
     const data = JSON.parse(JSON.stringify(DEFAULT));
-    // Migrate older queues
     const oldQs = ["mirrorhoney_queue_single_v1","mirrorhoney_queue_side_v2","mirrorhoney_queue_v3","mirrorhoney_queue_side_tags_v1"];
     let items = [];
     for(const k of oldQs){
       try{ const arr = JSON.parse(localStorage.getItem(k)||"[]"); if(Array.isArray(arr)&&arr.length){ items = items.concat(arr); } }catch(_){}
     }
-    // Normalize to single-lane
     function laneFromTags(tags){
       if(!tags||!tags.length) return "B";
       if(tags.includes("D")) return "D";
@@ -519,16 +530,6 @@ const MH = (function(){
         lane, artist: it.artist||"", added: it.added||new Date().toISOString()
       });
     }
-
-    // Logs
-    try{ data.logs.honey = JSON.parse(localStorage.getItem("mirrorhoney_honeylog_v1")||"[]").map(e=>({date:e.date||new Date().toISOString(),text:e.notes||e.song||""})); }catch(_){}
-    try{ data.logs.bridge = JSON.parse(localStorage.getItem("mirrorhoney_bridge_v1")||localStorage.getItem("mirrorhoney_safechaos_v1")||"[]").map(e=>({date:e.date||new Date().toISOString(),text:e.notes||e.song||""})); }catch(_){}
-    try{ data.logs.writer = JSON.parse(localStorage.getItem("mh_writer_sets_single_v1")||"[]"); }catch(_){}
-
-    // Fragments
-    try{ const fr = JSON.parse(localStorage.getItem("mh_bridge_fragments_single_v1")||localStorage.getItem("mh_bridge_fragments_v1")||'{"byDay":{}}'); if(fr&&fr.byDay) data.fragments.byDay = fr.byDay; }catch(_){}
-
-    // Ensure friend exists after migration
     ensureFriend(data);
     return data;
   }
@@ -587,7 +588,7 @@ async function fetchYTMeta(id){
   }catch(e){ return null; }
 }
 
-/* ===== Set dynamic offsets for fixed header ===== */
+/* ===== Dynamic header sizing ===== */
 (function(){
   function apply(){
     const hdr=document.getElementById("hdr");
@@ -600,16 +601,15 @@ async function fetchYTMeta(id){
   apply();
 })();
 
-/* ===== Theme toggle (persist) ===== */
+/* ===== Theme dropdown (persist) ===== */
 (function(){
-  const chips=[...document.querySelectorAll(".themechip")];
+  const sel=document.getElementById("theme-select");
   function apply(theme){
     document.documentElement.setAttribute("data-theme", theme);
-    chips.forEach(c=> setPressed(c, c.getAttribute("data-theme")===theme));
     const d=MH.get(); d.settings.theme=theme; MH.put(d);
   }
-  chips.forEach(c=> c.onclick=()=>apply(c.getAttribute("data-theme")));
-  const d=MH.get(); apply(d.settings.theme||"mirror");
+  sel.onchange=function(){ apply(sel.value); };
+  const d=MH.get(); sel.value=d.settings.theme||"mirror"; apply(sel.value);
 })();
 
 /* ===== Writer save + quick add to Daily Bridge ===== */
@@ -721,26 +721,6 @@ var FRAGMENTS=(function(){
   scatter(SETS[0]);
 })();
 
-/* ===== Logs (write only; safe) ===== */
-(function setupLog(timerId, notesId, saveBtnId, startBtnId, keyPath){
-  const notes=document.getElementById(notesId);
-  const start=document.getElementById(startBtnId), save=document.getElementById(saveBtnId);
-  let t=0; const timer=document.getElementById(timerId);
-  function fmt(s){return s<10?"0"+s:s}
-  function tick(){ if(t<=0){timer.textContent="done";return;} t--; const m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
-  start && (start.onclick=function(){ t=5*60; tick(); });
-  save && (save.onclick=function(){
-    const data=MH.get();
-    const entry={date:timeISO(), text:(notes.value||"").trim()};
-    const ptr = keyPath.split('.').reduce((o,k)=>o[k], data); // logs.honey or logs.bridge
-    ptr.push(entry); MH.put(data);
-    notes.value="";
-    const listId = (notesId==="hlog-notes"?"hlog-list":"dlog-list"), list=document.getElementById(listId);
-    if(list){ list.innerHTML=""; ptr.slice().reverse().forEach(e=>{ const c=document.createElement("div"); c.className="card"; c.style.padding="12px"; c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='white-space:pre-wrap'>"+(e.text||"")+"</div>"; list.appendChild(c); }); }
-  });
-})("hlog-timer","hlog-notes","hlog-save","hlog-start","logs.honey");
-setupLog("dlog-timer","dlog-notes","dlog-save","dlog-start","logs.bridge");
-
 /* ===== QUEUE (single-lane per item, compact mode, MARINA pinned friend) ===== */
 var QUEUE=(function(){
   const FRIEND_ID=MH.FRIEND_ID; // MARINA — Oh No!
@@ -771,7 +751,7 @@ var QUEUE=(function(){
       if(it.thumb || it.thumbnail){ const img=document.createElement("img"); img.src=it.thumb||it.thumbnail||(""); img.alt=""; wrap.appendChild(img); }
       const meta=document.createElement("div"); meta.className="meta";
 
-      // Title line (works in compact too)
+      // Title line
       const ttl=document.createElement("div"); ttl.className="titleline";
       const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"🌉";
       const tlabel = document.createElement("span"); tlabel.className="ttl";
@@ -779,13 +759,13 @@ var QUEUE=(function(){
       ttl.appendChild(laneEmoji); ttl.appendChild(tlabel);
       meta.appendChild(ttl);
 
-      // Lane editor (mutually exclusive)
+      // Lane editor
       const lanes=document.createElement("div"); lanes.className="lanes";
       const mk=(L)=>{
         const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"🌉 Doechii");
         b.setAttribute("aria-pressed", it.lane===L?"true":"false");
         b.onclick=function(){
-          if(it.pinned && L!=="B"){ alert("Marina is everyone’s friend (🪞). The friend stays in 🪞."); return; }
+          if(it.pinned && L!=="B"){ alert("Marina stays your friend in 🪞."); return; }
           it.lane=L; it.tags=[L];
           const d2=MH.get(); const ix=d2.queue.findIndex(x=>x.id===it.id); if(ix>-1){ d2.queue[ix]=it; MH.put(d2); }
           render();
@@ -798,7 +778,7 @@ var QUEUE=(function(){
       // Actions
       const acts=document.createElement("div"); acts.className="acts";
       const play=document.createElement("button"); play.className="qbtn"; play.textContent="Play now";
-      play.onclick=function(){ if(it.id){ ALTERNATOR.setLane(it.lane); PLAYER.load(it.id, it.lane); } };
+      play.onclick=function(){ if(it.id){ ALTERNATOR.setLane(it.lane); PLAYER.load(it.id, it.lane, true); } };
       const del=document.createElement("button"); del.className="qbtn"; del.textContent= it.pinned ? "—" : "Remove";
       del.disabled = !!it.pinned;
       del.title = it.pinned ? "Pinned friend (can’t remove)" : "Remove from queue";
@@ -870,7 +850,7 @@ var QUEUE=(function(){
     const ix = d.queue.findIndex(x=>x.id===id);
     const it = { id, title:(meta&&meta.title)||artist||id, author:(meta&&meta.author)||"", thumb:(meta&&meta.thumbnail)||("https://img.youtube.com/vi/"+id+"/hqdefault.jpg"), lane:lane, artist:artist||"", added:timeISO(), tags:[lane] };
     if(ix>-1){ d.queue[ix] = Object.assign(d.queue[ix], it); } else { d.queue.push(it); } // push (friend stays at head)
-    // Always keep friend on top
+    // Keep friend on top
     MH.ensureFriend(d);
     MH.put(d);
     render();
@@ -904,36 +884,52 @@ var QUEUE=(function(){
   return { add, render, next, prev, scopeItems };
 })();
 
-/* ===== Single bottom player + global controls ===== */
+/* ===== Single top player + header controls (with fallback) ===== */
 var PLAYER=(function(){
   let P=null, loopTrack=false, loopQueue=true, currentLane="B", currentId=null;
   const nowNext=document.getElementById("nowNext");
+  const frame = document.getElementById("yt-frame");
+  const ORIGIN_YT="https://www.youtube.com";
 
-  function onReady(){ try{ P.setVolume(70); }catch(_){ } }
+  function post(cmd,args){ try{ frame.contentWindow.postMessage(JSON.stringify({event:"command",func:cmd,args:args||[]}), ORIGIN_YT); }catch(_){ } }
+
+  function onReady(){ try{ if(P && P.setVolume) P.setVolume(70); }catch(_){ } }
 
   function create(){
-    // Preload MARINA (Oh No!) image by setting videoId at construction
-    return new YT.Player("playerOne",{
-      width:'100%', height:(window.innerWidth<700?'160':'220'),
-      videoId: "Cr-SqRWImmI",
-      playerVars:{rel:0,modestbranding:1,playsinline:1},
-      events:{
-        onReady:onReady,
-        onStateChange:function(e){
-          const ENDED=(e.data===0);
-          if(ENDED){
-            if(loopTrack){ try{ P.playVideo(); return; }catch(_){ } }
-            ALTERNATOR.onEnded(currentLane);
+    // Upgrade the existing iframe to a full API player if the library is available
+    try{
+      P = new YT.Player("yt-frame",{
+        events:{
+          onReady:onReady,
+          onStateChange:function(e){
+            if(e.data===0){ // ended
+              if(loopTrack){ try{ P.playVideo(); return; }catch(_){ } }
+              ALTERNATOR.onEnded(currentLane);
+            }
           }
         }
-      }
-    });
+      });
+    }catch(_){ /* if this fails, the fallback still works */ }
   }
 
-  function cue(id,lane){ if(P && P.cueVideoById){ try{ P.cueVideoById(id); currentLane=lane||currentLane; currentId=id; }catch(_){ } }
-  function load(id,lane){ if(P && P.loadVideoById){ try{ P.loadVideoById(id); currentLane=lane||currentLane; currentId=id; }catch(_){ } }
-  function toggle(){ if(!P) return; try{ const st=P.getPlayerState(); if(st===1) P.pauseVideo(); else P.playVideo(); }catch(_){ } }
-  function setVolume(v){ try{ if(P) P.setVolume(v); }catch(_){ } }
+  function cue(id,lane){
+    currentLane=lane||currentLane; currentId=id;
+    if(P && P.cueVideoById){ try{ P.cueVideoById(id); return; }catch(_){ } }
+    // fallback: reload without autoplay
+    frame.src = "https://www.youtube.com/embed/"+id+"?enablejsapi=1&rel=0&modestbranding=1&playsinline=1";
+  }
+  function load(id,lane,autoplay){
+    currentLane=lane||currentLane; currentId=id;
+    if(P && P.loadVideoById){ try{ P.loadVideoById(id); return; }catch(_){ } }
+    // fallback: change src with autoplay
+    frame.src = "https://www.youtube.com/embed/"+id+"?enablejsapi=1&rel=0&modestbranding=1&playsinline=1"+(autoplay?"&autoplay=1":"");
+  }
+  function toggle(){
+    if(P && P.getPlayerState){ try{ const st=P.getPlayerState(); if(st===1) P.pauseVideo(); else P.playVideo(); return; }catch(_){ } }
+    // fallback: only "playVideo" available in a generic way; pause may be ignored on some blockers
+    post("playVideo");
+  }
+  function setVolume(v){ try{ if(P&&P.setVolume) P.setVolume(v); }catch(_){ } }
   function getLoopQueue(){ return loopQueue; }
   function setLoopTrack(on){ loopTrack=!!on; }
   function setLoopQueue(on){ loopQueue=!!on; }
@@ -941,19 +937,19 @@ var PLAYER=(function(){
   function getLane(){ return currentLane; }
   function getId(){ return currentId; }
 
-  window.onYouTubeIframeAPIReady=function(){ P=create(); };
+  window.onYouTubeIframeAPIReady=function(){ create(); };
 
   // header controls
   document.getElementById("play").onclick=function(){ ALTERNATOR.ensureKick(); toggle(); };
   document.getElementById("prev").onclick=function(){ ALTERNATOR.prev(); };
   document.getElementById("next").onclick=function(){ ALTERNATOR.next(); };
 
-  // Header loop toggles (always on top)
+  // loop toggles
   const lt=document.getElementById("loop-track"); const lq=document.getElementById("loop-queue");
   lt.onclick=function(){ const on=lt.getAttribute("aria-pressed")==="true"; setPressed(lt,!on); setLoopTrack(!on); };
   lq.onclick=function(){ const on=lq.getAttribute("aria-pressed")==="true"; setPressed(lq,!on); setLoopQueue(!on); };
 
-  return { cue, load:(id,lane)=>load(id,lane), toggle, setVolume, getLoopQueue, setLoopQueue, setLoopTrack, getLane, setLane, nowNext, getId };
+  return { cue, load:(id,lane,autoplay)=>load(id,lane,autoplay), toggle, setVolume, getLoopQueue, setLoopQueue, setLoopTrack, getLane, setLane, nowNext, getId };
 })();
 
 /* ===== Alternator (single-player): MIRROR/HONEY/NEON ===== */
@@ -996,7 +992,7 @@ var ALTERNATOR=(function(){
                (lane==="B")? QUEUE.next("B", PLAYER.getLoopQueue()) :
                               QUEUE.next("D", true);
     if(it && it.id){
-      PLAYER.load(it.id, lane);
+      PLAYER.load(it.id, lane, true);
       lastLane=lane;
       updateStatus({now:{tag:lane,title:it.title||it.id}, nextTag: laneAfter(lane)});
     }else{
@@ -1010,8 +1006,7 @@ var ALTERNATOR=(function(){
 
   function ensureKick(){
     try{
-      if(PLAYER.getId()) return; // already cued/playing
-      // Prefer MARINA "Oh No!" if present
+      if(PLAYER.getId()) return; // already cued/playing (or src visible)
       const d=MH.get();
       MH.ensureFriend(d); MH.put(d,"upgrade");
       const ohno = d.queue.find(q=>q.id===MH.FRIEND_ID);
@@ -1040,7 +1035,7 @@ var ALTERNATOR=(function(){
     const it = (prevLane==="A")? QUEUE.prev("A", PLAYER.getLoopQueue()) :
                (prevLane==="B")? QUEUE.prev("B", PLAYER.getLoopQueue()) :
                                   QUEUE.prev("D", true);
-    if(it && it.id){ PLAYER.load(it.id, prevLane); lastLane=prevLane; updateStatus({now:{tag:prevLane,title:it.title||it.id}, nextTag: laneAfter(prevLane)}); }
+    if(it && it.id){ PLAYER.load(it.id, prevLane, true); lastLane=prevLane; updateStatus({now:{tag:prevLane,title:it.title||it.id}, nextTag: laneAfter(prevLane)}); }
   }
   function next(){
     const nextLane = laneAfter(lastLane || (mode==="MIRROR"?"B":"A"));
@@ -1058,7 +1053,6 @@ var ALTERNATOR=(function(){
   function setLane(l){ lastLane=l; PLAYER.setLane(l); }
   function getCurrentId(){ return PLAYER.getId(); }
 
-  // restore mode from settings
   (function initMode(){ const d=MH.get(); setMode(d.settings.mode||"MIRROR"); })();
 
   return { onEnded, ensureKick, prev, next, setLane, getCurrentId };
