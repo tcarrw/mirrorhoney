@@ -3,35 +3,28 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mirror × Honey — Sabrina (🍯) × Marina (🪞) · Visitor: Doechii (🔥)</title>
-<meta name="description" content="Honey vs Mirror guide, hybrid example, Honey Log, Safe Chaos Log, and a tagged YouTube queue with autoplay, per-player loop, volume, crossfade, and oEmbed titles.">
+<meta name="description" content="A gentle, guided experience to understand Honey (Sabrina) vs Mirror (Marina), try a hybrid, log reflections, and spark Doechii’s Safe Chaos — with a tagged YouTube queue and A/B players.">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
 <style>
-  :root{
-    --bg:#0B0F19; --ink:#E6EAF2; --muted:#A0A7B3; --line:#1B2433;
-    --accent:#7CD4FF; --rose:#FF3EB5; --honey:#F3C94E; --mirror:#C1D7FF;
-    --shadow:0 10px 30px rgba(0,0,0,.45);
-  }
+  :root{--bg:#0B0F19;--ink:#E6EAF2;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;--shadow:0 10px 30px rgba(0,0,0,.45)}
   *{box-sizing:border-box}
   html,body{height:100%}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   .wrap{max-width:980px;margin:0 auto;padding:28px}
   header{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
   header .brand{font-weight:700;letter-spacing:.5px}
-  header nav a{margin-left:16px;color:var(--muted)}
-  header nav a:hover{color:var(--ink)}
+  header nav a{margin-left:16px;color:var(--muted)} header nav a:hover{color:var(--ink)}
   .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px}
   .stack{display:grid;gap:16px}
   .hero{display:grid;gap:12px;padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(243,201,78,.06),transparent)}
-  .hero h1{font-size:1.7rem;margin:0}
+  .hero h1{font-size:1.8rem;margin:0}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
   .glyph{font-size:1.05rem}
   .cta,.btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
-  .cta{border-color:var(--accent);color:var(--accent)}
-  .cta:hover{background:rgba(124,212,255,.1)}
+  .cta{border-color:var(--accent);color:var(--accent)} .cta:hover{background:rgba(124,212,255,.1)}
   .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
   .divider{height:1px;background:var(--line);margin:22px 0}
   .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
@@ -39,8 +32,12 @@
   @media (max-width:900px){.two-col,.twins{grid-template-columns:1fr}}
   input[type="text"], textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
   textarea{resize:vertical}
+  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
   .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,rgba(243,201,78,.07),transparent);border-radius:10px}
   .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,rgba(193,215,255,.08),transparent);border-radius:10px}
+  .quickstart{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media (max-width:900px){.quickstart{grid-template-columns:1fr}}
+  .quick{border:1px dashed var(--line);border-radius:12px;padding:12px;background:rgba(255,255,255,.02)}
   .chaos-frame{position:relative;height:60vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
   .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
   .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
@@ -64,6 +61,13 @@
   .qitem small{color:var(--muted)}
   .tag{border:1px solid var(--line);padding:2px 6px;border-radius:8px;font-size:.8rem;opacity:.9}
   .tag.A{border-color:#7CD4FF} .tag.B{border-color:#F8D34A} .tag.D{border-color:#FF3EB5}
+
+  /* Guided Tour overlay */
+  .tour{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:100}
+  .tour.show{display:flex}
+  .tour-box{width:min(860px,90vw);background:#0B0F19;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:20px}
+  .tour-steps{display:grid;gap:10px}
+  .tour-step{border:1px dashed var(--line);border-radius:12px;padding:14px;background:rgba(255,255,255,.02)}
 </style>
 </head>
 <body>
@@ -75,26 +79,48 @@
     <a href="#hybrid">hybrid</a>
     <a href="#honey-log">honey log</a>
     <a href="#doechii">doechii</a>
+    <a href="#faq">faq</a>
   </nav>
 </header>
 
 <main class="wrap stack">
+  <!-- WELCOME + QUICK START -->
+  <section class="card hero" id="welcome">
+    <div class="pill"><span class="glyph">🍯</span> Sabrina — Honey <span aria-hidden="true">·</span> <span class="glyph">🪞</span> Marina — Mirror/Butterfly</div>
+    <h1>Welcome. We’ll guide you. (2–3 minutes)</h1>
+    <p>
+      <strong>Mirror × Honey</strong> is a tiny practice that keeps continuity between creative cycles.
+      Sabrina (Honey) brings the <em>pull & joy</em>; Marina (Mirror) brings the <em>angle & reflection</em>.
+      You’ll learn to spot each, try a hybrid, and save a personal log. Then, if you like, you’ll open a special visitor space for Doechii (Safe Chaos).
+    </p>
+
+    <div class="quickstart">
+      <div class="quick"><strong>Step 1</strong><br>Skim “What & Why” → <a href="#what">start here</a></div>
+      <div class="quick"><strong>Step 2</strong><br>Use “How to spot Honey vs Mirror” → <a href="#identify">learn the tells</a></div>
+      <div class="quick"><strong>Step 3</strong><br>Paste a YouTube song and save a log → <a href="#honey-log">try the Honey Log</a></div>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <button class="cta" id="startTour">Take the 5-step tour</button>
+      <a class="btn" href="#doechii">Skip to Doechii sparks</a>
+    </div>
+  </section>
+
   <!-- WHAT -->
-  <section class="card hero" id="what">
-    <div class="pill"><span class="glyph">🍯</span><span>Sabrina — Honey</span><span aria-hidden="true">·</span><span class="glyph">🪞</span><span>Marina — Mirror/Butterfly</span></div>
-    <h1>Mirror × Honey — a resonance frame, not PR</h1>
+  <section class="card" id="what">
+    <h2 style="margin:.2rem 0 0">What this is (and why)</h2>
     <div class="two-col">
       <div>
-        <p>Hold space for <strong>Sabrina</strong> and <strong>Marina</strong> across cycles — even if they never see this page. They already have attention. What they don’t always have:</p>
-        <ul><li><strong>Continuity</strong> when promo ends.</li><li><strong>A peer mirror outside the machine.</strong></li><li><strong>A place to play with no PR stakes.</strong></li></ul>
-        <p>Mirror × Honey is that sandbox: <em>journal first; publishing optional.</em></p>
+        <p><strong>Problem:</strong> Big artists have attention. What they lack is <em>continuity</em> when promo ends, a <em>peer mirror outside the machine</em>, and a <em>place to play without PR stakes</em>.</p>
+        <p><strong>Solution:</strong> A gentle rhythm you can keep: listen, notice (Honey or Mirror?), write one page, circle one <em>seed</em>. That seed carries forward to the next cycle.</p>
+        <p><strong>Promise:</strong> No asks, no pressure, no tracking. Private logs stay in your browser.</p>
       </div>
       <div>
-        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What this is not</summary>
-          <ul style="margin:10px 0 0"><li>Not outreach or clout-seeking.</li><li>Not a fan-control mechanism or rumor mill.</li><li>Not defining anyone — it’s a mirror and a page of honey.</li></ul>
+        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">This is not</summary>
+          <ul style="margin:10px 0 0"><li>Outreach, clout, or press.</li><li>A fan-control lever or rumor mill.</li><li>A definition of anyone. It’s a mirror and a page of honey.</li></ul>
         </details>
         <details class="card" style="margin-top:12px;background:rgba(255,255,255,.01)"><summary class="pill">Privacy</summary>
-          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>).</p>
+          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). You can export at any time.</p>
         </details>
       </div>
     </div>
@@ -105,49 +131,55 @@
     <div class="pill"><strong>How to identify the two halves</strong></div>
     <div class="twins">
       <div class="honey-box">
-        <h3 style="margin-top:8px">🍯 HONEY (Sabrina) — Sweet / Magnetic / Immediate</h3>
-        <ul><li><strong>Feel:</strong> warm pull, flirt, joy, “come closer.”</li>
-            <li><strong>Body:</strong> head-nod, dance instinct; easy sing-along hooks.</li>
-            <li><strong>Lyrics:</strong> taste/skin/heat; playful and present-tense.</li>
-            <li><strong>Production:</strong> glossy/pop-forward; beat invites movement.</li>
-            <li><strong>Aftertaste:</strong> hook lingers; you want repeat.</li></ul>
-        <p><em>Shortcut:</em> If <u>taste/touch</u> hits first and your body moves → it’s Honey.</p>
+        <h3 style="margin-top:8px">🍯 HONEY — Sweet / Magnetic / Immediate</h3>
+        <ul>
+          <li><strong>Feel:</strong> warm pull, flirt, joy — “come closer.”</li>
+          <li><strong>Body:</strong> head-nod, dance instinct; easy hook.</li>
+          <li><strong>Lyrics:</strong> taste / skin / heat; present-tense and playful.</li>
+          <li><strong>Production:</strong> glossy pop; bass/beat invite movement.</li>
+          <li><strong>Aftertaste:</strong> you want repeat; syrupy hook remains.</li>
+        </ul>
+        <p class="hint">Shortcut: if <u>taste/touch</u> hits first and your body moves → Honey.</p>
       </div>
       <div class="mirror-box">
-        <h3 style="margin-top:8px">🪞 MIRROR (Marina) — Reflection / Angle / Identity</h3>
-        <ul><li><strong>Feel:</strong> thoughtful tilt, self-regard, critique — “look again.”</li>
-            <li><strong>Mind:</strong> a line clicks; meaning unfolds on pass two.</li>
-            <li><strong>Lyrics:</strong> persona, roles, masks, power/culture, self-myth.</li>
-            <li><strong>Production:</strong> prismatic/art-pop; arrangement carries idea.</li>
-            <li><strong>Afterimage:</strong> you leave with a frame or question.</li></ul>
-        <p><em>Shortcut:</em> If it <u>changes what you see</u> more than how you move → it’s Mirror.</p>
+        <h3 style="margin-top:8px">🪞 MIRROR — Reflection / Angle / Identity</h3>
+        <ul>
+          <li><strong>Feel:</strong> thoughtful tilt, self-regard, critique — “look again.”</li>
+          <li><strong>Mind:</strong> a lyric clicks; meaning unfolds on pass two.</li>
+          <li><strong>Lyrics:</strong> persona, roles, masks, power/culture, self-myth.</li>
+          <li><strong>Production:</strong> prismatic/art-pop; arrangement foregrounds the idea.</li>
+          <li><strong>Afterimage:</strong> you leave with a frame or question.</li>
+        </ul>
+        <p class="hint">Shortcut: if it <u>changes what you see</u> more than how you move → Mirror.</p>
       </div>
     </div>
   </section>
 
   <!-- HYBRID EXAMPLE -->
   <section class="card" id="hybrid">
-    <div class="pill"><strong>Example that is BOTH Honey × Mirror (how bridging feels)</strong></div>
+    <div class="pill"><strong>How a Honey × Mirror hybrid feels</strong></div>
     <div class="two-col">
       <div class="card honey-box" style="background:rgba(243,201,78,.06)">
-        <h3 style="margin-top:0">Honey layer (what you’d notice)</h3>
-        <ul><li>Immediate groove; chorus is singable on first listen.</li><li>Lyric images of taste/heat/skin.</li><li>Production leans pop; bass/beat nudge you to move.</li></ul>
+        <h3 style="margin-top:0">Honey layer</h3>
+        <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat/skin imagery.</li><li>Pop sheen nudges you to move.</li></ul>
       </div>
       <div class="card mirror-box" style="background:rgba(193,215,255,.06)">
-        <h3 style="margin-top:0">Mirror layer (what reframes it)</h3>
-        <ul><li>Bridge flips perspective (mask ↔ mirror).</li><li>Verse introduces role/identity tension.</li><li>Arrangement adds a prismatic break to spotlight the idea.</li></ul>
+        <h3 style="margin-top:0">Mirror layer</h3>
+        <ul><li>Bridge flips perspective (mask ↔ mirror).</li><li>Verse introduces identity/power tension.</li><li>A prismatic break spotlights the idea.</li></ul>
       </div>
     </div>
-    <p style="margin:.6rem 0 0"><em>Tag rule (optional):</em> Body led → <strong>Honey-primary</strong> (tag A). Frame first → <strong>Mirror-primary</strong> (tag B). Doechii sparks → <strong>D</strong>.</p>
+    <p class="hint"><em>Tag rule (optional):</em> Body led → <strong>Honey-primary</strong> (tag A). Frame first → <strong>Mirror-primary</strong> (tag B). Doechii sparks → <strong>D</strong>.</p>
   </section>
 
   <!-- HONEY LOG -->
   <section class="card" id="honey-log">
     <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — Sabrina × Marina</strong></div>
-    <p style="margin:.4rem 0 1rem">Paste a YouTube link or title, tag it (A/B/AB/D), write for 5–10 min, circle one sentence (seed). Saved locally.</p>
+    <p>Paste a YouTube link or just a title, tag it (A/B/AB/D), press <em>Start</em>, write for 5–10 min, and circle one sentence — your <strong>seed</strong> for continuity.</p>
     <div class="stack" style="gap:10px">
       <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or YouTube link)</span>
-        <input id="hlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Song"></label>
+        <input id="hlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Song">
+        <div class="hint">Tip: click “Add to A/B” to hear it while you write. We auto-fetch title and thumbnail.</div>
+      </label>
       <div class="row">
         <span class="pill">Tag to:</span>
         <button class="btn" data-addq="A">Add to A</button>
@@ -157,7 +189,9 @@
         <button class="btn" id="hlog-start">Start 5-min timer</button>
       </div>
       <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
-        <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea></label>
+        <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
+        <div class="hint">Write messy. Circle one sentence when done — that’s your seed.</div>
+      </label>
       <div class="row">
         <button id="hlog-save" class="btn">Save entry</button>
         <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
@@ -175,15 +209,17 @@
   <section class="card hero" id="doechii">
     <div class="pill"><span class="glyph">🔥</span><strong>&nbsp;Visitor — Doechii</strong></div>
     <h2 style="margin:0">Safe Chaos Mirror — instant inspiration, zero asks</h2>
-    <p><strong>What it is:</strong> A held space that says “you can go louder, stranger — it still holds.” Not outreach. Not branding. A page where chaos doesn’t have to resolve.</p>
+    <p><strong>What it is:</strong> A page that holds chaos safely. You can go louder and stranger — it still holds. No outreach. No PR. Just resonance.</p>
 
     <!-- DOECHII LOG -->
     <section class="card" style="margin-top:14px" id="dlog">
       <div class="pill"><span class="glyph">🔥</span><strong>&nbsp;Safe Chaos Log — Doechii</strong></div>
-      <p style="margin:.4rem 0 1rem">Paste a YouTube link or title, tag it (D or A/B), write 5–10 min, don’t resolve. Saved locally.</p>
+      <p>Paste a YouTube link or title, tag it (D or A/B), write fragments for 5–10 min, <u>don’t resolve</u>. Circle one fragment — your seed.</p>
       <div class="stack" style="gap:10px">
         <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Track (title or YouTube link)</span>
-          <input id="dlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Track"></label>
+          <input id="dlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Track">
+          <div class="hint">Tip: Add to D for a Doechii-only queue, or to A/B to audition side-by-side.</div>
+        </label>
         <div class="row">
           <span class="pill">Tag to:</span>
           <button class="btn" data-addq="D">Add to D</button>
@@ -193,7 +229,9 @@
           <button class="btn" id="dlog-start">Start 5-min timer</button>
         </div>
         <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments (no syntax)</span>
-          <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea></label>
+          <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
+          <div class="hint">Leave it messy. The mess is the message. Only the seed stays.</div>
+        </label>
         <div class="row">
           <button id="dlog-save" class="btn">Save entry</button>
           <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
@@ -209,12 +247,35 @@
       <div class="row" style="margin-top:8px"><button class="btn" id="seed-shuffle">Shuffle spark</button></div>
     </section>
   </section>
+
+  <!-- FAQ / Glossary -->
+  <section class="card" id="faq">
+    <h2 style="margin-top:0">FAQ & Glossary</h2>
+    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What is a “seed”?</summary>
+      <p>A single circled sentence (Honey) or fragment (Chaos) you carry to the next cycle. It’s continuity, not content.</p>
+    </details>
+    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">Where are my entries saved?</summary>
+      <p>In your browser’s <code>localStorage</code>, on this device only. Use Export in the queue dock to back up.</p>
+    </details>
+    <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">How do A / B / D tags work?</summary>
+      <p>A = Honey-primary lane, B = Mirror-primary lane, D = Doechii lane. Filter the queue to focus; each player advances in its own lane.</p>
+    </details>
+    <div class="twins" style="margin-top:12px">
+      <div class="card honey-box">
+        <strong>Glossary — Honey</strong>
+        <p>Sweet, immediate pull; taste/touch metaphors; hook-forward; body leads.</p>
+      </div>
+      <div class="card mirror-box">
+        <strong>Glossary — Mirror</strong>
+        <p>Reflection, angle, identity; persona/role lyrics; frame-forward; mind leads.</p>
+      </div>
+    </div>
+  </section>
 </main>
 
 <!-- PLAYER & QUEUE DOCK -->
 <section class="dock" aria-label="Players and Tagged Queue">
   <div class="dock-inner">
-    <!-- Filters -->
     <div class="qbar">
       <span class="pill">Show:</span>
       <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
@@ -229,7 +290,6 @@
     </div>
 
     <div class="players">
-      <!-- Player A -->
       <div class="player">
         <div class="pbar">
           <strong style="margin-right:8px">Player A</strong>
@@ -244,7 +304,6 @@
         </div>
         <div id="playerA"></div>
       </div>
-      <!-- Player B -->
       <div class="player">
         <div class="pbar">
           <strong style="margin-right:8px">Player B</strong>
@@ -268,151 +327,108 @@
   © mirrorhoney — Sabrina (🍯) × Marina (🪞). Visitor: Doechii (🔥). · <a href="/robots.txt">robots</a>
 </footer>
 
+<!-- Guided Tour Overlay -->
+<div class="tour" id="tour">
+  <div class="tour-box">
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h3 style="margin:0">Quick Tour (5 steps)</h3>
+      <button class="btn" id="tourSkip">Skip</button>
+    </div>
+    <div class="tour-steps" id="tourSteps">
+      <!-- steps injected by JS -->
+    </div>
+    <div class="row" style="justify-content:space-between;margin-top:10px">
+      <button class="btn" id="tourBack">Back</button>
+      <div class="row"><span class="pill" id="tourProgress"></span><button class="cta" id="tourNext">Next</button></div>
+    </div>
+  </div>
+</div>
+
 <!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-/* ---------- Helpers ---------- */
-function ytIdFrom(url){
-  if(!url) return null;
-  var u = url.trim();
-  var m = u.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{6,})/);
-  if(m && m[1]) return m[1];
-  if(/^[A-Za-z0-9_-]{6,}$/.test(u)) return u;
-  return null;
-}
+/* ===== Helpers ===== */
+function ytIdFrom(u){ if(!u) return null; u=u.trim(); var m=u.match(/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{6,})/); if(m&&m[1]) return m[1]; if(/^[A-Za-z0-9_-]{6,}$/.test(u)) return u; return null; }
 function timeISO(){ return new Date().toISOString(); }
-function lsGet(k, fallback){ try{ return JSON.parse(localStorage.getItem(k) || fallback); }catch(e){ return JSON.parse(fallback); } }
-function lsSet(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
-function setPressed(el, on){ el.setAttribute("aria-pressed", on ? "true" : "false"); }
+function lsGet(k,f){ try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)} }
+function lsSet(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} }
+function setPressed(el,on){ el.setAttribute("aria-pressed", on?"true":"false"); }
+async function fetchYTMeta(id){ try{ var r=await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id); if(!r.ok) return null; var j=await r.json(); return {title:j.title||"",author:j.author_name||"",thumbnail:j.thumbnail_url||""}; }catch(e){ return null; } }
 
-/* ---------- oEmbed title fetch ---------- */
-async function fetchYTMeta(id){
-  try{
-    var res = await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id);
-    if(!res.ok) return null;
-    var j = await res.json();
-    return { title: j.title || "", author: j.author_name || "", thumbnail: j.thumbnail_url || "" };
-  }catch(e){ return null; }
-}
-
-/* ---------- Honey Log ---------- */
-(function HoneyLog(){
+/* ===== Honey Log ===== */
+(function(){
   var KEY="mirrorhoney_honeylog_v1";
   var song=document.getElementById("hlog-song"), notes=document.getElementById("hlog-notes");
   var start=document.getElementById("hlog-start"), save=document.getElementById("hlog-save");
-  var timerEl=document.getElementById("hlog-timer"), list=document.getElementById("hlog-list");
-  var remain=0;
-  function fmt(s){return s<10?"0"+s:s}
-  function tick(){ if(remain<=0){timerEl.textContent="done";return;} remain-=1; var m=Math.floor(remain/60), s=remain%60; timerEl.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
-  function render(){ list.innerHTML=""; (lsGet(KEY,"[]")||[]).slice().reverse().forEach(function(e){
-    var card=document.createElement("div"); card.className="card"; card.style.padding="12px";
-    card.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div>"
-                  +"<div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div>"
-                  +"<div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
-    list.appendChild(card);
-  }); }
-  document.querySelectorAll('#honey-log [data-addq]').forEach(function(btn){
+  var timer=document.getElementById("hlog-timer"), list=document.getElementById("hlog-list"), t=0;
+  function fmt(s){return s<10?"0"+s:s} function tick(){ if(t<=0){timer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
+  function render(){ list.innerHTML=""; (lsGet(KEY,"[]")||[]).slice().reverse().forEach(e=>{ var c=document.createElement("div"); c.className="card"; c.style.padding="12px"; c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div><div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>"; list.appendChild(c);} ) }
+  document.querySelectorAll('#honey-log [data-addq]').forEach(btn=>{
     btn.addEventListener("click", async function(){
-      var tag = this.getAttribute("data-addq");
-      var input = song.value.trim(); if(!input) return;
-      if(tag==="AB"){ await QUEUE.add(input, ["A","B"]); } else { await QUEUE.add(input, [tag]); }
+      var tag=this.getAttribute("data-addq"), input=song.value.trim(); if(!input) return;
+      await QUEUE.add(input, tag==="AB"?["A","B"]:[tag]);
     });
   });
-  start.addEventListener("click",function(){remain=5*60;tick()});
-  save.addEventListener("click",function(){
-    var entry={date:timeISO(), song:song.value.trim(), notes:notes.value.trim()};
-    var data=lsGet(KEY,"[]"); data.push(entry); lsSet(KEY,data);
-    song.value=""; notes.value=""; render();
-  });
+  start.onclick=function(){ t=5*60; tick(); };
+  save.onclick=function(){ var e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()}; var data=lsGet(KEY,"[]"); data.push(e); lsSet(KEY,data); song.value=""; notes.value=""; render(); };
   render();
 })();
 
-/* ---------- Doechii Log ---------- */
-(function DLog(){
+/* ===== Doechii Log ===== */
+(function(){
   var KEY="mirrorhoney_safechaos_v1";
   var song=document.getElementById("dlog-song"), notes=document.getElementById("dlog-notes");
   var start=document.getElementById("dlog-start"), save=document.getElementById("dlog-save");
-  var timerEl=document.getElementById("dlog-timer"), list=document.getElementById("dlog-list");
-  var remain=0;
-  function fmt(s){return s<10?"0"+s:s}
-  function tick(){ if(remain<=0){timerEl.textContent="done";return;} remain-=1; var m=Math.floor(remain/60), s=remain%60; timerEl.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
-  function render(){ list.innerHTML=""; (lsGet(KEY,"[]")||[]).slice().reverse().forEach(function(e){
-    var card=document.createElement("div"); card.className="card"; card.style.padding="12px";
-    card.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div>"
-                  +"<div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div>"
-                  +"<div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
-    list.appendChild(card);
-  }); }
-  document.querySelectorAll('#dlog [data-addq]').forEach(function(btn){
+  var timer=document.getElementById("dlog-timer"), list=document.getElementById("dlog-list"), t=0;
+  function fmt(s){return s<10?"0"+s:s} function tick(){ if(t<=0){timer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
+  function render(){ list.innerHTML=""; (lsGet(KEY,"[]")||[]).slice().reverse().forEach(e=>{ var c=document.createElement("div"); c.className="card"; c.style.padding="12px"; c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div><div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>"; list.appendChild(c);} ) }
+  document.querySelectorAll('#dlog [data-addq]').forEach(btn=>{
     btn.addEventListener("click", async function(){
-      var tag = this.getAttribute("data-addq");
-      var input = song.value.trim(); if(!input) return;
-      if(tag==="AB"){ await QUEUE.add(input, ["A","B"]); } else { await QUEUE.add(input, [tag]); }
+      var tag=this.getAttribute("data-addq"), input=song.value.trim(); if(!input) return;
+      await QUEUE.add(input, tag==="AB"?["A","B"]:[tag]);
     });
   });
-  start.addEventListener("click",function(){remain=5*60;tick()});
-  save.addEventListener("click",function(){
-    var entry={date:timeISO(), song:song.value.trim(), notes:notes.value.trim()};
-    var data=lsGet(KEY,"[]"); data.push(entry); lsSet(KEY,data);
-    song.value=""; notes.value=""; render();
-  });
+  start.onclick=function(){ t=5*60; tick(); };
+  save.onclick=function(){ var e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()}; var data=lsGet(KEY,"[]"); data.push(e); lsSet(KEY,data); song.value=""; notes.value=""; render(); };
   render();
 })();
 
-/* ---------- Doechii Chaos scatter + shuffle ---------- */
+/* ===== Chaos Scatter + Shuffle ===== */
 (function(){
-  var SPARK_SETS=[
-    ["raw","wild","glitch","seed","mirror shard","🔥"],
-    ["off-script","too true","unboxed","go louder","shadow cut","spark"],
-    ["unfinished","stranger","crooked line","noise bloom","flash","trace"]
-  ];
-  function scatter(set){
-    var root=document.getElementById("doechii-chaos-embed"); if(!root) return;
-    while(root.firstChild) root.removeChild(root.firstChild);
-    var frags=set||SPARK_SETS[0], seedIndex=Math.min(5, Math.floor(frags.length/2));
-    var w=root.clientWidth, h=root.clientHeight;
-    function put(el,x,y,angle,op){ el.style.left=Math.floor(x)+"px"; el.style.top=Math.floor(y)+"px"; el.style.setProperty("--angle",angle+"deg"); if(op!=null) el.style.opacity=op; root.appendChild(el); }
-    var seed=document.createElement("div"); seed.className="seed"; seed.textContent=frags[seedIndex]||"seed"; put(seed,w/2,h/2,0,1);
-    for(var i=0;i<frags.length;i++){ if(i===seedIndex) continue; var f=document.createElement("div"); f.className="fragment"; f.textContent=frags[i];
-      var x=Math.random()*w, y=Math.random()*h, angle=Math.floor(Math.random()*120-60), op=(0.6+Math.random()*0.4).toFixed(2);
-      put(f,x,y,angle,op); f.onmouseenter=function(){this.style.color="#FF3EB5";this.style.textShadow="0 0 10px #FF3EB5"}; f.onmouseleave=function(){this.style.color="";this.style.textShadow=""}; }
+  var SETS=[["raw","wild","glitch","seed","mirror shard","🔥"],["off-script","too true","unboxed","go louder","shadow cut","spark"],["unfinished","stranger","crooked line","noise bloom","flash","trace"]];
+  function scatter(arr){
+    var root=document.getElementById("doechii-chaos-embed"); if(!root) return; while(root.firstChild) root.removeChild(root.firstChild);
+    var fr=arr||SETS[0], sI=Math.min(5,Math.floor(fr.length/2)), w=root.clientWidth, h=root.clientHeight;
+    function put(el,x,y,a,o){ el.style.left=Math.floor(x)+"px"; el.style.top=Math.floor(y)+"px"; el.style.setProperty("--angle",a+"deg"); if(o!=null) el.style.opacity=o; root.appendChild(el);}
+    var seed=document.createElement("div"); seed.className="seed"; seed.textContent=fr[sI]||"seed"; put(seed,w/2,h/2,0,1);
+    for(var i=0;i<fr.length;i++){ if(i===sI) continue; var f=document.createElement("div"); f.className="fragment"; f.textContent=fr[i];
+      var x=Math.random()*w,y=Math.random()*h,a=Math.floor(Math.random()*120-60),o=(0.6+Math.random()*0.4).toFixed(2); put(f,x,y,a,o);
+      f.onmouseenter=function(){this.style.color="#FF3EB5";this.style.textShadow="0 0 10px #FF3EB5"}; f.onmouseleave=function(){this.style.color="";this.style.textShadow=""};
+    }
   }
-  window.scatterChaos = scatter;
-  scatter(SPARK_SETS[0]);
-  window.addEventListener("resize",function(){ scatter(SPARK_SETS[0]); }, {once:true});
-  var shuffle=document.getElementById("seed-shuffle");
-  if(shuffle){ shuffle.onclick=function(){ var set=SPARK_SETS[Math.floor(Math.random()*SPARK_SETS.length)]; scatter(set); }; }
+  window.scatterChaos=scatter; scatter(SETS[0]);
+  window.addEventListener("resize",()=>scatter(SETS[0]),{once:true});
+  var sh=document.getElementById("seed-shuffle"); if(sh){ sh.onclick=()=>scatter(SETS[Math.floor(Math.random()*SETS.length)]); }
 })();
 
-/* ---------- Tagged Queue & Players ---------- */
+/* ===== Tagged Queue & Players ===== */
 var QUEUE=(function(){
   var KEY="mirrorhoney_queue_v3";
-  var items = lsGet(KEY,"[]")||[];
-  var filter = "ALL";
-  var scopeIndex = { A:0, B:0, D:0 };
+  var items=lsGet(KEY,"[]")||[], filter="ALL", scopeIndex={A:0,B:0,D:0};
   var qEl=document.getElementById("queue"), status=document.getElementById("q-status");
   var clearBtn=document.getElementById("q-clear");
-
-  function save(){ lsSet(KEY, items); render(); }
-  function human(it){
-    var t = it.title || it.id || "Untitled";
-    var a = it.author ? " — "+it.author : "";
-    return t+a;
-  }
-  function matchesFilter(it){ return filter==="ALL" ? true : (it.tags||[]).includes(filter); }
-
+  function save(){ lsSet(KEY,items); render(); }
+  function human(it){ var t=it.title||it.id||"Untitled", a=it.author?(" — "+it.author):""; return t+a; }
+  function matches(it){ return filter==="ALL" || (it.tags||[]).includes(filter); }
   function render(){
-    qEl.innerHTML="";
-    var visible = items.filter(matchesFilter);
-    status.textContent = items.length ? ("Queue: "+visible.length+" shown / "+items.length+" total") : "Queue empty";
-
-    visible.forEach(function(it){
-      var d=document.createElement("div"); d.className="qitem"; d.setAttribute("aria-label", "Queue item "+human(it)+" tags "+((it.tags||[]).join(',')||'none'));
+    qEl.innerHTML=""; var vis=items.filter(matches);
+    status.textContent=items.length?("Queue: "+vis.length+" shown / "+items.length+" total"):"Queue empty";
+    vis.forEach(function(it){
+      var d=document.createElement("div"); d.className="qitem"; d.setAttribute("aria-label","Queue item "+human(it)+" tags "+((it.tags||[]).join(',')||'none'));
       if(it.thumbnail){ var img=document.createElement("img"); img.src=it.thumbnail; img.alt=""; d.appendChild(img); }
-      var label=document.createElement("span"); label.innerHTML = human(it);
-      var tags=document.createElement("span");
-      (it.tags||[]).forEach(function(tag){ var s=document.createElement("span"); s.className="tag "+tag; s.textContent=tag; tags.appendChild(s); });
+      var label=document.createElement("span"); label.innerHTML=human(it);
+      var tags=document.createElement("span"); (it.tags||[]).forEach(function(t){ var s=document.createElement("span"); s.className="tag "+t; s.textContent=t; tags.appendChild(s); });
       var playA=document.createElement("button"); playA.className="qbtn"; playA.textContent="Play A";
       var playB=document.createElement("button"); playB.className="qbtn"; playB.textContent="Play B";
       var tagA=document.createElement("button"); tagA.className="qbtn"; tagA.textContent="+A";
@@ -422,217 +438,120 @@ var QUEUE=(function(){
       var rmB=document.createElement("button"); rmB.className="qbtn"; rmB.textContent="–B";
       var rmD=document.createElement("button"); rmD.className="qbtn"; rmD.textContent="–D";
       var del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove";
-
-      playA.onclick=function(){ if(it.id){ PLAYERS.load("A", it.id); bumpToItem("A", it); } };
-      playB.onclick=function(){ if(it.id){ PLAYERS.load("B", it.id); bumpToItem("B", it); } };
-      tagA.onclick=function(){ tag(it,"A"); };
-      tagB.onclick=function(){ tag(it,"B"); };
-      tagD.onclick=function(){ tag(it,"D"); };
-      rmA.onclick=function(){ untag(it,"A"); };
-      rmB.onclick=function(){ untag(it,"B"); };
-      rmD.onclick=function(){ untag(it,"D"); };
+      playA.onclick=function(){ if(it.id){ PLAYERS.load("A",it.id); bumpTo("A",it);} };
+      playB.onclick=function(){ if(it.id){ PLAYERS.load("B",it.id); bumpTo("B",it);} };
+      tagA.onclick=function(){ tag(it,"A")}; tagB.onclick=function(){ tag(it,"B")}; tagD.onclick=function(){ tag(it,"D")};
+      rmA.onclick=function(){ untag(it,"A")}; rmB.onclick=function(){ untag(it,"B")}; rmD.onclick=function(){ untag(it,"D")};
       del.onclick=function(){ var ix=items.indexOf(it); if(ix>-1){ items.splice(ix,1); save(); } };
 
-      /* drag-to-reorder */
-      d.draggable = true;
-      d.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', items.indexOf(it)); });
-      qEl.addEventListener('dragover', e => e.preventDefault());
-      qEl.addEventListener('drop', e => {
+      d.draggable=true;
+      d.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', items.indexOf(it)); });
+      qEl.addEventListener('dragover',e=>e.preventDefault());
+      qEl.addEventListener('drop',e=>{
         e.preventDefault();
-        const from = +e.dataTransfer.getData('text/plain');
-        const to = Array.from(qEl.children).indexOf(d);
-        if(from===to || from<0 || to<0) return;
-        const [moved] = items.splice(from,1);
-        items.splice(to,0,moved);
-        save();
+        const from=+e.dataTransfer.getData('text/plain');
+        const to=Array.from(qEl.children).indexOf(d);
+        if(from===to||from<0||to<0) return;
+        const [moved]=items.splice(from,1); items.splice(to,0,moved); save();
       });
 
       d.appendChild(label); d.appendChild(tags);
       d.appendChild(playA); d.appendChild(playB);
       d.appendChild(tagA); d.appendChild(tagB); d.appendChild(tagD);
       d.appendChild(rmA); d.appendChild(rmB); d.appendChild(rmD);
-      d.appendChild(del);
-      qEl.appendChild(d);
+      d.appendChild(del); qEl.appendChild(d);
     });
   }
-  function tag(it, t){ it.tags = Array.from(new Set([...(it.tags||[]), t])); save(); }
-  function untag(it, t){ it.tags = (it.tags||[]).filter(function(x){return x!==t}); save(); }
-
-  document.querySelectorAll('[data-filter]').forEach(function(btn){
-    btn.addEventListener("click",function(){
-      document.querySelectorAll('[data-filter]').forEach(function(b){ setPressed(b,false); });
-      setPressed(this,true);
-      filter = this.getAttribute("data-filter");
-      render();
-    });
+  function tag(it,t){ it.tags=Array.from(new Set([...(it.tags||[]),t])); save(); }
+  function untag(it,t){ it.tags=(it.tags||[]).filter(x=>x!==t); save(); }
+  document.querySelectorAll('[data-filter]').forEach(btn=>{
+    btn.addEventListener("click",function(){ document.querySelectorAll('[data-filter]').forEach(b=>setPressed(b,false)); setPressed(this,true); filter=this.getAttribute("data-filter"); render(); });
   });
-
   clearBtn.onclick=function(){ items=[]; scopeIndex={A:0,B:0,D:0}; save(); };
+  function scope(scope){ return items.filter(it=>(it.tags||[]).includes(scope)); }
+  function bumpTo(scopeName,it){ var sc=scope(scopeName); var i=sc.findIndex(x=>x===it); scopeIndex[scopeName]=(i<0?0:i); }
+  function seek(scopeName,step,loop){ var sc=scope(scopeName); if(!sc.length) return null; var i=scopeIndex[scopeName]+step; if(i>=sc.length){ if(loop)i=0; else return null; } if(i<0){ if(loop)i=sc.length-1; else return null; } scopeIndex[scopeName]=i; return sc[i]||null; }
+  async function add(input,tags){ var id=ytIdFrom(input); var meta=id?(await fetchYTMeta(id)||{}):{}; var it={id:id,title:meta.title||input,author:meta.author||"",thumbnail:meta.thumbnail||"",tags:tags||[],added:timeISO()}; items.push(it); save(); return it; }
 
-  function scopeItems(scope){ return items.filter(function(it){ return (it.tags||[]).includes(scope); }); }
-  function bumpToItem(scope, it){
-    var sc = scopeItems(scope);
-    var pos = sc.findIndex(function(x){ return x===it; });
-    scopeIndex[scope] = (pos<0?0:pos);
-  }
-  function seekItem(scope, step, loopQueue){
-    var sc = scopeItems(scope);
-    if(!sc.length) return null;
-    var i = scopeIndex[scope] + step;
-    if(i>=sc.length){ if(loopQueue){ i=0; } else { return null; } }
-    if(i<0){ if(loopQueue){ i=sc.length-1; } else { return null; } }
-    scopeIndex[scope]=i;
-    return sc[i] || null;
-  }
-
-  async function add(input, tags){
-    var id = ytIdFrom(input);
-    var meta = id ? (await fetchYTMeta(id) || {}) : {};
-    var item = { id:id, title: meta.title || input, author: meta.author || "", thumbnail: meta.thumbnail || "", tags: tags||[], added: timeISO() };
-    items.push(item); save();
-    return item;
-  }
-
-  /* export/import */
+  // export/import
   document.getElementById('q-export').onclick=()=>{
-    const blob=new Blob([JSON.stringify({
-      queue: items, honey: lsGet('mirrorhoney_honeylog_v1',"[]"), doechii: lsGet('mirrorhoney_safechaos_v1',"[]")
-    },null,2)],{type:'application/json'});
+    const blob=new Blob([JSON.stringify({queue:items,honey:lsGet('mirrorhoney_honeylog_v1',"[]"),doechii:lsGet('mirrorhoney_safechaos_v1',"[]")},null,2)],{type:'application/json'});
     const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mirrorhoney_export.json'; a.click();
   };
   document.getElementById('q-import-btn').onclick=()=>document.getElementById('q-import').click();
   document.getElementById('q-import').onchange=e=>{
-    const file=e.target.files[0]; if(!file) return;
-    file.text().then(txt=>{
-      try{
-        const j=JSON.parse(txt);
-        if(j.queue){ items=j.queue; }
-        if(j.honey){ localStorage.setItem('mirrorhoney_honeylog_v1', JSON.stringify(j.honey)); }
-        if(j.doechii){ localStorage.setItem('mirrorhoney_safechaos_v1', JSON.stringify(j.doechii)); }
-        save();
-      }catch(_){}
-    });
+    const f=e.target.files[0]; if(!f) return;
+    f.text().then(txt=>{ try{ const j=JSON.parse(txt); if(j.queue){items=j.queue} if(j.honey){localStorage.setItem('mirrorhoney_honeylog_v1',JSON.stringify(j.honey))} if(j.doechii){localStorage.setItem('mirrorhoney_safechaos_v1',JSON.stringify(j.doechii))} save(); }catch(_){}} );
   };
 
-  /* deeplink seed */
-  (function(){
-    const P=new URLSearchParams(location.search);
-    const q=P.get('q'); const t=P.get('tag');
-    if(q){ add(q, t ? (t==="AB"?["A","B"]:[t]) : []); }
-  })();
+  // deeplink seed
+  (function(){ const P=new URLSearchParams(location.search); const q=P.get('q'); const t=P.get('tag'); if(q){ add(q, t? (t==="AB"?["A","B"]:[t]) : []); } })();
 
   render();
-  return {
-    add:add,
-    next: (scope, loop) => seekItem(scope, +1, loop),
-    prev: (scope, loop) => seekItem(scope, -1, loop),
-    bumpToItem:bumpToItem,
-    scopeItems:scopeItems
-  };
+  return { add, next:(s,l)=>seek(s,+1,l), prev:(s,l)=>seek(s,-1,l), bumpToItem:bumpTo, scopeItems:scope };
 })();
 
-/* ---------- YouTube Players with per-player loop, volume, crossfade ---------- */
+/* ===== Players A/B (loop, volume, crossfade) ===== */
 var PLAYERS=(function(){
-  var A=null,B=null;
-  var cfg={ A:{loopTrack:false, loopQueue:true}, B:{loopTrack:false, loopQueue:true} };
-  var XF=false; /* crossfade A->B toggle */
-
-  function create(which, el){
-    return new YT.Player(el, {
-      width: '100%', height: '260', videoId: null,
-      playerVars: { rel:0, modestbranding:1, playsinline:1 },
-      events: {
-        onStateChange: function(e){
-          if(e.data===0){ // ended
-            if(cfg[which].loopTrack){ this.playVideo(); return; }
-            if(which==="A" && XF && B){ // crossfade to whatever B currently has
-              try{
-                B.setVolume(0); B.playVideo();
-                var v=0; var f=setInterval(()=>{ v+=10; B.setVolume(Math.min(100,v)); if(v>=100) clearInterval(f); },150);
-              }catch(_){}
-            }
-            var nextItem = QUEUE.next(which, cfg[which].loopQueue);
-            if(nextItem && nextItem.id){ this.loadVideoById(nextItem.id); }
-          }
-        }
-      }
+  var A=null,B=null, cfg={A:{loopTrack:false,loopQueue:true},B:{loopTrack:false,loopQueue:true}}, XF=false;
+  function create(which,el){
+    return new YT.Player(el,{width:'100%',height:'260',videoId:null,playerVars:{rel:0,modestbranding:1,playsinline:1},
+      events:{ onStateChange:function(e){ if(e.data===0){ if(cfg[which].loopTrack){this.playVideo();return;} if(which==="A"&&XF&&B){ try{B.setVolume(0);B.playVideo();let v=0;let f=setInterval(()=>{v+=10;B.setVolume(Math.min(100,v)); if(v>=100) clearInterval(f);},150);}catch(_){}} var nxt=QUEUE.next(which,cfg[which].loopQueue); if(nxt&&nxt.id){ this.loadVideoById(nxt.id);} } } }
     });
   }
-  function load(which, videoId){
-    var p = which==="A"?A:B;
-    if(p){ p.loadVideoById(videoId); }
-  }
-
-  /* Bind per-player buttons */
-  document.querySelectorAll('[data-prev]').forEach(function(btn){
-    btn.onclick=function(){
-      var which=this.getAttribute("data-prev");
-      var p = which==="A"?A:B;
-      var item = QUEUE.prev(which, cfg[which].loopQueue);
-      if(item && item.id){ p.loadVideoById(item.id); }
-    };
-  });
-  document.querySelectorAll('[data-next]').forEach(function(btn){
-    btn.onclick=function(){
-      var which=this.getAttribute("data-next");
-      var p = which==="A"?A:B;
-      var item = QUEUE.next(which, cfg[which].loopQueue);
-      if(item && item.id){ p.loadVideoById(item.id); }
-    };
-  });
-  document.querySelectorAll('[data-play]').forEach(function(btn){
-    btn.onclick=function(){
-      var which=this.getAttribute("data-play");
-      var p = which==="A"?A:B;
-      if(!p) return;
-      var st=p.getPlayerState();
-      if(st===1){ p.pauseVideo(); } else { p.playVideo(); }
-    };
-  });
-  document.querySelectorAll('[data-looptrack]').forEach(function(btn){
-    btn.onclick=function(){
-      var which=this.getAttribute("data-looptrack");
-      cfg[which].loopTrack = !cfg[which].loopTrack;
-      setPressed(this, cfg[which].loopTrack);
-    };
-  });
-  document.querySelectorAll('[data-loopqueue]').forEach(function(btn){
-    btn.onclick=function(){
-      var which=this.getAttribute("data-loopqueue");
-      cfg[which].loopQueue = !cfg[which].loopQueue;
-      setPressed(this, cfg[which].loopQueue);
-    };
-  });
+  function load(which,id){ var p=which==="A"?A:B; if(p){ p.loadVideoById(id);} }
+  document.querySelectorAll('[data-prev]').forEach(btn=>btn.onclick=function(){ var w=this.getAttribute("data-prev"); var p=w==="A"?A:B; var it=QUEUE.prev(w,cfg[w].loopQueue); if(it&&it.id){p.loadVideoById(it.id);} });
+  document.querySelectorAll('[data-next]').forEach(btn=>btn.onclick=function(){ var w=this.getAttribute("data-next"); var p=w==="A"?A:B; var it=QUEUE.next(w,cfg[w].loopQueue); if(it&&it.id){p.loadVideoById(it.id);} });
+  document.querySelectorAll('[data-play]').forEach(btn=>btn.onclick=function(){ var w=this.getAttribute("data-play"); var p=w==="A"?A:B; if(!p)return; var st=p.getPlayerState(); if(st===1){p.pauseVideo();} else {p.playVideo();} });
+  document.querySelectorAll('[data-looptrack]').forEach(btn=>btn.onclick=function(){ var w=this.getAttribute("data-looptrack"); cfg[w].loopTrack=!cfg[w].loopTrack; setPressed(this,cfg[w].loopTrack); });
+  document.querySelectorAll('[data-loopqueue]').forEach(btn=>btn.onclick=function(){ var w=this.getAttribute("data-loopqueue"); cfg[w].loopQueue=!cfg[w].loopQueue; setPressed(this,cfg[w].loopQueue); });
   document.querySelector('[data-vol="A"]').onclick=()=>{ if(A){ A.setVolume(Math.max(0,(A.getVolume()||100)-10)); } };
   document.querySelector('[data-volup="A"]').onclick=()=>{ if(A){ A.setVolume(Math.min(100,(A.getVolume()||100)+10)); } };
   document.querySelector('[data-vol="B"]').onclick=()=>{ if(B){ B.setVolume(Math.max(0,(B.getVolume()||100)-10)); } };
   document.querySelector('[data-volup="B"]').onclick=()=>{ if(B){ B.setVolume(Math.min(100,(B.getVolume()||100)+10)); } };
-  document.querySelector('[data-xfade"]').onclick=function(){ XF=!XF; setPressed(this, XF); };
-
-  window.onYouTubeIframeAPIReady = function(){
-    A = create("A","playerA");
-    B = create("B","playerB");
-  };
-  return { load:load, get:(w)=> (w==="A"?A:B) };
+  document.querySelector('[data-xfade"]').onclick=function(){ XF=!XF; setPressed(this,XF); };
+  window.onYouTubeIframeAPIReady=function(){ A=create("A","playerA"); B=create("B","playerB"); };
+  return { load, get:(w)=> (w==="A"?A:B) };
 })();
 
-/* ---------- Keyboard shortcuts ---------- */
+/* ===== Keyboard shortcuts ===== */
 document.addEventListener('keydown',e=>{
-  if(e.target && (e.target.tagName==='INPUT' || e.target.tagName==='TEXTAREA')) return;
+  if(e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
   if(e.code==='Space'){ e.preventDefault(); document.querySelector('[data-play="A"]')?.click(); }
   if(e.shiftKey && e.code==='Space'){ e.preventDefault(); document.querySelector('[data-play="B"]')?.click(); }
 });
 
-/* ---------- PWA-lite Service Worker (inline registration) ---------- */
+/* ===== PWA-lite SW ===== */
 if('serviceWorker' in navigator){
-  const code = `
-self.addEventListener('install',e=>e.waitUntil(caches.open('mh-v1').then(c=>c.addAll(['./']))));
-self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));
-  `.trim();
-  const blob = new Blob([code], {type:'application/javascript'});
-  const url = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(url);
+  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-v1').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
+  const blob=new Blob([code],{type:'application/javascript'}); const url=URL.createObjectURL(blob); navigator.serviceWorker.register(url);
 }
+
+/* ===== Guided Tour ===== */
+(function(){
+  var KEY="mirrorhoney_seenTour_v1";
+  var tour=document.getElementById("tour"), stepsBox=document.getElementById("tourSteps");
+  var back=document.getElementById("tourBack"), next=document.getElementById("tourNext"), skip=document.getElementById("tourSkip"), prog=document.getElementById("tourProgress");
+  var steps=[
+    {title:"Honey vs Mirror (the idea)",body:"Honey = sweet pull & body first. Mirror = reflective angle & mind first. You’ll learn to spot each and save one seed."},
+    {title:"Try a song",body:"Paste a YouTube link (or title) in the Honey Log and click Add to A or B. We’ll fetch the title and thumbnail."},
+    {title:"Write one page",body:"Start the 5-minute timer. Write messy. Circle one sentence — that’s your seed for continuity."},
+    {title:"Play with A/B",body:"Queue songs in A (Honey) and B (Mirror). Use Play/Pause, Loop Track, Loop Queue, and even crossfade A→B."},
+    {title:"Open Doechii’s spark",body:"Scroll to the visitor section. Add one wild edge to D, free-write fragments, shuffle the spark if you like."}
+  ];
+  var i=0;
+  function renderStep(){ stepsBox.innerHTML=""; var s=steps[i]; var el=document.createElement("div"); el.className="tour-steps"; el.innerHTML=`
+    <div class="tour-step"><strong>${s.title}</strong><p style="margin:.5rem 0 0">${s.body}</p></div>
+    <div class="tour-step"><em>Tip:</em> Your logs and queue stay on this device. Use Export in the dock to back up.</div>
+  `; stepsBox.appendChild(el); prog.textContent=(i+1)+" / "+steps.length; back.disabled=i===0; next.textContent=i===steps.length-1?"Finish":"Next"; }
+  function show(){ tour.classList.add("show"); renderStep(); }
+  function hide(){ tour.classList.remove("show"); localStorage.setItem(KEY,"1"); }
+  document.getElementById("startTour").onclick=show;
+  back.onclick=function(){ if(i>0){ i--; renderStep(); } };
+  next.onclick=function(){ if(i<steps.length-1){ i++; renderStep(); } else { hide(); } };
+  skip.onclick=hide;
+  if(localStorage.getItem(KEY)!=="1"){ show(); }
+})();
 </script>
 </body>
 </html>
