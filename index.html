@@ -102,15 +102,17 @@
   .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--honey), transparent 88%),transparent);border-radius:10px}
   .word{font-size:1.2rem}
 
-  /* Right rail: QUEUE FIRST */
+  /* Right rail: QUEUE */
   .rail{display:grid;gap:12px}
   .rail .block{border:1px solid var(--line);border-radius:16px;background:color-mix(in oklab, var(--paper) 92%, black 8%);padding:12px;box-shadow:var(--shadow)}
   .qtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}
   .qfilters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+
   .queue{display:grid;gap:8px;grid-template-columns:1fr;
          max-height: calc((var(--vh) * 100) - var(--hdrH) - 110px);
          min-height:200px;overflow:auto;padding:4px 2px;transition:max-height .2s}
   .queue.compact{gap:6px;max-height: calc((var(--vh) * 100) - var(--hdrH) - 96px)}
+
   .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px;background:color-mix(in oklab, var(--paper) 86%, black 8%); min-width:0}
   .qitem img{width:76px;height:48px;object-fit:cover;border-radius:8px}
   .qitem .meta{display:flex;flex-direction:column;gap:4px; min-width:0}
@@ -119,15 +121,25 @@
   .lane{border:1px solid var(--line);padding:3px 10px;border-radius:999px;font-size:.8rem;opacity:.96;cursor:pointer;user-select:none}
   .lane.A::before{content:"🍯 "} .lane.B::before{content:"🪞 "} .lane.D::before{content:"🌉 "}
   .lane[aria-pressed="true"]{background:color-mix(in oklab, var(--accent), transparent 82%);border-color:var(--accent)}
-  .titleline .ttl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* Title & artist wrapping */
+  .titleline{display:flex;align-items:center;gap:8px}
+  .titleline .laneEmoji{opacity:.9;flex:0 0 auto}
+  .titleline .ttl{
+    /* Multi-line clamp (2) with wrapping in normal mode */
+    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
+    overflow:hidden; white-space:normal; word-break:break-word; line-height:1.25;
+  }
+  /* Compact mode keeps single-line ellipsis */
+  .queue.compact .titleline .ttl{
+    display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
 
   /* Compact tweaks */
   .queue.compact .qitem{grid-template-columns:1fr auto;padding:6px}
   .queue.compact .qitem img{display:none}
   .queue.compact .lanes .lane{padding:2px 8px;font-size:.72rem}
   .queue.compact .acts .qbtn{padding:4px 8px;font-size:.78rem}
-  .queue.compact .titleline{display:flex;align-items:center;gap:8px}
-  .titleline .laneEmoji{opacity:.9}
 
   /* Add form */
   .addq h3{margin:4px 0 8px}
@@ -416,7 +428,7 @@
       </section>
     </div>
 
-    <!-- ===== Right rail (QUEUE FIRST) ===== -->
+    <!-- ===== Right rail (QUEUE) ===== -->
     <aside class="rail">
       <!-- Queue Block (first) -->
       <div class="block">
@@ -795,12 +807,12 @@ var QUEUE=(function(){
       const meta=document.createElement("div"); meta.className="meta";
 
       // Title line
-      const ttl=document.createElement("div"); ttl.className="titleline";
+      const ttlWrap=document.createElement("div"); ttlWrap.className="titleline";
       const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"🌉";
-      const tlabel = document.createElement("span"); tlabel.className="ttl";
-      tlabel.innerHTML = (it.pinned? "<b>[friend]</b> " : "") + (it.artist?("<b>"+it.artist+"</b> — "):"") + (it.title||it.id||"Untitled");
-      ttl.appendChild(laneEmoji); ttl.appendChild(tlabel);
-      meta.appendChild(ttl);
+      const ttl = document.createElement("span"); ttl.className="ttl";
+      ttl.innerHTML = (it.pinned? "<b>[friend]</b> " : "") + (it.artist?("<b>"+it.artist+"</b> — "):"") + (it.title||it.id||"Untitled");
+      ttlWrap.appendChild(laneEmoji); ttlWrap.appendChild(ttl);
+      meta.appendChild(ttlWrap);
 
       // Lane editor
       const lanes=document.createElement("div"); lanes.className="lanes";
@@ -960,12 +972,14 @@ var PLAYER=(function(){
     if(P && P.cueVideoById){ try{ P.cueVideoById(id); return; }catch(_){ } }
     // fallback: reload without autoplay
     frame.src = "https://www.youtube.com/embed/"+id+"?enablejsapi=1&rel=0&modestbranding=1&playsinline=1";
+    setMediaSessionMeta();
   }
   function load(id,lane,autoplay){
     currentLane=lane||currentLane; currentId=id;
-    if(P && P.loadVideoById){ try{ P.loadVideoById(id); return; }catch(_){ } }
+    if(P && P.loadVideoById){ try{ P.loadVideoById(id); setMediaSessionMeta(); return; }catch(_){ } }
     // fallback: change src with autoplay
     frame.src = "https://www.youtube.com/embed/"+id+"?enablejsapi=1&rel=0&modestbranding=1&playsinline=1"+(autoplay?"&autoplay=1":"");
+    setMediaSessionMeta();
   }
   function toggle(){
     if(P && P.getPlayerState){ try{ const st=P.getPlayerState(); if(st===1) P.pauseVideo(); else P.playVideo(); return; }catch(_){ } }
@@ -979,6 +993,20 @@ var PLAYER=(function(){
   function setLane(l){ currentLane=l; }
   function getLane(){ return currentLane; }
   function getId(){ return currentId; }
+
+  function setMediaSessionMeta(){
+    try{
+      if(!('mediaSession' in navigator)) return;
+      const d=MH.get();
+      const it = d.queue.find(q=>q.id===currentId) || {};
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: it.title || 'Mirrorhoney',
+        artist: it.artist || it.author || '',
+        album: (it.lane==='A'?'Honey':'')||(it.lane==='B'?'Mirror':'')||(it.lane==='D'?'Bridge':'') || '',
+        artwork: it.thumb ? [{src: it.thumb, sizes: '512x512', type: 'image/jpeg'}] : []
+      });
+    }catch(_){}
+  }
 
   window.onYouTubeIframeAPIReady=function(){ create(); };
 
@@ -1179,6 +1207,14 @@ var ALTERNATOR=(function(){
   // Pre-cue MARINA friend for quick start
   if(window.YT && window.YT.Player){ PLAYER.cue("Cr-SqRWImmI","B"); }
 })();
+
+/* ===== Minimal app-shell Service Worker (UI offline only, not YouTube) ===== */
+if('serviceWorker' in navigator){
+  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v1').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
+  const blob=new Blob([code],{type:'application/javascript'});
+  const url=URL.createObjectURL(blob);
+  navigator.serviceWorker.register(url);
+}
 
 /* ===== Hidden notes ===== */
 (function secrets(){
