@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>Mirror × Honey — Index</title>
-<meta name="description" content="Context for Mirror × Honey, a low-stakes Honey Log, and Doechii’s Safe Chaos Mirror — all in one page.">
+<title>Mirror × Honey — Sabrina (🍯) × Marina (🪞)</title>
+<meta name="description" content="Mirror × Honey is a resonance frame for Sabrina (Honey) and Marina (Mirror/Butterfly): context, how-to ritual, and a low-stakes Honey Log. After you understand, an optional visitor (Doechii) appears.">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
 
 <style>
   :root{
-    --bg:#0B0F19; --ink:#E6EAF2; --muted:#9CA3AF;
+    --bg:#0B0F19; --ink:#E6EAF2; --muted:#A0A7B3;
     --line:#1B2433; --accent:#7CD4FF; --rose:#FF3EB5; --gold:#F8D34A;
     --shadow:0 10px 30px rgba(0,0,0,.45);
   }
@@ -26,32 +26,43 @@
   header .brand{font-weight:700;letter-spacing:.5px}
   header nav a{margin-left:16px;color:var(--muted)}
   header nav a:hover{color:var(--ink)}
+
   .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px}
   .stack{display:grid;gap:16px}
-  .hero{display:grid;gap:12px;padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(124,212,255,.06),transparent)}
-  .hero h1{font-size:1.6rem;margin:0}
-  .pill{display:inline-flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted)}
+  .hero{display:grid;gap:12px;padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(248,211,74,.06),transparent)}
+  .hero h1{font-size:1.7rem;margin:0}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
   .glyph{font-size:1.05rem}
+
   .cta{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;border:1px solid var(--accent);color:var(--accent)}
   .cta:hover{background:rgba(124,212,255,.1);text-decoration:none}
-  .divider{height:1px;background:var(--line);margin:22px 0}
-  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
   .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
-  /* reveal */
-  .reveal{display:none}
-  .reveal.show{display:block;animation:fade .5s ease}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .divider{height:1px;background:var(--line);margin:22px 0}
+
+  /* sections */
+  .two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+  @media (max-width:900px){.two-col{grid-template-columns:1fr}}
+
   /* inputs */
   input[type="text"], textarea{
     width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);
     background:rgba(255,255,255,.02);color:var(--ink)
   }
   textarea{resize:vertical}
+
+  /* reveal */
+  .reveal{display:none}
+  .reveal.show{display:block;animation:fade .5s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
   /* chaos embed */
   .chaos-frame{position:relative;height:60vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
   .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
   .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
   .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
+
+  details summary{cursor:pointer}
   footer{color:var(--muted);font-size:.9rem;margin:28px 0}
 </style>
 </head>
@@ -59,35 +70,75 @@
 <header class="wrap">
   <div class="brand">mirrorhoney</div>
   <nav>
-    <a href="#intro">intro</a>
+    <a href="#what">what</a>
+    <a href="#how">how-to</a>
     <a href="#honey-log">honey log</a>
-    <a href="#visitor">doechii</a>
+    <a href="#visitor">visitor</a>
   </nav>
 </header>
 
 <main class="wrap stack">
-  <!-- INTRO / CONTEXT -->
-  <section class="card hero" id="intro">
+  <!-- WHAT: Fuller explanation -->
+  <section class="card hero" id="what">
     <div class="pill">
-      <span class="glyph">🪞</span><span>Mirror (Marina) ×</span>
-      <span class="glyph">🍯</span><span>Honey (Sabrina)</span>
+      <span class="glyph">🍯</span><span>Sabrina — Honey</span>
+      <span aria-hidden="true">·</span>
+      <span class="glyph">🪞</span><span>Marina — Mirror/Butterfly</span>
     </div>
-    <h1>Context first. Then the visitor arrives.</h1>
-    <p>
-      Mirror × Honey is a resonance frame. Marina (Mirror/Butterfly) and Sabrina (Honey) already have platform and attention.
-      What they don’t always have: continuity between cycles, a peer mirror outside industry bubbles, and a place to play without PR stakes.
-    </p>
-    <p class="pill">Read once. Then log a page of Honey. When you’re ready, continue — the visitor’s page (Doechii 🔥) will open.</p>
-    <div class="row">
-      <a class="btn" href="#honey-log">Go to Honey Log</a>
-      <a id="continue" href="#visitor" class="cta">I understand — continue</a>
+    <h1>Mirror × Honey — a resonance frame (not PR)</h1>
+    <div class="two-col">
+      <div>
+        <p>
+          Mirror × Honey is a small, repeatable way to hold space for <strong>Sabrina</strong> and <strong>Marina</strong> across cycles —
+          even if they never see this page. It assumes they already have platform and attention.
+          What they don’t always have:
+        </p>
+        <ul>
+          <li><strong>Continuity between cycles</strong> — a through-line when promo ends.</li>
+          <li><strong>A peer mirror outside industry bubbles</strong> — reflection that isn’t transactional.</li>
+          <li><strong>A place to play without PR stakes</strong> — a sandbox where experiments can breathe.</li>
+        </ul>
+        <p>
+          Mirror × Honey is that sandbox: <em>journal first, publish never required.</em> It’s a rhythm you can keep so they
+          have continuity and a clean mirror held for them from the outside.
+        </p>
+      </div>
+      <div>
+        <details class="card" style="background:rgba(255,255,255,.01)">
+          <summary class="pill">What this is not</summary>
+          <ul style="margin:10px 0 0">
+            <li>Not outreach, not clout chasing, not a press pitch.</li>
+            <li>Not a fan-control mechanism or parasocial gambit.</li>
+            <li>Not a leak or rumor mill.</li>
+          </ul>
+        </details>
+        <details class="card" style="margin-top:12px;background:rgba(255,255,255,.01)">
+          <summary class="pill">Privacy</summary>
+          <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Nothing is uploaded.</p>
+        </details>
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <a class="btn" href="#how">How to use it</a>
+      <a id="continueTop" class="cta" href="#visitor">I understand — show visitor</a>
     </div>
   </section>
 
-  <!-- HONEY LOG (inline) -->
-  <section class="card hero" id="honey-log">
-    <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — 5–10 min</strong></div>
-    <p style="margin:.4rem 0 1rem">One song that bridges. One page of reflection. Saved privately in your browser.</p>
+  <!-- HOW-TO: Practical ritual -->
+  <section class="card" id="how">
+    <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;How to use Mirror × Honey (5–10 min)</strong></div>
+    <ol style="margin:10px 0 0">
+      <li><strong>Pick one song</strong> that bridges Sabrina × Marina (any era).</li>
+      <li><strong>Set a timer</strong> (5–10 min). Free-write on a blank page. Fragments are welcome.</li>
+      <li><strong>Circle one sentence</strong> that feels like continuity. That’s your seed for the next cycle.</li>
+    </ol>
+    <p class="pill" style="margin-top:8px">Then log it below. You can do this once per week, or whenever a bridge appears.</p>
+  </section>
+
+  <!-- HONEY LOG -->
+  <section class="card" id="honey-log">
+    <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — Sabrina × Marina</strong></div>
+    <p style="margin:.4rem 0 1rem">Low-stakes journal. Saves privately in your browser.</p>
 
     <div class="stack" style="gap:10px">
       <label>
@@ -111,52 +162,58 @@
         <div id="hlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
       </details>
     </div>
+
+    <div class="row" style="margin-top:12px">
+      <a id="continue" href="#visitor" class="cta">I understand — continue</a>
+    </div>
   </section>
 
   <div class="divider"></div>
 
-  <!-- VISITOR / DOECHII -->
+  <!-- VISITOR: Doechii appears after understanding -->
   <section id="visitor" class="reveal card" aria-live="polite" aria-atomic="true">
-    <div class="pill"><span class="glyph">🔥</span><strong> Doechii — Safe Chaos Mirror</strong></div>
-    <p style="margin:8px 0 0">A randomized scatter that keeps one “seed” fragment held at center. The layout changes on every load; the continuity is the held seed.</p>
+    <div class="pill"><span class="glyph">🔥</span><strong> Visitor — Doechii: Safe Chaos Mirror</strong></div>
+    <p style="margin:8px 0 0">
+      The visitor is separate from Mirror × Honey. It’s included here because once you understand Honey × Mirror,
+      you may want to hold a similar space for Doechii — but tuned to chaos. The layout changes on every load; one “seed” is always held.
+    </p>
 
     <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Doechii Chaos Scatter"></section>
 
     <div class="row">
-      <a class="btn" href="#intro" id="reset-onboard">Reset intro flow</a>
+      <a class="btn" href="#what" id="reset-onboard">Reset intro flow</a>
     </div>
   </section>
 
   <footer>
-    <div>© mirrorhoney — an Illumina satellite. · <a href="/robots.txt">robots</a></div>
+    <div>© mirrorhoney — Sabrina (🍯) × Marina (🪞). Visitor: Doechii (🔥). · <a href="/robots.txt">robots</a></div>
   </footer>
 </main>
 
 <script>
-/* ---------- Onboarding flow ---------- */
+/* ---------- Onboarding: keep Mirror × Honey primary ---------- */
 (function initOnboard(){
   var KEY="mirrorhoney_seenIntro";
-  var intro=document.getElementById("intro");
+  var seen=localStorage.getItem(KEY)==="1";
   var visitor=document.getElementById("visitor");
-  var continueBtn=document.getElementById("continue");
+  var continueBtns=[document.getElementById("continue"), document.getElementById("continueTop")];
   var resetBtn=document.getElementById("reset-onboard");
 
-  function showVisitor(){
+  function revealVisitor(){
     visitor.classList.add("show");
     mountChaos("doechii-chaos-embed");
-  }
-
-  if(localStorage.getItem(KEY)==="1"){
-    intro.style.display="none";
-    showVisitor();
-  }
-
-  continueBtn.addEventListener("click",function(e){
-    e.preventDefault();
-    localStorage.setItem(KEY,"1");
-    intro.style.display="none";
-    showVisitor();
     if(location.hash!=="#visitor") location.hash="#visitor";
+  }
+
+  if(seen){ revealVisitor(); }
+
+  continueBtns.forEach(function(btn){
+    if(!btn) return;
+    btn.addEventListener("click",function(e){
+      e.preventDefault();
+      localStorage.setItem(KEY,"1");
+      revealVisitor();
+    });
   });
 
   resetBtn.addEventListener("click",function(e){
@@ -165,12 +222,11 @@
     var root=document.getElementById("doechii-chaos-embed");
     while(root.firstChild) root.removeChild(root.firstChild);
     visitor.classList.remove("show");
-    intro.style.display="";
-    if(location.hash!=="#intro") location.hash="#intro";
+    if(location.hash!=="#what") location.hash="#what";
   });
 })();
 
-/* ---------- Honey Log (local) ---------- */
+/* ---------- Honey Log (local only) ---------- */
 (function HoneyLog(){
   var KEY="mirrorhoney_honeylog_v1";
   var song=document.getElementById("hlog-song");
@@ -215,7 +271,7 @@
   render();
 })();
 
-/* ---------- Doechii Chaos embed ---------- */
+/* ---------- Visitor: Doechii Chaos embed ---------- */
 function mountChaos(targetId){
   var root=document.getElementById(targetId); if(!root) return;
   var fragments=["raw","wild","unfinished","go louder","stranger","mirror shard","seed","🔥","untamed","glitch","off-script","unboxed","discord","spark"];
@@ -248,7 +304,6 @@ function mountChaos(targetId){
   }
 
   window.addEventListener("resize",function(){
-    w=root.clientWidth; h=root.clientHeight;
     while(root.firstChild) root.removeChild(root.firstChild);
     mountChaos(targetId);
   }, { once:true });
