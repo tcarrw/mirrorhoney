@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Mirror × Honey — Mirror‑first (🪞) · Bridge (🌉) · Neon (⚡)</title>
-<meta name="description" content="Mirror-first: single bottom player with queue, header controls, Bridge (Doechii) sparks & daily fragments, and local logs.">
+<meta name="description" content="Mirror-first: single bottom player, one add-to-queue form (artist + YouTube + lane), stable storage, Bridge sparks & daily fragments, and local logs.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 
 <style>
   :root{
-    --bg:#0B0F19;--ink:#E6EAF2;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
-    --shadow:0 10px 30px rgba(0,0,0,.45);--railW:clamp(300px,34vw,480px)
+    --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#F8FBFF;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
+    --danger:#FF6B6B;--ok:#36D399;--shadow:0 10px 30px rgba(0,0,0,.45);--railW:clamp(320px,34vw,480px)
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -19,68 +19,74 @@
   .wrap{max-width:1280px;margin:0 auto;padding:20px 24px}
 
   /* Header */
-  header{position:sticky;top:0;z-index:80;background:rgba(11,15,25,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  header{position:sticky;top:0;z-index:90;background:rgba(11,15,25,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
   .hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-  .brand{font-weight:700;letter-spacing:.5px}
-  nav a{margin-left:14px;color:var(--muted)} nav a:hover{color:var(--ink)}
+  .brand{font-weight:700;letter-spacing:.5px;color:var(--ink-strong)}
+  nav a{margin-left:14px;color:var(--ink)} nav a:hover{color:var(--ink-strong)}
   .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .qbtn,.btn,.chip{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink);cursor:pointer}
+  .qbtn,.btn,.chip{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--ink);cursor:pointer}
   .chip{padding:6px 10px;border-radius:999px}
-  .chip[aria-pressed="true"]{outline:2px solid var(--accent)}
+  .chip[aria-pressed="true"], .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
   .nowtxt{max-width:42vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:.9rem}
 
   /* Page grid: content + rail */
   main .page{display:grid;grid-template-columns:1fr var(--railW);gap:18px}
   @media (max-width:1100px){ main .page{grid-template-columns:1fr} }
-  .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px}
+  .card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px}
   .stack{display:grid;gap:16px}
   .two-col{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
   .twins{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media (max-width:1000px){.two-col,.twins{grid-template-columns:1fr}}
-  input[type="text"],textarea{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
+  input[type="text"],textarea,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--ink-strong)}
+  input::placeholder,textarea::placeholder{color:#D5D9E0;opacity:.8}
   textarea{resize:vertical}
-  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
-  details summary{cursor:pointer}
+  .hint{font-size:.85rem;color:#C9CFDA;margin-top:6px}
+  details summary{cursor:pointer;color:var(--ink)}
 
   /* Writer */
   .writer-grid{display:grid;gap:10px}
   .writer-grid.vertical{grid-template-rows:auto auto auto}
   .writer-grid.horizontal{grid-template-columns:1fr .9fr 1fr;align-items:end}
-  .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,rgba(193,215,255,.10),transparent);border-radius:10px}
-  .bridge-box{border-left:4px solid var(--rose);padding-left:12px;background:linear-gradient(180deg,rgba(255,62,181,.10),transparent);border-radius:10px}
-  .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,rgba(243,201,78,.10),transparent);border-radius:10px}
+  .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,rgba(193,215,255,.12),transparent);border-radius:10px}
+  .bridge-box{border-left:4px solid var(--rose);padding-left:12px;background:linear-gradient(180deg,rgba(255,62,181,.12),transparent);border-radius:10px}
+  .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,rgba(243,201,78,.14),transparent);border-radius:10px}
   .word{font-size:1.2rem}
 
-  /* Rail (no players here; just modes + queue) */
-  .rail{position:sticky;top:74px;display:grid;gap:10px}
-  .rail .block{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.02);padding:10px}
+  /* Rail (modes + add form + queue) */
+  .rail{position:sticky;top:82px;display:grid;gap:10px}
+  .rail .block{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03);padding:12px}
   .qtools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .queue{display:grid;gap:10px;grid-template-columns:1fr;max-height:52vh;min-height:140px;overflow:auto;padding:4px 2px}
-  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 10px;background:rgba(255,255,255,.02)}
+  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px;background:rgba(255,255,255,.04)}
   .qitem img{width:76px;height:46px;object-fit:cover;border-radius:6px}
-  .qitem .meta{display:flex;flex-direction:column;gap:4px}
+  .qitem .meta{display:flex;flex-direction:column;gap:6px}
   .qitem .acts{display:flex;flex-wrap:wrap;gap:6px}
-  .tags{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-  .tg{border:1px solid var(--line);padding:2px 8px;border-radius:999px;font-size:.78rem;opacity:.95;cursor:pointer;user-select:none}
-  .tg[aria-pressed="true"]{background:rgba(124,212,255,.12);border-color:var(--accent)}
-  .tg.A::before{content:"🍯 "}.tg.B::before{content:"🪞 "}.tg.D::before{content:"🌉 "}
-  .tg.AB::before{content:"A+B "}
+  .lanes{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .lane{border:1px solid var(--line);padding:2px 10px;border-radius:999px;font-size:.78rem;opacity:.95;cursor:pointer;user-select:none}
+  .lane.A::before{content:"🍯 "} .lane.B::before{content:"🪞 "} .lane.D::before{content:"🌉 "}
+  .lane[aria-pressed="true"]{background:rgba(124,212,255,.18);border-color:var(--accent)}
+
+  /* Add form */
+  .addq h3{margin:4px 0 8px}
+  .lanechips{display:flex;gap:6px;margin-top:6px}
+  .lanechips .chip{user-select:none}
+  .status-ok{color:var(--ok)} .status-err{color:var(--danger)}
 
   /* Bridge scatter */
-  .chaos-frame{position:relative;height:50vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
-  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
-  .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
+  .chaos-frame{position:relative;height:48vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
+  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap;background:rgba(0,0,0,.3)}
+  .fragment{position:absolute;font-size:1rem;opacity:.95;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
   .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
 
   /* Daily fragments */
   .fragments{display:grid;gap:10px}
-  .frag-list{display:grid;gap:6px;max-height:280px;overflow:auto;padding-right:4px}
-  .frag-item{display:flex;justify-content:space-between;gap:8px;border:1px dashed var(--line);border-radius:10px;padding:6px 10px;background:rgba(255,255,255,.02)}
+  .frag-list{display:grid;gap:6px;max-height:260px;overflow:auto;padding-right:4px}
+  .frag-item{display:flex;justify-content:space-between;gap:8px;border:1px dashed var(--line);border-radius:10px;padding:6px 10px;background:rgba(255,255,255,.04)}
   .frag-item small{color:var(--muted)}
 
   /* Bottom single player dock */
-  .dock{position:sticky;bottom:0;z-index:70;background:rgba(0,0,0,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+  .dock{position:sticky;bottom:0;z-index:80;background:rgba(0,0,0,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
   .dock-inner{max-width:1280px;margin:0 auto;padding:10px 24px;display:grid;gap:8px}
   .playerOne{background:#000;border-radius:10px;overflow:hidden;border:1px solid var(--line);min-height:200px}
   @media (max-width:700px){ .playerOne{min-height:160px} }
@@ -147,18 +153,18 @@
           <div>
             <p>This is the <strong>Mirror‑first</strong> page. It’s useful for everyone, but speaks most clearly to <em>Marina</em> and the <em>Bridge</em> (Doechii). Honey (🍯) has its own space; here we lead with angle, identity, and the connective spark.</p>
             <ol>
-              <li><strong>Pick or paste songs</strong> into the queue (🪞/🍯/🌉 toggles on each item).</li>
-              <li><strong>Choose a mode</strong> in the right rail: <em>🪞 Mirror</em>, <em>🍯 Honey</em>, or <em>⚡ Neon</em> (Neon inserts 🌉 as the bridge).</li>
-              <li><strong>Write three words</strong> (🪞 word, 🌉 fragment, 🍯 word) and save the set. Use “Add 🌉 from Writer → Daily” to store today’s Bridge fragment in one click.</li>
+              <li><strong>Add a song in the right rail</strong> (artist + YouTube link + lane). You must pick exactly one: <em>🪞 Marina</em>, <em>🌉 Doechii</em>, or <em>🍯 Sabrina</em>.</li>
+              <li><strong>Choose a mode</strong> (🪞/🍯/⚡) and press Play in the header. The player cycles your queue automatically.</li>
+              <li><strong>Write three words</strong> (🪞 word, 🌉 fragment, 🍯 word) and save. Use the Bridge panel to drop a tiny fragment daily.</li>
             </ol>
-            <p class="hint">No accounts, no tracking. Everything saves locally in your browser.</p>
+            <p class="hint">No accounts, no tracking. Everything saves locally in your browser — with auto‑snapshots and export to be safe.</p>
           </div>
           <div>
-            <div class="card" style="background:rgba(255,255,255,.01)">
+            <div class="card" style="background:rgba(255,255,255,.04)">
               <strong>Why this matters</strong>
               <p>Between cycles, artists need a portable ritual: one word for angle, one spark for the switch, one word for pull. This keeps continuity without PR.</p>
             </div>
-            <div class="card" style="margin-top:10px;background:rgba(255,255,255,.01);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
+            <div class="card" style="margin-top:10px;background:rgba(255,255,255,.04);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
               <strong>What Sabrina/Marina don’t give you alone</strong>
               <p>Honey is pull and joy; Mirror is angle and clarity. The <em>bridge</em> is for edges that don’t fit either — flips, masks, glitches — a safe lane for the switch.</p>
             </div>
@@ -176,11 +182,11 @@
             <p><strong>Promise:</strong> No asks, no pressure, no tracking. Private logs stay in your browser.</p>
           </div>
           <div>
-            <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">This is not</summary>
+            <details class="card" style="background:rgba(255,255,255,.04)"><summary class="pill">This is not</summary>
               <ul style="margin:10px 0 0"><li>Outreach, clout, or press.</li><li>A fan-control lever or rumor mill.</li><li>A definition of anyone. It’s a mirror, a bridge, and a page of honey.</li></ul>
             </details>
-            <details class="card" style="margin-top:12px;background:rgba(255,255,255,.01)"><summary class="pill">Privacy</summary>
-              <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Export anytime from the right rail.</p>
+            <details class="card" style="margin-top:12px;background:rgba(255,255,255,.04)"><summary class="pill">Privacy</summary>
+              <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Export anytime from the right rail. We also snapshot automatically on upgrades.</p>
             </details>
           </div>
         </div>
@@ -217,68 +223,56 @@
       <section class="card" id="hybrid">
         <div class="pill"><strong>How a Mirror × Honey hybrid feels (with a Bridge)</strong></div>
         <div class="twins">
-          <div class="card mirror-box" style="background:rgba(193,215,255,.10)">
+          <div class="card mirror-box" style="background:rgba(193,215,255,.12)">
             <h3 style="margin-top:0">Mirror layer</h3>
             <ul><li>Frame/angle forward.</li><li>Persona tension.</li><li>Prismatic break spotlights the idea.</li></ul>
           </div>
-          <div class="card honey-box" style="background:rgba(243,201,78,.10)">
+          <div class="card honey-box" style="background:rgba(243,201,78,.14)">
             <h3 style="margin-top:0">Honey layer</h3>
             <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat imagery.</li><li>Pop sheen nudges you to move.</li></ul>
           </div>
         </div>
-        <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. ⚡ Neon inserts 🌉 between lanes.</p>
+        <p class="hint"><em>Tags:</em> 🪞 = B (Mirror/Marina), 🍯 = A (Honey/Sabrina), 🌉 = Bridge (Doechii). ⚡ Neon inserts 🌉 between lanes.</p>
       </section>
 
       <!-- Logs -->
       <section class="card" id="logs">
-        <div class="pill"><strong>Logs — add songs & write</strong></div>
+        <div class="pill"><strong>Logs — write, don’t worry about tags here</strong></div>
         <div class="two-col">
           <div>
             <h3 style="margin:.2rem 0">🪞/🍯 Honey Log — Sabrina × Marina</h3>
-            <p>Paste a YouTube link or a title, tag it (🪞/🍯/A+B/🌉), press <em>Start</em>, write 5–10 min, and circle one sentence — your <strong>seed</strong>.</p>
+            <p>Write 5–10 min. Circle one sentence — your <strong>seed</strong>. (Add songs to the queue using the single form in the right rail.)</p>
             <div class="stack" style="gap:10px">
-              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (title or YouTube link)</span>
-                <input id="hlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Song">
+              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes</span>
+                <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
               </label>
               <div class="row">
-                <span class="pill">Tag to:</span>
-                <button class="btn" data-addq="B">Add to 🪞</button>
-                <button class="btn" data-addq="A">Add to 🍯</button>
-                <button class="btn" data-addq="AB">Add to A+B</button>
-                <button class="btn" data-addq="D">Add to 🌉</button>
                 <button class="btn" id="hlog-start">Start 5‑min</button>
-              </div>
-              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
-                <textarea id="hlog-notes" rows="5" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
-              </label>
-              <div class="row">
                 <button id="hlog-save" class="btn">Save entry</button>
                 <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
               </div>
+              <details class="card" style="background:rgba(255,255,255,.04);border:1px dashed var(--line)">
+                <summary class="pill">View saved entries</summary>
+                <div id="hlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
+              </details>
             </div>
           </div>
           <div>
             <h3 style="margin:.2rem 0">🌉 Bridge Log — Doechii</h3>
-            <p>Paste a YouTube link or title, tag it (🌉 or 🪞/🍯), write fragments 5–10 min, <u>don’t resolve</u>. Circle one fragment — your seed.</p>
+            <p>Write fragments 5–10 min, <u>don’t resolve</u>. Circle one fragment — your seed. (Add songs using the single form.)</p>
             <div class="stack" style="gap:10px">
-              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Track (title or YouTube link)</span>
-                <input id="dlog-song" type="text" placeholder="Artist — Title or https://youtu.be/..." aria-label="Track">
-              </label>
-              <div class="row">
-                <span class="pill">Tag to:</span>
-                <button class="btn" data-addq="D">Add to 🌉</button>
-                <button class="btn" data-addq="B">Add to 🪞</button>
-                <button class="btn" data-addq="A">Add to 🍯</button>
-                <button class="btn" data-addq="AB">Add to A+B</button>
-                <button class="btn" id="dlog-start">Start 5‑min</button>
-              </div>
               <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments</span>
-                <textarea id="dlog-notes" rows="5" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
+                <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
               </label>
               <div class="row">
+                <button class="btn" id="dlog-start">Start 5‑min</button>
                 <button id="dlog-save" class="btn">Save entry</button>
                 <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
               </div>
+              <details class="card" style="background:rgba(255,255,255,.04);border:1px dashed var(--line)">
+                <summary class="pill">View saved entries</summary>
+                <div id="dlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
+              </details>
             </div>
           </div>
         </div>
@@ -297,7 +291,7 @@
           <button class="btn" id="spark-to-daily">Use center spark → Daily</button>
         </div>
 
-        <div class="card" style="margin-top:12px;background:rgba(255,255,255,.02)">
+        <div class="card" style="margin-top:12px;background:rgba(255,255,255,.04)">
           <div class="row" style="justify-content:space-between;align-items:center">
             <strong>Bridge Daily Fragments</strong>
             <span class="pill" id="frag-streak">Streak: 0</span>
@@ -315,19 +309,19 @@
       <!-- FAQ -->
       <section class="card" id="faq">
         <h2 style="margin-top:0">FAQ & Glossary</h2>
-        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What is a “seed”?</summary>
+        <details class="card" style="background:rgba(255,255,255,.04)"><summary class="pill">What is a “seed”?</summary>
           <p>A single circled sentence or fragment you carry to the next cycle. It’s continuity, not content.</p>
         </details>
-        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">Where are my entries saved?</summary>
-          <p>In your browser’s <code>localStorage</code>, on this device only. Export queue+logs anytime from the right rail.</p>
+        <details class="card" style="background:rgba(255,255,255,.04)"><summary class="pill">Where are my entries saved?</summary>
+          <p>In your browser’s <code>localStorage</code> (schema <code>mh_data_v1</code>), on this device only. Export/import in the right rail. On upgrades we snapshot automatically.</p>
         </details>
-        <details class="card" style="background:rgba(255,255,255,.01)"><summary class="pill">What do the tags mean?</summary>
-          <p>🪞 = B (Mirror), 🍯 = A (Honey), 🌉 = Bridge. <em>⚡ Neon</em> inserts 🌉 between lanes during playback.</p>
+        <details class="card" style="background:rgba(255,255,255,.04)"><summary class="pill">How do 🪞/🍯/🌉 work?</summary>
+          <p>Pick exactly one lane per song. 🪞 = B (Mirror/Marina), 🍯 = A (Honey/Sabrina), 🌉 = Bridge (Doechii). ⚡ Neon inserts 🌉 between lanes during playback.</p>
         </details>
       </section>
     </div>
 
-    <!-- Right: Rail (modes + queue) -->
+    <!-- Right: Rail (modes + ADD FORM + queue) -->
     <aside class="rail">
       <div class="block">
         <div class="row" style="justify-content:space-between">
@@ -340,10 +334,41 @@
         </div>
         <div class="row" style="margin-top:8px">
           <button class="chip" id="loop-track" aria-pressed="false" title="Loop the current track">Loop track</button>
-          <button class="chip" id="loop-queue" aria-pressed="true" title="Loop per-lane queues">Loop queue</button>
-          <button class="chip" id="export-btn" title="Export">Export</button>
+          <button class="chip" id="loop-queue" aria-pressed="true" title="Loop queue">Loop queue</button>
+          <button class="chip" id="export-btn" title="Export all data">Export</button>
           <input type="file" id="import-file" accept="application/json" style="display:none">
-          <button class="chip" id="import-btn" title="Import">Import</button>
+          <button class="chip" id="import-btn" title="Import backup">Import</button>
+        </div>
+      </div>
+
+      <!-- One place to add a song -->
+      <div class="block addq">
+        <h3>Add a song to the queue</h3>
+        <div class="stack">
+          <label><span class="pill" style="display:block;margin-bottom:6px">Artist name</span>
+            <input id="add-artist" type="text" placeholder="Artist (e.g., MARINA)">
+          </label>
+          <label><span class="pill" style="display:block;margin-bottom:6px">YouTube link or ID</span>
+            <input id="add-link" type="text" placeholder="https://youtu.be/… or video ID">
+          </label>
+          <label><span class="pill" style="display:block;margin-bottom:6px">Pick one lane (no mixing)</span>
+            <select id="add-lane" aria-label="Lane">
+              <option value="" selected>— select —</option>
+              <option value="B">🪞 Marina — Mirror (B)</option>
+              <option value="D">🌉 Doechii — Bridge (D)</option>
+              <option value="A">🍯 Sabrina — Honey (A)</option>
+            </select>
+          </label>
+          <div class="lanechips" aria-label="Lane quick select">
+            <button class="chip lanechip" data-lane="B" aria-pressed="false">🪞 Marina</button>
+            <button class="chip lanechip" data-lane="D" aria-pressed="false">🌉 Doechii</button>
+            <button class="chip lanechip" data-lane="A" aria-pressed="false">🍯 Sabrina</button>
+          </div>
+          <div id="add-preview" class="pill" aria-live="polite"></div>
+          <div class="row">
+            <button class="btn" id="add-submit" disabled>Add to queue</button>
+            <span id="add-status" class="pill"></span>
+          </div>
         </div>
       </div>
 
@@ -376,11 +401,114 @@
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
+/* =======================
+   PERSISTENCE & MIGRATION
+   ======================= */
+const MH = (function(){
+  const KEY = "mh_data_v1";      // consolidated schema key
+  const SNAPKEY = "mh_snapshots";// array of snapshots {ts, data}
+  const MAX_SNAPS = 5;
+
+  const DEFAULT = {
+    schema: 1,
+    updatedAt: new Date().toISOString(),
+    settings: { loopTrack:false, loopQueue:true, mode:"MIRROR" },
+    seeds: { singleSeeded:false },
+    queue: [],                 // [{id,title,author,thumb,lane:"A"|"B"|"D",artist,added}]
+    logs: { honey:[], bridge:[], writer:[] }, // arrays of {date, text}
+    fragments: { byDay:{} }    // { "YYYY-MM-DD":[{t,ts}] }
+  };
+
+  function snapshot(reason){
+    try{
+      const snaps = JSON.parse(localStorage.getItem(SNAPKEY) || "[]");
+      const current = JSON.parse(localStorage.getItem(KEY) || "null");
+      if(!current) return;
+      snaps.unshift({ ts: new Date().toISOString(), reason: reason||"manual", data: current });
+      while(snaps.length>MAX_SNAPS) snaps.pop();
+      localStorage.setItem(SNAPKEY, JSON.stringify(snaps));
+    }catch(_){}
+  }
+
+  function get(){
+    const raw = localStorage.getItem(KEY);
+    if(raw){ try{ return JSON.parse(raw); }catch(_){ /* corrupted: snapshot already? */ } }
+    // no mh_data_v1 — migrate from older keys if present
+    const migrated = migrateFromLegacy();
+    localStorage.setItem(KEY, JSON.stringify(migrated));
+    snapshot("post-migration");
+    return migrated;
+  }
+
+  function put(data, reason){
+    data.updatedAt = new Date().toISOString();
+    localStorage.setItem(KEY, JSON.stringify(data));
+    if(reason==="upgrade"||reason==="import") snapshot(reason);
+  }
+
+  function migrateFromLegacy(){
+    const data = JSON.parse(JSON.stringify(DEFAULT));
+    // Collect possible old queues
+    const oldQs = [
+      "mirrorhoney_queue_single_v1","mirrorhoney_queue_side_v2","mirrorhoney_queue_side_v1",
+      "mirrorhoney_queue_single_v1","mirrorhoney_queue_side_tags_v1","mirrorhoney_queue_single_v1",
+      "mirrorhoney_queue_v3"
+    ];
+    let items = [];
+    for(const k of oldQs){
+      try{ const arr = JSON.parse(localStorage.getItem(k)||"[]"); if(Array.isArray(arr)&&arr.length){ items = items.concat(arr); } }catch(_){}
+    }
+    // Normalize to single-lane
+    function laneFromTags(tags){
+      if(!tags||!tags.length) return "B";
+      if(tags.includes("D")) return "D";
+      if(tags.includes("B")) return "B";
+      return "A";
+    }
+    const seen = new Set();
+    for(const it of items){
+      if(!it) continue;
+      const id = it.id || null; if(!id) continue;
+      if(seen.has(id)) continue;
+      seen.add(id);
+      const lane = it.lane || laneFromTags(it.tags);
+      data.queue.push({
+        id, title: it.title||"", author: it.author||"", thumb: it.thumbnail||"",
+        lane: lane, artist: it.artist||"", added: it.added||new Date().toISOString()
+      });
+    }
+
+    // Logs
+    try{ data.logs.honey = JSON.parse(localStorage.getItem("mirrorhoney_honeylog_v1")||"[]").map(e=>({date:e.date||new Date().toISOString(),text:e.notes||e.song||""})); }catch(_){}
+    try{ data.logs.bridge = JSON.parse(localStorage.getItem("mirrorhoney_bridge_v1")||"[]").map(e=>({date:e.date||new Date().toISOString(),text:e.notes||e.song||""})); }catch(_){}
+    try{ data.logs.writer = JSON.parse(localStorage.getItem("mh_writer_sets_single_v1")||"[]"); }catch(_){}
+
+    // Fragments
+    try{ const fr = JSON.parse(localStorage.getItem("mh_bridge_fragments_single_v1")||localStorage.getItem("mh_bridge_fragments_v1")||'{"byDay":{}}'); if(fr&&fr.byDay) data.fragments.byDay = fr.byDay; }catch(_){}
+
+    // Settings defaults; keep loopQueue true
+    data.settings.loopQueue = true;
+    return data;
+  }
+
+  function exportJSON(){
+    return JSON.stringify(get(), null, 2);
+  }
+  function importJSON(text){
+    try{
+      const j = JSON.parse(text);
+      if(!j || typeof j !== "object" || !("schema" in j)) throw new Error("Invalid file");
+      put(j, "import");
+      return true;
+    }catch(e){ return false; }
+  }
+
+  return { get, put, exportJSON, importJSON, snapshot, DEFAULT };
+})();
+
 /* ===== Utilities ===== */
 function timeISO(){ return new Date().toISOString(); }
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0')+"-"+String(d.getDate()).padStart(2,'0'); }
-function lsGet(k,f){ try{return JSON.parse(localStorage.getItem(k)||f)}catch(e){return JSON.parse(f)} }
-function lsSet(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} }
 function setPressed(el,on){ el.setAttribute("aria-pressed", on?"true":"false"); }
 function isPortrait(){ return window.matchMedia("(orientation: portrait)").matches; }
 function ensureWriterOrientation(){
@@ -410,7 +538,6 @@ async function fetchYTMeta(id){
 
 /* ===== Writer save + quick add to Daily Bridge ===== */
 (function(){
-  const KEY="mh_writer_sets_single_v1";
   const wH=document.getElementById("w-honey");
   const wB=document.getElementById("w-bridge");
   const wM=document.getElementById("w-mirror");
@@ -419,9 +546,9 @@ async function fetchYTMeta(id){
   const addB=document.getElementById("w-add-bridge");
   const stat=document.getElementById("w-status");
   function saveSet(){
-    const arr=lsGet(KEY,"[]");
-    arr.push({date:timeISO(),mirror:wM.value.trim(),bridge:wB.value.trim(),honey:wH.value.trim()});
-    lsSet(KEY,arr);
+    const data = MH.get();
+    data.logs.writer.push({date:timeISO(),mirror:wM.value.trim(),bridge:wB.value.trim(),honey:wH.value.trim()});
+    MH.put(data);
     stat.textContent="Saved ("+new Date().toLocaleTimeString()+")";
   }
   function addBridgeToDaily(){
@@ -436,10 +563,6 @@ async function fetchYTMeta(id){
 
 /* ===== Bridge Daily Fragments (streak + list) ===== */
 var FRAGMENTS=(function(){
-  const KEY="mh_bridge_fragments_single_v1";
-  let data=lsGet(KEY,'{"byDay":{}}');
-  let byDay = data.byDay||{};
-
   const list=document.getElementById("frag-list");
   const input=document.getElementById("frag-input");
   const add=document.getElementById("frag-add");
@@ -448,12 +571,13 @@ var FRAGMENTS=(function(){
 
   function addFrag(text){
     const k=todayKey();
-    byDay[k]=byDay[k]||[];
-    byDay[k].push({t:text,ts:timeISO()});
-    save(); render();
+    const data = MH.get();
+    data.fragments.byDay[k]=data.fragments.byDay[k]||[];
+    data.fragments.byDay[k].push({t:text,ts:timeISO()});
+    MH.put(data);
+    render();
   }
-  function save(){ lsSet(KEY,{byDay}); }
-  function computeStreak(){
+  function computeStreak(byDay){
     let count=0; const now=new Date();
     for(let i=0;i<365;i++){
       const d=new Date(now); d.setDate(now.getDate()-i);
@@ -466,6 +590,8 @@ var FRAGMENTS=(function(){
   }
   function render(){
     list.innerHTML="";
+    const data = MH.get();
+    const byDay = data.fragments.byDay||{};
     const days=Object.keys(byDay).sort().reverse();
     days.forEach(k=>{
       (byDay[k]||[]).slice().reverse().forEach((f)=>{
@@ -474,18 +600,22 @@ var FRAGMENTS=(function(){
         const right=document.createElement("div");
         right.innerHTML="<small>"+k+"</small> ";
         const del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove";
-        del.onclick=function(){ byDay[k].splice(byDay[k].indexOf(f),1); if(byDay[k].length===0) delete byDay[k]; save(); render(); };
+        del.onclick=function(){
+          const data2 = MH.get();
+          const arr=data2.fragments.byDay[k]||[];
+          const idx=arr.indexOf(f);
+          if(idx>-1){ arr.splice(idx,1); if(arr.length===0) delete data2.fragments.byDay[k]; MH.put(data2); render(); }
+        };
         right.appendChild(del);
         row.appendChild(left); row.appendChild(right); list.appendChild(row);
       });
     });
-    streakEl.textContent="Streak: "+computeStreak();
+    streakEl.textContent="Streak: "+computeStreak(byDay);
   }
 
   add.onclick=function(){ const v=(input.value||"").trim(); if(!v) return; addFrag(v); input.value=""; input.focus(); };
-  clear.onclick=function(){ if(confirm("Clear all fragments?")){ byDay={}; save(); render(); } };
+  clear.onclick=function(){ if(confirm("Clear all fragments?")){ const data=MH.get(); data.fragments.byDay={}; MH.put(data); render(); } };
 
-  // expose for writer and spark
   function addPublic(t){ addFrag(t); }
   render();
   return { add:addPublic };
@@ -506,9 +636,8 @@ var FRAGMENTS=(function(){
     function put(el,x,y,a,o){ el.style.left=Math.floor(x)+"px"; el.style.top=Math.floor(y)+"px"; el.style.setProperty("--angle",a+"deg"); if(o!=null) el.style.opacity=o; root.appendChild(el);}
     const seed=document.createElement("div"); seed.className="seed"; currentCenter=fr[sI]||"seed"; seed.textContent=currentCenter; put(seed,w/2,h/2,0,1);
     for(let i=0;i<fr.length;i++){ if(i===sI) continue; const f=document.createElement("div"); f.className="fragment"; f.textContent=fr[i];
-      const x=Math.random()*w,y=Math.random()*h,a=Math.floor(Math.random()*120-60),o=(0.6+Math.random()*0.4).toFixed(2); put(f,x,y,a,o);
+      const x=Math.random()*w,y=Math.random()*h,a=Math.floor(Math.random()*120-60),o=(0.8+Math.random()*0.2).toFixed(2); put(f,x,y,a,o);
       f.onclick=function(){ document.getElementById("frag-input").value=this.textContent; };
-      f.onmouseenter=function(){this.style.color="#FF3EB5";this.style.textShadow="0 0 10px #FF3EB5"}; f.onmouseleave=function(){this.style.color="";this.style.textShadow=""};
     }
   }
   document.getElementById("seed-shuffle")?.addEventListener("click",()=>scatter(SETS[Math.floor(Math.random()*SETS.length)]));
@@ -516,78 +645,109 @@ var FRAGMENTS=(function(){
   scatter(SETS[0]);
 })();
 
-/* ===== Queue (improved tags; single-player play) ===== */
+/* ===== Logs (write only; safe) ===== */
+(function setupLog(timerId, notesId, saveBtnId, startBtnId, keyPath){
+  const notes=document.getElementById(notesId);
+  const start=document.getElementById(startBtnId), save=document.getElementById(saveBtnId);
+  let t=0; const timer=document.getElementById(timerId);
+  function fmt(s){return s<10?"0"+s:s}
+  function tick(){ if(t<=0){timer.textContent="done";return;} t--; const m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
+  start && (start.onclick=function(){ t=5*60; tick(); });
+  save && (save.onclick=function(){
+    const data=MH.get();
+    const entry={date:timeISO(), text:(notes.value||"").trim()};
+    const ptr = keyPath.split('.').reduce((o,k)=>o[k], data); // logs.honey or logs.bridge
+    ptr.push(entry); MH.put(data);
+    notes.value=""; // render lists
+    const listId = (notesId==="hlog-notes"?"hlog-list":"dlog-list"), list=document.getElementById(listId);
+    if(list){ list.innerHTML=""; ptr.slice().reverse().forEach(e=>{ const c=document.createElement("div"); c.className="card"; c.style.padding="12px"; c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='white-space:pre-wrap'>"+(e.text||"")+"</div>"; list.appendChild(c); }); }
+  });
+})("hlog-timer","hlog-notes","hlog-save","hlog-start","logs.honey");
+setupLog("dlog-timer","dlog-notes","dlog-save","dlog-start","logs.bridge");
+
+/* ===== QUEUE (single-lane per item) ===== */
 var QUEUE=(function(){
-  const KEY="mirrorhoney_queue_single_v1";
-  let items=lsGet(KEY,"[]")||[], filter="ALL", scopeIndex={A:0,B:0,D:0};
   const qEl=document.getElementById("queue"), status=document.getElementById("q-status");
-  const expBtn=document.getElementById("export-btn"), impBtn=document.getElementById("import-btn"), impFile=document.getElementById("import-file");
-  function save(){ lsSet(KEY,items); render(); }
-  function matches(it){ return filter==="ALL" || (it.tags||[]).includes(filter); }
+  const clearBtn=document.getElementById("q-clear");
+  let filter="ALL";
+  function data(){ return MH.get(); }
 
-  function render(){
-    qEl.innerHTML="";
-    const vis=items.filter(matches);
-    status.textContent=items.length?("Queue: "+vis.length+" shown / "+items.length+" total"):"Queue empty";
-    qEl.addEventListener('dragover',e=>e.preventDefault());
-    vis.forEach(function(it, idx){
-      const key=it.id||it.title||String(idx);
-      const wrap=document.createElement("div"); wrap.className="qitem"; wrap.dataset.key=key; wrap.draggable=true;
-      wrap.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', key); });
-
-      if(it.thumbnail){ const img=document.createElement("img"); img.src=it.thumbnail; img.alt=""; wrap.appendChild(img); }
-      const meta=document.createElement("div"); meta.className="meta";
-      const title=document.createElement("div"); title.innerHTML="<b>"+(it.title||it.id||"Untitled")+"</b>"+(it.author?(" <small style='color:var(--muted)'>— "+it.author+"</small>"):"");
-      const acts=document.createElement("div"); acts.className="acts";
-
-      // Play by lane (so alternator knows last lane)
-      const playB=document.createElement("button"); playB.className="qbtn"; playB.textContent="Play 🪞"; playB.onclick=function(){ if(it.id){ ALTERNATOR.setLane("B"); PLAYER.load(it.id, "B"); bumpTo("B",it); } };
-      const playA=document.createElement("button"); playA.className="qbtn"; playA.textContent="Play 🍯"; playA.onclick=function(){ if(it.id){ ALTERNATOR.setLane("A"); PLAYER.load(it.id, "A"); bumpTo("A",it); } };
-      const playD=document.createElement("button"); playD.className="qbtn"; playD.textContent="Play 🌉"; playD.onclick=function(){ if(it.id){ ALTERNATOR.setLane("D"); PLAYER.load(it.id, "D"); bumpTo("D",it); } };
-      const del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove"; del.onclick=function(){ const ix=items.indexOf(it); if(ix>-1){ items.splice(ix,1); save(); } };
-
-      // Tag toggles (+ A+B)
-      const tagRow=document.createElement("div"); tagRow.className="tags";
-      const tgA=mkTagToggle("A", it); const tgB=mkTagToggle("B", it); const tgD=mkTagToggle("D", it);
-      const tgAB=document.createElement("button"); tgAB.className="tg AB"; tgAB.textContent=""; tgAB.title="Toggle A+B";
-      tgAB.onclick=function(){
-        const bothOn = hasTag(it,"A") && hasTag(it,"B");
-        setTag(it,"A",!bothOn); setTag(it,"B",!bothOn);
-        refreshToggles();
-      };
-      function refreshToggles(){
-        tgA.setAttribute("aria-pressed", hasTag(it,"A")?"true":"false");
-        tgB.setAttribute("aria-pressed", hasTag(it,"B")?"true":"false");
-        tgD.setAttribute("aria-pressed", hasTag(it,"D")?"true":"false");
+  function normalize(){
+    const d=MH.get();
+    let changed=false;
+    d.queue.forEach(it=>{
+      if(!it.lane){ // derive from old tags
+        const tags = it.tags||[];
+        it.lane = (tags.includes("D"))?"D":(tags.includes("B")?"B":"A");
+        changed=true;
       }
-      refreshToggles();
-      tagRow.appendChild(tgB); tagRow.appendChild(tgA); tagRow.appendChild(tgD); tagRow.appendChild(tgAB);
-
-      acts.appendChild(playB); acts.appendChild(playA); acts.appendChild(playD); acts.appendChild(del);
-      meta.appendChild(title); meta.appendChild(tagRow); meta.appendChild(acts);
-      wrap.appendChild(meta);
-      qEl.appendChild(wrap);
+      // enforce one-of-three
+      it.tags=[it.lane];
     });
-
-    // Reorder within current filter view
-    qEl.addEventListener('drop',function(e){
-      e.preventDefault();
-      const fromKey=e.dataTransfer.getData('text/plain');
-      const toKey=(e.target.closest('.qitem')||{}).dataset.key;
-      if(!fromKey || !toKey || fromKey===toKey) return;
-      const from=items.findIndex(x=>(x.id||x.title)===fromKey);
-      const to=items.findIndex(x=>(x.id||x.title)===toKey);
-      if(from<0||to<0) return;
-      const moved=items.splice(from,1)[0]; items.splice(to,0,moved); save();
-    }, {once:true});
+    if(changed) MH.put(d,"upgrade");
   }
 
-  function hasTag(it,t){ return (it.tags||[]).includes(t); }
-  function setTag(it,t,on){ it.tags=Array.from(new Set(on?[...((it.tags)||[]),t]:(it.tags||[]).filter(x=>x!==t))); save(); }
-  function mkTagToggle(T, it){
-    const btn=document.createElement("button"); btn.className="tg "+T; btn.textContent=""; btn.setAttribute("aria-pressed", hasTag(it,T)?"true":"false");
-    btn.onclick=function(){ const on=hasTag(it,T); setTag(it,T,!on); };
-    return btn;
+  function render(){
+    normalize();
+    const d=MH.get();
+    qEl.innerHTML="";
+    const vis = d.queue.filter(it=> filter==="ALL" ? true : it.lane===filter);
+    status.textContent=d.queue.length?("Queue: "+vis.length+" shown / "+d.queue.length+" total"):"Queue empty";
+
+    vis.forEach(function(it, idx){
+      const wrap=document.createElement("div"); wrap.className="qitem"; wrap.dataset.key=it.id||String(idx);
+      if(it.thumb){ const img=document.createElement("img"); img.src=it.thumb; img.alt=""; wrap.appendChild(img); }
+      const meta=document.createElement("div"); meta.className="meta";
+      const title=document.createElement("div");
+      const laneEmoji = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"🌉";
+      const tlabel = (it.artist?("<b>"+it.artist+"</b> — "):"") + (it.title||it.id||"Untitled");
+      title.innerHTML=laneEmoji+"&nbsp;"+tlabel + (it.author?(" <small style='color:var(--muted)'>— "+it.author+"</small>"):"");
+
+      // Lane editor (mutually exclusive)
+      const lanes=document.createElement("div"); lanes.className="lanes";
+      const mk=(L)=>{
+        const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"🌉 Doechii");
+        b.setAttribute("aria-pressed", it.lane===L?"true":"false");
+        b.onclick=function(){
+          it.lane=L; it.tags=[L]; MH.put(d); render();
+        };
+        return b;
+      };
+      lanes.appendChild(mk("B")); lanes.appendChild(mk("D")); lanes.appendChild(mk("A"));
+
+      const acts=document.createElement("div"); acts.className="acts";
+      const play=document.createElement("button"); play.className="qbtn"; play.textContent="Play now";
+      play.onclick=function(){ if(it.id){ ALTERNATOR.setLane(it.lane); PLAYER.load(it.id, it.lane); } };
+      const del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove";
+      del.onclick=function(){
+        const d2=MH.get();
+        const ix=d2.queue.findIndex(x=>x.id===it.id);
+        if(ix>-1){ d2.queue.splice(ix,1); MH.put(d2); render(); }
+      };
+
+      meta.appendChild(title);
+      meta.appendChild(lanes);
+      meta.appendChild(acts);
+      acts.appendChild(play); acts.appendChild(del);
+      wrap.appendChild(meta);
+      qEl.appendChild(wrap);
+
+      // drag reordering
+      wrap.draggable=true;
+      wrap.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', it.id); });
+      qEl.addEventListener('dragover',e=>e.preventDefault());
+      qEl.addEventListener('drop',e=>{
+        e.preventDefault();
+        const fromId=e.dataTransfer.getData('text/plain');
+        const toId=(e.target.closest('.qitem')||{}).dataset.key;
+        if(!fromId||!toId||fromId===toId) return;
+        const d3=MH.get();
+        const from=d3.queue.findIndex(x=>x.id===fromId);
+        const to=d3.queue.findIndex(x=>x.id===toId);
+        if(from<0||to<0) return;
+        const moved=d3.queue.splice(from,1)[0]; d3.queue.splice(to,0,moved); MH.put(d3); render();
+      }, {once:true});
+    });
   }
 
   document.querySelectorAll('[data-filter]').forEach(btn=>{
@@ -596,79 +756,55 @@ var QUEUE=(function(){
       setPressed(this,true); filter=this.getAttribute("data-filter"); render();
     });
   });
-  document.getElementById("q-clear").onclick=function(){ items=[]; scopeIndex={A:0,B:0,D:0}; save(); };
+  clearBtn.onclick=function(){ if(confirm("Clear entire queue?")){ const d=MH.get(); d.queue=[]; MH.put(d); render(); } };
 
-  // Export / Import
-  expBtn.onclick=function(){
-    const blob=new Blob([JSON.stringify({queue:items,honey:lsGet('mirrorhoney_honeylog_v1',"[]"),bridge:lsGet('mirrorhoney_bridge_v1',"[]")},null,2)],{type:'application/json'});
-    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mirrorhoney_export.json'; a.click();
-  };
-  impBtn.onclick=function(){ impFile.click(); };
-  impFile.onchange=function(e){
-    const f=e.target.files[0]; if(!f) return;
-    f.text().then(function(txt){
-      try{
-        const j=JSON.parse(txt);
-        if(j.queue){items=j.queue}
-        if(j.honey){localStorage.setItem('mirrorhoney_honeylog_v1',JSON.stringify(j.honey))}
-        if(j.bridge){localStorage.setItem('mirrorhoney_bridge_v1',JSON.stringify(j.bridge))}
-        save();
-      }catch(_){}
-    });
-  };
-
-  function scope(scopeName){ return items.filter(it=>(it.tags||[]).includes(scopeName)); }
-  function bumpTo(scopeName,it){ const sc=scope(scopeName); const i=sc.findIndex(x=>x===it); scopeIndex[scopeName]=(i<0?0:i); }
-  function seek(scopeName,step,loop){
-    const sc=scope(scopeName); if(!sc.length) return null;
-    let i=scopeIndex[scopeName]+step;
-    if(i>=sc.length){ if(loop)i=0; else return null; }
-    if(i<0){ if(loop)i=sc.length-1; else return null; }
-    scopeIndex[scopeName]=i; return sc[i]||null;
-  }
-
-  async function add(input,tags){
-    const id=ytIdFrom(input);
-    const meta=id?(await fetchYTMeta(id)||{}):{};
-    const it={ id:id, title:(meta&&meta.title)||input, author:(meta&&meta.author)||"", thumbnail:(meta&&meta.thumbnail)||"", tags:Array.from(new Set(tags||[])), added:timeISO() };
+  async function add(artist, link, lane){
+    const id=ytIdFrom(link);
+    if(!id) throw new Error("Invalid YouTube link");
+    const meta = await fetchYTMeta(id) || {};
+    const d=MH.get();
     // dedupe by id
-    const ix=id?items.findIndex(x=> x.id===id):-1;
-    if(ix>-1){
-      items[ix].tags=Array.from(new Set([...(items[ix].tags||[]),...(it.tags||[])]));
-      const moved=items.splice(ix,1)[0]; items.unshift(moved);
-    }else{
-      items.unshift(it);
-    }
-    save();
+    const ix = d.queue.findIndex(x=>x.id===id);
+    const it = { id, title:meta.title||"", author:meta.author||"", thumb:meta.thumbnail||"", lane:lane, artist:artist||"", added:timeISO(), tags:[lane] };
+    if(ix>-1){ d.queue[ix] = Object.assign(d.queue[ix], it); } else { d.queue.unshift(it); }
+    MH.put(d);
+    render();
     return it;
   }
 
-  // Seed on first load: cue 🪞 on player, queue 🍯 + 🌉, loop queue true
-  (async function seedOnce(){
-    if(localStorage.getItem("mh_seed_single_v1")==="1"){ render(); return; }
-    const seeds=[
-      {url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", tags:["B"]}, // MARINA — Oh No!
-      {url:"https://www.youtube.com/watch?v=cF1Na4AIecM", tags:["A"]}, // Sabrina — Please Please Please
-      {url:"https://www.youtube.com/watch?v=phtcAd8j6Ro", tags:["D"]}  // Doechii — What It Is
-    ];
-    for(const s of seeds){ await add(s.url, s.tags); }
-    localStorage.setItem("mh_seed_single_v1","1");
-    render();
-    const mar=(items.find(x=>x.id==="Cr-SqRWImmI")||{}).id;
-    if(mar) PLAYER.cue(mar,"B"); // preloaded, not autoplay
-  })();
+  function next(lane, loop){
+    const d=MH.get();
+    const sc = d.queue.filter(it=>it.lane===lane);
+    if(!sc.length) return null;
+    const curId = ALTERNATOR.getCurrentId();
+    let i = sc.findIndex(x=>x.id===curId);
+    i = (i<0)?0:i+1;
+    if(i>=sc.length){ if(loop) i=0; else return null; }
+    return sc[i];
+  }
+  function prev(lane, loop){
+    const d=MH.get();
+    const sc = d.queue.filter(it=>it.lane===lane);
+    if(!sc.length) return null;
+    const curId = ALTERNATOR.getCurrentId();
+    let i = sc.findIndex(x=>x.id===curId);
+    i = (i<0)?sc.length-1:i-1;
+    if(i<0){ if(loop) i=sc.length-1; else return null; }
+    return sc[i];
+  }
+
+  function scopeItems(lane){ const d=MH.get(); return d.queue.filter(it=>it.lane===lane); }
 
   render();
-  return { add, next:(s,l)=>seek(s,+1,l), prev:(s,l)=>seek(s,-1,l), bumpToItem:bumpTo, scopeItems:scope };
+  return { add, render, next, prev, scopeItems };
 })();
 
 /* ===== Single bottom player + global controls ===== */
 var PLAYER=(function(){
-  let P=null, loopTrack=false, loopQueue=true, currentLane="B";
-  let pendingCue=null;
+  let P=null, loopTrack=false, loopQueue=true, currentLane="B", currentId=null;
   const nowNext=document.getElementById("nowNext");
 
-  function onReady(){ try{ P.setVolume(70); }catch(_){ } if(pendingCue){ try{ P.cueVideoById(pendingCue.id); currentLane=pendingCue.lane||"B"; pendingCue=null; }catch(_){ } } }
+  function onReady(){ try{ P.setVolume(70); }catch(_){ } }
 
   function create(){
     return new YT.Player("playerOne",{
@@ -687,8 +823,8 @@ var PLAYER=(function(){
     });
   }
 
-  function cue(id,lane){ if(P && P.cueVideoById){ try{ P.cueVideoById(id); if(lane) currentLane=lane; }catch(_){ } } else { pendingCue={id,lane}; } }
-  function load(id,lane){ if(P && P.loadVideoById){ try{ P.loadVideoById(id); if(lane) currentLane=lane; }catch(_){ } }
+  function cue(id,lane){ if(P && P.cueVideoById){ try{ P.cueVideoById(id); currentLane=lane||currentLane; currentId=id; }catch(_){ } }
+  function load(id,lane){ if(P && P.loadVideoById){ try{ P.loadVideoById(id); currentLane=lane||currentLane; currentId=id; }catch(_){ } }
   function toggle(){ if(!P) return; try{ const st=P.getPlayerState(); if(st===1) P.pauseVideo(); else P.playVideo(); }catch(_){ } }
   function setVolume(v){ try{ if(P) P.setVolume(v); }catch(_){ } }
   function getLoopQueue(){ return loopQueue; }
@@ -696,6 +832,7 @@ var PLAYER=(function(){
   function setLoopQueue(on){ loopQueue=!!on; }
   function setLane(l){ currentLane=l; }
   function getLane(){ return currentLane; }
+  function getId(){ return currentId; }
 
   window.onYouTubeIframeAPIReady=function(){ P=create(); };
 
@@ -709,19 +846,18 @@ var PLAYER=(function(){
   lt.onclick=function(){ const on=lt.getAttribute("aria-pressed")==="true"; setPressed(lt,!on); setLoopTrack(!on); };
   lq.onclick=function(){ const on=lq.getAttribute("aria-pressed")==="true"; setPressed(lq,!on); setLoopQueue(!on); };
 
-  return { cue, load:(id,lane)=>load(id,lane), toggle, setVolume, getLoopQueue, setLoopQueue, setLoopTrack, getLane, setLane, nowNext };
+  return { cue, load:(id,lane)=>load(id,lane), toggle, setVolume, getLoopQueue, setLoopQueue, setLoopTrack, getLane, setLane, nowNext, getId };
 })();
 
 /* ===== Alternator (single-player): MIRROR/HONEY/NEON ===== */
 var ALTERNATOR=(function(){
   let mode="MIRROR"; // start on Mirror (B)
   let lastLane=null; // "A"|"B"|"D"
-  const nowNext=PLAYER.nowNext;
 
-  // Mode chips
   const mM=document.getElementById("mode-mirror");
   const mH=document.getElementById("mode-honey");
   const mN=document.getElementById("mode-neon");
+
   function setMode(m){
     mode=m;
     setPressed(mM, m==="MIRROR");
@@ -729,6 +865,7 @@ var ALTERNATOR=(function(){
     setPressed(mN, m==="NEON");
     ensureKick();
     updateStatus(null);
+    const d=MH.get(); d.settings.mode=mode; MH.put(d);
   }
   mM.onclick=()=>setMode("MIRROR");
   mH.onclick=()=>setMode("HONEY");
@@ -749,7 +886,7 @@ var ALTERNATOR=(function(){
     }
   }
 
-  function loadFromLane(lane, step){
+  function loadFromLane(lane){
     const it = (lane==="A")? QUEUE.next("A", PLAYER.getLoopQueue()) :
                (lane==="B")? QUEUE.next("B", PLAYER.getLoopQueue()) :
                               QUEUE.next("D", true);
@@ -768,15 +905,13 @@ var ALTERNATOR=(function(){
 
   function ensureKick(){
     try{
-      // If nothing is playing, start on mode's first lane
+      if(PLAYER.getId()) return; // already cued/playing
       const startLane = (mode==="MIRROR")?"B":"A";
-      if(!lastLane){
-        const first = QUEUE.next(startLane, true);
-        if(first && first.id){
-          PLAYER.load(first.id, startLane);
-          lastLane=startLane;
-          updateStatus({now:{tag:startLane,title:first.title||first.id}, nextTag: laneAfter(startLane)});
-        }
+      const first = (QUEUE.scopeItems(startLane)||[])[0];
+      if(first && first.id){
+        PLAYER.load(first.id, startLane);
+        lastLane=startLane;
+        updateStatus({now:{tag:startLane,title:first.title||first.id}, nextTag: laneAfter(startLane)});
       }
     }catch(_){}
   }
@@ -803,6 +938,7 @@ var ALTERNATOR=(function(){
   }
 
   function updateStatus(info){
+    const nowNext=PLAYER.nowNext;
     if(!info){ nowNext.textContent="Ready"; return; }
     const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"🌉";
     const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"🌉";
@@ -810,32 +946,106 @@ var ALTERNATOR=(function(){
   }
 
   function setLane(l){ lastLane=l; PLAYER.setLane(l); }
+  function getCurrentId(){ return PLAYER.getId(); }
 
-  return { onEnded, ensureKick, prev, next, setLane };
+  // restore mode from settings
+  (function initMode(){ const d=MH.get(); setMode(d.settings.mode||"MIRROR"); })();
+
+  return { onEnded, ensureKick, prev, next, setLane, getCurrentId };
 })();
 
-/* ===== Logs wiring ===== */
-(function setupLog(sectionId, songId, notesId, startId, saveId, addSelector, key){
-  const song=document.getElementById(songId), notes=document.getElementById(notesId);
-  const start=document.getElementById(startId), save=document.getElementById(saveId);
-  let t=0; const timerId = (sectionId==="dlog"?"dlog-timer":"hlog-timer");
-  const timer=document.getElementById(timerId);
-  function fmt(s){return s<10?"0"+s:s}
-  function tick(){ if(t<=0){timer.textContent="done";return;} t--; const m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
-  document.querySelectorAll(addSelector).forEach(btn=>{
-    btn.addEventListener("click", async function(){
-      const tag=this.getAttribute("data-addq"), input=(song.value||"").trim(); if(!input) return;
-      await QUEUE.add(input, tag==="AB"?["A","B"]:[tag]);
+/* ===== ADD FORM (single entry point) ===== */
+(function(){
+  const artist=document.getElementById("add-artist");
+  const link=document.getElementById("add-link");
+  const laneSel=document.getElementById("add-lane");
+  const chips=[...document.querySelectorAll(".lanechip")];
+  const preview=document.getElementById("add-preview");
+  const submit=document.getElementById("add-submit");
+  const status=document.getElementById("add-status");
+
+  let validId=null, metaCache=null;
+
+  function highlightChip(L){
+    chips.forEach(c=> setPressed(c, c.getAttribute("data-lane")===L));
+  }
+  laneSel.onchange=function(){ highlightChip(laneSel.value); validate(); };
+  chips.forEach(c=> c.onclick=function(){ laneSel.value=c.getAttribute("data-lane"); highlightChip(laneSel.value); validate(); });
+
+  async function validate(){
+    const L = laneSel.value;
+    const id = ytIdFrom(link.value);
+    validId = id;
+    let ok = !!(artist.value.trim() && id && L);
+    setPressed(submit, ok);
+    submit.disabled = !ok;
+    preview.textContent="";
+    status.textContent="";
+    if(id){
+      if(!metaCache || metaCache.id!==id){
+        preview.textContent="Fetching title…";
+        const m=await fetchYTMeta(id);
+        metaCache={id, m};
+        if(m){ preview.innerHTML="Preview → <b>"+(artist.value?artist.value+" — ":"")+(m.title||"")+"</b>"; }
+        else { preview.innerHTML="<span class='status-err'>Couldn’t fetch preview — link might be private.</span>"; }
+      }else{
+        const m=metaCache.m;
+        if(m){ preview.innerHTML="Preview → <b>"+(artist.value?artist.value+" — ":"")+(m.title||"")+"</b>"; }
+      }
+    }
+  }
+
+  artist.oninput=validate; link.oninput=validate;
+
+  submit.onclick=async function(){
+    const L = laneSel.value; const a=artist.value.trim(); const lnk=link.value.trim();
+    if(!a||!lnk||!L){ status.innerHTML="<span class='status-err'>Fill all fields and pick a lane.</span>"; return; }
+    try{
+      const it = await QUEUE.add(a, lnk, L);
+      status.innerHTML="<span class='status-ok'>Added: "+(it.title||it.id)+"</span>";
+      // reset link only; keep artist for batch adds
+      link.value=""; laneSel.value=""; highlightChip(""); preview.textContent="";
+      validate();
+    }catch(e){
+      status.innerHTML="<span class='status-err'>"+(e.message||"Could not add")+"</span>";
+    }
+  };
+
+  // initial highlight none
+  highlightChip("");
+})();
+
+/* ===== Export/Import ===== */
+(function(){
+  const expBtn=document.getElementById("export-btn"), impBtn=document.getElementById("import-btn"), impFile=document.getElementById("import-file");
+  expBtn.onclick=function(){
+    const blob=new Blob([MH.exportJSON()],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mirrorhoney_backup.json'; a.click();
+  };
+  impBtn.onclick=function(){ impFile.click(); };
+  impFile.onchange=function(e){
+    const f=e.target.files[0]; if(!f) return;
+    f.text().then(function(txt){
+      const ok=MH.importJSON(txt);
+      if(ok){ QUEUE.render(); alert("Import complete."); } else { alert("Import failed."); }
     });
-  });
-  start && (start.onclick=function(){ t=5*60; tick(); });
-  save && (save.onclick=function(){
-    const e={date:timeISO(),song:song.value.trim(),notes:notes.value.trim()};
-    const data=lsGet(key,"[]"); data.push(e); lsSet(key,data);
-    song.value=""; notes.value="";
-  });
-})("hlog","hlog-song","hlog-notes","hlog-start","hlog-save",'#logs [data-addq]',"mirrorhoney_honeylog_v1");
-setupLog("dlog","dlog-song","dlog-notes","dlog-start","dlog-save",'#logs [data-addq]',"mirrorhoney_bridge_v1");
+  };
+})();
+
+/* ===== Seed 3 example songs once (safe) ===== */
+(async function seedOnce(){
+  const data=MH.get();
+  if(data.seeds.singleSeeded){ return; }
+  const seeds=[
+    {artist:"MARINA", url:"https://www.youtube.com/watch?v=Cr-SqRWImmI", lane:"B"}, // Oh No!
+    {artist:"Sabrina Carpenter", url:"https://www.youtube.com/watch?v=cF1Na4AIecM", lane:"A"}, // Please Please Please
+    {artist:"Doechii", url:"https://www.youtube.com/watch?v=phtcAd8j6Ro", lane:"D"}  // What It Is
+  ];
+  for(const s of seeds){ try{ await QUEUE.add(s.artist, s.url, s.lane); }catch(_){ } }
+  data.seeds.singleSeeded=true; MH.put(data,"upgrade");
+  // Pre-cue Mirror-first
+  const firstB=(QUEUE.scopeItems("B")[0]||{}).id; if(firstB) PLAYER.cue(firstB,"B");
+})();
 
 /* ===== Orientation init ===== */
 document.addEventListener("DOMContentLoaded", ensureWriterOrientation);
@@ -860,7 +1070,6 @@ document.addEventListener("DOMContentLoaded", ensureWriterOrientation);
     idBox.appendChild(m);
   }
 })();
-
 </script>
 </body>
 </html>
