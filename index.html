@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>Mirror × Honey — Visitor Route</title>
-<meta name="description" content="A gentle introduction to Mirror × Honey followed by Doechii’s Safe Chaos Mirror — a held space for wild, unfinished sparks.">
+<title>Mirror × Honey — Index</title>
+<meta name="description" content="Context for Mirror × Honey, a low-stakes Honey Log, and Doechii’s Safe Chaos Mirror — all in one page.">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
 <meta name="theme-color" content="#0B0F19">
@@ -21,96 +21,120 @@
   body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
-
   .wrap{max-width:980px;margin:0 auto;padding:28px}
   header{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
   header .brand{font-weight:700;letter-spacing:.5px}
   header nav a{margin-left:16px;color:var(--muted)}
   header nav a:hover{color:var(--ink)}
-
   .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px}
   .stack{display:grid;gap:16px}
   .hero{display:grid;gap:12px;padding:24px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(124,212,255,.06),transparent)}
   .hero h1{font-size:1.6rem;margin:0}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.9rem;color:var(--muted)}
   .glyph{font-size:1.05rem}
-
   .cta{display:inline-block;margin-top:12px;padding:10px 14px;border-radius:10px;border:1px solid var(--accent);color:var(--accent)}
   .cta:hover{background:rgba(124,212,255,.1);text-decoration:none}
-
   .divider{height:1px;background:var(--line);margin:22px 0}
-
-  /* Reveal container */
+  .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--ink)}
+  /* reveal */
   .reveal{display:none}
   .reveal.show{display:block;animation:fade .5s ease}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-
-  /* Doechii embed */
+  /* inputs */
+  input[type="text"], textarea{
+    width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);
+    background:rgba(255,255,255,.02);color:var(--ink)
+  }
+  textarea{resize:vertical}
+  /* chaos embed */
   .chaos-frame{position:relative;height:60vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:#0B0F19;margin-top:12px}
-  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);
-        text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
+  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap}
   .fragment{position:absolute;font-size:1rem;opacity:.85;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
   .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
-
-  .row{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
-  .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid var(--line);color:var(--ink);background:rgba(255,255,255,.02)}
-  .btn:hover{border-color:var(--ink);text-decoration:none}
-
   footer{color:var(--muted);font-size:.9rem;margin:28px 0}
 </style>
 </head>
 <body>
-  <header class="wrap">
-    <div class="brand">mirrorhoney</div>
-    <nav>
-      <a href="/">home</a>
-      <a href="/doechii-chaos.html">doechii</a>
-    </nav>
-  </header>
+<header class="wrap">
+  <div class="brand">mirrorhoney</div>
+  <nav>
+    <a href="#intro">intro</a>
+    <a href="#honey-log">honey log</a>
+    <a href="#visitor">doechii</a>
+  </nav>
+</header>
 
-  <main class="wrap stack">
-    <!-- Intro / Context -->
-    <section class="card hero" id="intro">
-      <div class="pill">
-        <span class="glyph">🪞</span><span>Mirror (Marina) ×</span>
-        <span class="glyph">🍯</span><span>Honey (Sabrina)</span>
-      </div>
-      <h1>Context first. Then the visitor arrives.</h1>
-      <p>
-        Mirror × Honey is a resonance frame. Marina (Mirror/Butterfly) and Sabrina (Honey) already have platform and attention.
-        What they don’t always have: continuity between cycles, a peer mirror outside industry bubbles, and a place to play without PR stakes.
-      </p>
-      <p class="muted" style="color:var(--muted)">
-        Read once. When you’re ready, continue — and the visitor’s page (Doechii 🔥) will open.
-      </p>
+<main class="wrap stack">
+  <!-- INTRO / CONTEXT -->
+  <section class="card hero" id="intro">
+    <div class="pill">
+      <span class="glyph">🪞</span><span>Mirror (Marina) ×</span>
+      <span class="glyph">🍯</span><span>Honey (Sabrina)</span>
+    </div>
+    <h1>Context first. Then the visitor arrives.</h1>
+    <p>
+      Mirror × Honey is a resonance frame. Marina (Mirror/Butterfly) and Sabrina (Honey) already have platform and attention.
+      What they don’t always have: continuity between cycles, a peer mirror outside industry bubbles, and a place to play without PR stakes.
+    </p>
+    <p class="pill">Read once. Then log a page of Honey. When you’re ready, continue — the visitor’s page (Doechii 🔥) will open.</p>
+    <div class="row">
+      <a class="btn" href="#honey-log">Go to Honey Log</a>
       <a id="continue" href="#visitor" class="cta">I understand — continue</a>
-    </section>
+    </div>
+  </section>
 
-    <div class="divider"></div>
+  <!-- HONEY LOG (inline) -->
+  <section class="card hero" id="honey-log">
+    <div class="pill"><span class="glyph">🍯</span><strong>&nbsp;Honey Log — 5–10 min</strong></div>
+    <p style="margin:.4rem 0 1rem">One song that bridges. One page of reflection. Saved privately in your browser.</p>
 
-    <!-- Visitor / Doechii: revealed after intro -->
-    <section id="visitor" class="reveal card">
-      <div class="pill"><span class="glyph">🔥</span><strong> Doe chii — Safe Chaos Mirror</strong></div>
-      <p style="margin:8px 0 0">
-        A randomized scatter that keeps one “seed” fragment held at center. The layout changes on every load; the continuity is the held seed.
-      </p>
+    <div class="stack" style="gap:10px">
+      <label>
+        <span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Song (bridge)</span>
+        <input id="hlog-song" type="text" placeholder="Artist — Title or URL" aria-label="Song">
+      </label>
 
-      <!-- Chaos embed -->
-      <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Doechii Chaos Scatter"></section>
+      <label>
+        <span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes (free write)</span>
+        <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
+      </label>
 
       <div class="row">
-        <a class="btn" href="/doechii-chaos.html">Open full chaos page</a>
-        <a class="btn" href="#intro" id="reset-onboard">Reset intro flow</a>
+        <button id="hlog-start" class="btn">Start 5-min timer</button>
+        <button id="hlog-save" class="btn">Save entry</button>
+        <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
       </div>
-    </section>
 
-    <footer>
-      <div>© mirrorhoney — an Illumina satellite. <span aria-hidden="true">·</span> <a href="/robots.txt">robots</a></div>
-    </footer>
-  </main>
+      <details class="card" style="background:rgba(255,255,255,.01);border:1px dashed var(--line)">
+        <summary class="pill">View saved entries</summary>
+        <div id="hlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
+      </details>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- VISITOR / DOECHII -->
+  <section id="visitor" class="reveal card" aria-live="polite" aria-atomic="true">
+    <div class="pill"><span class="glyph">🔥</span><strong> Doechii — Safe Chaos Mirror</strong></div>
+    <p style="margin:8px 0 0">A randomized scatter that keeps one “seed” fragment held at center. The layout changes on every load; the continuity is the held seed.</p>
+
+    <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Doechii Chaos Scatter"></section>
+
+    <div class="row">
+      <a class="btn" href="#intro" id="reset-onboard">Reset intro flow</a>
+    </div>
+  </section>
+
+  <footer>
+    <div>© mirrorhoney — an Illumina satellite. · <a href="/robots.txt">robots</a></div>
+  </footer>
+</main>
 
 <script>
-(function init(){
+/* ---------- Onboarding flow ---------- */
+(function initOnboard(){
   var KEY="mirrorhoney_seenIntro";
   var intro=document.getElementById("intro");
   var visitor=document.getElementById("visitor");
@@ -119,11 +143,9 @@
 
   function showVisitor(){
     visitor.classList.add("show");
-    // mount chaos after reveal to avoid layout thrash
     mountChaos("doechii-chaos-embed");
   }
 
-  // return visitors: skip straight to visitor
   if(localStorage.getItem(KEY)==="1"){
     intro.style.display="none";
     showVisitor();
@@ -140,38 +162,78 @@
   resetBtn.addEventListener("click",function(e){
     e.preventDefault();
     localStorage.removeItem(KEY);
-    // soft reset: show intro again
+    var root=document.getElementById("doechii-chaos-embed");
+    while(root.firstChild) root.removeChild(root.firstChild);
     visitor.classList.remove("show");
-    while(document.getElementById("doechii-chaos-embed").firstChild){
-      document.getElementById("doechii-chaos-embed").removeChild(document.getElementById("doechii-chaos-embed").firstChild);
-    }
     intro.style.display="";
     if(location.hash!=="#intro") location.hash="#intro";
   });
 })();
 
-// Chaos embed (random scatter + held seed)
+/* ---------- Honey Log (local) ---------- */
+(function HoneyLog(){
+  var KEY="mirrorhoney_honeylog_v1";
+  var song=document.getElementById("hlog-song");
+  var notes=document.getElementById("hlog-notes");
+  var start=document.getElementById("hlog-start");
+  var save=document.getElementById("hlog-save");
+  var timerEl=document.getElementById("hlog-timer");
+  var list=document.getElementById("hlog-list");
+  var remain=0;
+
+  function fmt(s){return s<10?"0"+s:s}
+  function tick(){
+    if(remain<=0){timerEl.textContent="done";return;}
+    remain-=1; var m=Math.floor(remain/60), s=remain%60;
+    timerEl.textContent=m+":"+fmt(s);
+    setTimeout(tick,1000);
+  }
+  function render(){
+    list.innerHTML="";
+    try{
+      var data=JSON.parse(localStorage.getItem(KEY)||"[]");
+      data.slice().reverse().forEach(function(e){
+        var card=document.createElement("div");
+        card.className="card"; card.style.padding="12px";
+        card.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div>"
+                      +"<div style='color:var(--muted);margin-bottom:4px'>"+(e.song||"")+"</div>"
+                      +"<div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>";
+        list.appendChild(card);
+      });
+    }catch(err){}
+  }
+  start.addEventListener("click",function(){remain=5*60;tick()});
+  save.addEventListener("click",function(){
+    var entry={date:new Date().toISOString(), song:song.value.trim(), notes:notes.value.trim()};
+    try{
+      var data=JSON.parse(localStorage.getItem(KEY)||"[]");
+      data.push(entry); localStorage.setItem(KEY, JSON.stringify(data));
+    }catch(err){}
+    song.value=""; notes.value="";
+    render();
+  });
+  render();
+})();
+
+/* ---------- Doechii Chaos embed ---------- */
 function mountChaos(targetId){
   var root=document.getElementById(targetId); if(!root) return;
   var fragments=["raw","wild","unfinished","go louder","stranger","mirror shard","seed","🔥","untamed","glitch","off-script","unboxed","discord","spark"];
   var seedIndex=5; // "mirror shard"
   var w=root.clientWidth, h=root.clientHeight;
 
-  function put(el, x, y, angle, op){
+  function put(el,x,y,angle,op){
     el.style.left=Math.floor(x)+"px";
     el.style.top=Math.floor(y)+"px";
     el.style.setProperty("--angle",angle+"deg");
     if(op!=null) el.style.opacity=op;
     root.appendChild(el);
   }
-
-  // seed
   var seed=document.createElement("div");
   seed.className="seed";
   seed.textContent=fragments[seedIndex];
-  put(seed, w/2, h/2, 0, 1);
+  put(seed,w/2,h/2,0,1);
 
-  // fragments
   for(var i=0;i<fragments.length;i++){
     if(i===seedIndex) continue;
     var f=document.createElement("div");
@@ -180,12 +242,11 @@ function mountChaos(targetId){
     var x=Math.random()*w, y=Math.random()*h;
     var angle=Math.floor(Math.random()*120-60);
     var op=(0.6+Math.random()*0.4).toFixed(2);
-    put(f, x, y, angle, op);
+    put(f,x,y,angle,op);
     f.onmouseenter=function(){this.style.color="#FF3EB5";this.style.textShadow="0 0 10px #FF3EB5"};
     f.onmouseleave=function(){this.style.color="";this.style.textShadow=""};
   }
 
-  // resize handling
   window.addEventListener("resize",function(){
     w=root.clientWidth; h=root.clientHeight;
     while(root.firstChild) root.removeChild(root.firstChild);
