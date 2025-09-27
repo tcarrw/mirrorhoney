@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="mirror">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mirror × Honey — Mirror‑first (🪞) · Bridge (🌉) · Neon (⚡) · Jupiter (🪐) · Tumblr (t)</title>
-<meta name="description" content="Mirror-first: top inline player (square), single add-to-queue form, stable storage, Bridge sparks & daily fragments, themes dropdown, Tumblr-like feel.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mirror × Honey — Mirror‑first (🪞) · Bridge (🌉) · Neon (⚡) · Jupiter (🪐) · Illumina (τ)</title>
+<meta name="description" content="Mirror-first: top inline player (square), poets’ practice, single add-to-queue, stable storage, Bridge sparks & daily fragments, Illumina light theme.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 
@@ -12,13 +13,17 @@
   :root{
     --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#FFFFFF;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
     --danger:#FF6B6B;--ok:#36D399;--shadow:0 12px 34px rgba(0,0,0,.45);--railW:clamp(320px,32vw,460px);
-    --post:#0F1522; --paper:#0D121E; --hdrH: 74px;
+    --post:#0F1522; --paper:#0D121E; --hdrH: 74px; --vh: 1vh; /* will be replaced via JS */
   }
   html[data-theme="honey"]{ --bg:#FDF7E6; --ink:#2F2612; --ink-strong:#1B1403; --muted:#6E5F3C; --line:#E5D7AF; --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9; --shadow:0 10px 26px rgba(0,0,0,.15); --post:#FFFFFF; --paper:#FFFBF0; }
   html[data-theme="neon"]{ --bg:#0A0711; --ink:#F3ECFF; --ink-strong:#FFFFFF; --muted:#C8B9EA; --line:#1E1631; --accent:#9E6CFF; --rose:#FF46C1; --honey:#FFD66F; --mirror:#C5D9FF; --post:#0E0A17; --paper:#0B0713; }
   html[data-theme="jupiter"]{ --bg:#120D08; --ink:#F6E7D0; --ink-strong:#FFF6E8; --muted:#D9C7AF; --line:#33261C; --accent:#F59E0B; --rose:#FF6E5A; --honey:#F2B553; --mirror:#E6D5C5; --post:#1A140E; --paper:#16110C; }
-  /* Tumblr-like light */
-  html[data-theme="tumblr"]{ --bg:#F5F7FA; --ink:#223049; --ink-strong:#1A2639; --muted:#5B6A82; --line:#D8DEE8; --accent:#3642FF; --rose:#E457A2; --honey:#F4B000; --mirror:#6B8DFF; --shadow:0 14px 26px rgba(34,48,73,.14); --post:#FFFFFF; --paper:#FFFFFF; }
+  /* Illumina (τ): luminous light; “tau” is referred to here as the Illumina symbol */
+  html[data-theme="illumina"]{
+    --bg:#F7F9FF; --ink:#1E2742; --ink-strong:#0F1633; --muted:#5B6A86;
+    --line:#DFE6F3; --accent:#5A78FF; --rose:#E457A2; --honey:#F4B000; --mirror:#6B8DFF;
+    --shadow:0 14px 28px rgba(34,48,73,.14); --post:#FFFFFF; --paper:#FFFFFF;
+  }
 
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -26,13 +31,15 @@
     margin:0;background:var(--bg);color:var(--ink);
     font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     padding-top: var(--hdrH);
+    padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);
   }
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  .wrap{max-width:1240px;margin:0 auto;padding:14px 20px}
+  img, iframe{max-width:100%}
+  .wrap{max-width:1240px;margin:0 auto;padding:clamp(10px,3vw,20px)}
 
   /* ===== FIXED HEADER (brand + nav + audio controls + theme dropdown) ===== */
   header{position:fixed;inset:0 0 auto 0;z-index:9999;background:color-mix(in oklab, var(--bg) 90%, white 4%);
-    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line); padding-top: env(safe-area-inset-top)}
   .hdr{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
   @media (max-width:1100px){ .hdr{grid-template-columns:1fr} }
   .brand{font-weight:800;letter-spacing:.3px;color:var(--ink-strong)}
@@ -40,7 +47,7 @@
   nav a{color:var(--ink)} nav a:hover{color:var(--ink-strong)}
   .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
   .qbtn,.btn,.chip{padding:7px 11px;border-radius:12px;border:1px solid var(--line);
-    background:color-mix(in oklab, var(--bg) 80%, white 5%);color:var(--ink);cursor:pointer}
+    background:color-mix(in oklab, var(--bg) 80%, white 5%);color:var(--ink);cursor:pointer; touch-action:manipulation}
   .chip{padding:6px 12px;border-radius:999px}
   .chip[aria-pressed="true"], .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
   .pill{display:inline-flex;align-items:center;gap:6px;font-size:.92rem;color:var(--muted)}
@@ -55,14 +62,26 @@
   }
 
   /* ===== PAGE GRID ===== */
-  main .page{display:grid;grid-template-columns: minmax(0,1fr) var(--railW);gap:14px}
-  @media (max-width:1200px){ main .page{grid-template-columns:1fr} }
+  main .page{
+    display:grid;
+    grid-template-areas: "main rail";
+    grid-template-columns: minmax(0,1fr) var(--railW);
+    gap:14px
+  }
+  .content{grid-area:main; min-width:0}
+  .rail{grid-area:rail; min-width:0}
+
+  @media (max-width: 900px){
+    main .page{ grid-template-areas: "rail" "main"; grid-template-columns: 1fr; }
+    .rail{ position:static }
+  }
+
   .post{background:var(--post);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
   .card{background:color-mix(in oklab, var(--paper) 94%, black 6%);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
   .stack{display:grid;gap:14px}
   .two-col{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}
   .twins{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:1000px){.two-col,.twins{grid-template-columns:1fr}}
+  @media (max-width:800px){.two-col,.twins{grid-template-columns:1fr}}
   input[type="text"],textarea,select:not(.themeSelect){
     width:100%;padding:11px;border-radius:12px;border:2px solid var(--line);
     background:color-mix(in oklab, var(--paper) 86%, black 8%);color:var(--ink-strong);font-size:16px
@@ -70,7 +89,7 @@
   textarea{resize:vertical}
   .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
   details summary{cursor:pointer;color:var(--ink)}
-  section, .card, .post{scroll-margin-top: calc(var(--hdrH) + 10px);}
+  section, .card, .post{scroll-margin-top: calc(var(--hdrH) + 12px);}
 
   /* Writer boxes */
   .writer-grid{display:grid;gap:10px}
@@ -87,16 +106,18 @@
   .qtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}
   .qfilters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
   .queue{display:grid;gap:8px;grid-template-columns:1fr;
-         max-height: calc(100vh - var(--hdrH) - 110px);min-height:200px;overflow:auto;padding:4px 2px;transition:max-height .2s}
-  .queue.compact{gap:6px;max-height: calc(100vh - var(--hdrH) - 96px)}
-  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px;background:color-mix(in oklab, var(--paper) 86%, black 8%)}
+         max-height: calc((var(--vh) * 100) - var(--hdrH) - 110px);
+         min-height:200px;overflow:auto;padding:4px 2px;transition:max-height .2s}
+  .queue.compact{gap:6px;max-height: calc((var(--vh) * 100) - var(--hdrH) - 96px)}
+  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px;background:color-mix(in oklab, var(--paper) 86%, black 8%); min-width:0}
   .qitem img{width:76px;height:48px;object-fit:cover;border-radius:8px}
-  .qitem .meta{display:flex;flex-direction:column;gap:4px}
+  .qitem .meta{display:flex;flex-direction:column;gap:4px; min-width:0}
   .qitem .acts{display:flex;flex-wrap:wrap;gap:6px}
   .lanes{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
   .lane{border:1px solid var(--line);padding:3px 10px;border-radius:999px;font-size:.8rem;opacity:.96;cursor:pointer;user-select:none}
   .lane.A::before{content:"🍯 "} .lane.B::before{content:"🪞 "} .lane.D::before{content:"🌉 "}
   .lane[aria-pressed="true"]{background:color-mix(in oklab, var(--accent), transparent 82%);border-color:var(--accent)}
+  .titleline .ttl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* Compact tweaks */
   .queue.compact .qitem{grid-template-columns:1fr auto;padding:6px}
@@ -105,7 +126,6 @@
   .queue.compact .acts .qbtn{padding:4px 8px;font-size:.78rem}
   .queue.compact .titleline{display:flex;align-items:center;gap:8px}
   .titleline .laneEmoji{opacity:.9}
-  .titleline .ttl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
   /* Add form */
   .addq h3{margin:4px 0 8px}
@@ -119,11 +139,17 @@
   .fragment{position:absolute;font-size:1rem;opacity:.96;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
   .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
 
-  footer{color:var(--muted);font-size:.9rem;margin:22px auto}
-  /* ===== Square Player Wrap ===== */
+  footer{color:var(--muted);font-size:.9rem;margin:22px auto; padding-bottom: env(safe-area-inset-bottom)}
+
+  /* ===== Square Player Wrap (with fallback) ===== */
   .playerWrap{display:flex;justify-content:center}
-  .playerSquare{width:clamp(320px,52vw,560px); aspect-ratio:1/1; border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#000}
-  .playerSquare iframe{width:100%; height:100%; display:block; background:#000}
+  .playerSquare{position:relative; width:clamp(300px,82vw,560px); border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#000}
+  .playerSquare::before{content:""; display:block; padding-top:100%;}
+  .playerSquare iframe{position:absolute; inset:0; width:100%; height:100%; display:block; background:#000}
+  @supports (aspect-ratio: 1 / 1) {
+    .playerSquare{aspect-ratio:1/1}
+    .playerSquare::before{display:none}
+  }
 </style>
 </head>
 <body>
@@ -147,12 +173,12 @@
 
     <div class="row" aria-label="Top Controls">
       <!-- Theme dropdown -->
-      <select id="theme-select" class="themeSelect" title="Theme">
+      <select id="theme-select" class="themeSelect" title="Theme (Illumina symbol is τ)">
         <option value="mirror">🪞 Mirror</option>
         <option value="honey">🍯 Honey</option>
         <option value="neon">⚡ Neon</option>
         <option value="jupiter">🪐 Jupiter</option>
-        <option value="tumblr">t Tumblr</option>
+        <option value="illumina">τ Illumina</option>
       </select>
       <!-- Playback -->
       <button class="qbtn" id="prev" title="Previous">⟨</button>
@@ -174,7 +200,7 @@
       <section class="post" id="player">
         <h2 style="margin:0 0 8px">Player</h2>
         <div class="playerWrap">
-          <div id="playerTop" class="playerSquare">
+          <div id="playerTop" class="playerSquare" aria-label="YouTube player (square)">
             <iframe
               id="yt-frame"
               title="MARINA — Oh No!"
@@ -185,7 +211,7 @@
             </iframe>
           </div>
         </div>
-        <p class="hint" style="margin-top:8px">“Oh No!” is cued by default. Use the controls in the header; the queue lives on the right.</p>
+        <p class="hint" style="margin-top:8px">“Oh No!” is cued by default. Use the controls in the header; the queue lives on the right (on phones, it’s surfaced above the content).</p>
       </section>
 
       <!-- Writer -->
@@ -213,7 +239,7 @@
         </div>
       </section>
 
-      <!-- Visitors -->
+      <!-- For visitors (with “for poets” callout) -->
       <section class="card" id="for-visitors">
         <h2 style="margin:.2rem 0 0">For visitors (how to use this page)</h2>
         <div class="two-col">
@@ -221,19 +247,19 @@
             <p>This is the <strong>Mirror‑first</strong> page. It’s useful for everyone, but speaks most clearly to <em>Marina</em> and the <em>Bridge</em> (Doechii). Honey (🍯) has its own space; here we lead with angle, identity, and the connective spark.</p>
             <ol>
               <li><strong>Add a song in the right rail</strong> (artist + YouTube link + lane). You must pick exactly one: <em>🪞 Marina</em>, <em>🌉 Doechii</em>, or <em>🍯 Sabrina</em>.</li>
-              <li><strong>Choose a mode</strong> (🪞/🍯/⚡) and press Play in the header. The player cycles your queue automatically.</li>
+              <li><strong>Choose a mode</strong> (🪞/🍯/⚡/τ) and press Play in the header. The player cycles your queue automatically.</li>
               <li><strong>Write three words</strong> (🪞 word, 🌉 fragment, 🍯 word) and save. Use the Bridge panel to drop a tiny fragment daily.</li>
             </ol>
             <p class="hint">No accounts, no tracking. Everything saves locally in your browser — with auto‑snapshots and export to be safe.</p>
           </div>
-          <div>
+          <div class="stack">
             <div class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)">
-              <strong>Why this matters</strong>
-              <p>Between cycles, artists need a portable ritual: one word for angle, one spark for the switch, one word for pull. This keeps continuity without PR.</p>
+              <strong>For poets (autobiographical & true)</strong>
+              <p>This is **not** production. You’re writing for <em>yourself</em> — a small, honest practice. Marina is your <em>friend in the mirror</em>. Doechii is the <em>bridge</em> that helps you manifest what you’ve named.</p>
             </div>
-            <div class="card" style="margin-top:10px;background:color-mix(in oklab, var(--paper) 96%, black 4%);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
-              <strong>What Sabrina/Marina don’t give you alone</strong>
-              <p>Honey is pull and joy; Mirror is angle and clarity. The <em>bridge</em> is for edges that don’t fit either — flips, masks, glitches — a safe lane for the switch.</p>
+            <div class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
+              <strong>Illumina symbol</strong> (τ)
+              <p>We refer to the Greek letter tau <em>as the Illumina symbol</em>. Select <strong>τ Illumina</strong> in the theme menu for a crisp, luminous view.</p>
             </div>
           </div>
         </div>
@@ -299,7 +325,7 @@
             <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat imagery.</li><li>Pop sheen nudges you to move.</li></ul>
           </div>
         </div>
-        <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. ⚡ Neon inserts 🌉 between lanes.</p>
+        <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. ⚡ Neon inserts 🌉 between lanes. τ is the <em>Illumina symbol</em> for the light theme.</p>
       </section>
 
       <!-- Logs -->
@@ -383,7 +409,7 @@
           <p>In your browser’s <code>localStorage</code> (schema <code>mh_data_v1</code>), on this device only. Export/import in the right rail. On upgrades we snapshot automatically.</p>
         </details>
         <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">How do 🪞/🍯/🌉 work?</summary>
-          <p>Pick exactly one lane per song. 🪞 = B (Mirror/Marina), 🍯 = A (Honey/Sabrina), 🌉 = Bridge (Doechii). ⚡ Neon inserts 🌉 between lanes during playback.</p>
+          <p>Pick exactly one lane per song. 🪞 = B (Mirror/Marina), 🍯 = A (Honey/Sabrina), 🌉 = Bridge (Doechii). ⚡ Neon inserts 🌉 between lanes during playback. τ is the <em>Illumina symbol</em> — a light theme for clarity.</p>
         </details>
       </section>
     </div>
@@ -462,7 +488,7 @@
   </div>
 </main>
 
-<footer class="wrap">© mirrorhoney — Mirror (🪞) × Honey (🍯) with Bridge (🌉). Neon (⚡), Jupiter (🪐), Tumblr (t) themes available.</footer>
+<footer class="wrap">© mirrorhoney — Mirror (🪞) × Honey (🍯) with Bridge (🌉). Neon (⚡), Jupiter (🪐), Illumina (τ) themes available.</footer>
 
 <!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -578,6 +604,12 @@ function ensureWriterOrientation(){
 window.addEventListener("resize", ensureWriterOrientation);
 ensureWriterOrientation();
 
+/* iOS viewport height fix */
+(function(){
+  function setVH(){ document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px'); }
+  setVH(); window.addEventListener('resize', setVH); window.addEventListener('orientationchange', setVH);
+})();
+
 /* YouTube helpers */
 function ytIdFrom(u){
   if(!u) return null; u=String(u).trim();
@@ -607,7 +639,7 @@ async function fetchYTMeta(id){
   apply();
 })();
 
-/* ===== Theme dropdown (persist) ===== */
+/* ===== Theme dropdown (persist + migrate tumblr→illumina) ===== */
 (function(){
   const sel=document.getElementById("theme-select");
   function apply(theme){
@@ -615,7 +647,10 @@ async function fetchYTMeta(id){
     const d=MH.get(); d.settings.theme=theme; MH.put(d);
   }
   sel.onchange=function(){ apply(sel.value); };
-  const d=MH.get(); sel.value=d.settings.theme||"mirror"; apply(sel.value);
+  const d=MH.get();
+  // Migration: if a user had "tumblr" saved previously, map it to "illumina"
+  if(d.settings && d.settings.theme==="tumblr"){ d.settings.theme="illumina"; MH.put(d,"upgrade"); }
+  sel.value=d.settings.theme||"mirror"; apply(sel.value);
 })();
 
 /* ===== Writer save + quick add to Daily Bridge ===== */
