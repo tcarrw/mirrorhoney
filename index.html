@@ -69,11 +69,13 @@
     gap:14px
   }
   .content{grid-area:main; min-width:0}
-  .rail{grid-area:rail; min-width:0}
+  .rail{grid-area:rail; min-width:0; position:sticky; top:calc(var(--hdrH) + 10px)}
 
+  /* MOBILE: main first, then rail; rail becomes inline (not sticky), queue flows naturally */
   @media (max-width: 900px){
-    main .page{ grid-template-areas: "rail" "main"; grid-template-columns: 1fr; }
-    .rail{ position:static }
+    main .page{ grid-template-areas: "main" "rail"; grid-template-columns: 1fr; }
+    .rail{ position:static; top:auto }
+    .queue{ max-height: none; overflow: visible }
   }
 
   .post{background:var(--post);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
@@ -101,7 +103,7 @@
   .word{font-size:1.2rem}
 
   /* Right rail: QUEUE FIRST */
-  .rail{position:sticky;top:calc(var(--hdrH) + 10px);display:grid;gap:12px}
+  .rail{display:grid;gap:12px}
   .rail .block{border:1px solid var(--line);border-radius:16px;background:color-mix(in oklab, var(--paper) 92%, black 8%);padding:12px;box-shadow:var(--shadow)}
   .qtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}
   .qfilters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -211,7 +213,7 @@
             </iframe>
           </div>
         </div>
-        <p class="hint" style="margin-top:8px">“Oh No!” is cued by default. Use the controls in the header; the queue lives on the right (on phones, it’s surfaced above the content).</p>
+        <p class="hint" style="margin-top:8px">“Oh No!” is cued by default. Use the controls in the header; the queue is inline on mobile (below) and in the right rail on desktop.</p>
       </section>
 
       <!-- Writer -->
@@ -255,7 +257,7 @@
           <div class="stack">
             <div class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)">
               <strong>For poets (autobiographical & true)</strong>
-              <p>This is **not** production. You’re writing for <em>yourself</em> — a small, honest practice. Marina is your <em>friend in the mirror</em>. Doechii is the <em>bridge</em> that helps you manifest what you’ve named.</p>
+              <p>This is <em>not</em> production. You’re writing for <em>yourself</em> — a small, honest practice. Marina is your <em>friend in the mirror</em>. Doechii is the <em>bridge</em> that helps you manifest what you’ve named.</p>
             </div>
             <div class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
               <strong>Illumina symbol</strong> (τ)
