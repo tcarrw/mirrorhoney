@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="mirror" data-mode="mirror" data-calm="on">
+<html lang="en" data-theme="flame" data-mode="mirror" data-calm="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>mirrorhoney — mirror · spark · honey (clarity · jupiter)</title>
+<title>mirrorhoney — mirror · spark · honey (clarity · neon)</title>
 <meta name="description" content="Built for Marina (friend in the mirror) and the Bridge (Doechii) to manifest — clear enough for anyone. Write like a poet, play seeds, keep a quiet loop.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
@@ -41,11 +41,17 @@
     --accent:#5A78FF; --rose:#E457A2; --honey:#F0B600; --mirror:#6B8DFF;
     --paper:#FFFFFF; --card:#FFFFFF; --shadow:0 14px 28px rgba(34,48,73,.14);
   }
-  /* Jupiter theme (deep space + orange bands) */
-  html[data-theme="jupiter"]{
-    --bg:#0A0E1A; --ink:#EDEFF6; --ink-strong:#FFFFFF; --muted:#ACB3C6; --line:#1A2233;
-    --accent:#FF914D; --rose:#FF5CA8; --honey:#FFC36A; --mirror:#C9DBFF;
-    --paper:#0D1324; --card:#0E1428; --shadow:0 14px 34px rgba(0,0,0,.55);
+  /* Neon (Doechii) theme — cyan/pink on deep night */
+  html[data-theme="neon"]{
+    --bg:#080914; --ink:#EAF6FF; --ink-strong:#FFFFFF; --muted:#A9B7C7; --line:#12182A;
+    --accent:#7DF9FF; --rose:#FF49C0; --honey:#FFC66A; --mirror:#BFD6FF;
+    --paper:#0B0F1E; --card:#0D1224; --shadow:0 16px 36px rgba(0,0,0,.55);
+  }
+  /* Flame (Doechii) theme — warm neon (orange/magenta) */
+  html[data-theme="flame"]{
+    --bg:#0E0A10; --ink:#FDEEF8; --ink-strong:#FFFFFF; --muted:#C3AFC1; --line:#241828;
+    --accent:#FF7A1A; --rose:#FF49C0; --honey:#FFBE5E; --mirror:#E3C6FF;
+    --paper:#140F18; --card:#17101F; --shadow:0 18px 38px rgba(0,0,0,.58);
   }
 
   html,body{height:100%}
@@ -216,7 +222,8 @@
       <select id="theme-select" class="themeSelect" title="Theme (τ is the Illumina symbol)">
         <option value="mirror">🪞 Mirror</option>
         <option value="honey">🍯 Honey</option>
-        <option value="jupiter">🪐 Jupiter</option>
+        <option value="neon">⚡ Neon (Doechii)</option>
+        <option value="flame">🔥 Flame (Doechii)</option>
         <option value="illumina">τ Illumina</option>
       </select>
       <button class="qbtn" id="prev" title="Previous">⟨</button>
@@ -249,7 +256,7 @@
         <label>How to use this (2 minutes)</label>
         <ol style="margin:6px 0 0 18px">
           <li>Press <em>Play</em> above — “Oh No!” will cue in 🪞 (Marina). That’s your steady friend.</li>
-          <li>Go to <a href="#writer">Writer</a> and set your three words (Mirror · Spark · Honey). Save if you like.</li>
+          <li>Go to <a href="#writer">Writer</a> and set your three words (Mirror · Bridge · Honey). Save if you like.</li>
           <li>Open <a href="#journal">Journal</a>, choose your lane (🪞/🍯/🌉), write for 5 minutes, save. Keep one small seed.</li>
         </ol>
         <div class="hint">Everything lives on this device (local‑only). Export/Import is in the rail.</div>
@@ -710,7 +717,7 @@ ensureWriterOrientation();
     pastBox.innerHTML="";
     const J = JSON.parse(localStorage.getItem(KEYJ)||"[]");
     const H = JSON.parse(localStorage.getItem("mh_hlog_v1")||"[]"); // legacy honey log
-    const D = JSON.parse(localStorage.getItem("mh_dlog_v1")||"[]"); // legacy spark log
+    const D = JSON.parse(localStorage.getItem("mh_dlog_v1")||"[]"); // legacy spark/bridge log
     const all = [];
     (J||[]).forEach(e=>all.push({src:"journal",lane:e.lane,date:e.date,notes:e.notes}));
     (H||[]).forEach(e=>all.push({src:"honey",lane:"A",date:e.date,notes:e.notes}));
@@ -1271,7 +1278,7 @@ var ALTERNATOR=(function(){
 
 /* ===== Minimal SW (UI offline; YT not cached) ===== */
 if('serviceWorker' in navigator){
-  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v5').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
+  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v6').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
   const blob=new Blob([code],{type:'application/javascript'});
   const url=URL.createObjectURL(blob);
   navigator.serviceWorker.register(url);
