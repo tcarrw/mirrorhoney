@@ -1,43 +1,66 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="mirror">
+<html lang="en" data-theme="mirror" data-mode="mirror">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Mirror × Honey — Mirror‑first (🪞) · Bridge (🌉) · Neon (⚡) · Jupiter (🪐) · Illumina (τ)</title>
-<meta name="description" content="Mirror-first: top inline player (square), poets’ practice, single add-to-queue, stable storage, Bridge sparks & daily fragments, Illumina light theme.">
+<title>mirrorhoney — mirror · spark · honey</title>
+<meta name="description" content="Mirror-first with Spark and Honey modes. A symbolic, non-transactional field for Marina (mirror) and Doechii (spark) — with pollen memory for repeat visits.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 
 <style>
-  /* ===== THEME TOKENS ===== */
+  /* ===== Base theme tokens ===== */
   :root{
-    --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#FFFFFF;--muted:#A0A7B3;--line:#1B2433;--accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
+    --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#FFFFFF;--muted:#A0A7B3;--line:#1B2433;
+    --accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
     --danger:#FF6B6B;--ok:#36D399;--shadow:0 12px 34px rgba(0,0,0,.45);--railW:clamp(320px,32vw,460px);
-    --post:#0F1522; --paper:#0D121E; --hdrH: 74px; --vh: 1vh; /* will be replaced via JS */
+    --post:#0F1522; --paper:#0D121E; --hdrH: 78px; --vh: 1vh;
+    /* Journey palettes */
+    --violet:#8D7CFF; --pearl:#F2F5FF;      /* mirror (Marina) */
+    --neonC:#7DF9FF; --neonP:#FF49C0;       /* spark (Doechii) */
+    --amber:#F2B553; --gold:#FFD36B;        /* honey (Sabrina) */
   }
-  html[data-theme="honey"]{ --bg:#FDF7E6; --ink:#2F2612; --ink-strong:#1B1403; --muted:#6E5F3C; --line:#E5D7AF; --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9; --shadow:0 10px 26px rgba(0,0,0,.15); --post:#FFFFFF; --paper:#FFFBF0; }
-  html[data-theme="neon"]{ --bg:#0A0711; --ink:#F3ECFF; --ink-strong:#FFFFFF; --muted:#C8B9EA; --line:#1E1631; --accent:#9E6CFF; --rose:#FF46C1; --honey:#FFD66F; --mirror:#C5D9FF; --post:#0E0A17; --paper:#0B0713; }
-  html[data-theme="jupiter"]{ --bg:#120D08; --ink:#F6E7D0; --ink-strong:#FFF6E8; --muted:#D9C7AF; --line:#33261C; --accent:#F59E0B; --rose:#FF6E5A; --honey:#F2B553; --mirror:#E6D5C5; --post:#1A140E; --paper:#16110C; }
-  /* Illumina (τ): luminous light; “tau” is referred to here as the Illumina symbol */
   html[data-theme="illumina"]{
-    --bg:#F7F9FF; --ink:#1E2742; --ink-strong:#0F1633; --muted:#5B6A86;
-    --line:#DFE6F3; --accent:#5A78FF; --rose:#E457A2; --honey:#F4B000; --mirror:#6B8DFF;
+    --bg:#F7F9FF; --ink:#1E2742; --ink-strong:#0F1633; --muted:#5B6A86; --line:#DFE6F3;
+    --accent:#5A78FF; --rose:#E457A2; --honey:#F4B000; --mirror:#6B8DFF;
     --shadow:0 14px 28px rgba(34,48,73,.14); --post:#FFFFFF; --paper:#FFFFFF;
   }
-
-  *{box-sizing:border-box}
+  html[data-theme="neon"]{ /* dark neon theme (optional) */
+    --bg:#0A0711; --ink:#F3ECFF; --ink-strong:#FFFFFF; --muted:#C8B9EA; --line:#1E1631;
+    --accent:#9E6CFF; --rose:#FF46C1; --honey:#FFD66F; --mirror:#C5D9FF; --post:#0E0A17; --paper:#0B0713;
+  }
+  html[data-theme="honey"]{
+    --bg:#FDF7E6; --ink:#2F2612; --ink-strong:#1B1403; --muted:#6E5F3C; --line:#E5D7AF;
+    --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9; --shadow:0 10px 26px rgba(0,0,0,.15);
+    --post:#FFFFFF; --paper:#FFFBF0;
+  }
   html,body{height:100%}
+  *{box-sizing:border-box}
   body{
     margin:0;background:var(--bg);color:var(--ink);
     font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     padding-top: var(--hdrH);
     padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);
+    transition:background 400ms ease, color 400ms ease;
   }
-  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
-  img, iframe{max-width:100%}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  img,iframe{max-width:100%}
   .wrap{max-width:1240px;margin:0 auto;padding:clamp(10px,3vw,20px)}
+  .stack{display:grid;gap:14px}
+  .post{background:var(--post);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
+  .card{background:color-mix(in oklab, var(--paper) 94%, black 6%);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
+  .two-col{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}
+  .twins{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:800px){.two-col,.twins{grid-template-columns:1fr}}
+  input[type="text"],textarea,select{
+    width:100%;padding:11px;border-radius:12px;border:2px solid var(--line);
+    background:color-mix(in oklab, var(--paper) 86%, black 8%);color:var(--ink-strong);font-size:16px
+  }
+  textarea{resize:vertical}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
 
-  /* ===== FIXED HEADER (brand + nav + audio controls + theme dropdown) ===== */
+  /* ===== Header ===== */
   header{position:fixed;inset:0 0 auto 0;z-index:9999;background:color-mix(in oklab, var(--bg) 90%, white 4%);
     backdrop-filter:blur(10px);border-bottom:1px solid var(--line); padding-top: env(safe-area-inset-top)}
   .hdr{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
@@ -45,7 +68,6 @@
   .brand{font-weight:800;letter-spacing:.3px;color:var(--ink-strong)}
   nav{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
   nav a{color:var(--ink)} nav a:hover{color:var(--ink-strong)}
-  .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
   .qbtn,.btn,.chip{padding:7px 11px;border-radius:12px;border:1px solid var(--line);
     background:color-mix(in oklab, var(--bg) 80%, white 5%);color:var(--ink);cursor:pointer; touch-action:manipulation}
   .chip{padding:6px 12px;border-radius:999px}
@@ -57,43 +79,65 @@
     background:color-mix(in oklab, var(--bg) 86%, white 8%);
     color:var(--ink);font-size:.95rem;appearance:none;
     background-image: linear-gradient(45deg,transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
-    background-position: calc(100% - 20px) 52%, calc(100% - 12px) 52%;
-    background-size: 8px 8px, 8px 8px;background-repeat:no-repeat;
+    background-position: calc(100% - 20px) 52%, calc(100% - 12px) 52%; background-size: 8px 8px, 8px 8px; background-repeat:no-repeat;
   }
 
-  /* ===== PAGE GRID ===== */
+  /* ===== Page grid ===== */
   main .page{
-    display:grid;
-    grid-template-areas: "main rail";
-    grid-template-columns: minmax(0,1fr) var(--railW);
-    gap:14px
+    display:grid; grid-template-areas: "main rail"; grid-template-columns: minmax(0,1fr) var(--railW); gap:14px
   }
   .content{grid-area:main; min-width:0}
   .rail{grid-area:rail; min-width:0; position:sticky; top:calc(var(--hdrH) + 10px)}
-
-  /* MOBILE: main first, then rail; rail becomes inline (not sticky), queue flows naturally */
-  @media (max-width: 900px){
-    main .page{ grid-template-areas: "main" "rail"; grid-template-columns: 1fr; }
+  @media (max-width:900px){
+    main .page{ grid-template-areas:"main" "rail"; grid-template-columns:1fr; }
     .rail{ position:static; top:auto }
-    .queue{ max-height: none; overflow: visible }
   }
+  .rail .block{border:1px solid var(--line);border-radius:16px;background:color-mix(in oklab, var(--paper) 92%, black 8%);padding:12px;box-shadow:var(--shadow)}
 
-  .post{background:var(--post);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
-  .card{background:color-mix(in oklab, var(--paper) 94%, black 6%);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
-  .stack{display:grid;gap:14px}
-  .two-col{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}
-  .twins{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:800px){.two-col,.twins{grid-template-columns:1fr}}
-  input[type="text"],textarea,select:not(.themeSelect){
-    width:100%;padding:11px;border-radius:12px;border:2px solid var(--line);
-    background:color-mix(in oklab, var(--paper) 86%, black 8%);color:var(--ink-strong);font-size:16px
+  /* ===== Landing hero ===== */
+  .hero{position:relative;padding:18px;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    background:linear-gradient(180deg, color-mix(in oklab, var(--mirror), transparent 90%), transparent)}
+  .landing{font-size:1.15rem;color:var(--muted)}
+  .landing em{color:var(--ink)}
+  .fieldline{font-style:italic;color:var(--muted)}
+
+  /* ===== Mode visuals (mirror | spark | honey) ===== */
+  /* Background accents */
+  html[data-mode="mirror"] body{}
+  html[data-mode="mirror"] .hero{background:
+    radial-gradient(1200px 600px at -10% -10%, color-mix(in oklab, var(--pearl) 60%, transparent 60%), transparent 70%),
+    radial-gradient(800px 400px at 110% 10%, color-mix(in oklab, var(--violet) 25%, transparent 60%), transparent 70%);}
+  html[data-mode="spark"] .hero{background:
+    radial-gradient(1200px 600px at -10% -10%, color-mix(in oklab, var(--neonC) 12%, transparent 80%), transparent 70%),
+    radial-gradient(900px 500px at 110% 10%, color-mix(in oklab, var(--neonP) 10%, transparent 82%), transparent 70%);}
+  html[data-mode="honey"] .hero{background:
+    radial-gradient(1200px 600px at -10% -10%, color-mix(in oklab, var(--gold) 16%, transparent 82%), transparent 70%),
+    radial-gradient(900px 500px at 110% 10%, color-mix(in oklab, var(--amber) 14%, transparent 84%), transparent 70%);}
+
+  /* Echo (mirror) and Glitch (spark) text effects */
+  .echo{position:relative; display:inline-block; font-weight:700; letter-spacing:.3px; color:var(--ink-strong)}
+  .echo::after{
+    content:attr(data-echo); position:absolute; left:0; top:0; right:0; bottom:0;
+    color:transparent; text-shadow:
+      0 2px 0 color-mix(in oklab, var(--pearl) 70%, transparent 30%),
+      2px 4px 0 color-mix(in oklab, var(--violet) 50%, transparent 50%);
+    opacity:.45; transform:translate3d(0,0,0);
+    pointer-events:none;
   }
-  textarea{resize:vertical}
-  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
-  details summary{cursor:pointer;color:var(--ink)}
-  section, .card, .post{scroll-margin-top: calc(var(--hdrH) + 12px);}
+  html[data-mode="spark"] .echo::after{ display:none; } /* echo only in mirror mode */
 
-  /* Writer boxes */
+  .glitch{position:relative; display:inline-block; font-weight:800; letter-spacing:.2px; color:var(--ink-strong)}
+  .glitch::before,.glitch::after{
+    content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none; opacity:.7;
+  }
+  .glitch::before{ transform:translate3d(-1px,0,0); color:var(--neonC); clip-path:inset(0 0 50% 0); }
+  .glitch::after{ transform:translate3d(1px,0,0); color:var(--neonP); clip-path:inset(50% 0 0 0); }
+  @keyframes jit { 0%{transform:translate(0,0)} 50%{transform:translate(1px,-1px)} 100%{transform:translate(0,0)} }
+  html[data-mode="spark"] .glitch::before, html[data-mode="spark"] .glitch::after{ animation:jit .2s infinite steps(2,end); }
+  html[data-mode="mirror"] .glitch::before, html[data-mode="mirror"] .glitch::after{ animation:none; opacity:.2; }
+  html[data-mode="honey"] .glitch::before, html[data-mode="honey"] .glitch::after{ animation:none; opacity:.35; }
+
+  /* Writer layout */
   .writer-grid{display:grid;gap:10px}
   .writer-grid.vertical{grid-template-rows:auto auto auto}
   .writer-grid.horizontal{grid-template-columns:1fr .9fr 1fr;align-items:end}
@@ -101,18 +145,16 @@
   .bridge-box{border-left:4px solid var(--rose);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--rose), transparent 88%),transparent);border-radius:10px}
   .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--honey), transparent 88%),transparent);border-radius:10px}
   .word{font-size:1.2rem}
+  .modechips .chip{opacity:.9}
+  .modechips .chip[aria-pressed="true"]{outline:2px solid var(--accent)}
 
-  /* Right rail: QUEUE */
-  .rail{display:grid;gap:12px}
-  .rail .block{border:1px solid var(--line);border-radius:16px;background:color-mix(in oklab, var(--paper) 92%, black 8%);padding:12px;box-shadow:var(--shadow)}
+  /* Queue block */
   .qtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}
   .qfilters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-
   .queue{display:grid;gap:8px;grid-template-columns:1fr;
          max-height: calc((var(--vh) * 100) - var(--hdrH) - 110px);
          min-height:200px;overflow:auto;padding:4px 2px;transition:max-height .2s}
   .queue.compact{gap:6px;max-height: calc((var(--vh) * 100) - var(--hdrH) - 96px)}
-
   .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px;background:color-mix(in oklab, var(--paper) 86%, black 8%); min-width:0}
   .qitem img{width:76px;height:48px;object-fit:cover;border-radius:8px}
   .qitem .meta{display:flex;flex-direction:column;gap:4px; min-width:0}
@@ -122,39 +164,17 @@
   .lane.A::before{content:"🍯 "} .lane.B::before{content:"🪞 "} .lane.D::before{content:"🌉 "}
   .lane[aria-pressed="true"]{background:color-mix(in oklab, var(--accent), transparent 82%);border-color:var(--accent)}
 
-  /* Title & artist wrapping */
+  /* Wrapping titles */
   .titleline{display:flex;align-items:center;gap:8px}
   .titleline .laneEmoji{opacity:.9;flex:0 0 auto}
-  .titleline .ttl{
-    display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2;
-    overflow:hidden; white-space:normal; word-break:break-word; line-height:1.25;
-  }
-  /* Compact mode keeps single-line ellipsis */
-  .queue.compact .titleline .ttl{
-    display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-  }
-
-  /* Compact tweaks */
-  .queue.compact .qitem{grid-template-columns:1fr auto;padding:6px}
-  .queue.compact .qitem img{display:none}
-  .queue.compact .lanes .lane{padding:2px 8px;font-size:.72rem}
-  .queue.compact .acts .qbtn{padding:4px 8px;font-size:.78rem}
+  .titleline .ttl{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; white-space:normal; word-break:break-word; line-height:1.25; }
+  .queue.compact .titleline .ttl{ display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
   /* Add form */
-  .addq h3{margin:4px 0 8px}
   .lanechips{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
   .lanechips .chip{user-select:none}
-  .status-ok{color:var(--ok)} .status-err{color:var(--danger)}
 
-  /* Bridge scatter */
-  .chaos-frame{position:relative;height:46vh;border:1px dashed var(--line);border-radius:16px;overflow:hidden;background:var(--post);margin-top:12px}
-  .seed{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:var(--accent);text-shadow:0 0 12px var(--accent);border:2px solid var(--accent);padding:.5em .7em;border-radius:999px;white-space:nowrap;background:rgba(0,0,0,.08)}
-  .fragment{position:absolute;font-size:1rem;opacity:.96;transform:rotate(var(--angle));transition:color .3s,text-shadow .3s}
-  .fragment:hover{color:var(--rose);text-shadow:0 0 10px var(--rose)}
-
-  footer{color:var(--muted);font-size:.9rem;margin:22px auto; padding-bottom: env(safe-area-inset-bottom)}
-
-  /* ===== Square Player Wrap (with fallback) ===== */
+  /* Player (square) */
   .playerWrap{display:flex;justify-content:center}
   .playerSquare{position:relative; width:clamp(300px,82vw,560px); border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#000}
   .playerSquare::before{content:""; display:block; padding-top:100%;}
@@ -163,6 +183,20 @@
     .playerSquare{aspect-ratio:1/1}
     .playerSquare::before{display:none}
   }
+
+  /* Pollen memory layer */
+  .pollen{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+  .pollen .w{position:absolute; font-size:12px; color:color-mix(in oklab, var(--ink), transparent 70%); opacity:.0; animation:float 16s linear infinite; white-space:nowrap}
+  @keyframes float {
+    0%{ transform:translateY(20vh) translateX(0); opacity:0; }
+    10%{ opacity:.35; }
+    50%{ opacity:.5; }
+    90%{ opacity:.2; }
+    100%{ transform:translateY(-30vh) translateX(10vw); opacity:0; }
+  }
+
+  /* Sections anchor spacing */
+  section, .card, .post{scroll-margin-top: calc(var(--hdrH) + 12px);}
 </style>
 </head>
 <body>
@@ -185,12 +219,17 @@
     </nav>
 
     <div class="row" aria-label="Top Controls">
+      <!-- Mode (journey) chips -->
+      <div class="row modechips" id="journey">
+        <button class="chip" id="choose-mirror" aria-pressed="true">🪞 mirror</button>
+        <button class="chip" id="choose-spark" aria-pressed="false">⚡ spark</button>
+        <button class="chip" id="choose-honey" aria-pressed="false">🍯 honey</button>
+      </div>
       <!-- Theme dropdown -->
       <select id="theme-select" class="themeSelect" title="Theme (Illumina symbol is τ)">
         <option value="mirror">🪞 Mirror</option>
         <option value="honey">🍯 Honey</option>
         <option value="neon">⚡ Neon</option>
-        <option value="jupiter">🪐 Jupiter</option>
         <option value="illumina">τ Illumina</option>
       </select>
       <!-- Playback -->
@@ -204,12 +243,21 @@
   </div>
 </header>
 
-<main class="wrap">
-  <div class="page">
-    <!-- ===== Main column ===== -->
-    <div class="content stack">
+<!-- Pollen overlay (inserted by JS if repeat visit) -->
+<div class="pollen" id="pollen" aria-hidden="true"></div>
 
-      <!-- Inline top player (SQUARE) -->
+<main class="wrap">
+  <section class="hero" id="home">
+    <div class="landing">
+      <div><span class="pill">response comes from the field, not an inbox</span></div>
+      <div class="fieldline">if you are <em>mirror</em>, it shines · if you are <em>spark</em>, it flips · if you are <em>honey</em>, it thickens</div>
+    </div>
+  </section>
+
+  <div class="page">
+    <!-- MAIN -->
+    <div class="content stack">
+      <!-- Player -->
       <section class="post" id="player">
         <h2 style="margin:0 0 8px">Player</h2>
         <div class="playerWrap">
@@ -224,121 +272,74 @@
             </iframe>
           </div>
         </div>
-        <p class="hint" style="margin-top:8px">“Oh No!” is cued by default. Use the controls in the header; the queue is inline on mobile (below) and in the right rail on desktop.</p>
+        <p class="hint">“Oh No!” stays pinned as your friend in 🪞. Controls are in the header; queue is inline on mobile (below) and a right rail on desktop.</p>
       </section>
 
       <!-- Writer -->
       <section class="card" id="writer">
         <div class="writer-grid vertical" id="writerGrid">
           <div class="mirror-box">
-            <label>🪞 Mirror word (Marina)</label>
-            <input id="w-mirror" class="word" type="text" placeholder="one angled word…">
+            <label>🪞 Mirror word (Marina) — <span class="echo" id="echo" data-echo=""></span></label>
+            <input id="w-mirror" class="word" type="text" placeholder="one angled word…" aria-describedby="echo-help">
+            <div id="echo-help" class="hint">In mirror mode your word softly echoes back in violet and pearl.</div>
           </div>
           <div class="bridge-box">
-            <label>🌉 Bridge fragment (Doechii)</label>
-            <input id="w-bridge" class="word" type="text" placeholder="short spark / pivot…">
+            <label>⚡ Spark fragment (Doechii) — <span class="glitch" id="glitch" data-text=""></span></label>
+            <input id="w-bridge" class="word" type="text" placeholder="short spark / pivot…" aria-describedby="glitch-help">
+            <div id="glitch-help" class="hint">In spark mode your fragment jitters neon and remixes itself.</div>
           </div>
           <div class="honey-box">
             <label>🍯 Honey word (Sabrina)</label>
             <input id="w-honey" class="word" type="text" placeholder="one bright word…">
           </div>
         </div>
-        <p class="hint">Portrait: Mirror ↑ · Bridge · Honey ↓. Rotate to landscape and they align horizontally.</p>
+        <p class="hint">Portrait: Mirror ↑ · Spark (Bridge) · Honey ↓. Rotate to landscape and they align horizontally.</p>
         <div class="row">
           <button class="btn" id="w-save">Save set</button>
           <button class="btn" id="w-clear">Clear</button>
-          <button class="btn" id="w-add-bridge">Add 🌉 from Writer → Daily</button>
+          <button class="btn" id="w-add-bridge">Add ⚡ from Writer → Daily</button>
           <span class="pill" id="w-status"></span>
         </div>
       </section>
 
-      <!-- For visitors (with “for poets” callout) -->
+      <!-- Visitors / purpose -->
       <section class="card" id="for-visitors">
-        <h2 style="margin:.2rem 0 0">For visitors (how to use this page)</h2>
-        <div class="two-col">
-          <div>
-            <p>This is the <strong>Mirror‑first</strong> page. It’s useful for everyone, but speaks most clearly to <em>Marina</em> and the <em>Bridge</em> (Doechii). Honey (🍯) has its own space; here we lead with angle, identity, and the connective spark.</p>
-            <ol>
-              <li><strong>Add a song in the right rail</strong> (artist + YouTube link + lane). You must pick exactly one: <em>🪞 Marina</em>, <em>🌉 Doechii</em>, or <em>🍯 Sabrina</em>.</li>
-              <li><strong>Choose a mode</strong> (🪞/🍯/⚡/τ) and press Play in the header. The player cycles your queue automatically.</li>
-              <li><strong>Write three words</strong> (🪞 word, 🌉 fragment, 🍯 word) and save. Use the Bridge panel to drop a tiny fragment daily.</li>
-            </ol>
-            <p class="hint">No accounts, no tracking. Everything saves locally in your browser — with auto‑snapshots and export to be safe.</p>
-          </div>
-          <div class="stack">
-            <div class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)">
-              <strong>For poets (autobiographical & true)</strong>
-              <p>This is <em>not</em> production. You’re writing for <em>yourself</em> — a small, honest practice. Marina is your <em>friend in the mirror</em>. Doechii is the <em>bridge</em> that helps you manifest what you’ve named.</p>
-            </div>
-            <div class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%);border-left:4px solid var(--mirror);padding-left:12px;border-radius:10px">
-              <strong>Illumina symbol</strong> (τ)
-              <p>We refer to the Greek letter tau <em>as the Illumina symbol</em>. Select <strong>τ Illumina</strong> in the theme menu for a crisp, luminous view.</p>
-            </div>
-          </div>
-        </div>
+        <h2 style="margin:.2rem 0 0">For visitors</h2>
+        <p>This page holds two journeys lightly: a <strong>mirror</strong> for reflection and a <strong>spark</strong> for edges. Honey has its own space. No asks. No tracking. Words and seeds live privately in your browser. The rest follows from what you put in.</p>
       </section>
 
-      <!-- What / Identify / Hybrid -->
+      <!-- What / Identify / Hybrid (kept concise) -->
       <section class="card" id="what">
-        <h2 style="margin:.2rem 0 0">What this is (and why)</h2>
+        <h3 style="margin:.2rem 0 0">What this is</h3>
         <div class="two-col">
           <div>
-            <p><strong>Problem:</strong> Continuity evaporates after promo. Body and mind need a small ritual to meet again.</p>
-            <p><strong>Solution:</strong> A weekly loop: listen, tag (🪞/🍯/🌉), write three words, circle one seed. Bring the seed forward.</p>
-            <p><strong>Promise:</strong> No asks, no pressure, no tracking. Private logs stay in your browser.</p>
+            <p><strong>Continuity, not content.</strong> A weekly loop: listen, tag, write three words, circle one seed. Carry the seed forward.</p>
+            <p><strong>Modes shift the field:</strong> mirror (violet/pearl, echo); spark (neon/chaos, glitch); honey (amber/gold, warm pull).</p>
           </div>
           <div>
-            <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">This is not</summary>
-              <ul style="margin:10px 0 0"><li>Outreach, clout, or press.</li><li>A fan-control lever or rumor mill.</li><li>A definition of anyone. It’s a mirror, a bridge, and a page of honey.</li></ul>
-            </details>
-            <details class="card" style="margin-top:12px;background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">Privacy</summary>
-              <p style="margin:10px 0 0">Entries save locally in your browser (<code>localStorage</code>). Export anytime from the right rail. We also snapshot automatically on upgrades.</p>
+            <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">Privacy</summary>
+              <p>Everything saves to your device (<code>localStorage</code>). Export / import is in the right rail.</p>
             </details>
           </div>
         </div>
       </section>
 
       <section class="card" id="identify">
-        <div class="pill"><strong>How to identify the lanes</strong></div>
         <div class="twins">
           <div class="mirror-box">
             <h3 style="margin-top:8px">🪞 MIRROR — Reflection / Angle / Identity</h3>
-            <ul>
-              <li><strong>Feel:</strong> thoughtful tilt, self‑regard, critique — “look again.”</li>
-              <li><strong>Mind:</strong> a lyric clicks; meaning unfolds on pass two.</li>
-              <li><strong>Lyrics:</strong> persona, roles, masks, power/culture, self‑myth.</li>
-              <li><strong>Production:</strong> prismatic/art‑pop; arrangement foregrounds the idea.</li>
-              <li><strong>Afterimage:</strong> you leave with a frame or question.</li>
-            </ul>
-            <p class="hint">Shortcut: if it <u>changes what you see</u> more than how you move → Mirror.</p>
+            <p>Thoughtful tilt, persona/mask, a frame that changes what you see.</p>
           </div>
           <div class="honey-box">
             <h3 style="margin-top:8px">🍯 HONEY — Sweet / Magnetic / Immediate</h3>
-            <ul>
-              <li><strong>Feel:</strong> warm pull, flirt, joy — “come closer.”</li>
-              <li><strong>Body:</strong> head‑nod, dance instinct; easy hook.</li>
-              <li><strong>Lyrics:</strong> taste / skin / heat; present‑tense and playful.</li>
-              <li><strong>Production:</strong> glossy pop; bass/beat invite movement.</li>
-              <li><strong>Aftertaste:</strong> you want repeat; syrupy hook remains.</li>
-            </ul>
-            <p class="hint">Shortcut: if <u>taste/touch</u> hits first and your body moves → Honey.</p>
+            <p>Warm pull, body-first groove, a hook that lingers.</p>
           </div>
         </div>
       </section>
 
       <section class="card" id="hybrid">
-        <div class="pill"><strong>How a Mirror × Honey hybrid feels (with a Bridge)</strong></div>
-        <div class="twins">
-          <div class="card mirror-box" style="background:color-mix(in oklab,var(--mirror), transparent 92%)">
-            <h3 style="margin-top:0">Mirror layer</h3>
-            <ul><li>Frame/angle forward.</li><li>Persona tension.</li><li>Prismatic break spotlights the idea.</li></ul>
-          </div>
-          <div class="card honey-box" style="background:color-mix(in oklab,var(--honey), transparent 90%)">
-            <h3 style="margin-top:0">Honey layer</h3>
-            <ul><li>Immediate groove, singable chorus.</li><li>Taste/heat imagery.</li><li>Pop sheen nudges you to move.</li></ul>
-          </div>
-        </div>
-        <p class="hint"><em>Tags:</em> 🪞 = B, 🍯 = A, 🌉 = Bridge. ⚡ Neon inserts 🌉 between lanes. τ is the <em>Illumina symbol</em> — a light theme for clarity.</p>
+        <div class="pill"><strong>How mirror × honey plays with spark</strong></div>
+        <p>Mirror frames the idea; Honey carries it. Spark cuts through as a bridge — a quick neon slice that flips perspective and keeps the weird portable.</p>
       </section>
 
       <!-- Logs -->
@@ -347,7 +348,6 @@
         <div class="two-col">
           <div>
             <h3 style="margin:.2rem 0">🪞/🍯 Honey Log — Sabrina × Marina</h3>
-            <p>Write 5–10 min. Circle one sentence — your <strong>seed</strong>. (Add songs to the queue using the single form in the right rail.)</p>
             <div class="stack" style="gap:10px">
               <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes</span>
                 <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
@@ -364,8 +364,7 @@
             </div>
           </div>
           <div>
-            <h3 style="margin:.2rem 0">🌉 Bridge Log — Doechii</h3>
-            <p>Write fragments 5–10 min, <u>don’t resolve</u>. Circle one fragment — your seed. (Add songs using the single form.)</p>
+            <h3 style="margin:.2rem 0">⚡ Spark Log — Doechii</h3>
             <div class="stack" style="gap:10px">
               <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments</span>
                 <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
@@ -384,14 +383,11 @@
         </div>
       </section>
 
-      <!-- Bridge (sparks + daily fragments) -->
+      <!-- Bridge sparks -->
       <section class="card" id="bridge">
-        <div class="pill"><span>🌉</span><strong>&nbsp;Bridge — Doechii</strong> <span class="pill">Neon mode available ⚡</span></div>
+        <div class="pill"><span>⚡</span><strong>&nbsp;Spark — Doechii</strong></div>
         <h2 style="margin:0">The connective spark — loud edges, held safely</h2>
-        <p><strong>What it is:</strong> A lane for switches and edges — the moments that don’t fit cleanly as 🍯 or 🪞. Bridge lets you carry those edges forward without PR stakes.</p>
-        <p><strong>Why it helps someone like Doechii:</strong> a repeating, low‑friction ritual that protects your weird while making it portable. 30–90 seconds, one fragment per session, always something to bring.</p>
-
-        <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Bridge Scatter"></section>
+        <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Spark Scatter"></section>
         <div class="row" style="margin-top:8px">
           <button class="btn" id="seed-shuffle">Shuffle spark</button>
           <button class="btn" id="spark-to-daily">Use center spark → Daily</button>
@@ -399,7 +395,7 @@
 
         <div class="card" style="margin-top:12px;background:color-mix(in oklab, var(--paper) 96%, black 4%)">
           <div class="row" style="justify-content:space-between;align-items:center">
-            <strong>Bridge Daily Fragments</strong>
+            <strong>Daily Fragments</strong>
             <span class="pill" id="frag-streak">Streak: 0</span>
           </div>
           <div class="row" style="margin-top:6px">
@@ -414,22 +410,18 @@
 
       <!-- FAQ -->
       <section class="card" id="faq">
-        <h2 style="margin-top:0">FAQ & Glossary</h2>
+        <h2 style="margin-top:0">FAQ</h2>
         <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">What is a “seed”?</summary>
-          <p>A single circled sentence or fragment you carry to the next cycle. It’s continuity, not content.</p>
+          <p>One circled sentence or fragment you carry forward. Continuity, not content.</p>
         </details>
-        <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">Where are my entries saved?</summary>
-          <p>In your browser’s <code>localStorage</code> (schema <code>mh_data_v1</code>), on this device only. Export/import in the right rail. On upgrades we snapshot automatically.</p>
-        </details>
-        <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">How do 🪞/🍯/🌉 work?</summary>
-          <p>Pick exactly one lane per song. 🪞 = B (Mirror/Marina), 🍯 = A (Honey/Sabrina), 🌉 = Bridge (Doechii). ⚡ Neon inserts 🌉 between lanes during playback. τ is the <em>Illumina symbol</em> — a light theme for clarity.</p>
+        <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">Where is my data?</summary>
+          <p>Local to this device (<code>localStorage</code>). Export/import in the rail.</p>
         </details>
       </section>
     </div>
 
-    <!-- ===== Right rail (QUEUE) ===== -->
+    <!-- RAIL (queue + add + modes + export) -->
     <aside class="rail">
-      <!-- Queue Block (first) -->
       <div class="block">
         <div class="qtools">
           <div class="qfilters">
@@ -437,7 +429,7 @@
             <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
             <button class="qbtn" data-filter="B" aria-pressed="false">🪞</button>
             <button class="qbtn" data-filter="A" aria-pressed="false">🍯</button>
-            <button class="qbtn" data-filter="D" aria-pressed="false">🌉</button>
+            <button class="qbtn" data-filter="D" aria-pressed="false">⚡</button>
           </div>
           <div class="row">
             <button class="chip" id="q-compact" aria-pressed="false" title="Compact queue list">Compact</button>
@@ -450,25 +442,23 @@
         </div>
       </div>
 
-      <!-- Playback Modes (second) -->
       <div class="block">
         <div class="row" style="justify-content:space-between">
-          <strong>Playback Modes</strong>
+          <strong>Playback pattern</strong>
           <div class="row">
-            <button class="chip" id="mode-mirror" aria-pressed="true" title="Start on 🪞 (B) and alternate">🪞 Mirror</button>
-            <button class="chip" id="mode-honey" aria-pressed="false" title="Start on 🍯 (A) and alternate">🍯 Honey</button>
-            <button class="chip" id="mode-neon" aria-pressed="false" title="Insert 🌉 (A→🌉→B→🌉→A…)">⚡ Neon</button>
+            <button class="chip" id="mode-mirror" aria-pressed="true" title="Start on 🪞 and alternate">🪞 Mirror</button>
+            <button class="chip" id="mode-honey" aria-pressed="false" title="Start on 🍯 and alternate">🍯 Honey</button>
+            <button class="chip" id="mode-neon" aria-pressed="false" title="Insert ⚡ (A→⚡→B→⚡→A…)">⚡ Spark</button>
           </div>
         </div>
         <div class="row" style="margin-top:8px">
-          <button class="chip" id="export-btn" title="Export all data">Export</button>
+          <button class="chip" id="export-btn">Export</button>
           <input type="file" id="import-file" accept="application/json" style="display:none">
-          <button class="chip" id="import-btn" title="Import backup">Import</button>
+          <button class="chip" id="import-btn">Import</button>
         </div>
       </div>
 
-      <!-- One place to add a song (third) -->
-      <div class="block addq">
+      <div class="block">
         <h3>Add a song to the queue</h3>
         <div class="stack">
           <label><span class="pill" style="display:block;margin-bottom:6px">Artist name</span>
@@ -481,13 +471,13 @@
             <select id="add-lane" aria-label="Lane">
               <option value="" selected>— select —</option>
               <option value="B">🪞 Marina — Mirror (B)</option>
-              <option value="D">🌉 Doechii — Bridge (D)</option>
+              <option value="D">⚡ Doechii — Spark (D)</option>
               <option value="A">🍯 Sabrina — Honey (A)</option>
             </select>
           </label>
           <div class="lanechips" aria-label="Lane quick select">
             <button class="chip lanechip" data-lane="B" aria-pressed="false">🪞 Marina</button>
-            <button class="chip lanechip" data-lane="D" aria-pressed="false">🌉 Doechii</button>
+            <button class="chip lanechip" data-lane="D" aria-pressed="false">⚡ Doechii</button>
             <button class="chip lanechip" data-lane="A" aria-pressed="false">🍯 Sabrina</button>
           </div>
           <div id="add-preview" class="pill" aria-live="polite"></div>
@@ -501,7 +491,9 @@
   </div>
 </main>
 
-<footer class="wrap">© mirrorhoney — Mirror (🪞) × Honey (🍯) with Bridge (🌉). Neon (⚡), Jupiter (🪐), Illumina (τ) themes available.</footer>
+<footer class="wrap" style="color:var(--muted);font-size:.9rem;margin:22px auto; padding-bottom: env(safe-area-inset-bottom)">
+  © mirrorhoney — mirror (🪞) × honey (🍯) with spark (⚡). Hidden pollen appears on return.
+</footer>
 
 <!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -519,10 +511,11 @@ const MH = (function(){
   const DEFAULT = {
     schema: 1,
     updatedAt: new Date().toISOString(),
-    settings: { loopTrack:false, loopQueue:true, mode:"MIRROR", theme:"mirror", compactQueue:false },
+    settings: { loopTrack:false, loopQueue:true, mode:"MIRROR", theme:"mirror", compactQueue:false, journey:"mirror" },
     queue: [],                 // [{id,title,author,thumb,lane:"A"|"B"|"D",artist,added,pinned?:bool}]
     logs: { honey:[], bridge:[], writer:[] }, // arrays of {date, text}
-    fragments: { byDay:{} }    // { "YYYY-MM-DD":[{t,ts}] }
+    fragments: { byDay:{} },   // { "YYYY-MM-DD":[{t,ts}] }
+    visits: 0
   };
 
   function snapshot(reason){
@@ -603,7 +596,7 @@ const MH = (function(){
   return { get, put, exportJSON, importJSON, snapshot, DEFAULT, ensureFriend, FRIEND_ID };
 })();
 
-/* ===== Utilities ===== */
+/* ===== Utils ===== */
 function timeISO(){ return new Date().toISOString(); }
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0')+"-"+String(d.getDate()).padStart(2,'0'); }
 function setPressed(el,on){ el.setAttribute("aria-pressed", on?"true":"false"); }
@@ -652,7 +645,7 @@ async function fetchYTMeta(id){
   apply();
 })();
 
-/* ===== Theme dropdown (persist + migrate tumblr→illumina) ===== */
+/* ===== Theme dropdown ===== */
 (function(){
   const sel=document.getElementById("theme-select");
   function apply(theme){
@@ -661,34 +654,81 @@ async function fetchYTMeta(id){
   }
   sel.onchange=function(){ apply(sel.value); };
   const d=MH.get();
-  // Migration: if a user had "tumblr" saved previously, map it to "illumina"
-  if(d.settings && d.settings.theme==="tumblr"){ d.settings.theme="illumina"; MH.put(d,"upgrade"); }
   sel.value=d.settings.theme||"mirror"; apply(sel.value);
 })();
 
-/* ===== Writer save + quick add to Daily Bridge ===== */
+/* ===== Journey mode chips (visual shift) ===== */
+(function(){
+  const btnM=document.getElementById("choose-mirror");
+  const btnS=document.getElementById("choose-spark");
+  const btnH=document.getElementById("choose-honey");
+  function sel(which){
+    setPressed(btnM, which==="mirror"); setPressed(btnS, which==="spark"); setPressed(btnH, which==="honey");
+    document.documentElement.setAttribute("data-mode", which);
+    const d=MH.get(); d.settings.journey=which; MH.put(d);
+  }
+  btnM.onclick=()=>sel("mirror");
+  btnS.onclick=()=>sel("spark");
+  btnH.onclick=()=>sel("honey");
+  // init from storage
+  const d=MH.get(); sel(d.settings.journey||"mirror");
+})();
+
+/* ===== Writer save + echo/glitch behaviors ===== */
 (function(){
   const wH=document.getElementById("w-honey");
-  const wB=document.getElementById("w-bridge");
+  const wS=document.getElementById("w-bridge"); // spark fragment
   const wM=document.getElementById("w-mirror");
   const save=document.getElementById("w-save");
   const clr=document.getElementById("w-clear");
   const addB=document.getElementById("w-add-bridge");
   const stat=document.getElementById("w-status");
+
+  const echoEl=document.getElementById("echo");
+  const glitchEl=document.getElementById("glitch");
+
+  wM.addEventListener('input',()=>{ echoEl.setAttribute('data-echo', wM.value || ''); echoEl.textContent = wM.value ? wM.value : ''; });
+  wS.addEventListener('input',()=>{ glitchEl.setAttribute('data-text', wS.value || ''); glitchEl.textContent = wS.value ? wS.value : ''; });
+
   function saveSet(){
     const data = MH.get();
-    data.logs.writer.push({date:timeISO(),mirror:wM.value.trim(),bridge:wB.value.trim(),honey:wH.value.trim()});
+    data.logs.writer.push({date:timeISO(),mirror:wM.value.trim(),bridge:wS.value.trim(),honey:wH.value.trim()});
     MH.put(data);
     stat.textContent="Saved ("+new Date().toLocaleTimeString()+")";
   }
-  function addBridgeToDaily(){
-    const txt=(wB.value||"").trim(); if(!txt) { stat.textContent="No bridge fragment to add."; return; }
+  function addSparkToDaily(){
+    const txt=(wS.value||"").trim(); if(!txt) { stat.textContent="No spark fragment to add."; return; }
     FRAGMENTS.add(txt);
-    stat.textContent="Bridge fragment added to Daily.";
+    stat.textContent="Spark fragment added to Daily.";
   }
   save.onclick=saveSet;
-  clr.onclick=function(){ wH.value=""; wB.value=""; wM.value=""; stat.textContent="Cleared"; };
-  addB.onclick=addBridgeToDaily;
+  clr.onclick=function(){ wH.value=""; wS.value=""; wM.value=""; stat.textContent="Cleared"; echoEl.setAttribute('data-echo',''); echoEl.textContent=''; glitchEl.setAttribute('data-text',''); glitchEl.textContent=''; };
+  addB.onclick=addSparkToDaily;
+})();
+
+/* ===== Logs (Honey / Spark) ===== */
+(function(){
+  // Honey
+  var KEYH="mh_hlog_v1";
+  var notes=document.getElementById("hlog-notes");
+  var start=document.getElementById("hlog-start"), save=document.getElementById("hlog-save");
+  var timer=document.getElementById("hlog-timer"), list=document.getElementById("hlog-list"), t=0;
+  function fmt(s){return s<10?"0"+s:s} function tick(){ if(t<=0){timer.textContent="done";return;} t--; var m=Math.floor(t/60),s=t%60; timer.textContent=m+":"+fmt(s); setTimeout(tick,1000); }
+  function render(){ list.innerHTML=""; (JSON.parse(localStorage.getItem(KEYH)||"[]")||[]).slice().reverse().forEach(e=>{ var c=document.createElement("div"); c.className="card"; c.style.padding="12px"; c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>"; list.appendChild(c);} ) }
+  start.onclick=function(){ t=5*60; tick(); };
+  save.onclick=function(){ var e={date:timeISO(),notes:notes.value.trim()}; var data=JSON.parse(localStorage.getItem(KEYH)||"[]"); data.push(e); localStorage.setItem(KEYH,JSON.stringify(data)); notes.value=""; render(); };
+  render();
+
+  // Spark
+  var KEYD="mh_dlog_v1";
+  var dnotes=document.getElementById("dlog-notes");
+  var dstart=document.getElementById("dlog-start"), dsave=document.getElementById("dlog-save");
+  var dtimer=document.getElementById("dlog-timer"), dlist=document.getElementById("dlog-list"), dt=0;
+  function dtick(){ if(dt<=0){dtimer.textContent="done";return;} dt--; var m=Math.floor(dt/60),s=dt%60; dtimer.textContent=m+":"+ (s<10?"0"+s:s); setTimeout(dtick,1000); }
+  function drender(){ dlist.innerHTML=""; (JSON.parse(localStorage.getItem(KEYD)||"[]")||[]).slice().reverse().forEach(e=>{ var c=document.createElement("div"); c.className="card"; c.style.padding="12px"; c.innerHTML="<div class='pill' style='margin-bottom:6px'>"+new Date(e.date).toLocaleString()+"</div><div style='white-space:pre-wrap'>"+(e.notes||"")+"</div>"; dlist.appendChild(c);} ) }
+  dstart.onclick=function(){ dt=5*60; dtick(); };
+  dsave.onclick=function(){ var e={date:timeISO(),notes:dnotes.value.trim()}; var data=JSON.parse(localStorage.getItem(KEYD)||"[]"); data.push(e); localStorage.setItem(KEYD,JSON.stringify(data)); dnotes.value=""; drender(); };
+  drender();
 })();
 
 /* ===== Bridge Daily Fragments (streak + list) ===== */
@@ -754,7 +794,7 @@ var FRAGMENTS=(function(){
 /* ===== Spark scatter + pre-seed → Daily ===== */
 (function(){
   const SETS=[
-    ["raw","wild","glitch","seed","mirror shard","🌉"],
+    ["raw","wild","glitch","seed","mirror shard","⚡"],
     ["off-script","too true","unboxed","go louder","shadow cut","spark"],
     ["unfinished","stranger","crooked line","noise bloom","flash","trace"]
   ];
@@ -785,7 +825,6 @@ var QUEUE=(function(){
 
   function applyCompactClass(){
     const d=MH.get();
-    // Remove auto-compact. User chooses.
     const on = !!d.settings.compactQueue;
     setPressed(compactBtn, on);
     qEl.classList.toggle("compact", on);
@@ -807,7 +846,7 @@ var QUEUE=(function(){
 
       // Title line
       const ttlWrap=document.createElement("div"); ttlWrap.className="titleline";
-      const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"🌉";
+      const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"⚡";
       const ttl = document.createElement("span"); ttl.className="ttl";
       ttl.innerHTML = (it.pinned? "<b>[friend]</b> " : "") + (it.artist?("<b>"+it.artist+"</b> — "):"") + (it.title||it.id||"Untitled");
       ttlWrap.appendChild(laneEmoji); ttlWrap.appendChild(ttl);
@@ -816,7 +855,7 @@ var QUEUE=(function(){
       // Lane editor
       const lanes=document.createElement("div"); lanes.className="lanes";
       const mk=(L)=>{
-        const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"🌉 Doechii");
+        const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"⚡ Doechii");
         b.setAttribute("aria-pressed", it.lane===L?"true":"false");
         b.onclick=function(){
           if(it.pinned && L!=="B"){ alert("Marina stays your friend in 🪞."); return; }
@@ -832,13 +871,7 @@ var QUEUE=(function(){
       // Actions
       const acts=document.createElement("div"); acts.className="acts";
       const play=document.createElement("button"); play.className="qbtn"; play.textContent="Play now";
-      play.onclick=function(){
-        if(it.id){
-          ALTERNATOR.setLane(it.lane);
-          PLAYER.load(it.id, it.lane, true);
-          ALTERNATOR.setNow(it.lane, it); // ensure header 'Now/Next' updates on manual play
-        }
-      };
+      play.onclick=function(){ if(it.id){ ALTERNATOR.setLane(it.lane); PLAYER.load(it.id, it.lane, true); ALTERNATOR.setNow(it.lane, it); } };
       const del=document.createElement("button"); del.className="qbtn"; del.textContent= it.pinned ? "—" : "Remove";
       del.disabled = !!it.pinned;
       del.title = it.pinned ? "Pinned friend (can’t remove)" : "Remove from queue";
@@ -868,7 +901,6 @@ var QUEUE=(function(){
         const to=d3.queue.findIndex(x=>x.id===toId);
         if(from<0||to<0) return;
         const moved=d3.queue.splice(from,1)[0];
-        // Keep friend at top
         const friendIdx = d3.queue.findIndex(x=>x.id===FRIEND_ID);
         d3.queue.splice(to,0,moved);
         if(friendIdx>0){
@@ -909,8 +941,7 @@ var QUEUE=(function(){
     const d=MH.get();
     const ix = d.queue.findIndex(x=>x.id===id);
     const it = { id, title:(meta&&meta.title)||artist||id, author:(meta&&meta.author)||"", thumb:(meta&&meta.thumbnail)||("https://img.youtube.com/vi/"+id+"/hqdefault.jpg"), lane:lane, artist:artist||"", added:timeISO(), tags:[lane] };
-    if(ix>-1){ d.queue[ix] = Object.assign(d.queue[ix], it); } else { d.queue.push(it); } // push (friend stays at head)
-    // Keep friend on top
+    if(ix>-1){ d.queue[ix] = Object.assign(d.queue[ix], it); } else { d.queue.push(it); }
     MH.ensureFriend(d);
     MH.put(d);
     render();
@@ -944,7 +975,7 @@ var QUEUE=(function(){
   return { add, render, next, prev, scopeItems };
 })();
 
-/* ===== Single top player + header controls (with fallback) ===== */
+/* ===== Single top player + header controls ===== */
 var PLAYER=(function(){
   let P=null, loopTrack=false, loopQueue=true, currentLane="B", currentId=null;
   const nowNext=document.getElementById("nowNext");
@@ -952,11 +983,9 @@ var PLAYER=(function(){
   const ORIGIN_YT="https://www.youtube.com";
 
   function post(cmd,args){ try{ frame.contentWindow.postMessage(JSON.stringify({event:"command",func:cmd,args:args||[]}), ORIGIN_YT); }catch(_){ } }
-
   function onReady(){ try{ if(P && P.setVolume) P.setVolume(70); }catch(_){ } }
 
   function create(){
-    // Upgrade the existing iframe to a full API player if the library is available
     try{
       P = new YT.Player("yt-frame",{
         events:{
@@ -969,26 +998,23 @@ var PLAYER=(function(){
           }
         }
       });
-    }catch(_){ /* if this fails, the fallback still works */ }
+    }catch(_){ /* fallback still works */ }
   }
 
   function cue(id,lane){
     currentLane=lane||currentLane; currentId=id;
     if(P && P.cueVideoById){ try{ P.cueVideoById(id); return; }catch(_){ } }
-    // fallback: reload without autoplay
     frame.src = "https://www.youtube.com/embed/"+id+"?enablejsapi=1&rel=0&modestbranding=1&playsinline=1";
     setMediaSessionMeta();
   }
   function load(id,lane,autoplay){
     currentLane=lane||currentLane; currentId=id;
     if(P && P.loadVideoById){ try{ P.loadVideoById(id); setMediaSessionMeta(); return; }catch(_){ } }
-    // fallback: change src with autoplay
     frame.src = "https://www.youtube.com/embed/"+id+"?enablejsapi=1&rel=0&modestbranding=1&playsinline=1"+(autoplay?"&autoplay=1":"");
     setMediaSessionMeta();
   }
   function toggle(){
     if(P && P.getPlayerState){ try{ const st=P.getPlayerState(); if(st===1) P.pauseVideo(); else P.playVideo(); return; }catch(_){ } }
-    // fallback: only "playVideo" available in a generic way; pause may be ignored on some blockers
     post("playVideo");
   }
   function setVolume(v){ try{ if(P&&P.setVolume) P.setVolume(v); }catch(_){ } }
@@ -1005,9 +1031,9 @@ var PLAYER=(function(){
       const d=MH.get();
       const it = d.queue.find(q=>q.id===currentId) || {};
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: it.title || 'Mirrorhoney',
+        title: it.title || 'mirrorhoney',
         artist: it.artist || it.author || '',
-        album: (it.lane==='A'?'Honey':'')||(it.lane==='B'?'Mirror':'')||(it.lane==='D'?'Bridge':'') || '',
+        album: (it.lane==='A'?'Honey':'')||(it.lane==='B'?'Mirror':'')||(it.lane==='D'?'Spark':'') || '',
         artwork: it.thumb ? [{src: it.thumb, sizes: '512x512', type: 'image/jpeg'}] : []
       });
     }catch(_){}
@@ -1020,7 +1046,7 @@ var PLAYER=(function(){
   document.getElementById("prev").onclick=function(){ ALTERNATOR.prev(); };
   document.getElementById("next").onclick=function(){ ALTERNATOR.next(); };
 
-  // loop toggles (initialized from saved settings)
+  // loop toggles (init from settings)
   const lt=document.getElementById("loop-track"); const lq=document.getElementById("loop-queue");
   (function initLoopsFromSettings(){
     const d=MH.get();
@@ -1035,7 +1061,7 @@ var PLAYER=(function(){
   return { cue, load:(id,lane,autoplay)=>load(id,lane,autoplay), toggle, setVolume, getLoopQueue, setLoopQueue, setLoopTrack, getLane, setLane, nowNext, getId };
 })();
 
-/* ===== Alternator (single-player): MIRROR/HONEY/NEON ===== */
+/* ===== Alternator (single-player): MIRROR/HONEY/SPARK ===== */
 var ALTERNATOR=(function(){
   let mode="MIRROR"; // start on Mirror (B)
   let lastLane=null; // "A"|"B"|"D"
@@ -1071,7 +1097,6 @@ var ALTERNATOR=(function(){
   }
 
   function findNextPlayableLane(start){
-    // Look ahead up to 6 hops to find a lane that has items.
     let steps = 0, lane = start;
     while(steps < 6){
       const has = (QUEUE.scopeItems(lane)||[]).length > 0;
@@ -1079,7 +1104,7 @@ var ALTERNATOR=(function(){
       lane = laneAfter(lane);
       steps++;
     }
-    return start; // fallback
+    return start;
   }
 
   function loadFromLane(lane){
@@ -1103,7 +1128,7 @@ var ALTERNATOR=(function(){
 
   function ensureKick(){
     try{
-      if(PLAYER.getId()) return; // already cued/playing (or src visible)
+      if(PLAYER.getId()) return;
       const d=MH.get();
       MH.ensureFriend(d); MH.put(d,"upgrade");
       const ohno = d.queue.find(q=>q.id===MH.FRIEND_ID);
@@ -1143,8 +1168,8 @@ var ALTERNATOR=(function(){
   function updateStatus(info){
     const nn=PLAYER.nowNext;
     if(!info){ nn.textContent="Ready"; return; }
-    const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"🌉";
-    const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"🌉";
+    const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"⚡";
+    const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"⚡";
     nn.textContent = "Now: "+em+" "+(info.now.title||"…")+" · Next: "+ne;
   }
 
@@ -1157,7 +1182,7 @@ var ALTERNATOR=(function(){
   return { onEnded, ensureKick, prev, next, setLane, getCurrentId, setNow };
 })();
 
-/* ===== ADD FORM (single entry point) ===== */
+/* ===== Add form (single entry point) ===== */
 (function(){
   const artist=document.getElementById("add-artist");
   const link=document.getElementById("add-link");
@@ -1182,7 +1207,7 @@ var ALTERNATOR=(function(){
       preview.textContent="Fetching title…";
       const m=await fetchYTMeta(id);
       if(m){ preview.innerHTML="Preview → <b>"+(artist.value?artist.value+" — ":"")+(m.title||"")+"</b>"; }
-      else { preview.innerHTML="<span class='status-err'>Couldn’t fetch preview — link might be private. We’ll still add it.</span>"; }
+      else { preview.innerHTML="<span class='pill'>Couldn’t fetch preview — link might be private. We’ll still add it.</span>"; }
     } else { preview.textContent=""; }
     status.textContent="";
   }
@@ -1191,14 +1216,14 @@ var ALTERNATOR=(function(){
 
   submit.onclick=async function(){
     const L = laneSel.value; const a=artist.value.trim(); const lnk=link.value.trim();
-    if(!a||!lnk||!L){ status.innerHTML="<span class='status-err'>Fill all fields and pick a lane.</span>"; return; }
+    if(!a||!lnk||!L){ status.textContent="Fill all fields and pick a lane."; return; }
     try{
       const it = await QUEUE.add(a, lnk, L);
-      status.innerHTML="<span class='status-ok'>Added: "+(it.title||it.id)+"</span>";
+      status.textContent="Added: "+(it.title||it.id);
       link.value=""; laneSel.value=""; highlightChip(""); preview.textContent="";
       validate();
     }catch(e){
-      status.innerHTML="<span class='status-err'>"+(e.message||"Could not add")+"</span>";
+      status.textContent=e.message||"Could not add";
     }
   };
 
@@ -1222,28 +1247,55 @@ var ALTERNATOR=(function(){
   };
 })();
 
-/* ===== Seed 3 example songs & pin MARINA friend — always present ===== */
+/* ===== Seed & pin: MARINA first + Sabrina & Doechii ===== */
 (async function seedAndPin(){
   const d=MH.get();
   MH.ensureFriend(d);
-  // Add Sabrina & Doechii if they’re missing (non-destructive)
+  // Sabrina & Doechii sample IDs (non-destructive add if missing)
   const haveSab = d.queue.some(q=>q.id==="cF1Na4AIecM");
   const haveDoe = d.queue.some(q=>q.id==="phtcAd8j6Ro");
   if(!haveSab){ try{ await QUEUE.add("Sabrina Carpenter","cF1Na4AIecM","A"); }catch(_){ } }
   if(!haveDoe){ try{ await QUEUE.add("Doechii","phtcAd8j6Ro","D"); }catch(_){ } }
   MH.put(d,"upgrade");
-  // Pre-cue MARINA friend for quick start + show header status
-  if(window.YT && window.YT.Player){ PLAYER.cue("Cr-SqRWImmI","B"); }
-  // Ensure header has Now/Next immediately
+  // Pre-cue MARINA friend + header status
   try{
     const ohno = (MH.get().queue||[]).find(q=>q.id===MH.FRIEND_ID);
-    if(ohno) { ALTERNATOR.setNow("B", ohno); }
+    if(ohno) { PLAYER.cue(ohno.id,"B"); ALTERNATOR.setNow("B", ohno); }
   }catch(_){}
+})();
+
+/* ===== Pollen memory (repeat-visit) ===== */
+(function pollen(){
+  const container=document.getElementById('pollen');
+  if(!container) return;
+  const data=MH.get(); data.visits=(data.visits||0)+1; MH.put(data,"upgrade");
+  if(data.visits<2) return; // show only from 2nd visit onward
+  function collectWords(){
+    const seen=new Set(), out=[];
+    // writer logs
+    (data.logs.writer||[]).forEach(e=>{
+      ["mirror","bridge","honey"].forEach(k=>{ const v=(e[k]||"").trim(); if(v&&v.length<=40&&!seen.has(v)){ seen.add(v); out.push(v); } });
+    });
+    // fragments (daily)
+    const byDay=data.fragments.byDay||{};
+    Object.keys(byDay).forEach(k=> (byDay[k]||[]).forEach(f=>{ const t=(f.t||"").trim(); if(t&&t.length<=40&&!seen.has(t)){ seen.add(t); out.push(t); } }));
+    return out.slice(-60); // last 60
+  }
+  const words=collectWords(); if(!words.length) return;
+  // Render drifting words
+  const W=window.innerWidth, H=window.innerHeight;
+  for(let i=0;i<words.length;i++){
+    const span=document.createElement('span'); span.className='w'; span.textContent=words[i];
+    const x=Math.random()*W, y=Math.random()*H;
+    const dur=12+Math.random()*18; const delay=Math.random()*-dur;
+    span.style.left=x+'px'; span.style.top=y+'px'; span.style.animationDuration=dur+'s'; span.style.animationDelay=delay+'s';
+    container.appendChild(span);
+  }
 })();
 
 /* ===== Minimal app-shell Service Worker (UI offline only, not YouTube) ===== */
 if('serviceWorker' in navigator){
-  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v1').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
+  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v2').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
   const blob=new Blob([code],{type:'application/javascript'});
   const url=URL.createObjectURL(blob);
   navigator.serviceWorker.register(url);
@@ -1251,7 +1303,7 @@ if('serviceWorker' in navigator){
 
 /* ===== Hidden notes ===== */
 (function secrets(){
-  // Hidden for Bridge (Doechii)
+  // Hidden for Spark (Doechii)
   const bridge=document.getElementById("bridge");
   if(bridge){
     const h=document.createElement("div");
