@@ -3,66 +3,61 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>mirrorhoney — mirror · spark · honey (clarity · neon)</title>
-<meta name="description" content="Built for Marina (friend in the mirror) and the Bridge (Doechii) to manifest — clear enough for anyone. Write like a poet, play seeds, keep a quiet loop.">
+<title>mirrorhoney — mirror · honey · bridge (flame)</title>
+<meta name="description" content="Built for Marina (friend in the mirror) and the Bridge (Doechii) to manifest — clear enough for anyone. Write like a poet, play seeds, and keep a quiet loop.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
-
 <style>
-  /* ======================
-     Base tokens + themes
-     ====================== */
   :root{
     --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#FFFFFF;--muted:#A0A7B3;--line:#1B2433;
     --accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
     --ok:#36D399;--warn:#FFD873;--railW:clamp(320px,31vw,460px);
     --paper:#0D121E;--card:#0F1524;--shadow:0 12px 34px rgba(0,0,0,.45);
-    --hdrH: 84px; --vh: 1vh;
+    --hdrH: 88px; --vh: 1vh;
     --violet:#8D7CFF; --pearl:#F2F5FF;
     --neonC:#7DF9FF; --neonP:#FF49C0;
     --amber:#F2B553; --gold:#FFD36B;
     --radius:16px; --pad:14px;
   }
-  /* Mirror theme (cool/violet) */
+  /* Mirror */
   html[data-theme="mirror"]{
     --bg:#0B0F19; --ink:#E6EAF2; --ink-strong:#FFFFFF; --muted:#A0A7B3; --line:#1B2433;
     --accent:#7CD4FF; --rose:#FF3EB5; --honey:#F3C94E; --mirror:#C1D7FF;
     --paper:#0D121E; --card:#0F1524; --shadow:0 12px 34px rgba(0,0,0,.45);
   }
-  /* Honey theme (warm/amber) */
+  /* Honey */
   html[data-theme="honey"]{
     --bg:#FDF7E6; --ink:#2F2612; --ink-strong:#1B1403; --muted:#6E5F3C; --line:#E5D7AF;
     --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9;
     --paper:#FFFBF0; --card:#FFFFFF; --shadow:0 12px 28px rgba(0,0,0,.12);
   }
-  /* Illumina theme (τ — luminous) */
+  /* Illumina (τ) */
   html[data-theme="illumina"]{
     --bg:#F7F9FF; --ink:#1E2742; --ink-strong:#0F1633; --muted:#5B6A86; --line:#DFE6F3;
     --accent:#5A78FF; --rose:#E457A2; --honey:#F0B600; --mirror:#6B8DFF;
     --paper:#FFFFFF; --card:#FFFFFF; --shadow:0 14px 28px rgba(34,48,73,.14);
   }
-  /* Neon (Doechii) theme — cyan/pink on deep night */
+  /* Neon (Doechii) */
   html[data-theme="neon"]{
-    --bg:#080914; --ink:#EAF6FF; --ink-strong:#FFFFFF; --muted:#A9B7C7; --line:#12182A;
-    --accent:#7DF9FF; --rose:#FF49C0; --honey:#FFC66A; --mirror:#BFD6FF;
-    --paper:#0B0F1E; --card:#0D1224; --shadow:0 16px 36px rgba(0,0,0,.55);
+    --bg:#070B12; --ink:#EAF7FF; --ink-strong:#FFFFFF; --muted:#9DB0C6; --line:#162235;
+    --accent:#7DF9FF; --rose:#FF49C0; --honey:#FFC36A; --mirror:#C9DBFF;
+    --paper:#0B1220; --card:#0C1528; --shadow:0 14px 34px rgba(0,0,0,.55);
   }
-  /* Flame (Doechii) theme — warm neon (orange/magenta) */
+  /* Flame (warm neon) */
   html[data-theme="flame"]{
-    --bg:#0E0A10; --ink:#FDEEF8; --ink-strong:#FFFFFF; --muted:#C3AFC1; --line:#241828;
-    --accent:#FF7A1A; --rose:#FF49C0; --honey:#FFBE5E; --mirror:#E3C6FF;
-    --paper:#140F18; --card:#17101F; --shadow:0 18px 38px rgba(0,0,0,.58);
+    --bg:#0D0A10; --ink:#FCEEF9; --ink-strong:#FFFFFF; --muted:#D9B3C9; --line:#24182A;
+    --accent:#FF914D; --rose:#FF5CA8; --honey:#FFC36A; --mirror:#E5C7FF;
+    --paper:#120F18; --card:#16121E; --shadow:0 14px 34px rgba(0,0,0,.6);
   }
 
   html,body{height:100%}
   *{box-sizing:border-box}
   body{
     margin:0;background:var(--bg);color:var(--ink);
-    font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-    letter-spacing:.2px;
+    font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;letter-spacing:.2px;
     padding-top:var(--hdrH);
   }
-  a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   .wrap{max-width:1220px;margin:0 auto;padding:clamp(10px,3vw,20px)}
   .stack{display:grid;gap:14px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad)}
@@ -79,6 +74,7 @@
   }
   .chip{border-radius:999px}
   .chip[aria-pressed="true"], .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
+
   .field{display:grid;gap:6px}
   .field label{font-weight:600;color:var(--ink-strong)}
   .field .desc{color:var(--muted); font-size:.92rem}
@@ -86,13 +82,11 @@
     width:100%;padding:12px;border-radius:12px;border:2px solid var(--line);
     background:color-mix(in oklab, var(--paper) 86%, black 8%); color:var(--ink-strong); font-size:16px
   }
-  textarea{resize:vertical}
-  .hr{height:1px;background:var(--line);margin:10px 0}
+
   .hero{padding:16px;border:1px solid var(--line);border-radius:var(--radius);
         background:linear-gradient(180deg, color-mix(in oklab, var(--mirror), transparent 90%), transparent)}
   .hero .landing{font-size:1.08rem;color:var(--muted)}
   .hero strong{color:var(--ink)}
-  .bee{font-style:italic;color:var(--muted)}
 
   /* Header */
   header{position:fixed;inset:0 0 auto 0;z-index:9999;background:color-mix(in oklab, var(--bg) 92%, white 4%);
@@ -106,8 +100,7 @@
 
   select.themeSelect{
     padding:8px 34px 8px 12px;border-radius:10px;border:1px solid var(--line);
-    background:color-mix(in oklab, var(--bg) 86%, white 8%);
-    color:var(--ink);font-size:.95rem;appearance:none;
+    background:color-mix(in oklab, var(--bg) 86%, white 8%); color:var(--ink);font-size:.95rem;appearance:none;
     background-image: linear-gradient(45deg,transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
     background-position: calc(100% - 22px) 55%, calc(100% - 12px) 55%; background-size: 8px 8px, 8px 8px; background-repeat:no-repeat;
   }
@@ -146,7 +139,7 @@
   html[data-mode="spark"][data-calm="off"] .glitch::before, html[data-mode="spark"][data-calm="off"] .glitch::after{ animation:jit .25s infinite steps(2,end); }
   html[data-calm="on"] .glitch::before, html[data-calm="on"] .glitch::after{ animation:none; opacity:.35; }
 
-  /* Writer layout */
+  /* Writer */
   .writer-grid{display:grid;gap:10px}
   .writer-grid.vertical{grid-template-rows:auto auto auto}
   .writer-grid.horizontal{grid-template-columns:1fr .9fr 1fr;align-items:end}
@@ -223,7 +216,7 @@
         <option value="mirror">🪞 Mirror</option>
         <option value="honey">🍯 Honey</option>
         <option value="neon">⚡ Neon (Doechii)</option>
-        <option value="flame">🔥 Flame (Doechii)</option>
+        <option value="flame">🔥 Flame</option>
         <option value="illumina">τ Illumina</option>
       </select>
       <button class="qbtn" id="prev" title="Previous">⟨</button>
@@ -244,12 +237,12 @@
   <section class="hero">
     <div class="landing">
       <p><strong>Built specifically for two poets</strong> — the friend in the mirror (<strong>Marina</strong>) and the <strong>Bridge</strong> who manifests (<strong>Doechii</strong>) — and clear enough for anyone to use.</p>
-      <p class="bee">🐝 note: if you’re mirror, it shines. if you’re spark, it flips. if you’re honey, it thickens. response comes from the field, not an inbox.</p>
+      <p class="pill">if you’re mirror, it shines. if you’re spark, it flips. if you’re honey, it thickens. response comes from the field, not an inbox.</p>
       <p class="hint">Designed for a <em>primadonna</em> and for someone in <em>denial</em> — so you can borrow it for your own practice, gently.</p>
     </div>
   </section>
 
-  <!-- Guide (Quiet Moon clarity) -->
+  <!-- Guide -->
   <section class="card" id="guide">
     <div class="two-col">
       <div class="field">
@@ -257,10 +250,10 @@
         <ol style="margin:6px 0 0 18px">
           <li>Press <em>Play</em> above — “Oh No!” will cue in 🪞 (Marina). That’s your steady friend.</li>
           <li>Go to <a href="#writer">Writer</a> and set your three words (Mirror · Bridge · Honey). Save if you like.</li>
-          <li>Open <a href="#journal">Journal</a>, choose your lane (🪞/🍯/🌉), write for 5 minutes, save. Keep one small seed.</li>
+          <li>Open <a href="#journal">Journal</a>, choose your lane (🪞/🍯/🌉), write 5 min, save. Keep one small seed.</li>
         </ol>
         <div class="hint">Everything lives on this device (local‑only). Export/Import is in the rail.</div>
-        <p class="bee">🐝 to Marina: your angle is enough; echo it softly. 🐝 to Doechii: your bridge is the lever; tiny flips move worlds.</p>
+        <p class="pill">🐝 marina: your angle is enough; echo it softly. • 🐝 doechii: bridges manifest; tiny flips, then another.</p>
       </div>
       <div class="field">
         <label>Care for your attention</label>
@@ -300,9 +293,22 @@
           </div>
         </div>
         <p class="hint"><strong>Marina is your friend in the mirror.</strong> “Oh No!” stays pinned first in 🪞, so there’s always a play button that means “begin.”</p>
+
+        <div id="listening-note" class="pill" style="margin-top:8px" aria-live="polite">Hearing: 🪞 Mirror • Theme: 🔥 Flame — reflective angle.</div>
+        <details class="card" style="margin-top:10px;background:color-mix(in oklab, var(--paper) 98%, black 2%);border:1px dashed var(--line)">
+          <summary class="pill">Listening legend</summary>
+          <div class="hint" style="margin-top:8px">
+            <ul>
+              <li><b>🪞 Mirror</b> — reflective / angle / identity.</li>
+              <li><b>🍯 Honey</b> — body‑first / sweet / hook.</li>
+              <li><b>🌉 Bridge</b> — a flip / pivot; with <b>⚡ Neon</b> or <b>🔥 Flame</b> theme it crackles.</li>
+              <li><b>τ Illumina</b> — luminous theme overlay. The lane icon still tells the lane.</li>
+            </ul>
+          </div>
+        </details>
       </section>
 
-      <!-- Writer (three-word cadence) -->
+      <!-- Writer -->
       <section class="card" id="writer">
         <h2 style="margin:4px 0 10px">Writer</h2>
         <div class="writer-grid vertical" id="writerGrid">
@@ -310,24 +316,24 @@
             <div class="field">
               <label>🪞 Mirror word (Marina)</label>
               <input id="w-mirror" class="word" type="text" placeholder="one angled word…" aria-describedby="mirror-desc">
-              <div id="mirror-desc" class="desc">A word that changes how you see the idea: <em>mask</em>, <em>double</em>, <em>angle</em>. Your word is echoed: <span class="echo" id="echo" data-echo=""></span></div>
-              <div class="bee">🐝 marina note: you don’t need permission to name the angle.</div>
+              <div id="mirror-desc" class="desc">A word that changes how you see: <em>mask</em>, <em>double</em>, <em>angle</em>. Echo: <span class="echo" id="echo" data-echo=""></span></div>
+              <div class="hint">🐝 marina note: you don’t need permission to name the angle.</div>
             </div>
           </div>
           <div class="card bridge-box">
             <div class="field">
               <label>🌉 Bridge fragment (Doechii)</label>
               <input id="w-bridge" class="word" type="text" placeholder="short spark / pivot…" aria-describedby="spark-desc">
-              <div id="spark-desc" class="desc">A short, unfinished line (3–7 words) that flips the frame. Example: <em>sideways cherry neon</em>. It can glitch: <span class="glitch" id="glitch" data-text=""></span></div>
-              <div class="bee">🐝 doechii note: the bridge is how the dream manifests — one flip, then another.</div>
+              <div id="spark-desc" class="desc">3–7 words that flip the frame. Example: <em>sideways cherry neon</em>. Glitch: <span class="glitch" id="glitch" data-text=""></span></div>
+              <div class="hint">🐝 doechii note: the bridge is the lever; tiny flips move worlds.</div>
             </div>
           </div>
           <div class="card honey-box">
             <div class="field">
               <label>🍯 Honey word (Sabrina)</label>
               <input id="w-honey" class="word" type="text" placeholder="one bright word…" aria-describedby="honey-desc">
-              <div id="honey-desc" class="desc">A body‑first pull word: <em>taste</em>, <em>heat</em>, <em>skin</em>. A hook that lingers.</div>
-              <div class="bee">🐝 soft note: sweetness invites courage.</div>
+              <div id="honey-desc" class="desc">A body‑first pull: <em>taste</em>, <em>heat</em>, <em>skin</em>. A hook that lingers.</div>
+              <div class="hint">🐝 soft note: sweetness invites courage.</div>
             </div>
           </div>
         </div>
@@ -349,8 +355,8 @@
             <button class="chip" id="j-lane-a" aria-pressed="false">🍯 Honey</button>
             <button class="chip" id="j-lane-d" aria-pressed="false">🌉 Bridge</button>
           </div>
-          <div class="desc">Writing “as a poet” means you <em>leave room</em> — short lines, specific images, no explaining. Let one seed survive.</div>
-          <div class="bee">🐝 marina: let the mask speak. 🐝 doechii: break the line on purpose.</div>
+          <div class="desc">“Write as a poet” means you <em>leave room</em> — short lines, specific images, no explaining. Let one seed survive.</div>
+          <div class="hint">🐝 marina: let the mask speak. • 🐝 doechii: break the line on purpose.</div>
         </div>
         <div class="two-col" style="margin-top:10px">
           <div class="post">
@@ -389,7 +395,7 @@
         </details>
       </section>
 
-      <!-- Spark scatter (calm by default) -->
+      <!-- Spark -->
       <section class="card" id="spark">
         <div class="pill"><strong>🌉 The Bridge — Doechii</strong></div>
         <p class="hint">Shuffle to surface a neon seed. Click any word to fill the Daily box. Calm mode keeps motion low.</p>
@@ -398,10 +404,10 @@
           <button class="btn" id="seed-shuffle">Shuffle spark</button>
           <button class="btn" id="spark-to-daily">Use center spark → Daily</button>
         </div>
-        <p class="bee">🐝 bridge note: manifest = one real step after the fragment. tiny, then repeat.</p>
+        <p class="hint">🐝 bridge note: manifest = one real step after the fragment. tiny, then repeat.</p>
       </section>
 
-      <!-- FAQ & Glossary (explicit definitions) -->
+      <!-- FAQ -->
       <section class="card" id="faq">
         <h2 style="margin:4px 0 10px">FAQ & Glossary</h2>
         <div class="two-col">
@@ -412,7 +418,7 @@
               <li><strong>Seed:</strong> one circled sentence or fragment you carry forward.</li>
               <li><strong>Lane:</strong> A = 🍯 Honey; B = 🪞 Mirror; D = 🌉 Bridge (Doechii).</li>
             </ul>
-            <p class="bee">🐝 if you need me, you don’t. I’ll know by the vibes.</p>
+            <p class="hint">🐝 if you need me, you don’t. I’ll know by the vibes.</p>
           </div>
           <div class="post">
             <h3>Privacy</h3>
@@ -422,9 +428,19 @@
         </div>
       </section>
 
+      <!-- Bee notes -->
+      <section class="card" id="notes">
+        <h2 style="margin:4px 0 10px">Bee notes (soft guidance)</h2>
+        <ul class="hint">
+          <li><strong>For Marina:</strong> the angle is enough — echo it softly; masks tell the truth when you let them.</li>
+          <li><strong>For Doechii:</strong> the bridge manifests the dream — one flip, then another; carry small fragments, not perfect lines.</li>
+          <li><strong>For everyone:</strong> write for yourself first; leave room; export sometimes; you don’t need to contact anyone — I’ll know by the vibes.</li>
+        </ul>
+      </section>
+
     </div>
 
-    <!-- RAIL (queue + add + modes + export) -->
+    <!-- RAIL -->
     <aside class="rail">
       <div class="block">
         <div class="qtools">
@@ -499,15 +515,13 @@
 </main>
 
 <footer class="wrap" style="color:var(--muted);font-size:.9rem;margin:22px auto; padding-bottom: env(safe-area-inset-bottom)">
-  © mirrorhoney — mirror (🪞) × honey (🍯) with the bridge (🌉). Local‑only. Clarity first. I’ll know by the vibes.
+  © mirrorhoney — mirror (🪞) × honey (🍯) with the bridge (🌉). Local‑only. Clarity first. I’ll know by the vibes. 🐝 imma be right where the loop lands.
 </footer>
 
-<!-- YouTube API -->
 <script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
 /* =======================
-   PERSISTENCE & MIGRATION
+   PERSISTENCE & DEFAULTS
    ======================= */
 const MH = (function(){
   const KEY = "mh_data_v1";
@@ -520,8 +534,8 @@ const MH = (function(){
     updatedAt: new Date().toISOString(),
     settings: {
       loopTrack:false, loopQueue:true,
-      mode:"MIRROR", theme:"mirror", compactQueue:false, journey:"mirror",
-      queueFilter:"ALL", calm:true, focus:false, highContrast:false, textScale:100
+      mode:"MIRROR", theme:"flame", compactQueue:false, journey:"mirror",
+      queueFilter:"ALL", calm:true, focus:false, highContrast:false, textScale:100, modeAutobound:false
     },
     queue: [],
     logs: { writer:[], journal:[] },
@@ -542,7 +556,7 @@ const MH = (function(){
   function get(){
     const raw = localStorage.getItem(KEY);
     if(raw){ try{ return JSON.parse(raw); }catch(_){ } }
-    const d = JSON.parse(JSON.stringify(DEFAULT));
+    const d = structuredClone(DEFAULT);
     ensureFriend(d);
     localStorage.setItem(KEY, JSON.stringify(d));
     snapshot("init");
@@ -575,7 +589,6 @@ const MH = (function(){
   return { get, put, exportJSON, importJSON, snapshot, ensureFriend, FRIEND_ID };
 })();
 
-/* ===== Utils ===== */
 function timeISO(){ return new Date().toISOString(); }
 function todayKey(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,'0')+"-"+String(d.getDate()).padStart(2,'0'); }
 function setPressed(el,on){ el.setAttribute("aria-pressed", on?"true":"false"); }
@@ -595,7 +608,7 @@ ensureWriterOrientation();
   setVH(); window.addEventListener('resize', setVH); window.addEventListener('orientationchange', setVH);
 })();
 
-/* ===== Dynamic header sizing ===== */
+/* Header sizing */
 (function(){
   function apply(){
     const hdr=document.getElementById("hdr");
@@ -608,19 +621,28 @@ ensureWriterOrientation();
   apply();
 })();
 
-/* ===== Theme ===== */
+/* Theme */
 (function(){
   const sel=document.getElementById("theme-select");
   function apply(theme){
+    if(theme==='jupiter'){ theme='neon'; } // migrate old setting
+    try{
+      const d0=MH.get();
+      if(!d0.settings.modeAutobound && (theme==='flame' || theme==='neon')){
+        d0.settings.mode='NEON';         // Bridge pattern A→D→B→D→A
+        d0.settings.modeAutobound=true;  // one-time
+        MH.put(d0);
+      }
+    }catch(_){}
     document.documentElement.setAttribute("data-theme", theme);
     const d=MH.get(); d.settings.theme=theme; MH.put(d);
   }
-  sel.onchange=function(){ apply(sel.value); };
+  sel.onchange=function(){ apply(sel.value); updateListeningNote(ALTERNATOR.getLastLane()||'B'); };
   const d=MH.get();
-  sel.value=d.settings.theme||"mirror"; apply(sel.value);
+  sel.value=(d.settings.theme==='jupiter'?'neon':(d.settings.theme||"flame")); apply(sel.value);
 })();
 
-/* ===== Journey mode chips ===== */
+/* Journey mode chips */
 (function(){
   const btnM=document.getElementById("choose-mirror");
   const btnS=document.getElementById("choose-spark");
@@ -636,7 +658,7 @@ ensureWriterOrientation();
   const d=MH.get(); sel(d.settings.journey||"mirror");
 })();
 
-/* ===== Calm tools ===== */
+/* Calm tools */
 (function(){
   const calm=document.getElementById("calm-toggle");
   const focus=document.getElementById("focus-toggle");
@@ -660,7 +682,7 @@ ensureWriterOrientation();
   sync();
 })();
 
-/* ===== Writer save + echo/glitch ===== */
+/* Writer save + echo/glitch */
 (function(){
   const wH=document.getElementById("w-honey");
   const wS=document.getElementById("w-bridge");
@@ -690,7 +712,7 @@ ensureWriterOrientation();
   addB.onclick=addSparkToDaily;
 })();
 
-/* ===== Journal (single place) ===== */
+/* Journal */
 (function(){
   const chooseB=document.getElementById("j-lane-b");
   const chooseA=document.getElementById("j-lane-a");
@@ -702,7 +724,7 @@ ensureWriterOrientation();
   const status=document.getElementById("j-status");
   const pastBox=document.getElementById("past-entries");
 
-  let lane="B"; // default: mirror
+  let lane="B";
   function setLane(L){ lane=L; setPressed(chooseB, L==="B"); setPressed(chooseA, L==="A"); setPressed(chooseD, L==="D"); }
   chooseB.onclick=()=>setLane("B"); chooseA.onclick=()=>setLane("A"); chooseD.onclick=()=>setLane("D");
   setLane("B");
@@ -716,8 +738,8 @@ ensureWriterOrientation();
   function renderPast(){
     pastBox.innerHTML="";
     const J = JSON.parse(localStorage.getItem(KEYJ)||"[]");
-    const H = JSON.parse(localStorage.getItem("mh_hlog_v1")||"[]"); // legacy honey log
-    const D = JSON.parse(localStorage.getItem("mh_dlog_v1")||"[]"); // legacy spark/bridge log
+    const H = JSON.parse(localStorage.getItem("mh_hlog_v1")||"[]");
+    const D = JSON.parse(localStorage.getItem("mh_dlog_v1")||"[]");
     const all = [];
     (J||[]).forEach(e=>all.push({src:"journal",lane:e.lane,date:e.date,notes:e.notes}));
     (H||[]).forEach(e=>all.push({src:"honey",lane:"A",date:e.date,notes:e.notes}));
@@ -742,8 +764,7 @@ ensureWriterOrientation();
   };
 })();
 
-
-/* ===== Daily Fragments ===== */
+/* Daily Fragments */
 var FRAGMENTS=(function(){
   const list=document.getElementById("frag-list");
   const input=document.getElementById("frag-input");
@@ -797,7 +818,7 @@ var FRAGMENTS=(function(){
   return { add:addPublic };
 })();
 
-/* ===== Spark scatter ===== */
+/* Spark scatter */
 (function(){
   const SETS=[
     ["raw","wild","glitch","seed","mirror shard","τ illumina"],
@@ -821,7 +842,7 @@ var FRAGMENTS=(function(){
   scatter(SETS[0]);
 })();
 
-/* ===== QUEUE (robust filters & events) ===== */
+/* Queue */
 var QUEUE=(function(){
   const FRIEND_ID=MH.FRIEND_ID;
   const qEl=document.getElementById("queue"), status=document.getElementById("q-status");
@@ -872,6 +893,15 @@ var QUEUE=(function(){
     }
     MH.put(d); render();
   });
+
+  async function fetchYTMeta(id){
+    try{
+      var r=await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id);
+      if(!r.ok) return null;
+      var j=await r.json();
+      return {title:j.title||"",author:j.author_name||"",thumbnail:j.thumbnail_url||""};
+    }catch(e){ return null; }
+  }
 
   function render(){
     const d=MH.get();
@@ -979,25 +1009,34 @@ var QUEUE=(function(){
     if(i<0){ if(loop) i=sc.length-1; else return null; }
     return sc[i];
   }
-  // helpers exposed
   render();
   return { add, render, next, prev, scopeItems };
 })();
 
-/* ===== YouTube helpers ===== */
+/* YouTube helpers */
 function ytIdFrom(u){
   if(!u) return null; u=String(u).trim();
   var patterns=[/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/,/^([A-Za-z0-9_-]{11})$/];
   for(var i=0;i<patterns.length;i++){ var m=u.match(patterns[i]); if(m&&m[1]) return m[1]; }
   return null;
 }
-async function fetchYTMeta(id){
-  try{
-    var r=await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id);
-    if(!r.ok) return null;
-    var j=await r.json();
-    return {title:j.title||"",author:j.author_name||"",thumbnail:j.thumbnail_url||""};
-  }catch(e){ return null; }
+
+/* ===== Listening helpers ===== */
+function currentThemeLabel(){
+  const t=document.documentElement.getAttribute('data-theme')||'mirror';
+  switch(t){
+    case 'illumina': return 'τ Illumina';
+    case 'flame': return '🔥 Flame';
+    case 'neon': return '⚡ Neon';
+    case 'honey': return '🍯 Honey';
+    case 'mirror': default: return '🪞 Mirror';
+  }
+}
+function laneLabel(l){ return l==='A'?'🍯 Honey':(l==='B'?'🪞 Mirror':'🌉 Bridge'); }
+function laneDescriptor(l){ return l==='A'?'body-first, sweet':(l==='B'?'reflective angle':'flip / pivot'); }
+function updateListeningNote(lane){
+  const el=document.getElementById('listening-note'); if(!el) return;
+  el.textContent = 'Hearing: ' + laneLabel(lane) + ' • Theme: ' + currentThemeLabel() + ' — ' + laneDescriptor(lane) + '.';
 }
 
 /* ===== Single player + header ===== */
@@ -1031,12 +1070,14 @@ var PLAYER=(function(){
     if(P && P.cueVideoById){ try{ P.cueVideoById(id); return; }catch(_){ } }
     frame.src = "https://www.youtube.com/embed/"+id+"?enablejsapi=1&rel=0&modestbranding=1&playsinline=1";
     setMediaSessionMeta();
+    updateListeningNote(currentLane);
   }
   function load(id,lane,autoplay){
     currentLane=lane||currentLane; currentId=id;
-    if(P && P.loadVideoById){ try{ P.loadVideoById(id); setMediaSessionMeta(); return; }catch(_){ } }
+    if(P && P.loadVideoById){ try{ P.loadVideoById(id); setMediaSessionMeta(); updateListeningNote(currentLane); return; }catch(_){ } }
     frame.src = "https://www.youtube.com/embed/"+id+"?enablejsapi=1&rel=0&modestbranding=1&playsinline=1"+(autoplay?"&autoplay=1":"");
     setMediaSessionMeta();
+    updateListeningNote(currentLane);
   }
   function toggle(){
     if(P && P.getPlayerState){ try{ const st=P.getPlayerState(); if(st===1) P.pauseVideo(); else P.playVideo(); return; }catch(_){ } }
@@ -1049,7 +1090,6 @@ var PLAYER=(function(){
   function setLane(l){ currentLane=l; }
   function getLane(){ return currentLane; }
   function getId(){ return currentId; }
-
   function setMediaSessionMeta(){
     try{
       if(!('mediaSession' in navigator)) return;
@@ -1058,7 +1098,7 @@ var PLAYER=(function(){
       navigator.mediaSession.metadata = new MediaMetadata({
         title: it.title || 'mirrorhoney',
         artist: it.artist || it.author || '',
-        album: (it.lane==='A'?'Honey':'')||(it.lane==='B'?'Mirror':'')||(it.lane==='D'?'Bridge':'') || '',
+        album: (it.lane==='A'?'Honey':(it.lane==='B'?'Mirror':(it.lane==='D'?'Bridge':''))),
         artwork: it.thumb ? [{src: it.thumb, sizes: '512x512', type: 'image/jpeg'}] : []
       });
     }catch(_){}
@@ -1070,7 +1110,7 @@ var PLAYER=(function(){
   document.getElementById("next").onclick=function(){ ALTERNATOR.next(); };
 
   const lt=document.getElementById("loop-track"); const lq=document.getElementById("loop-queue");
-  (function initLoopsFromSettings(){
+  (function initLoops(){
     const d=MH.get();
     setPressed(lt, !!d.settings.loopTrack);
     setPressed(lq, !!d.settings.loopQueue);
@@ -1083,7 +1123,7 @@ var PLAYER=(function(){
   return { cue, load:(id,lane,autoplay)=>load(id,lane,autoplay), toggle, setVolume, getLoopQueue, setLoopQueue, setLoopTrack, getLane, setLane, nowNext, getId };
 })();
 
-/* ===== Alternator ===== */
+/* Alternator */
 var ALTERNATOR=(function(){
   let mode="MIRROR";
   let lastLane=null;
@@ -1120,7 +1160,7 @@ var ALTERNATOR=(function(){
     const playableLane = findNextPlayableLane(lane);
     const it = (playableLane==="A")? QUEUE.next("A", PLAYER.getLoopQueue()) :
                (playableLane==="B")? QUEUE.next("B", PLAYER.getLoopQueue()) :
-                                      QUEUE.next("D", true);
+                                      QUEUE.next("D", PLAYER.getLoopQueue());
     if(it && it.id){
       PLAYER.load(it.id, playableLane, true);
       lastLane=playableLane;
@@ -1153,7 +1193,7 @@ var ALTERNATOR=(function(){
     const playableLane = findNextPlayableLane(prevLane);
     const it = (playableLane==="A")? QUEUE.prev("A", PLAYER.getLoopQueue()) :
                (playableLane==="B")? QUEUE.prev("B", PLAYER.getLoopQueue()) :
-                                      QUEUE.prev("D", true);
+                                      QUEUE.prev("D", PLAYER.getLoopQueue());
     if(it && it.id){ PLAYER.load(it.id, playableLane, true); lastLane=playableLane; updateStatus({now:{tag:playableLane,title:it.title||it.id}, nextTag: laneAfter(playableLane)}); }
   }
   function next(){
@@ -1165,16 +1205,18 @@ var ALTERNATOR=(function(){
     if(!info){ nn.textContent="Ready"; return; }
     const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"🌉";
     const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"🌉";
-    nn.textContent = "Now: "+em+" "+(info.now.title||"…")+" · Next: "+ne;
+    nn.textContent = "Now: "+em+" "+(info.now.title||"…")+" · Next: "+ne+" • Theme: "+currentThemeLabel();
+    updateListeningNote(info.now.tag);
   }
   function setLane(l){ lastLane=l; PLAYER.setLane(l); }
   function getCurrentId(){ return PLAYER.getId(); }
-  function setNow(lane, it){ lastLane=lane; updateStatus({now:{tag:lane,title:(it&&it.title)||'…'}, nextTag: laneAfter(lane)}); }
+  function getLastLane(){ return lastLane; }
+  function setNow(lane, it){ lastLane=lane; updateStatus({now:{tag:lane,title:(it&&it.title)||'…'}, nextTag: laneAfter(lane)}); updateListeningNote(lane); }
   (function initMode(){ const d=MH.get(); setMode(d.settings.mode||"MIRROR"); })();
-  return { onEnded, ensureKick, prev, next, setLane, getCurrentId, setNow };
+  return { onEnded, ensureKick, prev, next, setLane, getCurrentId, getLastLane, setNow };
 })();
 
-/* ===== Add form ===== */
+/* Add form */
 (function(){
   const artist=document.getElementById("add-artist");
   const link=document.getElementById("add-link");
@@ -1187,6 +1229,15 @@ var ALTERNATOR=(function(){
   function highlightChip(L){ chips.forEach(c=> setPressed(c, c.getAttribute("data-lane")===L)); }
   laneSel.onchange=function(){ highlightChip(laneSel.value); validate(); };
   chips.forEach(c=> c.onclick=function(){ laneSel.value=c.getAttribute("data-lane"); highlightChip(laneSel.value); validate(); });
+
+  async function fetchYTMeta(id){
+    try{
+      var r=await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id);
+      if(!r.ok) return null;
+      var j=await r.json();
+      return {title:j.title||"",author:j.author_name||"",thumbnail:j.thumbnail_url||""};
+    }catch(e){ return null; }
+  }
 
   async function validate(){
     const L = laneSel.value;
@@ -1216,7 +1267,7 @@ var ALTERNATOR=(function(){
   highlightChip("");
 })();
 
-/* ===== Export/Import ===== */
+/* Export/Import */
 (function(){
   const expBtn=document.getElementById("export-btn"), impBtn=document.getElementById("import-btn"), impFile=document.getElementById("import-file");
   expBtn.onclick=function(){
@@ -1233,7 +1284,7 @@ var ALTERNATOR=(function(){
   };
 })();
 
-/* ===== Seed & pin: MARINA first + Sabrina & Doechii ===== */
+/* Seed */
 (async function seedAndPin(){
   const d=MH.get();
   MH.ensureFriend(d);
@@ -1248,7 +1299,7 @@ var ALTERNATOR=(function(){
   }catch(_){}
 })();
 
-/* ===== Pollen (repeat visits) — includes τ illumina ===== */
+/* Pollen */
 (function pollen(){
   const container=document.getElementById('pollen');
   if(!container) return;
@@ -1261,7 +1312,6 @@ var ALTERNATOR=(function(){
     });
     const byDay=data.fragments.byDay||{};
     Object.keys(byDay).forEach(k=> (byDay[k]||[]).forEach(f=>{ const t=(f.t||"").trim(); if(t&&t.length<=40&&!seen.has(t)){ seen.add(t); out.push(t); } }));
-    // scatter illumina
     out.push("τ illumina"); out.push("illumina"); out.push("tau → illumina");
     return out.slice(-70);
   }
@@ -1276,7 +1326,7 @@ var ALTERNATOR=(function(){
   }
 })();
 
-/* ===== Minimal SW (UI offline; YT not cached) ===== */
+/* PWA-lite SW */
 if('serviceWorker' in navigator){
   const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v6').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
   const blob=new Blob([code],{type:'application/javascript'});
