@@ -1,199 +1,179 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="mirror" data-mode="mirror">
+<html lang="en" data-theme="mirror" data-mode="mirror" data-calm="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>mirrorhoney — mirror · spark · honey</title>
-<meta name="description" content="Mirror-first with Spark and Honey modes. A symbolic, non-transactional field for Marina (mirror) and Doechii (spark) — with pollen memory for repeat visits.">
+<title>mirrorhoney — mirror · spark · honey (clarity edition)</title>
+<meta name="description" content="Designed for Marina (mirror) & Doechii (spark). Quiet, clear guidance for everyone: write, seed, and listen with an A/B/D queue and a square inline player. Local-only.">
 <meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
 
 <style>
-  /* ===== Base theme tokens ===== */
+  /* ======================
+     Base tokens + themes
+     ====================== */
   :root{
     --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#FFFFFF;--muted:#A0A7B3;--line:#1B2433;
     --accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
-    --danger:#FF6B6B;--ok:#36D399;--shadow:0 12px 34px rgba(0,0,0,.45);--railW:clamp(320px,32vw,460px);
-    --post:#0F1522; --paper:#0D121E; --hdrH: 78px; --vh: 1vh;
-    /* Journey palettes */
-    --violet:#8D7CFF; --pearl:#F2F5FF;      /* mirror (Marina) */
-    --neonC:#7DF9FF; --neonP:#FF49C0;       /* spark (Doechii) */
-    --amber:#F2B553; --gold:#FFD36B;        /* honey (Sabrina) */
+    --ok:#36D399;--warn:#FFD873;--railW:clamp(320px,31vw,460px);
+    --paper:#0D121E;--card:#0F1524;--shadow:0 12px 34px rgba(0,0,0,.45);
+    --hdrH: 84px; --vh: 1vh;
+    --violet:#8D7CFF; --pearl:#F2F5FF;
+    --neonC:#7DF9FF; --neonP:#FF49C0;
+    --amber:#F2B553; --gold:#FFD36B;
+    --radius:16px; --pad:14px;
   }
   html[data-theme="illumina"]{
     --bg:#F7F9FF; --ink:#1E2742; --ink-strong:#0F1633; --muted:#5B6A86; --line:#DFE6F3;
-    --accent:#5A78FF; --rose:#E457A2; --honey:#F4B000; --mirror:#6B8DFF;
-    --shadow:0 14px 28px rgba(34,48,73,.14); --post:#FFFFFF; --paper:#FFFFFF;
-  }
-  html[data-theme="neon"]{
-    --bg:#0A0711; --ink:#F3ECFF; --ink-strong:#FFFFFF; --muted:#C8B9EA; --line:#1E1631;
-    --accent:#9E6CFF; --rose:#FF46C1; --honey:#FFD66F; --mirror:#C5D9FF; --post:#0E0A17; --paper:#0B0713;
+    --accent:#5A78FF; --rose:#E457A2; --honey:#F0B600; --mirror:#6B8DFF;
+    --paper:#FFFFFF; --card:#FFFFFF; --shadow:0 14px 28px rgba(34,48,73,.14);
   }
   html[data-theme="honey"]{
     --bg:#FDF7E6; --ink:#2F2612; --ink-strong:#1B1403; --muted:#6E5F3C; --line:#E5D7AF;
-    --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9; --shadow:0 10px 26px rgba(0,0,0,.15);
-    --post:#FFFFFF; --paper:#FFFBF0;
+    --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9;
+    --paper:#FFFBF0; --card:#FFFFFF; --shadow:0 12px 28px rgba(0,0,0,.12);
   }
   html,body{height:100%}
   *{box-sizing:border-box}
   body{
     margin:0;background:var(--bg);color:var(--ink);
-    font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    padding-top: var(--hdrH);
-    padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);
-    transition:background 400ms ease, color 400ms ease;
+    font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    letter-spacing:.2px;
+    padding-top:var(--hdrH);
   }
-  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
-  img,iframe{max-width:100%}
-  .wrap{max-width:1240px;margin:0 auto;padding:clamp(10px,3vw,20px)}
+  a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:1220px;margin:0 auto;padding:clamp(10px,3vw,20px)}
   .stack{display:grid;gap:14px}
-  .post{background:var(--post);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
-  .card{background:color-mix(in oklab, var(--paper) 94%, black 6%);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:14px}
-  .two-col{display:grid;grid-template-columns:1.08fr .92fr;gap:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad)}
+  .post{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad)}
+  .two-col{display:grid;grid-template-columns:1.06fr .94fr;gap:14px}
   .twins{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:800px){.two-col,.twins{grid-template-columns:1fr}}
-  input[type="text"],textarea,select{
-    width:100%;padding:11px;border-radius:12px;border:2px solid var(--line);
-    background:color-mix(in oklab, var(--paper) 86%, black 8%);color:var(--ink-strong);font-size:16px
+  @media (max-width:880px){ .two-col,.twins{grid-template-columns:1fr} }
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .hint{font-size:.92rem;color:var(--muted);margin-top:6px}
+  .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
+  .btn,.chip,.qbtn{
+    padding:8px 12px;border-radius:12px;border:1px solid var(--line);
+    background:color-mix(in oklab, var(--bg) 80%, white 6%);color:var(--ink);cursor:pointer
+  }
+  .chip{border-radius:999px}
+  .chip[aria-pressed="true"], .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
+  .field{display:grid;gap:6px}
+  .field label{font-weight:600;color:var(--ink-strong)}
+  .field .desc{color:var(--muted); font-size:.92rem}
+  input[type="text"], textarea, select{
+    width:100%;padding:12px;border-radius:12px;border:2px solid var(--line);
+    background:color-mix(in oklab, var(--paper) 86%, black 8%); color:var(--ink-strong); font-size:16px
   }
   textarea{resize:vertical}
-  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-  .hint{font-size:.85rem;color:var(--muted);margin-top:6px}
+  .hr{height:1px;background:var(--line);margin:10px 0}
+  .hero{padding:16px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg, color-mix(in oklab, var(--mirror), transparent 90%), transparent)}
+  .hero .landing{font-size:1.15rem;color:var(--muted)}
+  .hero strong{color:var(--ink)}
 
-  /* ===== Header ===== */
-  header{position:fixed;inset:0 0 auto 0;z-index:9999;background:color-mix(in oklab, var(--bg) 90%, white 4%);
-    backdrop-filter:blur(10px);border-bottom:1px solid var(--line); padding-top: env(safe-area-inset-top)}
+  /* Header */
+  header{position:fixed;inset:0 0 auto 0;z-index:9999;background:color-mix(in oklab, var(--bg) 92%, white 4%);
+    border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
   .hdr{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
-  @media (max-width:1100px){ .hdr{grid-template-columns:1fr} }
+  @media (max-width:1080px){ .hdr{grid-template-columns:1fr} }
   .brand{font-weight:800;letter-spacing:.3px;color:var(--ink-strong)}
-  nav{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+  nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
   nav a{color:var(--ink)} nav a:hover{color:var(--ink-strong)}
-  .qbtn,.btn,.chip{padding:7px 11px;border-radius:12px;border:1px solid var(--line);
-    background:color-mix(in oklab, var(--bg) 80%, white 5%);color:var(--ink);cursor:pointer; touch-action:manipulation}
-  .chip{padding:6px 12px;border-radius:999px}
-  .chip[aria-pressed="true"], .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
-  .pill{display:inline-flex;align-items:center;gap:6px;font-size:.92rem;color:var(--muted)}
-  .nowtxt{max-width:38vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-size:.9rem}
+  .nowtxt{max-width:40vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+
   select.themeSelect{
-    padding:7px 30px 7px 10px;border-radius:10px;border:1px solid var(--line);
+    padding:8px 34px 8px 12px;border-radius:10px;border:1px solid var(--line);
     background:color-mix(in oklab, var(--bg) 86%, white 8%);
     color:var(--ink);font-size:.95rem;appearance:none;
     background-image: linear-gradient(45deg,transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
-    background-position: calc(100% - 20px) 52%, calc(100% - 12px) 52%; background-size: 8px 8px, 8px 8px; background-repeat:no-repeat;
+    background-position: calc(100% - 22px) 55%, calc(100% - 12px) 55%; background-size: 8px 8px, 8px 8px; background-repeat:no-repeat;
   }
 
-  /* ===== Page grid ===== */
-  main .page{
-    display:grid; grid-template-areas: "main rail"; grid-template-columns: minmax(0,1fr) var(--railW); gap:14px
-  }
+  /* Page grid */
+  main .page{ display:grid; grid-template-areas:"main rail"; grid-template-columns: minmax(0,1fr) var(--railW); gap:14px }
   .content{grid-area:main; min-width:0}
   .rail{grid-area:rail; min-width:0; position:sticky; top:calc(var(--hdrH) + 10px)}
   @media (max-width:900px){
     main .page{ grid-template-areas:"main" "rail"; grid-template-columns:1fr; }
     .rail{ position:static; top:auto }
   }
-  .rail .block{border:1px solid var(--line);border-radius:16px;background:color-mix(in oklab, var(--paper) 92%, black 8%);padding:12px;box-shadow:var(--shadow)}
+  .rail .block{border:1px solid var(--line);border-radius:16px;background:color-mix(in oklab, var(--paper) 96%, black 4%);padding:12px;box-shadow:var(--shadow)}
 
-  /* ===== Landing hero ===== */
-  .hero{position:relative;padding:18px;border:1px solid var(--line);border-radius:16px;overflow:hidden;
-    background:linear-gradient(180deg, color-mix(in oklab, var(--mirror), transparent 90%), transparent)}
-  .landing{font-size:1.15rem;color:var(--muted)}
-  .landing em{color:var(--ink)}
-  .fieldline{font-style:italic;color:var(--muted)}
-
-  /* ===== Mode visuals (mirror | spark | honey) ===== */
+  /* Journey backgrounds */
   html[data-mode="mirror"] .hero{background:
-    radial-gradient(1200px 600px at -10% -10%, color-mix(in oklab, var(--pearl) 60%, transparent 60%), transparent 70%),
-    radial-gradient(800px 400px at 110% 10%, color-mix(in oklab, var(--violet) 25%, transparent 60%), transparent 70%);}
+    radial-gradient(900px 500px at -10% -10%, color-mix(in oklab, var(--pearl) 60%, transparent 60%), transparent 70%),
+    radial-gradient(700px 360px at 110% 10%, color-mix(in oklab, var(--violet) 25%, transparent 60%), transparent 70%);}
   html[data-mode="spark"] .hero{background:
-    radial-gradient(1200px 600px at -10% -10%, color-mix(in oklab, var(--neonC) 12%, transparent 80%), transparent 70%),
-    radial-gradient(900px 500px at 110% 10%, color-mix(in oklab, var(--neonP) 10%, transparent 82%), transparent 70%);}
+    radial-gradient(900px 500px at -10% -10%, color-mix(in oklab, var(--neonC) 12%, transparent 80%), transparent 70%),
+    radial-gradient(780px 420px at 110% 10%, color-mix(in oklab, var(--neonP) 10%, transparent 82%), transparent 70%);}
   html[data-mode="honey"] .hero{background:
-    radial-gradient(1200px 600px at -10% -10%, color-mix(in oklab, var(--gold) 16%, transparent 82%), transparent 70%),
-    radial-gradient(900px 500px at 110% 10%, color-mix(in oklab, var(--amber) 14%, transparent 84%), transparent 70%);}
+    radial-gradient(900px 500px at -10% -10%, color-mix(in oklab, var(--gold) 16%, transparent 82%), transparent 70%),
+    radial-gradient(780px 420px at 110% 10%, color-mix(in oklab, var(--amber) 14%, transparent 84%), transparent 70%);}
 
-  .echo{position:relative; display:inline-block; font-weight:700; letter-spacing:.3px; color:var(--ink-strong)}
+  /* Echo / Glitch */
+  .echo{position:relative;display:inline-block;font-weight:700;letter-spacing:.3px;color:var(--ink-strong)}
   .echo::after{
-    content:attr(data-echo); position:absolute; left:0; top:0; right:0; bottom:0;
-    color:transparent; text-shadow:
-      0 2px 0 color-mix(in oklab, var(--pearl) 70%, transparent 30%),
-      2px 4px 0 color-mix(in oklab, var(--violet) 50%, transparent 50%);
-    opacity:.45; transform:translate3d(0,0,0);
-    pointer-events:none;
+    content:attr(data-echo);position:absolute;inset:0;color:transparent;
+    text-shadow: 0 2px 0 color-mix(in oklab, var(--pearl) 70%, transparent 30%), 2px 4px 0 color-mix(in oklab, var(--violet) 50%, transparent 50%);
+    opacity:.45; pointer-events:none;
   }
-  html[data-mode="spark"] .echo::after{ display:none; } /* echo only in mirror */
-
   .glitch{position:relative; display:inline-block; font-weight:800; letter-spacing:.2px; color:var(--ink-strong)}
-  .glitch::before,.glitch::after{
-    content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none; opacity:.7;
-  }
+  .glitch::before,.glitch::after{content:attr(data-text); position:absolute; inset:0; mix-blend-mode:screen; pointer-events:none; opacity:.6}
   .glitch::before{ transform:translate3d(-1px,0,0); color:var(--neonC); clip-path:inset(0 0 50% 0); }
   .glitch::after{ transform:translate3d(1px,0,0); color:var(--neonP); clip-path:inset(50% 0 0 0); }
-  @keyframes jit { 0%{transform:translate(0,0)} 50%{transform:translate(1px,-1px)} 100%{transform:translate(0,0)} }
-  html[data-mode="spark"] .glitch::before, html[data-mode="spark"] .glitch::after{ animation:jit .2s infinite steps(2,end); }
-  html[data-mode="mirror"] .glitch::before, html[data-mode="mirror"] .glitch::after{ animation:none; opacity:.2; }
-  html[data-mode="honey"] .glitch::before, html[data-mode="honey"] .glitch::after{ animation:none; opacity:.35; }
+  @keyframes jit { 0%{transform:translate(0,0)} 50%{transform:translate(.8px,-.8px)} 100%{transform:translate(0,0)} }
+  html[data-mode="spark"][data-calm="off"] .glitch::before, html[data-mode="spark"][data-calm="off"] .glitch::after{ animation:jit .25s infinite steps(2,end); }
+  html[data-calm="on"] .glitch::before, html[data-calm="on"] .glitch::after{ animation:none; opacity:.35; }
 
   /* Writer layout */
   .writer-grid{display:grid;gap:10px}
   .writer-grid.vertical{grid-template-rows:auto auto auto}
   .writer-grid.horizontal{grid-template-columns:1fr .9fr 1fr;align-items:end}
-  .mirror-box{border-left:4px solid var(--mirror);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--mirror), transparent 88%),transparent);border-radius:10px}
-  .bridge-box{border-left:4px solid var(--rose);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--rose), transparent 88%),transparent);border-radius:10px}
-  .honey-box{border-left:4px solid var(--honey);padding-left:12px;background:linear-gradient(180deg,color-mix(in oklab,var(--honey), transparent 88%),transparent);border-radius:10px}
-  .word{font-size:1.2rem}
-  .modechips .chip{opacity:.9}
-  .modechips .chip[aria-pressed="true"]{outline:2px solid var(--accent)}
-
-  /* Queue block */
-  .qtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}
-  .qfilters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-  .queue{display:grid;gap:8px;grid-template-columns:1fr;
-         max-height: calc((var(--vh) * 100) - var(--hdrH) - 110px);
-         min-height:200px;overflow:auto;padding:4px 2px;transition:max-height .2s}
-  .queue.compact{gap:6px;max-height: calc((var(--vh) * 100) - var(--hdrH) - 96px)}
-  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px;background:color-mix(in oklab, var(--paper) 86%, black 8%); min-width:0}
-  .qitem img{width:76px;height:48px;object-fit:cover;border-radius:8px}
-  .qitem .meta{display:flex;flex-direction:column;gap:4px; min-width:0}
-  .qitem .acts{display:flex;flex-wrap:wrap;gap:6px}
-  .lanes{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-  .lane{border:1px solid var(--line);padding:3px 10px;border-radius:999px;font-size:.8rem;opacity:.96;cursor:pointer;user-select:none}
-  .lane.A::before{content:"🍯 "} .lane.B::before{content:"🪞 "} .lane.D::before{content:"🌉 "}
-  .lane[aria-pressed="true"]{background:color-mix(in oklab, var(--accent), transparent 82%);border-color:var(--accent)}
-
-  /* Wrapping titles */
-  .titleline{display:flex;align-items:center;gap:8px}
-  .titleline .laneEmoji{opacity:.9;flex:0 0 auto}
-  .titleline .ttl{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; white-space:normal; word-break:break-word; line-height:1.25; }
-  .queue.compact .titleline .ttl{ display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
-  /* Add form */
-  .lanechips{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
-  .lanechips .chip{user-select:none}
+  .mirror-box{border-left:4px solid var(--mirror);padding-left:10px;background:linear-gradient(180deg,color-mix(in oklab,var(--mirror), transparent 90%),transparent);border-radius:10px}
+  .bridge-box{border-left:4px solid var(--rose);padding-left:10px;background:linear-gradient(180deg,color-mix(in oklab,var(--rose), transparent 90%),transparent);border-radius:10px}
+  .honey-box{border-left:4px solid var(--honey);padding-left:10px;background:linear-gradient(180deg,color-mix(in oklab,var(--honey), transparent 90%),transparent);border-radius:10px}
 
   /* Player (square) */
   .playerWrap{display:flex;justify-content:center}
   .playerSquare{position:relative; width:clamp(300px,82vw,560px); border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#000}
   .playerSquare::before{content:""; display:block; padding-top:100%;}
   .playerSquare iframe{position:absolute; inset:0; width:100%; height:100%; display:block; background:#000}
-  @supports (aspect-ratio: 1 / 1) {
-    .playerSquare{aspect-ratio:1/1}
-    .playerSquare::before{display:none}
-  }
+  @supports (aspect-ratio: 1 / 1) { .playerSquare{aspect-ratio:1/1} .playerSquare::before{display:none} }
 
-  /* Pollen memory layer */
+  /* Queue */
+  .qtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}
+  .qfilters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .queue{display:grid;gap:8px;grid-template-columns:1fr; min-height:200px; overflow:auto; padding:4px 2px;
+         max-height: calc((var(--vh) * 100) - var(--hdrH) - 110px); transition:max-height .2s}
+  .queue.compact{gap:6px;max-height: calc((var(--vh) * 100) - var(--hdrH) - 96px)}
+  .qitem{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px;background:color-mix(in oklab, var(--paper) 88%, black 6%); min-width:0}
+  .qitem img{width:76px;height:48px;object-fit:cover;border-radius:8px}
+  .qitem .meta{display:flex;flex-direction:column;gap:4px; min-width:0}
+  .titleline{display:flex;align-items:center;gap:8px}
+  .titleline .ttl{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; white-space:normal; word-break:break-word; line-height:1.25; }
+  .queue.compact .titleline .ttl{ display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lanes{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .lane{border:1px solid var(--line);padding:3px 10px;border-radius:999px;font-size:.8rem;opacity:.96;cursor:pointer;user-select:none}
+  .lane.A::before{content:"🍯 "} .lane.B::before{content:"🪞 "} .lane.D::before{content:"⚡ "}
+  .lane[aria-pressed="true"]{background:color-mix(in oklab, var(--accent), transparent 82%);border-color:var(--accent)}
+  .acts{display:flex;flex-wrap:wrap;gap:6px}
+
+  /* Pollen layer */
   .pollen{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
   .pollen .w{position:absolute; font-size:12px; color:color-mix(in oklab, var(--ink), transparent 70%); opacity:.0; animation:float 16s linear infinite; white-space:nowrap}
-  @keyframes float {
-    0%{ transform:translateY(20vh) translateX(0); opacity:0; }
-    10%{ opacity:.35; }
-    50%{ opacity:.5; }
-    90%{ opacity:.2; }
-    100%{ transform:translateY(-30vh) translateX(10vw); opacity:0; }
-  }
+  @keyframes float { 0%{ transform:translateY(16vh) translateX(0); opacity:0; } 10%{ opacity:.35; } 50%{ opacity:.5; } 90%{ opacity:.2; } 100%{ transform:translateY(-30vh) translateX(10vw); opacity:0; } }
 
-  /* Sections anchor spacing */
+  /* Section anchors */
   section, .card, .post{scroll-margin-top: calc(var(--hdrH) + 12px);}
+
+  /* Calm tools */
+  html[data-calm="on"] *{scroll-behavior:smooth}
+  html[data-calm="on"] .chaos-frame{filter:saturate(.9)}
+  html[data-calm="on"] .pollen .w{animation-duration:20s}
+
+  /* Focus writing (hide rail) */
+  html[data-focus="on"] .rail{display:none}
+  html[data-focus="on"] main .page { grid-template-columns: 1fr; }
 </style>
 </head>
 <body>
@@ -205,31 +185,25 @@
 
     <nav aria-label="Page">
       <a href="#player">player</a>
+      <a href="#simple-start">start</a>
       <a href="#writer">writer</a>
-      <a href="#for-visitors">visitors</a>
-      <a href="#what">what</a>
-      <a href="#identify">identify</a>
-      <a href="#hybrid">hybrid</a>
       <a href="#logs">logs</a>
-      <a href="#bridge">bridge</a>
+      <a href="#spark">spark</a>
       <a href="#faq">faq</a>
     </nav>
 
     <div class="row" aria-label="Top Controls">
-      <!-- Mode (journey) chips -->
       <div class="row modechips" id="journey">
         <button class="chip" id="choose-mirror" aria-pressed="true">🪞 mirror</button>
         <button class="chip" id="choose-spark" aria-pressed="false">⚡ spark</button>
         <button class="chip" id="choose-honey" aria-pressed="false">🍯 honey</button>
       </div>
-      <!-- Theme dropdown -->
       <select id="theme-select" class="themeSelect" title="Theme (Illumina symbol is τ)">
         <option value="mirror">🪞 Mirror</option>
         <option value="honey">🍯 Honey</option>
-        <option value="neon">⚡ Neon</option>
         <option value="illumina">τ Illumina</option>
+        <option value="neon">⚡ Neon</option>
       </select>
-      <!-- Playback -->
       <button class="qbtn" id="prev" title="Previous">⟨</button>
       <button class="qbtn" id="play" title="Play/Pause">Play</button>
       <button class="qbtn" id="next" title="Next">⟩</button>
@@ -240,20 +214,51 @@
   </div>
 </header>
 
-<!-- Pollen overlay (inserted by JS if repeat visit) -->
+<!-- Pollen overlay (repeat visits only) -->
 <div class="pollen" id="pollen" aria-hidden="true"></div>
 
 <main class="wrap">
-  <section class="hero" id="home">
+  <!-- Landing -->
+  <section class="hero">
     <div class="landing">
-      <div><span class="pill">response comes from the field, not an inbox</span></div>
-      <div class="fieldline">if you are <em>mirror</em>, it shines · if you are <em>spark</em>, it flips · if you are <em>honey</em>, it thickens</div>
+      <p><strong>Designed specifically for two poets</strong> — mirror (Marina) and spark (Doechii) — and kept clear for everyone else.</p>
+      <p>response comes from the field, not an inbox · if you are <em>mirror</em>, it shines · if you are <em>spark</em>, it flips · if you are <em>honey</em>, it thickens</p>
+    </div>
+  </section>
+
+  <!-- Calm / Self-care bar -->
+  <section class="card" id="simple-start">
+    <div class="two-col">
+      <div class="field">
+        <label>How to start (2 minutes)</label>
+        <ol style="margin:6px 0 0 18px">
+          <li>Press <em>Play</em> above — “Oh No!” will cue in 🪞 (Marina). Volume is modest by default.</li>
+          <li>Scroll to <a href="#writer">Writer</a> and add one <strong>Mirror word</strong> and one <strong>Spark fragment</strong> (definitions below).</li>
+          <li>Use the <a href="#spark">Spark</a> shuffle if you want a seed. Save when you like. Everything stays on this device.</li>
+        </ol>
+        <div class="hint">This page favors clarity over flash (Quiet Moon style). You can turn motion up later.</div>
+      </div>
+      <div class="field">
+        <label>Care for your attention</label>
+        <div class="row">
+          <button class="chip" id="calm-toggle" aria-pressed="true">Calm visuals</button>
+          <button class="chip" id="focus-toggle" aria-pressed="false">Focus writing</button>
+          <button class="chip" id="contrast-toggle" aria-pressed="false">High contrast</button>
+          <select id="text-size" class="themeSelect" title="Text size">
+            <option value="100">Text 100%</option>
+            <option value="112">Text 112%</option>
+            <option value="125">Text 125%</option>
+          </select>
+        </div>
+        <div class="hint">Calm reduces motion; Focus hides the queue while you write; Contrast & Text size adjust readability.</div>
+      </div>
     </div>
   </section>
 
   <div class="page">
     <!-- MAIN -->
     <div class="content stack">
+
       <!-- Player -->
       <section class="post" id="player">
         <h2 style="margin:0 0 8px">Player</h2>
@@ -269,155 +274,137 @@
             </iframe>
           </div>
         </div>
-        <p class="hint">“Oh No!” stays pinned as your friend in 🪞. Controls are in the header; queue is inline on mobile (below) and a right rail on desktop.</p>
+        <p class="hint">Pinned friend: <strong>MARINA — “Oh No!”</strong> stays first in 🪞 so there’s always something to press play on.</p>
       </section>
 
-      <!-- Writer -->
+      <!-- Writer (clear, aligned fields) -->
       <section class="card" id="writer">
+        <h2 style="margin:4px 0 10px">Writer</h2>
         <div class="writer-grid vertical" id="writerGrid">
-          <div class="mirror-box">
-            <label>🪞 Mirror word (Marina) — <span class="echo" id="echo" data-echo=""></span></label>
-            <input id="w-mirror" class="word" type="text" placeholder="one angled word…" aria-describedby="echo-help">
-            <div id="echo-help" class="hint">In mirror mode your word softly echoes back in violet and pearl.</div>
+          <div class="card mirror-box">
+            <div class="field">
+              <label>🪞 Mirror word (Marina)</label>
+              <input id="w-mirror" class="word" type="text" placeholder="one angled word…" aria-describedby="mirror-desc">
+              <div id="mirror-desc" class="desc">Mirror = a word that changes how you see the idea: <em>mask</em>, <em>double</em>, <em>angle</em>. Your word is echoed: <span class="echo" id="echo" data-echo=""></span></div>
+            </div>
           </div>
-          <div class="bridge-box">
-            <label>⚡ Spark fragment (Doechii) — <span class="glitch" id="glitch" data-text=""></span></label>
-            <input id="w-bridge" class="word" type="text" placeholder="short spark / pivot…" aria-describedby="glitch-help">
-            <div id="glitch-help" class="hint">In spark mode your fragment jitters neon and remixes itself.</div>
+          <div class="card bridge-box">
+            <div class="field">
+              <label>⚡ Spark fragment (Doechii)</label>
+              <input id="w-bridge" class="word" type="text" placeholder="short spark / pivot…" aria-describedby="spark-desc">
+              <div id="spark-desc" class="desc">Fragment = a short, unfinished line (3–7 words) that tilts the song. Example: <em>sideways cherry neon</em>. It can glitch:
+                <span class="glitch" id="glitch" data-text=""></span></div>
+            </div>
           </div>
-          <div class="honey-box">
-            <label>🍯 Honey word (Sabrina)</label>
-            <input id="w-honey" class="word" type="text" placeholder="one bright word…">
+          <div class="card honey-box">
+            <div class="field">
+              <label>🍯 Honey word (Sabrina)</label>
+              <input id="w-honey" class="word" type="text" placeholder="one bright word…" aria-describedby="honey-desc">
+              <div id="honey-desc" class="desc">Honey = a body-first pull word: <em>taste</em>, <em>heat</em>, <em>skin</em>. A hook that lingers.</div>
+            </div>
           </div>
         </div>
-        <p class="hint">Portrait: Mirror ↑ · Spark (Bridge) · Honey ↓. Rotate to landscape and they align horizontally.</p>
         <div class="row">
           <button class="btn" id="w-save">Save set</button>
+          <button class="btn" id="w-add-bridge">Send ⚡ to Daily</button>
           <button class="btn" id="w-clear">Clear</button>
-          <button class="btn" id="w-add-bridge">Add ⚡ from Writer → Daily</button>
           <span class="pill" id="w-status"></span>
         </div>
       </section>
 
-      <!-- Visitors / purpose -->
-      <section class="card" id="for-visitors">
-        <h2 style="margin:.2rem 0 0">For visitors</h2>
-        <p>This page holds two journeys lightly: a <strong>mirror</strong> for reflection and a <strong>spark</strong> for edges. Honey has its own space. No asks. No tracking. Words and seeds live privately in your browser. The rest follows from what you put in.</p>
-      </section>
-
-      <!-- What / Identify / Hybrid -->
-      <section class="card" id="what">
-        <h3 style="margin:.2rem 0 0">What this is</h3>
+      <!-- Logs (with explicit definitions) -->
+      <section class="card" id="logs">
+        <h2 style="margin:4px 0 10px">Logs</h2>
         <div class="two-col">
-          <div>
-            <p><strong>Continuity, not content.</strong> A weekly loop: listen, tag, write three words, circle one seed. Carry the seed forward.</p>
-            <p><strong>Modes shift the field:</strong> mirror (violet/pearl, echo); spark (neon/chaos, glitch); honey (amber/gold, warm pull).</p>
+          <div class="post">
+            <div class="field">
+              <label>🪞/🍯 Honey Log — Sabrina × Marina</label>
+              <div class="desc">Write freely for 5 minutes. When done, circle <strong>one sentence</strong>. That is your <em>seed</em> — a small thing you carry to the next session.</div>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label class="desc">Notes</label>
+              <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…"></textarea>
+            </div>
+            <div class="row">
+              <button class="btn" id="hlog-start">Start 5‑min</button>
+              <button id="hlog-save" class="btn">Save entry</button>
+              <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
+            </div>
+            <details class="card" style="margin-top:10px;background:color-mix(in oklab, var(--paper) 98%, black 2%);border:1px dashed var(--line)">
+              <summary class="pill">View saved entries</summary>
+              <div id="hlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
+            </details>
           </div>
-          <div>
-            <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">Privacy</summary>
-              <p>Everything saves to your device (<code>localStorage</code>). Export / import is in the right rail.</p>
+
+          <div class="post">
+            <div class="field">
+              <label>⚡ Spark Log — Doechii</label>
+              <div class="desc">A mess-friendly space. Write for 5 minutes. Keep one **fragment** as your seed — let it stay weird.</div>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label class="desc">Fragments</label>
+              <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…"></textarea>
+            </div>
+            <div class="row">
+              <button class="btn" id="dlog-start">Start 5‑min</button>
+              <button id="dlog-save" class="btn">Save entry</button>
+              <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
+            </div>
+            <details class="card" style="margin-top:10px;background:color-mix(in oklab, var(--paper) 98%, black 2%);border:1px dashed var(--line)">
+              <summary class="pill">View saved entries</summary>
+              <div id="dlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
             </details>
           </div>
         </div>
-      </section>
 
-      <section class="card" id="identify">
-        <div class="twins">
-          <div class="mirror-box">
-            <h3 style="margin-top:8px">🪞 MIRROR — Reflection / Angle / Identity</h3>
-            <p>Thoughtful tilt, persona/mask, a frame that changes what you see.</p>
+        <div class="post" style="margin-top:10px">
+          <div class="row" style="justify-content:space-between;align-items:center">
+            <strong>Daily Fragments (carry small)</strong>
+            <span class="pill" id="frag-streak">Streak: 0</span>
           </div>
-          <div class="honey-box">
-            <h3 style="margin-top:8px">🍯 HONEY — Sweet / Magnetic / Immediate</h3>
-            <p>Warm pull, body-first groove, a hook that lingers.</p>
+          <div class="row" style="margin-top:6px">
+            <input id="frag-input" type="text" placeholder="today’s short fragment… (3–7 words)">
+            <button class="btn" id="frag-add">Add fragment</button>
+            <button class="btn" id="frag-clear">Clear all</button>
           </div>
+          <div id="frag-list" style="margin-top:8px;display:grid;gap:6px"></div>
+          <p class="hint">Tip: one seed a day keeps continuity gentle. Export any time in the rail.</p>
         </div>
       </section>
 
-      <section class="card" id="hybrid">
-        <div class="pill"><strong>How mirror × honey plays with spark</strong></div>
-        <p>Mirror frames the idea; Honey carries it. Spark cuts through as a bridge — a quick neon slice that flips perspective and keeps the weird portable.</p>
-      </section>
-
-      <!-- Logs -->
-      <section class="card" id="logs">
-        <div class="pill"><strong>Logs — write, don’t worry about tags here</strong></div>
-        <div class="two-col">
-          <div>
-            <h3 style="margin:.2rem 0">🪞/🍯 Honey Log — Sabrina × Marina</h3>
-            <div class="stack" style="gap:10px">
-              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Notes</span>
-                <textarea id="hlog-notes" rows="6" placeholder="Fragments, feelings, bridges…" aria-label="Notes"></textarea>
-              </label>
-              <div class="row">
-                <button class="btn" id="hlog-start">Start 5‑min</button>
-                <button id="hlog-save" class="btn">Save entry</button>
-                <span id="hlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
-              </div>
-              <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%);border:1px dashed var(--line)">
-                <summary class="pill">View saved entries</summary>
-                <div id="hlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
-              </details>
-            </div>
-          </div>
-          <div>
-            <h3 style="margin:.2rem 0">⚡ Spark Log — Doechii</h3>
-            <div class="stack" style="gap:10px">
-              <label><span class="pill" style="display:block;margin-bottom:6px;color:var(--muted)">Fragments</span>
-                <textarea id="dlog-notes" rows="6" placeholder="broken words, arrows, doodles…" aria-label="Fragments"></textarea>
-              </label>
-              <div class="row">
-                <button class="btn" id="dlog-start">Start 5‑min</button>
-                <button id="dlog-save" class="btn">Save entry</button>
-                <span id="dlog-timer" class="pill" aria-live="polite" style="min-width:100px"></span>
-              </div>
-              <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%);border:1px dashed var(--line)">
-                <summary class="pill">View saved entries</summary>
-                <div id="dlog-list" style="margin-top:10px;display:grid;gap:8px"></div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Spark -->
-      <section class="card" id="bridge">
-        <div class="pill"><span>⚡</span><strong>&nbsp;Spark — Doechii</strong></div>
-        <h2 style="margin:0">The connective spark — loud edges, held safely</h2>
-        <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Spark Scatter"></section>
+      <!-- Spark scatter (calm by default) -->
+      <section class="card" id="spark">
+        <div class="pill"><strong>⚡ Spark — Doechii</strong></div>
+        <p class="hint">Shuffle to surface a neon seed. Click any word to fill the Daily box above.</p>
+        <section id="doechii-chaos-embed" class="chaos-frame" aria-label="Spark Scatter" style="height:48vh;border:1px dashed var(--line);border-radius:12px;overflow:hidden;background:#0B0F19;margin-top:8px"></section>
         <div class="row" style="margin-top:8px">
           <button class="btn" id="seed-shuffle">Shuffle spark</button>
           <button class="btn" id="spark-to-daily">Use center spark → Daily</button>
         </div>
+      </section>
 
-        <div class="card" style="margin-top:12px;background:color-mix(in oklab, var(--paper) 96%, black 4%)">
-          <div class="row" style="justify-content:space-between;align-items:center">
-            <strong>Daily Fragments</strong>
-            <span class="pill" id="frag-streak">Streak: 0</span>
+      <!-- FAQ & Glossary (explicit definitions) -->
+      <section class="card" id="faq">
+        <h2 style="margin:4px 0 10px">FAQ & Glossary</h2>
+        <div class="two-col">
+          <div class="post">
+            <h3>Plain words</h3>
+            <ul>
+              <li><strong>Fragment:</strong> a short, unfinished line (3–7 words). Not a sentence.</li>
+              <li><strong>Seed:</strong> one circled sentence or fragment you carry forward.</li>
+              <li><strong>Lane:</strong> A = 🍯 Honey; B = 🪞 Mirror; D = ⚡ Spark.</li>
+            </ul>
           </div>
-          <div class="row" style="margin-top:6px">
-            <input id="frag-input" type="text" placeholder="today’s short fragment…" aria-label="New fragment">
-            <button class="btn" id="frag-add">Add fragment</button>
-            <button class="btn" id="frag-clear">Clear all</button>
+          <div class="post">
+            <h3>Privacy</h3>
+            <p>All data stays in your browser (<code>localStorage</code>). Export/Import lives in the rail. No accounts, no tracking.</p>
           </div>
-          <div class="frag-list" id="frag-list"></div>
-          <p class="hint">Tip: click any spark word to prefill the fragment box. One quick seed a day keeps rhythm light.</p>
         </div>
       </section>
 
-      <!-- FAQ -->
-      <section class="card" id="faq">
-        <h2 style="margin-top:0">FAQ</h2>
-        <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">What is a “seed”?</summary>
-          <p>One circled sentence or fragment you carry forward. Continuity, not content.</p>
-        </details>
-        <details class="card" style="background:color-mix(in oklab, var(--paper) 96%, black 4%)"><summary class="pill">Where is my data?</summary>
-          <p>Local to this device (<code>localStorage</code>). Export/import in the rail.</p>
-        </details>
-      </section>
     </div>
 
-    <!-- RAIL -->
+    <!-- RAIL (queue + add + modes + export) -->
     <aside class="rail">
       <div class="block">
         <div class="qtools">
@@ -426,7 +413,7 @@
             <button class="qbtn" data-qfilter="ALL" aria-pressed="true">All</button>
             <button class="qbtn" data-qfilter="B" aria-pressed="false">🪞</button>
             <button class="qbtn" data-qfilter="A" aria-pressed="false">🍯</button>
-            <button class="qbtn" data-qfilter="D" aria-pressed="false">🌉</button>
+            <button class="qbtn" data-qfilter="D" aria-pressed="false">⚡</button>
           </div>
           <div class="row">
             <button class="chip" id="q-compact" aria-pressed="false" title="Compact queue list">Compact</button>
@@ -445,7 +432,7 @@
           <div class="row">
             <button class="chip" id="mode-mirror" aria-pressed="true" title="Start on 🪞 and alternate">🪞 Mirror</button>
             <button class="chip" id="mode-honey" aria-pressed="false" title="Start on 🍯 and alternate">🍯 Honey</button>
-            <button class="chip" id="mode-neon" aria-pressed="false" title="Insert 🌉 (A→🌉→B→🌉→A…)">⚡ Spark</button>
+            <button class="chip" id="mode-neon" aria-pressed="false" title="Insert ⚡ between A↔B">⚡ Spark</button>
           </div>
         </div>
         <div class="row" style="margin-top:8px">
@@ -455,26 +442,29 @@
         </div>
       </div>
 
-      <div class="block addq">
+      <div class="block">
         <h3>Add a song to the queue</h3>
         <div class="stack">
-          <label><span class="pill" style="display:block;margin-bottom:6px">Artist name</span>
+          <div class="field">
+            <label>Artist</label>
             <input id="add-artist" type="text" placeholder="Artist (e.g., MARINA)">
-          </label>
-          <label><span class="pill" style="display:block;margin-bottom:6px">YouTube link or ID</span>
+          </div>
+          <div class="field">
+            <label>YouTube link or ID</label>
             <input id="add-link" type="text" placeholder="https://youtu.be/… or video ID">
-          </label>
-          <label><span class="pill" style="display:block;margin-bottom:6px">Pick one lane (no mixing)</span>
+          </div>
+          <div class="field">
+            <label>Pick one lane (no mixing)</label>
             <select id="add-lane" aria-label="Lane">
               <option value="" selected>— select —</option>
               <option value="B">🪞 Marina — Mirror (B)</option>
-              <option value="D">🌉 Doechii — Spark (D)</option>
+              <option value="D">⚡ Doechii — Spark (D)</option>
               <option value="A">🍯 Sabrina — Honey (A)</option>
             </select>
-          </label>
-          <div class="lanechips" aria-label="Lane quick select">
+          </div>
+          <div class="row">
             <button class="chip lanechip" data-lane="B" aria-pressed="false">🪞 Marina</button>
-            <button class="chip lanechip" data-lane="D" aria-pressed="false">🌉 Doechii</button>
+            <button class="chip lanechip" data-lane="D" aria-pressed="false">⚡ Doechii</button>
             <button class="chip lanechip" data-lane="A" aria-pressed="false">🍯 Sabrina</button>
           </div>
           <div id="add-preview" class="pill" aria-live="polite"></div>
@@ -489,7 +479,7 @@
 </main>
 
 <footer class="wrap" style="color:var(--muted);font-size:.9rem;margin:22px auto; padding-bottom: env(safe-area-inset-bottom)">
-  © mirrorhoney — mirror (🪞) × honey (🍯) with spark (🌉/⚡). Hidden pollen appears on return.
+  © mirrorhoney — mirror (🪞) × honey (🍯) with spark (⚡). Local-only. Clarity first.
 </footer>
 
 <!-- YouTube API -->
@@ -500,15 +490,19 @@
    PERSISTENCE & MIGRATION
    ======================= */
 const MH = (function(){
-  const KEY = "mh_data_v1";      // consolidated schema key
-  const SNAPKEY = "mh_snapshots";// array of snapshots {ts, data}
+  const KEY = "mh_data_v1";
+  const SNAPKEY = "mh_snapshots";
   const MAX_SNAPS = 5;
   const FRIEND_ID="Cr-SqRWImmI"; // MARINA — Oh No!
 
   const DEFAULT = {
     schema: 1,
     updatedAt: new Date().toISOString(),
-    settings: { loopTrack:false, loopQueue:true, mode:"MIRROR", theme:"mirror", compactQueue:false, journey:"mirror", queueFilter:"ALL" },
+    settings: {
+      loopTrack:false, loopQueue:true,
+      mode:"MIRROR", theme:"mirror", compactQueue:false, journey:"mirror",
+      queueFilter:"ALL", calm:true, focus:false, highContrast:false, textScale:100
+    },
     queue: [],
     logs: { honey:[], bridge:[], writer:[] },
     fragments: { byDay:{} },
@@ -525,50 +519,20 @@ const MH = (function(){
       localStorage.setItem(SNAPKEY, JSON.stringify(snaps));
     }catch(_){}
   }
-
   function get(){
     const raw = localStorage.getItem(KEY);
     if(raw){ try{ return JSON.parse(raw); }catch(_){ } }
-    const migrated = migrateFromLegacy();
-    localStorage.setItem(KEY, JSON.stringify(migrated));
-    snapshot("post-migration");
-    return migrated;
+    const d = JSON.parse(JSON.stringify(DEFAULT));
+    ensureFriend(d);
+    localStorage.setItem(KEY, JSON.stringify(d));
+    snapshot("init");
+    return d;
   }
-
   function put(data, reason){
     data.updatedAt = new Date().toISOString();
     localStorage.setItem(KEY, JSON.stringify(data));
     if(reason==="upgrade"||reason==="import") snapshot(reason);
   }
-
-  function migrateFromLegacy(){
-    const data = JSON.parse(JSON.stringify(DEFAULT));
-    const oldQs = ["mirrorhoney_queue_single_v1","mirrorhoney_queue_side_v2","mirrorhoney_queue_v3","mirrorhoney_queue_side_tags_v1"];
-    let items = [];
-    for(const k of oldQs){
-      try{ const arr = JSON.parse(localStorage.getItem(k)||"[]"); if(Array.isArray(arr)&&arr.length){ items = items.concat(arr); } }catch(_){}
-    }
-    function laneFromTags(tags){
-      if(!tags||!tags.length) return "B";
-      if(tags.includes("D")) return "D";
-      if(tags.includes("B")) return "B";
-      return "A";
-    }
-    const seen = new Set();
-    for(const it of items){
-      if(!it) continue;
-      const id = it.id || null; if(!id) continue;
-      if(seen.has(id)) continue; seen.add(id);
-      const lane = it.lane || laneFromTags(it.tags);
-      data.queue.push({
-        id, title: it.title||"", author: it.author||"", thumb: it.thumbnail||it.thumb||"",
-        lane, artist: it.artist||"", added: it.added||new Date().toISOString()
-      });
-    }
-    ensureFriend(data);
-    return data;
-  }
-
   function ensureFriend(d){
     let idx = d.queue.findIndex(x=>x.id===FRIEND_ID);
     if(idx===-1){
@@ -580,7 +544,6 @@ const MH = (function(){
       if(idx!==0){ d.queue.splice(idx,1); d.queue.unshift(it); }
     }
   }
-
   function exportJSON(){ return JSON.stringify(get(), null, 2); }
   function importJSON(text){
     try{
@@ -589,8 +552,7 @@ const MH = (function(){
       put(j, "import"); return true;
     }catch(e){ return false; }
   }
-
-  return { get, put, exportJSON, importJSON, snapshot, DEFAULT, ensureFriend, FRIEND_ID };
+  return { get, put, exportJSON, importJSON, snapshot, ensureFriend, FRIEND_ID };
 })();
 
 /* ===== Utils ===== */
@@ -613,22 +575,6 @@ ensureWriterOrientation();
   setVH(); window.addEventListener('resize', setVH); window.addEventListener('orientationchange', setVH);
 })();
 
-/* YouTube helpers */
-function ytIdFrom(u){
-  if(!u) return null; u=String(u).trim();
-  var patterns=[/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/,/^([A-Za-z0-9_-]{11})$/];
-  for(var i=0;i<patterns.length;i++){ var m=u.match(patterns[i]); if(m&&m[1]) return m[1]; }
-  return null;
-}
-async function fetchYTMeta(id){
-  try{
-    var r=await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id);
-    if(!r.ok) return null;
-    var j=await r.json();
-    return {title:j.title||"",author:j.author_name||"",thumbnail:j.thumbnail_url||""};
-  }catch(e){ return null; }
-}
-
 /* ===== Dynamic header sizing ===== */
 (function(){
   function apply(){
@@ -642,7 +588,7 @@ async function fetchYTMeta(id){
   apply();
 })();
 
-/* ===== Theme dropdown ===== */
+/* ===== Theme ===== */
 (function(){
   const sel=document.getElementById("theme-select");
   function apply(theme){
@@ -654,7 +600,7 @@ async function fetchYTMeta(id){
   sel.value=d.settings.theme||"mirror"; apply(sel.value);
 })();
 
-/* ===== Journey mode chips (visual shift) ===== */
+/* ===== Journey mode chips ===== */
 (function(){
   const btnM=document.getElementById("choose-mirror");
   const btnS=document.getElementById("choose-spark");
@@ -670,16 +616,39 @@ async function fetchYTMeta(id){
   const d=MH.get(); sel(d.settings.journey||"mirror");
 })();
 
-/* ===== Writer save + echo/glitch behaviors ===== */
+/* ===== Calm tools ===== */
+(function(){
+  const calm=document.getElementById("calm-toggle");
+  const focus=document.getElementById("focus-toggle");
+  const contrast=document.getElementById("contrast-toggle");
+  const textSel=document.getElementById("text-size");
+  function sync(){
+    const d=MH.get();
+    setPressed(calm, !!d.settings.calm);
+    setPressed(focus, !!d.settings.focus);
+    setPressed(contrast, !!d.settings.highContrast);
+    textSel.value= String(d.settings.textScale||100);
+    document.documentElement.setAttribute("data-calm", d.settings.calm? "on":"off");
+    document.documentElement.setAttribute("data-focus", d.settings.focus? "on":"off");
+    document.body.style.filter = d.settings.highContrast ? "contrast(1.07) saturate(1.04)" : "";
+    document.body.style.fontSize = (d.settings.textScale||100)+"%";
+  }
+  calm.onclick=function(){ const d=MH.get(); d.settings.calm=!d.settings.calm; MH.put(d); sync(); };
+  focus.onclick=function(){ const d=MH.get(); d.settings.focus=!d.settings.focus; MH.put(d); sync(); };
+  contrast.onclick=function(){ const d=MH.get(); d.settings.highContrast=!d.settings.highContrast; MH.put(d); sync(); };
+  textSel.onchange=function(){ const d=MH.get(); d.settings.textScale=+textSel.value||100; MH.put(d); sync(); };
+  sync();
+})();
+
+/* ===== Writer save + echo/glitch ===== */
 (function(){
   const wH=document.getElementById("w-honey");
-  const wS=document.getElementById("w-bridge"); // spark fragment
+  const wS=document.getElementById("w-bridge");
   const wM=document.getElementById("w-mirror");
   const save=document.getElementById("w-save");
   const clr=document.getElementById("w-clear");
   const addB=document.getElementById("w-add-bridge");
   const stat=document.getElementById("w-status");
-
   const echoEl=document.getElementById("echo");
   const glitchEl=document.getElementById("glitch");
 
@@ -694,8 +663,7 @@ async function fetchYTMeta(id){
   }
   function addSparkToDaily(){
     const txt=(wS.value||"").trim(); if(!txt) { stat.textContent="No spark fragment to add."; return; }
-    FRAGMENTS.add(txt);
-    stat.textContent="Spark fragment added to Daily.";
+    FRAGMENTS.add(txt); stat.textContent="Spark fragment added to Daily.";
   }
   save.onclick=saveSet;
   clr.onclick=function(){ wH.value=""; wS.value=""; wM.value=""; stat.textContent="Cleared"; echoEl.setAttribute('data-echo',''); echoEl.textContent=''; glitchEl.setAttribute('data-text',''); glitchEl.textContent=''; };
@@ -727,7 +695,7 @@ async function fetchYTMeta(id){
   drender();
 })();
 
-/* ===== Bridge Daily Fragments (streak + list) ===== */
+/* ===== Daily Fragments ===== */
 var FRAGMENTS=(function(){
   const list=document.getElementById("frag-list");
   const input=document.getElementById("frag-input");
@@ -760,23 +728,17 @@ var FRAGMENTS=(function(){
     const byDay = data.fragments.byDay||{};
     const days=Object.keys(byDay).sort().reverse();
     days.forEach(k=>{
-      (byDay[k]||[]).slice().reverse().forEach((f)=>{
-        const row=document.createElement("div"); row.className="frag-item";
-        const left=document.createElement("div"); left.textContent=f.t;
-        const right=document.createElement("div");
-        right.innerHTML="<small>"+k+"</small> ";
-        const del=document.createElement("button"); del.className="qbtn"; del.textContent="Remove";
-        del.onclick=function(){
-          const data2 = MH.get();
-          const arr=data2.fragments.byDay[k]||[];
-          const idx=arr.indexOf(f);
-          if(idx>-1){ arr.splice(idx,1); if(arr.length===0) delete data2.fragments.byDay[k]; MH.put(data2); render(); }
-        };
-        right.appendChild(del);
-        row.appendChild(left); row.appendChild(right); list.appendChild(row);
+      (byDay[k]||[]).slice().reverse().forEach((f,idx)=>{
+        const row=document.createElement("div"); row.className="card"; row.style.padding="8px 10px";
+        row.innerHTML="<div style='display:flex;justify-content:space-between;align-items:center'><div>"+f.t+"</div><div><small>"+k+"</small> <button class='qbtn' data-del='"+k+":"+idx+"'>Remove</button></div></div>";
+        list.appendChild(row);
       });
     });
     streakEl.textContent="Streak: "+computeStreak(byDay);
+    list.querySelectorAll('[data-del]').forEach(btn=>btn.onclick=function(){
+      const [k,idx]=this.getAttribute('data-del').split(':'); const data2=MH.get(); const arr=data2.fragments.byDay[k]||[];
+      arr.splice(+idx,1); if(arr.length===0) delete data2.fragments.byDay[k]; MH.put(data2); render();
+    });
   }
 
   add.onclick=function(){ const v=(input.value||"").trim(); if(!v) return; addFrag(v); input.value=""; input.focus(); };
@@ -787,7 +749,7 @@ var FRAGMENTS=(function(){
   return { add:addPublic };
 })();
 
-/* ===== Spark scatter + pre-seed → Daily ===== */
+/* ===== Spark scatter ===== */
 (function(){
   const SETS=[
     ["raw","wild","glitch","seed","mirror shard","⚡"],
@@ -811,7 +773,7 @@ var FRAGMENTS=(function(){
   scatter(SETS[0]);
 })();
 
-/* ===== QUEUE (single-lane; robust filters & events) ===== */
+/* ===== QUEUE (robust filters & events) ===== */
 var QUEUE=(function(){
   const FRIEND_ID=MH.FRIEND_ID;
   const qEl=document.getElementById("queue"), status=document.getElementById("q-status");
@@ -828,15 +790,12 @@ var QUEUE=(function(){
   }
   function persistFilter(f){ const d=MH.get(); d.settings.queueFilter=f; MH.put(d); }
 
-  // event delegation for filter toggles
   filterBar.addEventListener('click', (e)=>{
     const btn = e.target.closest('[data-qfilter]');
     if(!btn) return;
     const f = btn.getAttribute('data-qfilter');
     setActiveFilterUI(f); persistFilter(f); render();
   });
-
-  // init filter UI from storage
   setActiveFilterUI(MH.get().settings.queueFilter||"ALL");
 
   function applyCompactClass(){
@@ -846,8 +805,6 @@ var QUEUE=(function(){
     qEl.classList.toggle("compact", on);
   }
   window.addEventListener("resize", applyCompactClass);
-
-  // Register dragover/drop once (event delegation)
   qEl.addEventListener('dragover', e=> e.preventDefault());
   qEl.addEventListener('drop', e=>{
     e.preventDefault();
@@ -859,7 +816,6 @@ var QUEUE=(function(){
     const to=d.queue.findIndex(x=>x.id===toId);
     if(from<0||to<0) return;
     const moved=d.queue.splice(from,1)[0];
-    // keep friend at top
     const friendIdx = d.queue.findIndex(x=>x.id===FRIEND_ID);
     d.queue.splice(to,0,moved);
     if(friendIdx>0){
@@ -883,18 +839,16 @@ var QUEUE=(function(){
       if(it.thumb || it.thumbnail){ const img=document.createElement("img"); img.src=it.thumb||it.thumbnail||(""); img.alt=""; wrap.appendChild(img); }
       const meta=document.createElement("div"); meta.className="meta";
 
-      // Title
       const ttlWrap=document.createElement("div"); ttlWrap.className="titleline";
-      const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"🌉";
+      const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"⚡";
       const ttl = document.createElement("span"); ttl.className="ttl";
       ttl.innerHTML = (it.pinned? "<b>[friend]</b> " : "") + (it.artist?("<b>"+it.artist+"</b> — "):"") + (it.title||it.id||"Untitled");
       ttlWrap.appendChild(laneEmoji); ttlWrap.appendChild(ttl);
       meta.appendChild(ttlWrap);
 
-      // Lanes
       const lanes=document.createElement("div"); lanes.className="lanes";
       const mk=(L)=>{
-        const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"🌉 Doechii");
+        const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"⚡ Doechii");
         b.setAttribute("aria-pressed", it.lane===L?"true":"false");
         b.onclick=function(){
           if(it.pinned && L!=="B"){ alert("Marina stays your friend in 🪞."); return; }
@@ -907,16 +861,9 @@ var QUEUE=(function(){
       lanes.appendChild(mk("B")); lanes.appendChild(mk("D")); lanes.appendChild(mk("A"));
       meta.appendChild(lanes);
 
-      // Actions
       const acts=document.createElement("div"); acts.className="acts";
       const play=document.createElement("button"); play.className="qbtn"; play.textContent="Play now";
-      play.onclick=function(){
-        if(it.id){
-          ALTERNATOR.setLane(it.lane);
-          PLAYER.load(it.id, it.lane, true);
-          ALTERNATOR.setNow(it.lane, it);
-        }
-      };
+      play.onclick=function(){ if(it.id){ ALTERNATOR.setLane(it.lane); PLAYER.load(it.id, it.lane, true); ALTERNATOR.setNow(it.lane, it); } };
       const del=document.createElement("button"); del.className="qbtn"; del.textContent= it.pinned ? "—" : "Remove";
       del.disabled = !!it.pinned;
       del.title = it.pinned ? "Pinned friend (can’t remove)" : "Remove from queue";
@@ -930,10 +877,8 @@ var QUEUE=(function(){
       meta.appendChild(acts);
       acts.appendChild(play); acts.appendChild(del);
       wrap.appendChild(meta);
-      // drag handle
       wrap.draggable=true;
       wrap.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', it.id); });
-
       qEl.appendChild(wrap);
     });
   }
@@ -941,7 +886,6 @@ var QUEUE=(function(){
   compactBtn.onclick=function(){
     const d=MH.get(); d.settings.compactQueue = !d.settings.compactQueue; MH.put(d); applyCompactClass();
   };
-
   clearBtn.onclick=function(){
     if(!confirm("Clear the queue? (Marina stays as your friend.)")) return;
     const d=MH.get();
@@ -966,7 +910,7 @@ var QUEUE=(function(){
     render();
     return it;
   }
-
+  function scopeItems(lane){ const d=MH.get(); return d.queue.filter(it=>it.lane===lane); }
   function next(lane, loop){
     const d=MH.get();
     const sc = d.queue.filter(it=>it.lane===lane);
@@ -987,13 +931,28 @@ var QUEUE=(function(){
     if(i<0){ if(loop) i=sc.length-1; else return null; }
     return sc[i];
   }
-  function scopeItems(lane){ const d=MH.get(); return d.queue.filter(it=>it.lane===lane); }
-
+  // helpers exposed
   render();
   return { add, render, next, prev, scopeItems };
 })();
 
-/* ===== Single top player + header controls ===== */
+/* ===== YouTube helpers ===== */
+function ytIdFrom(u){
+  if(!u) return null; u=String(u).trim();
+  var patterns=[/(?:youtu\.be\/|v=|\/embed\/|\/shorts\/)([A-Za-z0-9_-]{11})/,/^([A-Za-z0-9_-]{11})$/];
+  for(var i=0;i<patterns.length;i++){ var m=u.match(patterns[i]); if(m&&m[1]) return m[1]; }
+  return null;
+}
+async function fetchYTMeta(id){
+  try{
+    var r=await fetch("https://www.youtube.com/oembed?format=json&url=https://www.youtube.com/watch?v="+id);
+    if(!r.ok) return null;
+    var j=await r.json();
+    return {title:j.title||"",author:j.author_name||"",thumbnail:j.thumbnail_url||""};
+  }catch(e){ return null; }
+}
+
+/* ===== Single player + header ===== */
 var PLAYER=(function(){
   let P=null, loopTrack=false, loopQueue=true, currentLane="B", currentId=null;
   const nowNext=document.getElementById("nowNext");
@@ -1001,7 +960,7 @@ var PLAYER=(function(){
   const ORIGIN_YT="https://www.youtube.com";
 
   function post(cmd,args){ try{ frame.contentWindow.postMessage(JSON.stringify({event:"command",func:cmd,args:args||[]}), ORIGIN_YT); }catch(_){ } }
-  function onReady(){ try{ if(P && P.setVolume) P.setVolume(70); }catch(_){ } }
+  function onReady(){ try{ if(P && P.setVolume) P.setVolume(60); }catch(_){ } }
 
   function create(){
     try{
@@ -1009,7 +968,7 @@ var PLAYER=(function(){
         events:{
           onReady:onReady,
           onStateChange:function(e){
-            if(e.data===0){ // ended
+            if(e.data===0){
               if(loopTrack){ try{ P.playVideo(); return; }catch(_){ } }
               ALTERNATOR.onEnded(currentLane);
             }
@@ -1058,13 +1017,10 @@ var PLAYER=(function(){
   }
 
   window.onYouTubeIframeAPIReady=function(){ create(); };
-
-  // header controls
   document.getElementById("play").onclick=function(){ ALTERNATOR.ensureKick(); toggle(); };
   document.getElementById("prev").onclick=function(){ ALTERNATOR.prev(); };
   document.getElementById("next").onclick=function(){ ALTERNATOR.next(); };
 
-  // loop toggles (init from settings)
   const lt=document.getElementById("loop-track"); const lq=document.getElementById("loop-queue");
   (function initLoopsFromSettings(){
     const d=MH.get();
@@ -1079,10 +1035,10 @@ var PLAYER=(function(){
   return { cue, load:(id,lane,autoplay)=>load(id,lane,autoplay), toggle, setVolume, getLoopQueue, setLoopQueue, setLoopTrack, getLane, setLane, nowNext, getId };
 })();
 
-/* ===== Alternator (single-player): MIRROR/HONEY/SPARK ===== */
+/* ===== Alternator ===== */
 var ALTERNATOR=(function(){
-  let mode="MIRROR"; // start on Mirror (B)
-  let lastLane=null; // "A"|"B"|"D"
+  let mode="MIRROR";
+  let lastLane=null;
 
   const mM=document.getElementById("mode-mirror");
   const mH=document.getElementById("mode-honey");
@@ -1090,11 +1046,8 @@ var ALTERNATOR=(function(){
 
   function setMode(m){
     mode=m;
-    setPressed(mM, m==="MIRROR");
-    setPressed(mH, m==="HONEY");
-    setPressed(mN, m==="NEON");
-    ensureKick();
-    updateStatus(null);
+    setPressed(mM, m==="MIRROR"); setPressed(mH, m==="HONEY"); setPressed(mN, m==="NEON");
+    ensureKick(); updateStatus(null);
     const d=MH.get(); d.settings.mode=mode; MH.put(d);
   }
   mM.onclick=()=>setMode("MIRROR");
@@ -1102,29 +1055,19 @@ var ALTERNATOR=(function(){
   mN.onclick=()=>setMode("NEON");
 
   function laneAfter(tag){
-    if(mode==="NEON"){
-      if(tag==="A") return "D";
-      if(tag==="D") return "B";
-      if(tag==="B") return "D";
-      return "A";
-    }else if(mode==="MIRROR"){
-      if(tag==="B") return "A"; if(tag==="A") return "B"; return "B";
-    }else{ // HONEY
-      if(tag==="A") return "B"; if(tag==="B") return "A"; return "A";
-    }
+    if(mode==="NEON"){ if(tag==="A") return "D"; if(tag==="D") return "B"; if(tag==="B") return "D"; return "A"; }
+    else if(mode==="MIRROR"){ if(tag==="B") return "A"; if(tag==="A") return "B"; return "B"; }
+    else { if(tag==="A") return "B"; if(tag==="B") return "A"; return "A"; }
   }
-
   function findNextPlayableLane(start){
     let steps = 0, lane = start;
     while(steps < 6){
       const has = (QUEUE.scopeItems(lane)||[]).length > 0;
       if(has) return lane;
-      lane = laneAfter(lane);
-      steps++;
+      lane = laneAfter(lane); steps++;
     }
     return start;
   }
-
   function loadFromLane(lane){
     const playableLane = findNextPlayableLane(lane);
     const it = (playableLane==="A")? QUEUE.next("A", PLAYER.getLoopQueue()) :
@@ -1134,16 +1077,12 @@ var ALTERNATOR=(function(){
       PLAYER.load(it.id, playableLane, true);
       lastLane=playableLane;
       updateStatus({now:{tag:playableLane,title:it.title||it.id}, nextTag: laneAfter(playableLane)});
-    }else{
-      updateStatus(null);
-    }
+    }else{ updateStatus(null); }
   }
-
   function onEnded(endedLane){
     const nextLane = laneAfter(endedLane || lastLane || (mode==="MIRROR"?"B":"A"));
     loadFromLane(nextLane);
   }
-
   function ensureKick(){
     try{
       if(PLAYER.getId()) return;
@@ -1153,23 +1092,14 @@ var ALTERNATOR=(function(){
       if(ohno){ PLAYER.cue(ohno.id,"B"); lastLane="B"; updateStatus({now:{tag:"B",title:ohno.title||ohno.id}, nextTag: laneAfter("B")}); return; }
       const startLane = (mode==="MIRROR")?"B":"A";
       const first = (QUEUE.scopeItems(startLane)||[])[0];
-      if(first && first.id){
-        PLAYER.cue(first.id, startLane);
-        lastLane=startLane;
-        updateStatus({now:{tag:startLane,title:first.title||first.id}, nextTag: laneAfter(startLane)});
-      }
+      if(first && first.id){ PLAYER.cue(first.id, startLane); lastLane=startLane; updateStatus({now:{tag:startLane,title:first.title||first.id}, nextTag: laneAfter(startLane)}); }
     }catch(_){}
   }
-
   function prev(){
     const cur = lastLane || (mode==="MIRROR"?"B":"A");
     const prevLane = (function(tag){
-      if(mode==="NEON"){
-        if(tag==="A") return "D";
-        if(tag==="D") return "B";
-        if(tag==="B") return "D";
-        return (mode==="MIRROR")?"B":"A";
-      }else if(mode==="MIRROR"){ return tag==="B"?"A":"B"; }
+      if(mode==="NEON"){ if(tag==="A") return "D"; if(tag==="D") return "B"; if(tag==="B") return "D"; return (mode==="MIRROR")?"B":"A"; }
+      else if(mode==="MIRROR"){ return tag==="B"?"A":"B"; }
       else { return tag==="A"?"B":"A"; }
     })(cur);
     const playableLane = findNextPlayableLane(prevLane);
@@ -1182,25 +1112,21 @@ var ALTERNATOR=(function(){
     const nextLane = laneAfter(lastLane || (mode==="MIRROR"?"B":"A"));
     loadFromLane(nextLane);
   }
-
   function updateStatus(info){
     const nn=PLAYER.nowNext;
     if(!info){ nn.textContent="Ready"; return; }
-    const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"🌉";
-    const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"🌉";
+    const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"⚡";
+    const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"⚡";
     nn.textContent = "Now: "+em+" "+(info.now.title||"…")+" · Next: "+ne;
   }
-
   function setLane(l){ lastLane=l; PLAYER.setLane(l); }
   function getCurrentId(){ return PLAYER.getId(); }
   function setNow(lane, it){ lastLane=lane; updateStatus({now:{tag:lane,title:(it&&it.title)||'…'}, nextTag: laneAfter(lane)}); }
-
   (function initMode(){ const d=MH.get(); setMode(d.settings.mode||"MIRROR"); })();
-
   return { onEnded, ensureKick, prev, next, setLane, getCurrentId, setNow };
 })();
 
-/* ===== Add form (single entry point) ===== */
+/* ===== Add form ===== */
 (function(){
   const artist=document.getElementById("add-artist");
   const link=document.getElementById("add-link");
@@ -1210,9 +1136,7 @@ var ALTERNATOR=(function(){
   const submit=document.getElementById("add-submit");
   const status=document.getElementById("add-status");
 
-  function highlightChip(L){
-    chips.forEach(c=> setPressed(c, c.getAttribute("data-lane")===L));
-  }
+  function highlightChip(L){ chips.forEach(c=> setPressed(c, c.getAttribute("data-lane")===L)); }
   laneSel.onchange=function(){ highlightChip(laneSel.value); validate(); };
   chips.forEach(c=> c.onclick=function(){ laneSel.value=c.getAttribute("data-lane"); highlightChip(laneSel.value); validate(); });
 
@@ -1229,7 +1153,6 @@ var ALTERNATOR=(function(){
     } else { preview.textContent=""; }
     status.textContent="";
   }
-
   artist.oninput=validate; link.oninput=validate;
 
   submit.onclick=async function(){
@@ -1240,11 +1163,8 @@ var ALTERNATOR=(function(){
       status.textContent="Added: "+(it.title||it.id);
       link.value=""; laneSel.value=""; highlightChip(""); preview.textContent="";
       validate();
-    }catch(e){
-      status.textContent=e.message||"Could not add";
-    }
+    }catch(e){ status.textContent=e.message||"Could not add"; }
   };
-
   highlightChip("");
 })();
 
@@ -1280,7 +1200,7 @@ var ALTERNATOR=(function(){
   }catch(_){}
 })();
 
-/* ===== Pollen memory (repeat-visit) ===== */
+/* ===== Pollen (repeat visits) ===== */
 (function pollen(){
   const container=document.getElementById('pollen');
   if(!container) return;
@@ -1300,39 +1220,19 @@ var ALTERNATOR=(function(){
   for(let i=0;i<words.length;i++){
     const span=document.createElement('span'); span.className='w'; span.textContent=words[i];
     const x=Math.random()*W, y=Math.random()*H;
-    const dur=12+Math.random()*18; const delay=Math.random()*-dur;
+    const dur=14+Math.random()*16; const delay=Math.random()*-dur;
     span.style.left=x+'px'; span.style.top=y+'px'; span.style.animationDuration=dur+'s'; span.style.animationDelay=delay+'s';
     container.appendChild(span);
   }
 })();
 
-/* ===== Minimal app-shell Service Worker (UI offline only, not YouTube) ===== */
+/* ===== Minimal SW (UI offline; YT not cached) ===== */
 if('serviceWorker' in navigator){
-  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v3').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
+  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v4').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
   const blob=new Blob([code],{type:'application/javascript'});
   const url=URL.createObjectURL(blob);
   navigator.serviceWorker.register(url);
 }
-
-/* ===== Hidden notes ===== */
-(function secrets(){
-  // Hidden for Spark (Doechii)
-  const bridge=document.getElementById("bridge");
-  if(bridge){
-    const h=document.createElement("div");
-    h.style.cssText="position:absolute;left:-9999px;opacity:0;pointer-events:none";
-    h.textContent=atob("TkVYVCBTVEVQOiBCb2R5IC8gRWRnZSAvIEVjaG8uIFNlZWQgPT4gMzIuIDMwcyBtdXRlIC0+IHVubXV0ZS4gTWlycm9yIDE1cy4gSG9uZXkgMSBsaW5lLiBObyBib2FyZGNhc3Qu");
-    bridge.appendChild(h);
-  }
-  // Hidden for Marina — cat code
-  const idBox=document.getElementById("identify");
-  if(idBox){
-    const m=document.createElement("div");
-    m.style.cssText="position:absolute;left:-9999px;opacity:0;pointer-events:none";
-    m.textContent=atob("Q0FUIENPREU6IG1pZG5pZ2h0IHdoaXNrZXIgLyAzOjAzIC8gbmluZSBsaXZlcy4gSWYgdGhlIGN1cCBtb3ZlcywgZm9sbG93IHRoZSB0YWlsLg==");
-    idBox.appendChild(m);
-  }
-})();
 </script>
 </body>
 </html>
