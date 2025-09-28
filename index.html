@@ -3,71 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>mirrorhoney — mirror · honey · bridge (flame)</title>
+<title>mirrorhoney — mirror · honey · bridge</title>
 <meta name="description" content="Built for Marina (friend in the mirror) and the Bridge (Doechii) to manifest — clear enough for anyone. Write like a poet, play seeds, and keep a quiet loop.">
-<meta name="theme-color" content="#0B0F19">
 <link rel="canonical" href="https://mirrorhoney.plnt.earth/">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0D0A10">
+
+<!-- Structured Data: WebPage -->
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"WebPage",
+  "name":"mirrorhoney — mirror · honey · bridge",
+  "url":"https://mirrorhoney.plnt.earth/",
+  "description":"Built for Marina (friend in the mirror) and the Bridge (Doechii) to manifest — clear enough for anyone."
+}</script>
+
+<!-- Structured Data: VideoObject (square inline YouTube friend in the mirror) -->
+<script type="application/ld+json">{
+ "@context":"https://schema.org",
+ "@type":"VideoObject",
+ "name":"MARINA — Oh No! (mirrorhoney friend in the mirror)",
+ "description":"Pinned mirror friend; square inline player. Press Play to begin.",
+ "thumbnailUrl":["https://img.youtube.com/vi/Cr-SqRWImmI/hqdefault.jpg"],
+ "embedUrl":"https://www.youtube.com/embed/Cr-SqRWImmI",
+ "uploadDate":"2010-06-22",
+ "publisher":{"@type":"Organization","name":"mirrorhoney"}
+}</script>
+
 <style>
   :root{
-    --bg:#0B0F19;--ink:#E6EAF2;--ink-strong:#FFFFFF;--muted:#A0A7B3;--line:#1B2433;
-    --accent:#7CD4FF;--rose:#FF3EB5;--honey:#F3C94E;--mirror:#C1D7FF;
-    --ok:#36D399;--warn:#FFD873;--railW:clamp(320px,31vw,460px);
-    --paper:#0D121E;--card:#0F1524;--shadow:0 12px 34px rgba(0,0,0,.45);
-    --hdrH: 88px; --vh: 1vh;
-    --violet:#8D7CFF; --pearl:#F2F5FF;
-    --neonC:#7DF9FF; --neonP:#FF49C0;
-    --amber:#F2B553; --gold:#FFD36B;
-    --radius:16px; --pad:14px;
-  }
-  /* Mirror */
-  html[data-theme="mirror"]{
-    --bg:#0B0F19; --ink:#E6EAF2; --ink-strong:#FFFFFF; --muted:#A0A7B3; --line:#1B2433;
-    --accent:#7CD4FF; --rose:#FF3EB5; --honey:#F3C94E; --mirror:#C1D7FF;
-    --paper:#0D121E; --card:#0F1524; --shadow:0 12px 34px rgba(0,0,0,.45);
-  }
-  /* Honey */
-  html[data-theme="honey"]{
-    --bg:#FDF7E6; --ink:#2F2612; --ink-strong:#1B1403; --muted:#6E5F3C; --line:#E5D7AF;
-    --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9;
-    --paper:#FFFBF0; --card:#FFFFFF; --shadow:0 12px 28px rgba(0,0,0,.12);
-  }
-  /* Illumina (τ) */
-  html[data-theme="illumina"]{
-    --bg:#F7F9FF; --ink:#1E2742; --ink-strong:#0F1633; --muted:#5B6A86; --line:#DFE6F3;
-    --accent:#5A78FF; --rose:#E457A2; --honey:#F0B600; --mirror:#6B8DFF;
-    --paper:#FFFFFF; --card:#FFFFFF; --shadow:0 14px 28px rgba(34,48,73,.14);
-  }
-  /* Neon (Doechii) */
-  html[data-theme="neon"]{
-    --bg:#070B12; --ink:#EAF7FF; --ink-strong:#FFFFFF; --muted:#9DB0C6; --line:#162235;
-    --accent:#7DF9FF; --rose:#FF49C0; --honey:#FFC36A; --mirror:#C9DBFF;
-    --paper:#0B1220; --card:#0C1528; --shadow:0 14px 34px rgba(0,0,0,.55);
-  }
-  /* Flame (warm neon) */
-  html[data-theme="flame"]{
     --bg:#0D0A10; --ink:#FCEEF9; --ink-strong:#FFFFFF; --muted:#D9B3C9; --line:#24182A;
     --accent:#FF914D; --rose:#FF5CA8; --honey:#FFC36A; --mirror:#E5C7FF;
     --paper:#120F18; --card:#16121E; --shadow:0 14px 34px rgba(0,0,0,.6);
+    --hdrH: 92px; --vh: 1vh; --railW:clamp(320px,31vw,460px);
+    --radius:16px; --pad:14px;
+    --violet:#8D7CFF; --pearl:#F2F5FF;
+    --neonC:#7DF9FF; --neonP:#FF49C0;
+    --amber:#F2B553; --gold:#FFD36B;
   }
+  /* Themes */
+  html[data-theme="mirror"]{ --bg:#0B0F19; --ink:#E6EAF2; --ink-strong:#FFFFFF; --muted:#A0A7B3; --line:#1B2433;
+    --accent:#7CD4FF; --rose:#FF3EB5; --honey:#F3C94E; --mirror:#C1D7FF; --paper:#0D121E; --card:#0F1524; --shadow:0 12px 34px rgba(0,0,0,.45); }
+  html[data-theme="honey"]{ --bg:#FDF7E6; --ink:#2F2612; --ink-strong:#1B1403; --muted:#6E5F3C; --line:#E5D7AF;
+    --accent:#C67A00; --rose:#D43C93; --honey:#F0B600; --mirror:#7A93C9; --paper:#FFFBF0; --card:#FFFFFF; --shadow:0 12px 28px rgba(0,0,0,.12); }
+  html[data-theme="illumina"]{ --bg:#F7F9FF; --ink:#1E2742; --ink-strong:#0F1633; --muted:#5B6A86; --line:#DFE6F3;
+    --accent:#5A78FF; --rose:#E457A2; --honey:#F0B600; --mirror:#6B8DFF; --paper:#FFFFFF; --card:#FFFFFF; --shadow:0 14px 28px rgba(34,48,73,.14); }
+  html[data-theme="neon"]{ --bg:#070B12; --ink:#EAF7FF; --ink-strong:#FFFFFF; --muted:#9DB0C6; --line:#162235;
+    --accent:#7DF9FF; --rose:#FF49C0; --honey:#FFC36A; --mirror:#C9DBFF; --paper:#0B1220; --card:#0C1528; --shadow:0 14px 34px rgba(0,0,0,.55); }
+  html[data-theme="flame"]{ --bg:#0D0A10; --ink:#FCEEF9; --ink-strong:#FFFFFF; --muted:#D9B3C9; --line:#24182A;
+    --accent:#FF914D; --rose:#FF5CA8; --honey:#FFC36A; --mirror:#E5C7FF; --paper:#120F18; --card:#16121E; --shadow:0 14px 34px rgba(0,0,0,.6); }
 
-  html,body{height:100%}
-  *{box-sizing:border-box}
-  body{
-    margin:0;background:var(--bg);color:var(--ink);
-    font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;letter-spacing:.2px;
-    padding-top:var(--hdrH);
-  }
+  html,body{height:100%} *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;letter-spacing:.2px;padding-top:var(--hdrH)}
+
   a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
   .wrap{max-width:1220px;margin:0 auto;padding:clamp(10px,3vw,20px)}
   .stack{display:grid;gap:14px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad)}
   .post{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:var(--pad)}
-  .two-col{display:grid;grid-template-columns:1.06fr .94fr;gap:14px}
-  .twins{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (max-width:880px){ .two-col,.twins{grid-template-columns:1fr} }
   .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .hint{font-size:.92rem;color:var(--muted);margin-top:6px}
   .pill{display:inline-flex;align-items:center;gap:8px;font-size:.92rem;color:var(--muted)}
+  .hint{font-size:.92rem;color:var(--muted);margin-top:6px}
   .btn,.chip,.qbtn{
     padding:8px 12px;border-radius:12px;border:1px solid var(--line);
     background:color-mix(in oklab, var(--bg) 80%, white 6%);color:var(--ink);cursor:pointer
@@ -75,9 +71,6 @@
   .chip{border-radius:999px}
   .chip[aria-pressed="true"], .qbtn[aria-pressed="true"]{outline:2px solid var(--accent)}
 
-  .field{display:grid;gap:6px}
-  .field label{font-weight:600;color:var(--ink-strong)}
-  .field .desc{color:var(--muted); font-size:.92rem}
   input[type="text"], textarea, select{
     width:100%;padding:12px;border-radius:12px;border:2px solid var(--line);
     background:color-mix(in oklab, var(--paper) 86%, black 8%); color:var(--ink-strong); font-size:16px
@@ -194,16 +187,20 @@
 <header>
   <div class="wrap hdr" id="hdr">
     <div class="row" style="justify-content:flex-start">
-      <div class="brand">mirrorhoney</div>
+      <a class="brand" href="/" aria-label="mirrorhoney home">mirrorhoney</a>
     </div>
 
-    <nav aria-label="Page">
-      <a href="#player">player</a>
-      <a href="#guide">guide</a>
-      <a href="#writer">writer</a>
-      <a href="#journal">journal</a>
-      <a href="#spark">spark</a>
-      <a href="#faq">faq</a>
+    <nav aria-label="Site">
+      <a href="/">home</a>
+      <a href="/guide">guide</a>
+      <a href="/writer">writer</a>
+      <a href="/journal">journal</a>
+      <a href="/spark">spark</a>
+      <a href="/faq">faq</a>
+      <a href="/mirror" title="Mirror (Marina)">🪞</a>
+      <a href="/honey" title="Honey (Sabrina)">🍯</a>
+      <a href="/bridge" title="Bridge (Doechii)">🌉</a>
+      <a href="/privacy">privacy</a>
     </nav>
 
     <div class="row" aria-label="Top Controls">
@@ -213,10 +210,10 @@
         <button class="chip" id="choose-honey" aria-pressed="false">🍯 honey</button>
       </div>
       <select id="theme-select" class="themeSelect" title="Theme (τ is the Illumina symbol)">
+        <option value="flame">🔥 Flame</option>
         <option value="mirror">🪞 Mirror</option>
         <option value="honey">🍯 Honey</option>
         <option value="neon">⚡ Neon (Doechii)</option>
-        <option value="flame">🔥 Flame</option>
         <option value="illumina">τ Illumina</option>
       </select>
       <button class="qbtn" id="prev" title="Previous">⟨</button>
@@ -229,7 +226,7 @@
   </div>
 </header>
 
-<!-- Pollen overlay (repeat visits only) -->
+<!-- Pollen overlay -->
 <div class="pollen" id="pollen" aria-hidden="true"></div>
 
 <main class="wrap">
@@ -288,12 +285,10 @@
               src="https://www.youtube.com/embed/Cr-SqRWImmI?enablejsapi=1&rel=0&modestbranding=1&playsinline=1"
               referrerpolicy="origin"
               allow="autoplay; encrypted-media; picture-in-picture; web-share"
-              allowfullscreen>
-            </iframe>
+              allowfullscreen></iframe>
           </div>
         </div>
         <p class="hint"><strong>Marina is your friend in the mirror.</strong> “Oh No!” stays pinned first in 🪞, so there’s always a play button that means “begin.”</p>
-
         <div id="listening-note" class="pill" style="margin-top:8px" aria-live="polite">Hearing: 🪞 Mirror • Theme: 🔥 Flame — reflective angle.</div>
         <details class="card" style="margin-top:10px;background:color-mix(in oklab, var(--paper) 98%, black 2%);border:1px dashed var(--line)">
           <summary class="pill">Listening legend</summary>
@@ -345,7 +340,7 @@
         </div>
       </section>
 
-      <!-- Journal (single place) -->
+      <!-- Journal -->
       <section class="card" id="journal">
         <h2 style="margin:4px 0 10px">Journal</h2>
         <div class="field">
@@ -515,7 +510,27 @@
 </main>
 
 <footer class="wrap" style="color:var(--muted);font-size:.9rem;margin:22px auto; padding-bottom: env(safe-area-inset-bottom)">
-  © mirrorhoney — mirror (🪞) × honey (🍯) with the bridge (🌉). Local‑only. Clarity first. I’ll know by the vibes. 🐝 imma be right where the loop lands.
+  <nav class="row" aria-label="Footer navigation" style="gap:12px;flex-wrap:wrap;margin-bottom:6px">
+    <a href="/">home</a>
+    <a href="/guide">guide</a>
+    <a href="/writer">writer</a>
+    <a href="/journal">journal</a>
+    <a href="/spark">spark</a>
+    <a href="/faq">faq</a>
+    <a href="/mirror" title="Mirror (Marina)">🪞 mirror</a>
+    <a href="/honey" title="Honey (Sabrina)">🍯 honey</a>
+    <a href="/bridge" title="Bridge (Doechii)">🌉 bridge</a>
+    <a href="/privacy">privacy</a>
+    <a href="/sitemap.xml">sitemap</a>
+    <a href="/robots.txt">robots</a>
+  </nav>
+
+  <div>
+    © mirrorhoney — mirror (🪞) × honey (🍯) with the bridge (🌉).
+    <span class="pill" style="margin-left:8px">τ Illumina</span>
+    <span class="pill">local‑only</span>
+    <span class="pill">I’ll know by the vibes. 🐝 imma be right where the loop lands.</span>
+  </div>
 </footer>
 
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -1328,7 +1343,7 @@ var ALTERNATOR=(function(){
 
 /* PWA-lite SW */
 if('serviceWorker' in navigator){
-  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v6').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
+  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v7').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
   const blob=new Blob([code],{type:'application/javascript'});
   const url=URL.createObjectURL(blob);
   navigator.serviceWorker.register(url);
