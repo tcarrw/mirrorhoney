@@ -25,7 +25,7 @@
     --accent:#5A78FF; --rose:#E457A2; --honey:#F4B000; --mirror:#6B8DFF;
     --shadow:0 14px 28px rgba(34,48,73,.14); --post:#FFFFFF; --paper:#FFFFFF;
   }
-  html[data-theme="neon"]{ /* dark neon theme (optional) */
+  html[data-theme="neon"]{
     --bg:#0A0711; --ink:#F3ECFF; --ink-strong:#FFFFFF; --muted:#C8B9EA; --line:#1E1631;
     --accent:#9E6CFF; --rose:#FF46C1; --honey:#FFD66F; --mirror:#C5D9FF; --post:#0E0A17; --paper:#0B0713;
   }
@@ -102,8 +102,6 @@
   .fieldline{font-style:italic;color:var(--muted)}
 
   /* ===== Mode visuals (mirror | spark | honey) ===== */
-  /* Background accents */
-  html[data-mode="mirror"] body{}
   html[data-mode="mirror"] .hero{background:
     radial-gradient(1200px 600px at -10% -10%, color-mix(in oklab, var(--pearl) 60%, transparent 60%), transparent 70%),
     radial-gradient(800px 400px at 110% 10%, color-mix(in oklab, var(--violet) 25%, transparent 60%), transparent 70%);}
@@ -114,7 +112,6 @@
     radial-gradient(1200px 600px at -10% -10%, color-mix(in oklab, var(--gold) 16%, transparent 82%), transparent 70%),
     radial-gradient(900px 500px at 110% 10%, color-mix(in oklab, var(--amber) 14%, transparent 84%), transparent 70%);}
 
-  /* Echo (mirror) and Glitch (spark) text effects */
   .echo{position:relative; display:inline-block; font-weight:700; letter-spacing:.3px; color:var(--ink-strong)}
   .echo::after{
     content:attr(data-echo); position:absolute; left:0; top:0; right:0; bottom:0;
@@ -124,7 +121,7 @@
     opacity:.45; transform:translate3d(0,0,0);
     pointer-events:none;
   }
-  html[data-mode="spark"] .echo::after{ display:none; } /* echo only in mirror mode */
+  html[data-mode="spark"] .echo::after{ display:none; } /* echo only in mirror */
 
   .glitch{position:relative; display:inline-block; font-weight:800; letter-spacing:.2px; color:var(--ink-strong)}
   .glitch::before,.glitch::after{
@@ -308,7 +305,7 @@
         <p>This page holds two journeys lightly: a <strong>mirror</strong> for reflection and a <strong>spark</strong> for edges. Honey has its own space. No asks. No tracking. Words and seeds live privately in your browser. The rest follows from what you put in.</p>
       </section>
 
-      <!-- What / Identify / Hybrid (kept concise) -->
+      <!-- What / Identify / Hybrid -->
       <section class="card" id="what">
         <h3 style="margin:.2rem 0 0">What this is</h3>
         <div class="two-col">
@@ -383,7 +380,7 @@
         </div>
       </section>
 
-      <!-- Bridge sparks -->
+      <!-- Spark -->
       <section class="card" id="bridge">
         <div class="pill"><span>⚡</span><strong>&nbsp;Spark — Doechii</strong></div>
         <h2 style="margin:0">The connective spark — loud edges, held safely</h2>
@@ -420,16 +417,16 @@
       </section>
     </div>
 
-    <!-- RAIL (queue + add + modes + export) -->
+    <!-- RAIL -->
     <aside class="rail">
       <div class="block">
         <div class="qtools">
-          <div class="qfilters">
+          <div class="qfilters" id="qfilters">
             <strong>Queue</strong>
-            <button class="qbtn" data-filter="ALL" aria-pressed="true">All</button>
-            <button class="qbtn" data-filter="B" aria-pressed="false">🪞</button>
-            <button class="qbtn" data-filter="A" aria-pressed="false">🍯</button>
-            <button class="qbtn" data-filter="D" aria-pressed="false">⚡</button>
+            <button class="qbtn" data-qfilter="ALL" aria-pressed="true">All</button>
+            <button class="qbtn" data-qfilter="B" aria-pressed="false">🪞</button>
+            <button class="qbtn" data-qfilter="A" aria-pressed="false">🍯</button>
+            <button class="qbtn" data-qfilter="D" aria-pressed="false">🌉</button>
           </div>
           <div class="row">
             <button class="chip" id="q-compact" aria-pressed="false" title="Compact queue list">Compact</button>
@@ -448,7 +445,7 @@
           <div class="row">
             <button class="chip" id="mode-mirror" aria-pressed="true" title="Start on 🪞 and alternate">🪞 Mirror</button>
             <button class="chip" id="mode-honey" aria-pressed="false" title="Start on 🍯 and alternate">🍯 Honey</button>
-            <button class="chip" id="mode-neon" aria-pressed="false" title="Insert ⚡ (A→⚡→B→⚡→A…)">⚡ Spark</button>
+            <button class="chip" id="mode-neon" aria-pressed="false" title="Insert 🌉 (A→🌉→B→🌉→A…)">⚡ Spark</button>
           </div>
         </div>
         <div class="row" style="margin-top:8px">
@@ -458,7 +455,7 @@
         </div>
       </div>
 
-      <div class="block">
+      <div class="block addq">
         <h3>Add a song to the queue</h3>
         <div class="stack">
           <label><span class="pill" style="display:block;margin-bottom:6px">Artist name</span>
@@ -471,13 +468,13 @@
             <select id="add-lane" aria-label="Lane">
               <option value="" selected>— select —</option>
               <option value="B">🪞 Marina — Mirror (B)</option>
-              <option value="D">⚡ Doechii — Spark (D)</option>
+              <option value="D">🌉 Doechii — Spark (D)</option>
               <option value="A">🍯 Sabrina — Honey (A)</option>
             </select>
           </label>
           <div class="lanechips" aria-label="Lane quick select">
             <button class="chip lanechip" data-lane="B" aria-pressed="false">🪞 Marina</button>
-            <button class="chip lanechip" data-lane="D" aria-pressed="false">⚡ Doechii</button>
+            <button class="chip lanechip" data-lane="D" aria-pressed="false">🌉 Doechii</button>
             <button class="chip lanechip" data-lane="A" aria-pressed="false">🍯 Sabrina</button>
           </div>
           <div id="add-preview" class="pill" aria-live="polite"></div>
@@ -492,7 +489,7 @@
 </main>
 
 <footer class="wrap" style="color:var(--muted);font-size:.9rem;margin:22px auto; padding-bottom: env(safe-area-inset-bottom)">
-  © mirrorhoney — mirror (🪞) × honey (🍯) with spark (⚡). Hidden pollen appears on return.
+  © mirrorhoney — mirror (🪞) × honey (🍯) with spark (🌉/⚡). Hidden pollen appears on return.
 </footer>
 
 <!-- YouTube API -->
@@ -511,10 +508,10 @@ const MH = (function(){
   const DEFAULT = {
     schema: 1,
     updatedAt: new Date().toISOString(),
-    settings: { loopTrack:false, loopQueue:true, mode:"MIRROR", theme:"mirror", compactQueue:false, journey:"mirror" },
-    queue: [],                 // [{id,title,author,thumb,lane:"A"|"B"|"D",artist,added,pinned?:bool}]
-    logs: { honey:[], bridge:[], writer:[] }, // arrays of {date, text}
-    fragments: { byDay:{} },   // { "YYYY-MM-DD":[{t,ts}] }
+    settings: { loopTrack:false, loopQueue:true, mode:"MIRROR", theme:"mirror", compactQueue:false, journey:"mirror", queueFilter:"ALL" },
+    queue: [],
+    logs: { honey:[], bridge:[], writer:[] },
+    fragments: { byDay:{} },
     visits: 0
   };
 
@@ -670,7 +667,6 @@ async function fetchYTMeta(id){
   btnM.onclick=()=>sel("mirror");
   btnS.onclick=()=>sel("spark");
   btnH.onclick=()=>sel("honey");
-  // init from storage
   const d=MH.get(); sel(d.settings.journey||"mirror");
 })();
 
@@ -815,13 +811,33 @@ var FRAGMENTS=(function(){
   scatter(SETS[0]);
 })();
 
-/* ===== QUEUE (single-lane per item, compact mode, MARINA pinned friend) ===== */
+/* ===== QUEUE (single-lane; robust filters & events) ===== */
 var QUEUE=(function(){
-  const FRIEND_ID=MH.FRIEND_ID; // MARINA — Oh No!
+  const FRIEND_ID=MH.FRIEND_ID;
   const qEl=document.getElementById("queue"), status=document.getElementById("q-status");
   const clearBtn=document.getElementById("q-clear");
   const compactBtn=document.getElementById("q-compact");
-  let filter="ALL";
+  const filterBar=document.getElementById("qfilters");
+
+  function activeFilter(){
+    const pressed = filterBar.querySelector('[data-qfilter][aria-pressed="true"]');
+    return pressed ? pressed.getAttribute('data-qfilter') : (MH.get().settings.queueFilter || "ALL");
+  }
+  function setActiveFilterUI(f){
+    filterBar.querySelectorAll('[data-qfilter]').forEach(btn=> setPressed(btn, btn.getAttribute('data-qfilter')===f));
+  }
+  function persistFilter(f){ const d=MH.get(); d.settings.queueFilter=f; MH.put(d); }
+
+  // event delegation for filter toggles
+  filterBar.addEventListener('click', (e)=>{
+    const btn = e.target.closest('[data-qfilter]');
+    if(!btn) return;
+    const f = btn.getAttribute('data-qfilter');
+    setActiveFilterUI(f); persistFilter(f); render();
+  });
+
+  // init filter UI from storage
+  setActiveFilterUI(MH.get().settings.queueFilter||"ALL");
 
   function applyCompactClass(){
     const d=MH.get();
@@ -831,31 +847,54 @@ var QUEUE=(function(){
   }
   window.addEventListener("resize", applyCompactClass);
 
+  // Register dragover/drop once (event delegation)
+  qEl.addEventListener('dragover', e=> e.preventDefault());
+  qEl.addEventListener('drop', e=>{
+    e.preventDefault();
+    const toId=(e.target.closest('.qitem')||{}).dataset.key;
+    const fromId=e.dataTransfer.getData('text/plain');
+    if(!fromId||!toId||fromId===toId) return;
+    const d=MH.get();
+    const from=d.queue.findIndex(x=>x.id===fromId);
+    const to=d.queue.findIndex(x=>x.id===toId);
+    if(from<0||to<0) return;
+    const moved=d.queue.splice(from,1)[0];
+    // keep friend at top
+    const friendIdx = d.queue.findIndex(x=>x.id===FRIEND_ID);
+    d.queue.splice(to,0,moved);
+    if(friendIdx>0){
+      const [f] = d.queue.splice(friendIdx,1);
+      d.queue.unshift(f);
+    }
+    MH.put(d); render();
+  });
+
   function render(){
     const d=MH.get();
     MH.ensureFriend(d); MH.put(d,"upgrade");
     applyCompactClass();
     qEl.innerHTML="";
-    const vis = d.queue.filter(it=> filter==="ALL" ? true : it.lane===filter);
-    status.textContent=d.queue.length?("Queue: "+vis.length+" shown / "+d.queue.length+" total"):"Queue empty";
+    const f = activeFilter();
+    const vis = d.queue.filter(it=> f==="ALL" ? true : it.lane===f);
+    status.textContent=d.queue.length?("Queue: "+vis.length+" shown / "+d.queue.length+" total (filter: "+f+")"):"Queue empty";
 
     vis.forEach(function(it, idx){
       const wrap=document.createElement("div"); wrap.className="qitem"; wrap.dataset.key=it.id||String(idx);
       if(it.thumb || it.thumbnail){ const img=document.createElement("img"); img.src=it.thumb||it.thumbnail||(""); img.alt=""; wrap.appendChild(img); }
       const meta=document.createElement("div"); meta.className="meta";
 
-      // Title line
+      // Title
       const ttlWrap=document.createElement("div"); ttlWrap.className="titleline";
-      const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"⚡";
+      const laneEmoji = document.createElement("span"); laneEmoji.className="laneEmoji"; laneEmoji.textContent = it.lane==="A"?"🍯":it.lane==="B"?"🪞":"🌉";
       const ttl = document.createElement("span"); ttl.className="ttl";
       ttl.innerHTML = (it.pinned? "<b>[friend]</b> " : "") + (it.artist?("<b>"+it.artist+"</b> — "):"") + (it.title||it.id||"Untitled");
       ttlWrap.appendChild(laneEmoji); ttlWrap.appendChild(ttl);
       meta.appendChild(ttlWrap);
 
-      // Lane editor
+      // Lanes
       const lanes=document.createElement("div"); lanes.className="lanes";
       const mk=(L)=>{
-        const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"⚡ Doechii");
+        const b=document.createElement("button"); b.className="lane "+L; b.textContent=(L==="A"?"🍯 Sabrina":L==="B"?"🪞 Marina":"🌉 Doechii");
         b.setAttribute("aria-pressed", it.lane===L?"true":"false");
         b.onclick=function(){
           if(it.pinned && L!=="B"){ alert("Marina stays your friend in 🪞."); return; }
@@ -871,7 +910,13 @@ var QUEUE=(function(){
       // Actions
       const acts=document.createElement("div"); acts.className="acts";
       const play=document.createElement("button"); play.className="qbtn"; play.textContent="Play now";
-      play.onclick=function(){ if(it.id){ ALTERNATOR.setLane(it.lane); PLAYER.load(it.id, it.lane, true); ALTERNATOR.setNow(it.lane, it); } };
+      play.onclick=function(){
+        if(it.id){
+          ALTERNATOR.setLane(it.lane);
+          PLAYER.load(it.id, it.lane, true);
+          ALTERNATOR.setNow(it.lane, it);
+        }
+      };
       const del=document.createElement("button"); del.className="qbtn"; del.textContent= it.pinned ? "—" : "Remove";
       del.disabled = !!it.pinned;
       del.title = it.pinned ? "Pinned friend (can’t remove)" : "Remove from queue";
@@ -885,39 +930,13 @@ var QUEUE=(function(){
       meta.appendChild(acts);
       acts.appendChild(play); acts.appendChild(del);
       wrap.appendChild(meta);
-      qEl.appendChild(wrap);
-
-      // drag reordering
+      // drag handle
       wrap.draggable=true;
       wrap.addEventListener('dragstart',e=>{ e.dataTransfer.setData('text/plain', it.id); });
-      qEl.addEventListener('dragover',e=>e.preventDefault());
-      qEl.addEventListener('drop',e=>{
-        e.preventDefault();
-        const fromId=e.dataTransfer.getData('text/plain');
-        const toId=(e.target.closest('.qitem')||{}).dataset.key;
-        if(!fromId||!toId||fromId===toId) return;
-        const d3=MH.get();
-        const from=d3.queue.findIndex(x=>x.id===fromId);
-        const to=d3.queue.findIndex(x=>x.id===toId);
-        if(from<0||to<0) return;
-        const moved=d3.queue.splice(from,1)[0];
-        const friendIdx = d3.queue.findIndex(x=>x.id===FRIEND_ID);
-        d3.queue.splice(to,0,moved);
-        if(friendIdx>0){
-          const [f] = d3.queue.splice(friendIdx,1);
-          d3.queue.unshift(f);
-        }
-        MH.put(d3); render();
-      }, {once:true});
+
+      qEl.appendChild(wrap);
     });
   }
-
-  document.querySelectorAll('[data-filter]').forEach(btn=>{
-    btn.addEventListener("click",function(){
-      document.querySelectorAll('[data-filter]').forEach(b=>setPressed(b,false));
-      setPressed(this,true); filter=this.getAttribute("data-filter"); render();
-    });
-  });
 
   compactBtn.onclick=function(){
     const d=MH.get(); d.settings.compactQueue = !d.settings.compactQueue; MH.put(d); applyCompactClass();
@@ -968,7 +987,6 @@ var QUEUE=(function(){
     if(i<0){ if(loop) i=sc.length-1; else return null; }
     return sc[i];
   }
-
   function scopeItems(lane){ const d=MH.get(); return d.queue.filter(it=>it.lane===lane); }
 
   render();
@@ -998,7 +1016,7 @@ var PLAYER=(function(){
           }
         }
       });
-    }catch(_){ /* fallback still works */ }
+    }catch(_){}
   }
 
   function cue(id,lane){
@@ -1168,8 +1186,8 @@ var ALTERNATOR=(function(){
   function updateStatus(info){
     const nn=PLAYER.nowNext;
     if(!info){ nn.textContent="Ready"; return; }
-    const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"⚡";
-    const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"⚡";
+    const em = info.now.tag==="A"?"🍯":info.now.tag==="B"?"🪞":"🌉";
+    const ne = info.nextTag==="A"?"🍯":info.nextTag==="B"?"🪞":"🌉";
     nn.textContent = "Now: "+em+" "+(info.now.title||"…")+" · Next: "+ne;
   }
 
@@ -1251,13 +1269,11 @@ var ALTERNATOR=(function(){
 (async function seedAndPin(){
   const d=MH.get();
   MH.ensureFriend(d);
-  // Sabrina & Doechii sample IDs (non-destructive add if missing)
   const haveSab = d.queue.some(q=>q.id==="cF1Na4AIecM");
   const haveDoe = d.queue.some(q=>q.id==="phtcAd8j6Ro");
   if(!haveSab){ try{ await QUEUE.add("Sabrina Carpenter","cF1Na4AIecM","A"); }catch(_){ } }
   if(!haveDoe){ try{ await QUEUE.add("Doechii","phtcAd8j6Ro","D"); }catch(_){ } }
   MH.put(d,"upgrade");
-  // Pre-cue MARINA friend + header status
   try{
     const ohno = (MH.get().queue||[]).find(q=>q.id===MH.FRIEND_ID);
     if(ohno) { PLAYER.cue(ohno.id,"B"); ALTERNATOR.setNow("B", ohno); }
@@ -1269,20 +1285,17 @@ var ALTERNATOR=(function(){
   const container=document.getElementById('pollen');
   if(!container) return;
   const data=MH.get(); data.visits=(data.visits||0)+1; MH.put(data,"upgrade");
-  if(data.visits<2) return; // show only from 2nd visit onward
+  if(data.visits<2) return;
   function collectWords(){
     const seen=new Set(), out=[];
-    // writer logs
     (data.logs.writer||[]).forEach(e=>{
       ["mirror","bridge","honey"].forEach(k=>{ const v=(e[k]||"").trim(); if(v&&v.length<=40&&!seen.has(v)){ seen.add(v); out.push(v); } });
     });
-    // fragments (daily)
     const byDay=data.fragments.byDay||{};
     Object.keys(byDay).forEach(k=> (byDay[k]||[]).forEach(f=>{ const t=(f.t||"").trim(); if(t&&t.length<=40&&!seen.has(t)){ seen.add(t); out.push(t); } }));
-    return out.slice(-60); // last 60
+    return out.slice(-60);
   }
   const words=collectWords(); if(!words.length) return;
-  // Render drifting words
   const W=window.innerWidth, H=window.innerHeight;
   for(let i=0;i<words.length;i++){
     const span=document.createElement('span'); span.className='w'; span.textContent=words[i];
@@ -1295,7 +1308,7 @@ var ALTERNATOR=(function(){
 
 /* ===== Minimal app-shell Service Worker (UI offline only, not YouTube) ===== */
 if('serviceWorker' in navigator){
-  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v2').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
+  const code=`self.addEventListener('install',e=>e.waitUntil(caches.open('mh-shell-v3').then(c=>c.addAll(['./']))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))))`;
   const blob=new Blob([code],{type:'application/javascript'});
   const url=URL.createObjectURL(blob);
   navigator.serviceWorker.register(url);
