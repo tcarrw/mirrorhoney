@@ -2,28 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Core pages -->
   <url><loc>https://mirrorhoney.plnt.earth/</loc><lastmod>2025-09-28</lastmod><changefreq>weekly</changefreq></url>
-  <url><loc>https://mirrorhoney.plnt.earth/guide</loc><lastmod>2025-09-28</lastmod><changefreq>monthly</changefreq></url>
-  <url><loc>https://mirrorhoney.plnt.earth/writer</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/journal</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/spark</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/faq</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/guide.html</loc><lastmod>2025-09-28</lastmod><changefreq>monthly</changefreq></url>
+  <url><loc>https://mirrorhoney.plnt.earth/writer.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/journal.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/spark.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/faq.html</loc><lastmod>2025-09-28</lastmod></url>
 
   <!-- Optional identity pages (publish if you want distinct landings) -->
-  <url><loc>https://mirrorhoney.plnt.earth/mirror</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/honey</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/bridge</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/mirror.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/honey.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/bridge.html</loc><lastmod>2025-09-28</lastmod></url>
 
   <!-- Glossary index -->
   <url><loc>https://mirrorhoney.plnt.earth/glossary/</loc><lastmod>2025-09-28</lastmod><changefreq>weekly</changefreq></url>
 
   <!-- Glossary — first 6 stubs -->
-  <url><loc>https://mirrorhoney.plnt.earth/glossary/mirror-friend-journaling-exercise</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/glossary/bridge-fragment-writing-method</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/glossary/poetry-fragments-daily-streak</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/glossary/local-only-journaling-no-trackers</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/glossary/illumina-tau-symbol</loc><lastmod>2025-09-28</lastmod></url>
-  <url><loc>https://mirrorhoney.plnt.earth/glossary/neon-flame-writing-theme</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/glossary/mirror-friend-journaling-exercise.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/glossary/bridge-fragment-writing-method.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/glossary/poetry-fragments-daily-streak.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/glossary/local-only-journaling-no-trackers.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/glossary/illumina-tau-symbol.html</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/glossary/neon-flame-writing-theme.html</loc><lastmod>2025-09-28</lastmod></url>
 
   <!-- Legal / utility (optional) -->
-  <url><loc>https://mirrorhoney.plnt.earth/privacy</loc><lastmod>2025-09-28</lastmod></url>
+  <url><loc>https://mirrorhoney.plnt.earth/privacy.html</loc><lastmod>2025-09-28</lastmod></url>
 </urlset>
