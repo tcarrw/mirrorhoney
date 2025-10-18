@@ -26,6 +26,7 @@ body{margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system
 .card{border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.04));box-shadow:var(--shadow);padding:16px;position:relative;overflow:hidden}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .input{flex:1;min-width:220px;border-radius:12px;border:1px solid rgba(255,255,255,.16);padding:10px 12px;background:rgba(10,12,18,.7);color:var(--ink);outline:none}
+.input[readonly]{opacity:.9}
 .tabs{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
 .tab{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);cursor:pointer;font-size:13px}
 .tab.active{box-shadow:0 0 0 2px rgba(183,167,255,.35);background:rgba(183,167,255,.18)}
@@ -49,14 +50,13 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
 .ok{color:#8affb3}.warn{color:#ffd38a}.err{color:#ff9aa2}
 .hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);margin:8px 0}
 .alive{position:fixed;inset:0;z-index:0;opacity:.6;pointer-events:none}
-
-/* Campus ribbon + tone words */
 .rib{position:relative;z-index:2;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .rib .chip{appearance:none;border:0;border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--ink);font-weight:700;text-decoration:none}
 .rib .chip:active{transform:scale(.98)}
 .word{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
 .kbd{padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);font-size:12px}
 .mini{font-size:12px;color:var(--muted)}
+.locklab{display:inline-flex;gap:8px;align-items:center}
 </style>
 </head>
 <body>
@@ -83,23 +83,15 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
   <div class="grid">
     <div class="card">
       <div class="row">
-        <input id="yt" class="input" placeholder="Paste YouTube URL or ID">
+        <input id="yt" class="input" placeholder="YouTube ID or URL" readonly>
         <button class="btn" id="apply">Play</button>
         <button class="btn" id="prev">Prev</button>
         <button class="btn" id="next">Next</button>
         <span class="badge" id="titleBadge">—</span>
         <span class="badge" id="indexBadge">0/0</span>
-        <label class="row" style="align-items:center;gap:8px;margin-left:auto">
-          <div class="switch" id="loop" role="button" aria-pressed="false" tabindex="0"><i></i></div>
-          <span class="small">loop</span>
-        </label>
-        <label class="row" style="align-items:center;gap:8px">
-          <div class="switch" id="shuffle" role="button" aria-pressed="false" tabindex="0"><i></i></div>
-          <span class="small">shuffle (mode)</span>
-        </label>
-        <label class="row" style="align-items:center;gap:8px">
-          <div class="switch" id="tone" role="button" aria-pressed="false" tabindex="0"><i></i></div>
-          <span class="small">tone</span>
+        <label class="locklab" style="margin-left:auto">
+          <div class="switch" id="editId" role="button" aria-pressed="false" tabindex="0"><i></i></div>
+          <span class="small">edit ID</span>
         </label>
       </div>
 
@@ -107,6 +99,21 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
         <div class="tab active" data-m="feel">feel</div>
         <div class="tab" data-m="mirror">mirror</div>
         <div class="tab" data-m="release">release</div>
+      </div>
+
+      <div class="row">
+        <label class="locklab">
+          <div class="switch" id="loop" role="button" aria-pressed="false" tabindex="0"><i></i></div>
+          <span class="small">loop</span>
+        </label>
+        <label class="locklab">
+          <div class="switch" id="shuffle" role="button" aria-pressed="false" tabindex="0"><i></i></div>
+          <span class="small">shuffle (mode)</span>
+        </label>
+        <label class="locklab">
+          <div class="switch" id="tone" role="button" aria-pressed="false" tabindex="0"><i></i></div>
+          <span class="small">tone</span>
+        </label>
       </div>
 
       <div class="player">
@@ -119,7 +126,6 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
     </div>
 
     <div class="card">
-      <!-- Tone: volume slider (frequency follows mode automatically) -->
       <div class="row" style="justify-content:space-between">
         <div class="row" style="gap:8px">
           <span class="small">tone volume</span>
@@ -131,9 +137,8 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
       <textarea id="note" class="mirror" placeholder="Write one exact line…"></textarea>
       <div class="echo" id="echo"></div>
 
-      <!-- Practice panel populated from tracks.json -->
       <div id="practice" class="notice" style="margin-top:10px">
-        <div class="small mini" id="taskText">—</div>
+        <div class="mini" id="taskText">—</div>
         <div id="toneWords" class="row" style="margin-top:6px;gap:6px;flex-wrap:wrap"></div>
         <div class="mini" id="seedText" style="margin-top:6px">—</div>
         <div class="mini" id="notesText" style="margin-top:6px;opacity:.9">—</div>
@@ -146,7 +151,6 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
     </div>
   </div>
 
-  <!-- Campus ribbon -->
   <div class="rib">
     <a class="chip" href="https://honey.plnt.earth" target="_blank" rel="noopener">Honey</a>
     <a class="chip" href="https://froot.plnt.earth" target="_blank" rel="noopener">Froot</a>
@@ -155,9 +159,8 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
     <a class="chip" href="https://tunes.plnt.earth" target="_blank" rel="noopener">Tunes</a>
   </div>
 
-  <!-- Ritual guidance -->
   <div class="card">
-    <div class="small"><strong>Ritual</strong> — Morning: 7–12 min (tone 2–3 min, play, write one line). Night: 10–15 min (play, loop if needed, write a release line, 1 min tone).</div>
+    <div class="small"><strong>Ritual</strong> — Morning: 7–12 min (tone 2–3 min, play, write one line). Night: 10–15 min (play, loop if needed, one release line, 1 min tone).</div>
     <div class="small">Keys: <span class="kbd">J</span> self-check · <span class="kbd">←/→</span> prev/next · <span class="kbd">L</span> loop · <span class="kbd">T</span> tone · <span class="kbd">S</span> save · <span class="kbd">E</span> export.</div>
   </div>
 </div>
@@ -181,7 +184,7 @@ const poster=$("poster"), start=$("start"), state=$("state"), msg=$("msg"), meta
 const tabs=[...document.querySelectorAll(".tab")], tint=$("tint");
 const toneBtn=$("tone"), vol=$("vol"), hz=$("hz"), note=$("note"), echo=$("echo"), probe=$("probe"), route=$("route"), openYT=$("openYT");
 const fab=$("fab"), sc=$("sc"), run=$("run"), logEl=$("log");
-const loopEl=$("loop"), shuffleEl=$("shuffle");
+const loopEl=$("loop"), shuffleEl=$("shuffle"), editId=$("editId");
 const taskText=document.getElementById("taskText"), toneWordsBox=document.getElementById("toneWords"), seedText=document.getElementById("seedText"), notesText=document.getElementById("notesText");
 const streakBadge=document.getElementById("streakBadge");
 const saveEntryBtn=document.getElementById("saveEntry"), exportTxtBtn=document.getElementById("exportTxt");
@@ -189,9 +192,9 @@ const saveEntryBtn=document.getElementById("saveEntry"), exportTxtBtn=document.g
 let player, apiReady=false, readyResolve;
 let ctx=null, osc=null, gain=null;
 let mode="mirror";
-let tracks=[], idx=0, loopOn=false, shuffleOn=false;
+let tracks=[], idx=0;
 const EMBED_TONE={feel:128,mirror:160,release:256};
-const DEFAULT_TASK={feel:"Feel the body. Where does the breath land? Write one exact line.",mirror:"Name precisely what is true right now. No performance, just clarity.",release:"Exhale. Keep the learning; drop the charge. One closing line."};
+const DEFAULT_TASK={feel:"Feel the body. Where does the breath land? Write one exact line.",mirror:"Name precisely what is true. No performance.",release:"Exhale. Keep the learning; drop the charge. One closing line."};
 const DEFAULT_WORDS={feel:["body","warmth","accept","breathe"],mirror:["clarity","witness","precise","name"],release:["exhale","lightness","open","let go"]};
 const DEFAULT_SEED={feel:"3 breaths · 1 line",mirror:"1 sentence · 7 words",release:"Breathe out 7 counts · 1 release line"};
 
@@ -207,25 +210,24 @@ function saveShuffle(v){lsSet("mh.shuffle",v?"1":"0")}
 function loadShuffle(){return lsGet("mh.shuffle","0")==="1"}
 function saveVol(v){lsSet("mh.vol",String(v))}
 function loadVol(){const v=parseFloat(lsGet("mh.vol","0.12"));return Number.isNaN(v)?0.12:Math.max(0,Math.min(1,v))}
-
-// Streak
 function touchStreak(){const t=new Date();t.setHours(0,0,0,0);const last=lsGet("mh.last","");const s=parseInt(lsGet("mh.streak","0"),10)||0;let ns=s, lastStr;
  if(!last){ns=1;lastStr=t.toISOString()}else{const d=new Date(last);d.setHours(0,0,0,0);const diff=Math.round((t-d)/86400000);if(diff===0){ns=s;lastStr=last}else if(diff===1){ns=s+1;lastStr=t.toISOString()}else{ns=1;lastStr=t.toISOString()}}
  lsSet("mh.streak",String(ns)); lsSet("mh.last",lastStr); streakBadge.textContent=`streak ${ns} · last ${new Date(lsGet("mh.last","")).toLocaleDateString()}`
 }
 
-// Data
 function parseId(v){if(!v)return"";try{if(v.includes("youtu.be/"))return new URL(v).pathname.slice(1).split("/")[0];if(v.includes("youtube.com/watch"))return new URL(v).searchParams.get("v")||"";if(v.includes("youtube.com/shorts/"))return new URL(v).pathname.split("/").pop();if(/^[a-zA-Z0-9_-]{6,20}$/.test(v))return v}catch(_){ }return v.trim()}
 function setMode(m){mode=m;tabs.forEach(t=>t.classList.toggle("active",t.dataset.m===m));tint.style.opacity=m==="feel"? .18 : m==="mirror"? .26 : .10;hz.textContent=(EMBED_TONE[m]||160).toFixed(2)+" Hz";if(osc)osc.frequency.setValueAtTime((EMBED_TONE[m]||160),ctx?ctx.currentTime:0)}
 function updateIndexBadge(){indexBadge.textContent=(tracks.length?idx+1:0)+"/"+tracks.length}
 function setTitleFromPlayer(e){try{const d=e.target.getVideoData&&e.target.getVideoData();const t=d&&d.title?d.title:"";if(t)titleBadge.textContent=t}catch(_){ }}
-function renderPractice(item){const m=(item.mode||mode||"mirror");
- taskText.textContent = item.task || DEFAULT_TASK[m];
- const words = (item.tone_words && item.tone_words.length)? item.tone_words : DEFAULT_WORDS[m];
- toneWordsBox.innerHTML=""; words.forEach(w=>{const s=document.createElement("span");s.className="word";s.textContent=w;toneWordsBox.appendChild(s)});
- seedText.textContent = item.seed || DEFAULT_SEED[m];
- notesText.textContent = item.notes || "—";
- if(item.loop_default===true && loopEl.getAttribute("aria-pressed")!=="true"){ loopEl.setAttribute("aria-pressed","true"); saveLoop(true); }
+
+function renderPractice(item){
+  const m = (mode || item.mode || "mirror");          /* prefer current tab */
+  taskText.textContent = item.task || DEFAULT_TASK[m];
+  const words = (item.tone_words && item.tone_words.length) ? item.tone_words : DEFAULT_WORDS[m];
+  toneWordsBox.innerHTML=""; words.forEach(w=>{const s=document.createElement("span");s.className="word";s.textContent=w;toneWordsBox.appendChild(s)});
+  seedText.textContent = item.seed || DEFAULT_SEED[m];
+  notesText.textContent = (item.notes && item.notes.trim()) ? item.notes : "—";
+  if(item.loop_default===true && loopEl.getAttribute("aria-pressed")!=="true"){ loopEl.setAttribute("aria-pressed","true"); saveLoop(true); }
 }
 
 function loadTracks(){
@@ -235,19 +237,18 @@ function loadTracks(){
   .finally(()=>{
     tracks=tracks.filter(x=>x&&parseId(x.youtube_id||x.url));
     loadSavedIndex(tracks.length); updateIndexBadge();
-    // toggles + vol
     const v=loadVol(); vol.value=v;
     if(loadLoop()) loopEl.setAttribute("aria-pressed","true");
     if(loadShuffle()) shuffleEl.setAttribute("aria-pressed","true");
-    if(tracks[idx]){ setMode(tracks[idx].mode||"mirror"); const idSaved=(lsGet("mh.id","")||"").trim(); yt.value=idSaved || tracks[idx].youtube_id || parseId(tracks[idx].url); renderPractice(tracks[idx]) }
+    if(tracks[idx]){ setMode(tracks[idx].mode||"mirror"); const idSaved=(lsGet("mh.id","")||"").trim(); yt.value=idSaved || tracks[idx].youtube_id || parseId(tracks[idx].url); renderPractice(tracks[idx]); }
     touchStreak();
   })
 }
 
-// YouTube
 function loadAPI(){return new Promise(res=>{readyResolve=res;const s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";document.body.appendChild(s)})}
 window.onYouTubeIframeAPIReady=function(){apiReady=true;if(readyResolve)readyResolve()}
 function ensureAPI(){return apiReady?Promise.resolve():loadAPI()}
+
 function initPlayer(id){
   state.textContent="loading"; if(player){player.destroy();player=null}
   player=new YT.Player('player',{videoId:id,playerVars:{playsinline:1,rel:0,modestbranding:1},events:{
@@ -269,22 +270,41 @@ function startPlayback(id){if(!id)return; msg.style.display="none"; saveId(id);
 }
 function playIndex(i){idx=i;saveIndex();updateIndexBadge();const item=tracks[idx];if(!item)return;yt.value=parseId(item.youtube_id||item.url);setMode(item.mode||"mirror");renderPractice(item);startPlayback(parseId(item.youtube_id||item.url))}
 
-// Tone (volume-based)
 function ensureAudio(){if(ctx)return;ctx=new (window.AudioContext||window.webkitAudioContext)();gain=ctx.createGain();gain.gain.value=+vol.value;osc=ctx.createOscillator();osc.type="sine";osc.frequency.value=(EMBED_TONE[mode]||160);osc.connect(gain).connect(ctx.destination);osc.start()}
 function toneOn(){ensureAudio();toneBtn.setAttribute("aria-pressed","true")}
 function toneOff(){if(!ctx)return;toneBtn.setAttribute("aria-pressed","false");gain.gain.setTargetAtTime(0,ctx.currentTime,.06)}
 vol.addEventListener("input",()=>{const v=+vol.value;saveVol(v);if(gain){gain.gain.setTargetAtTime(v,(ctx?ctx.currentTime:0),.06)}});
 
-// Controls
 function toggleSwitch(el,saveFn){const val=el.getAttribute("aria-pressed")==="true";el.setAttribute("aria-pressed",(!val).toString()); if(saveFn) saveFn(!val)}
 loopEl.addEventListener("click",()=>toggleSwitch(loopEl,saveLoop));
 loopEl.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleSwitch(loopEl,saveLoop)}});
-
 shuffleEl.addEventListener("click",()=>toggleSwitch(shuffleEl,saveShuffle));
 shuffleEl.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleSwitch(shuffleEl,saveShuffle)}});
-
 toneBtn.addEventListener("click",()=>{toneBtn.getAttribute("aria-pressed")==="true"?toneOff():toneOn()});
 toneBtn.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toneBtn.getAttribute("aria-pressed")==="true"?toneOff():toneOn()}});
+
+// MODE TABS — fix
+tabs.forEach(t=>{
+  t.addEventListener("click",()=>{
+    setMode(t.dataset.m);
+    renderPractice(tracks[idx]||{});
+  });
+});
+
+// ID lock toggle (safe editing)
+function setEdit(on){
+  yt.readOnly=!on;
+  editId.setAttribute("aria-pressed", on?"true":"false");
+  yt.focus();
+  if(!on){ // sanitize on lock
+    const id=parseId(yt.value);
+    if(id){ yt.value=id; saveId(id); }
+    else { const item=tracks[idx]; yt.value=(item && (item.youtube_id||parseId(item.url)))||""; }
+  }
+}
+editId.addEventListener("click",()=> setEdit(editId.getAttribute("aria-pressed")!=="true"));
+editId.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setEdit(editId.getAttribute("aria-pressed")!=="true")}});
+yt.addEventListener("blur",()=>{ if(editId.getAttribute("aria-pressed")==="true") setEdit(false) });
 
 apply.onclick=async()=>{const id=currentId();if(!id)return;await ensureAPI();startPlayback(id)};
 prev.onclick=async()=>{if(idx>0){idx--;saveIndex();updateIndexBadge();const item=tracks[idx];yt.value=parseId(item.youtube_id||item.url);setMode(item.mode||"mirror");renderPractice(item);await ensureAPI();startPlayback(parseId(item.youtube_id||item.url))}};
@@ -296,22 +316,23 @@ async function startBtn(){const id=currentId();if(!id)return;await ensureAPI();s
 openYT.onclick=()=>{const id=(tracks[idx]&&(tracks[idx].youtube_id||parseId(tracks[idx].url)))||parseId(yt.value);if(!id)return;window.open("https://youtu.be/"+id,"_blank","noopener")};
 route.onclick=async()=>{try{if(probe.webkitShowPlaybackTargetPicker){probe.webkitShowPlaybackTargetPicker();await probe.play().catch(()=>{})}else{alert("AirPlay picker not available in this browser.")}}catch(_){ }};
 
-// Text + log
 note.addEventListener("input",()=>{echo.textContent=note.value;lsSet("mh.note",note.value)});
-saveEntryBtn.onclick=()=>{const item=tracks[idx]||{};const id=(item.youtube_id)||(item.url)||"";const title=titleBadge.textContent||"";const now=new Date().toISOString();const entry={t:now,id,title,mode:(item.mode||mode),hz:(EMBED_TONE[item.mode||mode]||160),text:note.value||""};const arr=JSON.parse(lsGet("mh.log","[]")||"[]");arr.push(entry);lsSet("mh.log",JSON.stringify(arr));state.textContent="saved ✓";touchStreak()};
+saveEntryBtn.onclick=()=>{const item=tracks[idx]||{};const id=(item.youtube_id)||(item.url)||"";const title=titleBadge.textContent||"";const now=new Date().toISOString();const entry={t:now,id,title,mode:(mode||item.mode),hz:(EMBED_TONE[mode]||160),text:note.value||""};const arr=JSON.parse(lsGet("mh.log","[]")||"[]");arr.push(entry);lsSet("mh.log",JSON.stringify(arr));state.textContent="saved ✓";touchStreak()};
 exportTxtBtn.onclick=()=>{const arr=JSON.parse(lsGet("mh.log","[]")||"[]");const lines=["MirrorHoney Reflections","-----------------------",""].concat(arr.map(e=>`${e.t} • [${e.mode} ${e.hz}Hz] ${e.title||e.id}\n${e.text}\n`));const blob=new Blob([lines.join("\n")],{type:"text/plain"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="mirrorhoney_reflections.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)};
 
-// Self-Check
 function log(t,c){const p=document.createElement("div");if(c)p.className=c;p.textContent=t;logEl.appendChild(p)}
 function clearLog(){logEl.innerHTML=""}
 run.addEventListener("click",()=>{clearLog();if(player&&typeof player.getPlayerState==="function"){log("YouTube API: ready ✓","ok")}else{log("YouTube API: not ready","err")}
  try{if(player&&player.playVideo){player.playVideo();setTimeout(()=>{const st=player.getPlayerState();log(st===1?"Playback: playing ✓":"Playback: not playing",st===1?"ok":"warn")},900)}}catch(e){log("Playback: error","err")}
- try{ensureAudio();gain.gain.setTargetAtTime(+vol.value,(ctx?ctx.currentTime:0),.04);log("Tone volume: "+(+vol.value).toFixed(2),"ok");toneOn()}catch(e){log("Tone engine: error","err")}
+ try{if(!ctx)ensureAudio();gain.gain.setTargetAtTime(+vol.value,(ctx?ctx.currentTime:0),.04);log("Tone volume: "+(+vol.value).toFixed(2),"ok");toneOn()}catch(e){log("Tone engine: error","err")}
  try{const prev=lsGet("mh.note","");const t="echo-"+Math.random().toString(36).slice(2,6);lsSet("mh.note",t);const got=lsGet("mh.note","");lsSet("mh.note",prev);log("Local save: "+(got===t?"ok ✓":"mismatch"),"ok")}catch(e){log("Local save: error","err")}
 });
 
-// Boot
-(function boot(){const saved=lsGet("mh.note","");if(saved){note.value=saved;echo.textContent=saved}loadTracks().then(()=>loadAPI()).then(()=>{loadSavedId();if(tracks.length){const item=tracks[idx];if(!yt.value)yt.value=item.youtube_id||parseId(item.url)}updateIndexBadge();});})();
+(function boot(){
+  const saved=lsGet("mh.note","");if(saved){note.value=saved;echo.textContent=saved}
+  const volSaved=loadVol(); vol.value=volSaved;
+  loadTracks().then(()=>loadAPI()).then(()=>{loadSavedId();if(tracks.length){const item=tracks[idx];if(!yt.value)yt.value=item.youtube_id||parseId(item.url)}updateIndexBadge();});
+})();
 </script>
 
 <script>
@@ -331,11 +352,11 @@ function step(){ay+=.0018;ax+=.0008;drawBG();requestAnimationFrame(step)}request
 </script>
 
 <script>
-/* Fallback (optional) — will be ignored if /data/tracks.json exists */
+/* Fallback — ignored if /data/tracks.json exists */
 window.MH_FALLBACK={tracks:[
-{"youtube_id":"Cr-SqRWImmI","url":"https://youtu.be/Cr-SqRWImmI","mode":"feel","tone_hz":128,"task":"Scan the body from throat to chest. Where does the chorus land? Write one exact sensation.","tone_words":["body","warmth","accept","breathe"],"seed":"3 breaths · 1 line"},
-{"youtube_id":"F1JTlnHGa90","url":"https://youtu.be/F1JTlnHGa90","mode":"mirror","tone_hz":160,"task":"Name the true noun in one sentence (no adjectives).","tone_words":["clarity","witness","precise","name"],"seed":"1 sentence · 7 words"},
-{"youtube_id":"n1VTcJfL7RE","url":"https://youtu.be/n1VTcJfL7RE","mode":"release","tone_hz":256,"task":"Exhale the oldest sentence. Keep the learning; drop the charge.","tone_words":["exhale","lightness","open","let go"],"seed":"Breathe out 7 counts"}
+{"youtube_id":"Cr-SqRWImmI","url":"https://youtu.be/Cr-SqRWImmI","mode":"feel","tone_hz":128,"task":"Scan the body from throat to chest. Where does the chorus land? Write one exact sensation.","tone_words":["body","warmth","accept","breathe"],"seed":"3 breaths · 1 line","notes":"Use morning light; keep volume modest."},
+{"youtube_id":"F1JTlnHGa90","url":"https://youtu.be/F1JTlnHGa90","mode":"mirror","tone_hz":160,"task":"Name the true noun in one sentence (no adjectives).","tone_words":["clarity","witness","precise","name"],"seed":"1 sentence · 7 words","notes":"If stuck, write the *opposite* first."},
+{"youtube_id":"n1VTcJfL7RE","url":"https://youtu.be/n1VTcJfL7RE","mode":"release","tone_hz":256,"task":"Exhale the oldest sentence. Keep the learning; drop the charge.","tone_words":["exhale","lightness","open","let go"],"seed":"Breathe out 7 counts","notes":"Loop if the body asks."}
 ]};
 </script>
 </body>
