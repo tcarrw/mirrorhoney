@@ -1,51 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>MirrorHoney</title>
 <meta name="theme-color" content="#0b0d11"><meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
-:root{--bg:#0a0b10;--ink:#f6f6ff;--muted:#aeb2c8;--vio:#b7a7ff;--rose:#ff9ac7;--gold:#ffd38a;--pearl:#f5f3ff;--glass:rgba(255,255,255,.08);--glass2:rgba(255,255,255,.12);--shadow:0 16px 48px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06)}
+:root{
+  --bg:#0a0b10;--ink:#f6f6ff;--muted:#aeb2c8;--glass:rgba(255,255,255,.08);--glass2:rgba(255,255,255,.12);
+  --shadow:0 16px 48px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
+  --vio:#b7a7ff;--rose:#ff9ac7;--gold:#ffd38a;
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
-body{margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:
-  radial-gradient(1100px 900px at 78% -10%, rgba(183,167,255,.10), transparent 60%),
-  radial-gradient(900px 700px at 8% 113%, rgba(255,152,199,.08), transparent 60%),var(--bg);overflow:hidden}
-.wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:20px;display:grid;gap:20px}
-.header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:22px;background:linear-gradient(180deg,var(--glass2),transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow)}
-.brand{display:flex;gap:12px;align-items:center}
-.glyph{width:40px;height:40px;border-radius:14px;background:conic-gradient(from 210deg, rgba(183,167,255,.75), rgba(255,152,199,.75), rgba(255,211,138,.65), rgba(183,167,255,.75))}
+body{
+  margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  background:
+    radial-gradient(1100px 900px at 78% -10%, rgba(183,167,255,.10), transparent 60%),
+    radial-gradient(900px 700px at 8% 113%, rgba(255,152,199,.08), transparent 60%),var(--bg);
+  overflow-x:hidden
+}
+.wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px}
+.header{
+  display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:18px;
+  background:linear-gradient(180deg,var(--glass2),transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow)
+}
+.brand{display:flex;gap:10px;align-items:center}
+.glyph{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 210deg, rgba(183,167,255,.75), rgba(255,152,199,.75), rgba(255,211,138,.65), rgba(183,167,255,.75))}
 .title{font-weight:900;letter-spacing:.3px}
 .small{font-size:12px;color:var(--muted)}
 .badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
 .btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;background:rgba(255,255,255,.12);color:var(--ink);font-weight:800;cursor:pointer}
 .btn:active{transform:scale(.98)}
-.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
-@media (max-width:980px){.grid{grid-template-columns:1fr}}
-.card{border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.04));box-shadow:var(--shadow);padding:16px;position:relative;overflow:hidden}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.card{border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.04));box-shadow:var(--shadow);padding:14px;position:relative;overflow:hidden}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.input{flex:1;min-width:220px;border-radius:12px;border:1px solid rgba(255,255,255,.16);padding:10px 12px;background:rgba(10,12,18,.7);color:var(--ink);outline:none}
+.input{flex:1;min-width:220px;border-radius:10px;border:1px solid rgba(255,255,255,.16);padding:10px 12px;background:rgba(10,12,18,.7);color:var(--ink);outline:none}
 .input[readonly]{opacity:.9}
 .tabs{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
 .tab{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);cursor:pointer;font-size:13px}
 .tab.active{box-shadow:0 0 0 2px rgba(183,167,255,.35);background:rgba(183,167,255,.18)}
 .tint{position:fixed;inset:0;pointer-events:none;mix-blend-mode:color;opacity:0;background:radial-gradient(1100px 900px at 50% 50%, rgba(183,167,255,.34), rgba(255,152,199,.24), transparent 72%);z-index:1}
-.player{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;box-shadow:var(--shadow)}
+.player{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:var(--shadow)}
 #player{width:100%;height:100%}
 .poster{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0))}
 .poster button{appearance:none;border:0;border-radius:999px;padding:14px 18px;font-weight:900;background:rgba(255,255,255,.14);color:#fff;backdrop-filter:blur(10px)}
 .notice{padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);font-size:14px}
 a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
-.mirror{min-height:80px;border-radius:14px;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--ink);width:100%}
-.echo{margin-top:8px;font-size:20px;line-height:1.3;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(183,167,255,.12),rgba(255,152,199,.08))}
+.mirror{min-height:80px;border-radius:12px;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--ink);width:100%}
+.echo{margin-top:8px;font-size:18px;line-height:1.35;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(183,167,255,.12),rgba(255,152,199,.08))}
 .switch{position:relative;display:inline-flex;align-items:center;justify-content:flex-start;width:58px;height:34px;background:rgba(255,255,255,.16);border-radius:999px;cursor:pointer}
 .switch[aria-pressed="true"]{background:rgba(255,255,255,.22)}
 .switch i{position:absolute;top:5px;left:5px;width:24px;height:24px;border-radius:50%;background:white;transition:left .15s ease;pointer-events:none}
 .switch[aria-pressed="true"] i{left:29px}
 .slider{width:100%}
-.fab{position:fixed;right:18px;bottom:18px;width:60px;height:60px;border-radius:18px;background:linear-gradient(180deg,rgba(183,167,255,.25),rgba(183,167,255,.14));display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 2px rgba(183,167,255,.35);user-select:none;z-index:3}
-.selfcheck{position:fixed;right:16px;bottom:92px;width:min(480px,94vw);display:none;border-radius:16px;padding:14px;background:rgba(10,12,18,.92);border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);max-height:70vh;overflow:auto;z-index:4}
+.fab{position:fixed;right:14px;bottom:14px;width:56px;height:56px;border-radius:16px;background:linear-gradient(180deg,rgba(183,167,255,.25),rgba(183,167,255,.14));display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 2px rgba(183,167,255,.35);user-select:none;z-index:3}
+.selfcheck{position:fixed;right:12px;bottom:82px;width:min(480px,94vw);display:none;border-radius:16px;padding:14px;background:rgba(10,12,18,.92);border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);max-height:70vh;overflow:auto;z-index:4}
 .selfcheck.show{display:block}
 .ok{color:#8affb3}.warn{color:#ffd38a}.err{color:#ff9aa2}
 .hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);margin:8px 0}
@@ -54,9 +64,29 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
 .rib .chip{appearance:none;border:0;border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--ink);font-weight:700;text-decoration:none}
 .rib .chip:active{transform:scale(.98)}
 .word{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
-.kbd{padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);font-size:12px}
+.kbd{padding:3px 8px;border:1px solid rgba(255,255,255,.22);border-radius:8px;font-size:12px}
 .mini{font-size:12px;color:var(--muted)}
 .locklab{display:inline-flex;gap:8px;align-items:center}
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 840px){
+  .grid{grid-template-columns:1fr}
+  .header{padding:10px}
+  .title{font-size:16px}
+  .badge{font-size:11px}
+  .btn{padding:10px 12px}
+  .player{border-radius:12px}
+}
+@media (max-width: 420px){
+  .wrap{padding:12px}
+  .header{border-radius:14px}
+  .input{min-width:0}
+  .tab{padding:7px 10px;font-size:12px}
+  .switch{width:54px;height:32px}
+  .switch i{width:22px;height:22px;top:5px;left:5px}
+  .switch[aria-pressed="true"] i{left:27px}
+  .echo{font-size:16px}
+}
 </style>
 </head>
 <body>
@@ -81,6 +111,7 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
   </div>
 
   <div class="grid">
+    <!-- LEFT: Player & controls -->
     <div class="card">
       <div class="row">
         <input id="yt" class="input" placeholder="YouTube ID or URL" readonly>
@@ -125,11 +156,10 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
       <div class="small" id="meta"></div>
     </div>
 
+    <!-- RIGHT: Tone + practice -->
     <div class="card">
       <div class="row" style="justify-content:space-between">
-        <div class="row" style="gap:8px">
-          <span class="small">tone volume</span>
-        </div>
+        <div class="row" style="gap:8px"><span class="small">tone volume</span></div>
         <span class="badge" id="hz">160.00 Hz</span>
       </div>
       <input type="range" id="vol" class="slider" min="0" max="1" step="0.01" value="0.12" aria-label="Tone volume">
@@ -175,6 +205,8 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
   <div id="log" class="small"></div>
 </div>
 
+<!-- Hidden audio sink for iPhone background play -->
+<audio id="toneOut" playsinline preload="auto"></audio>
 <video id="probe" playsinline muted loop preload="auto" style="display:none"></video>
 
 <script>
@@ -182,7 +214,8 @@ const $=id=>document.getElementById(id);
 const yt=$("yt"), apply=$("apply"), prev=$("prev"), next=$("next"), indexBadge=$("indexBadge"), titleBadge=$("titleBadge");
 const poster=$("poster"), start=$("start"), state=$("state"), msg=$("msg"), meta=$("meta");
 const tabs=[...document.querySelectorAll(".tab")], tint=$("tint");
-const toneBtn=$("tone"), vol=$("vol"), hz=$("hz"), note=$("note"), echo=$("echo"), probe=$("probe"), route=$("route"), openYT=$("openYT");
+const toneBtn=$("tone"), vol=$("vol"), hz=$("hz"), note=$("note"), echo=$("echo");
+const toneOut=$("toneOut"), probe=$("probe"), route=$("route"), openYT=$("openYT");
 const fab=$("fab"), sc=$("sc"), run=$("run"), logEl=$("log");
 const loopEl=$("loop"), shuffleEl=$("shuffle"), editId=$("editId");
 const taskText=document.getElementById("taskText"), toneWordsBox=document.getElementById("toneWords"), seedText=document.getElementById("seedText"), notesText=document.getElementById("notesText");
@@ -190,7 +223,7 @@ const streakBadge=document.getElementById("streakBadge");
 const saveEntryBtn=document.getElementById("saveEntry"), exportTxtBtn=document.getElementById("exportTxt");
 
 let player, apiReady=false, readyResolve;
-let ctx=null, osc=null, gain=null;
+let ctx=null, osc=null, gain=null, dest=null;  // dest routes tone to <audio>
 let mode="mirror";
 let tracks=[], idx=0;
 const EMBED_TONE={feel:128,mirror:160,release:256};
@@ -221,7 +254,7 @@ function updateIndexBadge(){indexBadge.textContent=(tracks.length?idx+1:0)+"/"+t
 function setTitleFromPlayer(e){try{const d=e.target.getVideoData&&e.target.getVideoData();const t=d&&d.title?d.title:"";if(t)titleBadge.textContent=t}catch(_){ }}
 
 function renderPractice(item){
-  const m = (mode || item.mode || "mirror");          /* prefer current tab */
+  const m = (mode || item.mode || "mirror");
   taskText.textContent = item.task || DEFAULT_TASK[m];
   const words = (item.tone_words && item.tone_words.length) ? item.tone_words : DEFAULT_WORDS[m];
   toneWordsBox.innerHTML=""; words.forEach(w=>{const s=document.createElement("span");s.className="word";s.textContent=w;toneWordsBox.appendChild(s)});
@@ -270,11 +303,39 @@ function startPlayback(id){if(!id)return; msg.style.display="none"; saveId(id);
 }
 function playIndex(i){idx=i;saveIndex();updateIndexBadge();const item=tracks[idx];if(!item)return;yt.value=parseId(item.youtube_id||item.url);setMode(item.mode||"mirror");renderPractice(item);startPlayback(parseId(item.youtube_id||item.url))}
 
-function ensureAudio(){if(ctx)return;ctx=new (window.AudioContext||window.webkitAudioContext)();gain=ctx.createGain();gain.gain.value=+vol.value;osc=ctx.createOscillator();osc.type="sine";osc.frequency.value=(EMBED_TONE[mode]||160);osc.connect(gain).connect(ctx.destination);osc.start()}
-function toneOn(){ensureAudio();toneBtn.setAttribute("aria-pressed","true")}
-function toneOff(){if(!ctx)return;toneBtn.setAttribute("aria-pressed","false");gain.gain.setTargetAtTime(0,ctx.currentTime,.06)}
-vol.addEventListener("input",()=>{const v=+vol.value;saveVol(v);if(gain){gain.gain.setTargetAtTime(v,(ctx?ctx.currentTime:0),.06)}});
+/* ---------- Tone (background-capable) ---------- */
+function ensureAudio(){
+  if(ctx) return;
+  ctx=new (window.AudioContext||window.webkitAudioContext)();
+  gain=ctx.createGain(); gain.gain.value=+vol.value;
+  osc=ctx.createOscillator(); osc.type="sine"; osc.frequency.value=(EMBED_TONE[mode]||160);
+  dest=ctx.createMediaStreamDestination();   // route WebAudio -> <audio> for background play
+  osc.connect(gain).connect(dest);
+  toneOut.srcObject = dest.stream;
+  toneOut.loop = true; toneOut.autoplay = false; toneOut.playsInline = true;
+}
+async function toneOn(){
+  ensureAudio();
+  try{
+    await toneOut.play();                  // iOS requires a user gesture—this is called from a button
+    if(ctx.state==="suspended") await ctx.resume();
+    toneBtn.setAttribute("aria-pressed","true");
+    // Media Session metadata (helps background controls)
+    if("mediaSession" in navigator){
+      navigator.mediaSession.metadata = new MediaMetadata({title:"MirrorHoney Tone", artist:"MirrorHoney", album:"Clarity Field"});
+      navigator.mediaSession.playbackState = "playing";
+    }
+  }catch(_){}
+}
+function toneOff(){
+  if(!ctx) return;
+  try{ toneOut.pause(); }catch(_){}
+  toneBtn.setAttribute("aria-pressed","false");
+  if("mediaSession" in navigator){ navigator.mediaSession.playbackState = "paused"; }
+}
+vol.addEventListener("input",()=>{ saveVol(+vol.value); if(gain && ctx) gain.gain.setTargetAtTime(+vol.value, ctx.currentTime, .05) });
 
+/* ---------- Controls & toggles ---------- */
 function toggleSwitch(el,saveFn){const val=el.getAttribute("aria-pressed")==="true";el.setAttribute("aria-pressed",(!val).toString()); if(saveFn) saveFn(!val)}
 loopEl.addEventListener("click",()=>toggleSwitch(loopEl,saveLoop));
 loopEl.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleSwitch(loopEl,saveLoop)}});
@@ -283,29 +344,26 @@ shuffleEl.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.pr
 toneBtn.addEventListener("click",()=>{toneBtn.getAttribute("aria-pressed")==="true"?toneOff():toneOn()});
 toneBtn.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toneBtn.getAttribute("aria-pressed")==="true"?toneOff():toneOn()}});
 
-// MODE TABS — fix
+/* Mode tabs */
 tabs.forEach(t=>{
-  t.addEventListener("click",()=>{
-    setMode(t.dataset.m);
-    renderPractice(tracks[idx]||{});
-  });
+  t.addEventListener("click",()=>{ setMode(t.dataset.m); renderPractice(tracks[idx]||{}); });
 });
 
-// ID lock toggle (safe editing)
+/* Safe edit for ID */
 function setEdit(on){
   yt.readOnly=!on;
   editId.setAttribute("aria-pressed", on?"true":"false");
   yt.focus();
-  if(!on){ // sanitize on lock
+  if(!on){
     const id=parseId(yt.value);
-    if(id){ yt.value=id; saveId(id); }
-    else { const item=tracks[idx]; yt.value=(item && (item.youtube_id||parseId(item.url)))||""; }
+    if(id){ yt.value=id; saveId(id); } else { const item=tracks[idx]; yt.value=(item && (item.youtube_id||parseId(item.url)))||""; }
   }
 }
 editId.addEventListener("click",()=> setEdit(editId.getAttribute("aria-pressed")!=="true"));
 editId.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setEdit(editId.getAttribute("aria-pressed")!=="true")}});
 yt.addEventListener("blur",()=>{ if(editId.getAttribute("aria-pressed")==="true") setEdit(false) });
 
+/* Transport */
 apply.onclick=async()=>{const id=currentId();if(!id)return;await ensureAPI();startPlayback(id)};
 prev.onclick=async()=>{if(idx>0){idx--;saveIndex();updateIndexBadge();const item=tracks[idx];yt.value=parseId(item.youtube_id||item.url);setMode(item.mode||"mirror");renderPractice(item);await ensureAPI();startPlayback(parseId(item.youtube_id||item.url))}};
 next.onclick=async()=>{if(shuffleEl.getAttribute("aria-pressed")==="true"){const m=tracks[idx]?.mode||mode;const pool=tracks.map((t,i)=>({t,i})).filter(x=>x.t.mode===m && x.i!==idx);if(pool.length){const pick=pool[Math.floor(Math.random()*pool.length)];idx=pick.i;saveIndex();playIndex(idx);return}}
@@ -316,22 +374,33 @@ async function startBtn(){const id=currentId();if(!id)return;await ensureAPI();s
 openYT.onclick=()=>{const id=(tracks[idx]&&(tracks[idx].youtube_id||parseId(tracks[idx].url)))||parseId(yt.value);if(!id)return;window.open("https://youtu.be/"+id,"_blank","noopener")};
 route.onclick=async()=>{try{if(probe.webkitShowPlaybackTargetPicker){probe.webkitShowPlaybackTargetPicker();await probe.play().catch(()=>{})}else{alert("AirPlay picker not available in this browser.")}}catch(_){ }};
 
+/* Text & log */
 note.addEventListener("input",()=>{echo.textContent=note.value;lsSet("mh.note",note.value)});
 saveEntryBtn.onclick=()=>{const item=tracks[idx]||{};const id=(item.youtube_id)||(item.url)||"";const title=titleBadge.textContent||"";const now=new Date().toISOString();const entry={t:now,id,title,mode:(mode||item.mode),hz:(EMBED_TONE[mode]||160),text:note.value||""};const arr=JSON.parse(lsGet("mh.log","[]")||"[]");arr.push(entry);lsSet("mh.log",JSON.stringify(arr));state.textContent="saved ✓";touchStreak()};
 exportTxtBtn.onclick=()=>{const arr=JSON.parse(lsGet("mh.log","[]")||"[]");const lines=["MirrorHoney Reflections","-----------------------",""].concat(arr.map(e=>`${e.t} • [${e.mode} ${e.hz}Hz] ${e.title||e.id}\n${e.text}\n`));const blob=new Blob([lines.join("\n")],{type:"text/plain"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="mirrorhoney_reflections.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)};
 
+/* Self-Check */
 function log(t,c){const p=document.createElement("div");if(c)p.className=c;p.textContent=t;logEl.appendChild(p)}
 function clearLog(){logEl.innerHTML=""}
 run.addEventListener("click",()=>{clearLog();if(player&&typeof player.getPlayerState==="function"){log("YouTube API: ready ✓","ok")}else{log("YouTube API: not ready","err")}
  try{if(player&&player.playVideo){player.playVideo();setTimeout(()=>{const st=player.getPlayerState();log(st===1?"Playback: playing ✓":"Playback: not playing",st===1?"ok":"warn")},900)}}catch(e){log("Playback: error","err")}
- try{if(!ctx)ensureAudio();gain.gain.setTargetAtTime(+vol.value,(ctx?ctx.currentTime:0),.04);log("Tone volume: "+(+vol.value).toFixed(2),"ok");toneOn()}catch(e){log("Tone engine: error","err")}
+ try{ensureAudio();gain && (gain.gain.value=+vol.value);toneOn();log("Tone: background route ✓","ok")}catch(e){log("Tone engine: error","err")}
  try{const prev=lsGet("mh.note","");const t="echo-"+Math.random().toString(36).slice(2,6);lsSet("mh.note",t);const got=lsGet("mh.note","");lsSet("mh.note",prev);log("Local save: "+(got===t?"ok ✓":"mismatch"),"ok")}catch(e){log("Local save: error","err")}
 });
 
+/* Boot */
 (function boot(){
-  const saved=lsGet("mh.note","");if(saved){note.value=saved;echo.textContent=saved}
+  const saved=lsGet("mh.note",""); if(saved){note.value=saved; echo.textContent=saved}
   const volSaved=loadVol(); vol.value=volSaved;
-  loadTracks().then(()=>loadAPI()).then(()=>{loadSavedId();if(tracks.length){const item=tracks[idx];if(!yt.value)yt.value=item.youtube_id||parseId(item.url)}updateIndexBadge();});
+  loadTracks().then(()=>loadAPI()).then(()=>{loadSavedId(); if(tracks.length){const item=tracks[idx]; if(!yt.value) yt.value=item.youtube_id||parseId(item.url)} updateIndexBadge();});
+  // Media Session actions for background controls
+  if('mediaSession' in navigator){
+    try{
+      navigator.mediaSession.setActionHandler('play', ()=>toneOn());
+      navigator.mediaSession.setActionHandler('pause', ()=>toneOff());
+      navigator.mediaSession.setActionHandler('stop', ()=>toneOff());
+    }catch(_){}
+  }
 })();
 </script>
 
@@ -341,7 +410,7 @@ const cv=document.getElementById('alive'), cx=cv.getContext('2d');
 let W=innerWidth,H=innerHeight;
 function rs(){cv.width=W=innerWidth;cv.height=H=innerHeight}
 rs();addEventListener('resize',rs);
-const R=2.0, nodesBG=[{c:['#d9def988','#8aa0ff11'],p:{x:0,y:0,z:0},r:.25},{c:['#b7a7ff66','#ff9ac711'],p:{x:0,y:R,z:0},r:.20},{c:['#c5eeff66','#9fd3ff11'],p:{x:R*.82,y:.12,z:R*.55},r:.18},{c:['#ffd38a66','#ffbfbf11'],p:{x:-R*.82,y:.10,z:R*.50},r:.18},{c:['#78c7ff66','#2a6fbf11'],p:{x:.15,y:-R*.78,z:-R*.75},r:.18},{c:['#9aa0ad66','#d7d9e611'],p:{x:-R*.78,y:-.12,z:-R*.48},r:.16},{c:['#ffb39c66','#c49cff11'],p:{x:R*.85,y:-.10,z:-R*.42},r:.17}];
+const R=2.0, nodesBG=[{c:['#d9def988','#8aa0ff11'],p:{x:0,y:0,z:0},r:.25},{c:['#b7a7ff66','#ff9ac711'],p:{x:0,y:R,z:0},r:.20},{c:['#c5eeff66','#9fd3ff11'],p:{x:R*.82,y:.12,z:R*.55},r:.18},{c:['#ffd38a66','#ffbfbf11'],p:{x:-R*.82,y:.10,z:R*.50},r:.18},{c:['#78c7ff66','#2a6fbf11'],p:{x:.15,y:-R*.78,z:-R*.75},r:.18},{c:['#9aa0ad66','#d7d9e611'],p:{x:-R*.78,y:-.12,z:R*.48},r:.16},{c:['#ffb39c66','#c49cff11'],p:{x:R*.85,y:-.10,z:-R*.42},r:.17}];
 let ax=.3,ay=.36;
 function rx(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x,y:p.y*c-p.z*s,z:p.y*s+p.z*c}}
 function ry(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x*c+p.z*s,y:p.y,z:-p.x*s+p.z*c}}
@@ -355,7 +424,7 @@ function step(){ay+=.0018;ax+=.0008;drawBG();requestAnimationFrame(step)}request
 /* Fallback — ignored if /data/tracks.json exists */
 window.MH_FALLBACK={tracks:[
 {"youtube_id":"Cr-SqRWImmI","url":"https://youtu.be/Cr-SqRWImmI","mode":"feel","tone_hz":128,"task":"Scan the body from throat to chest. Where does the chorus land? Write one exact sensation.","tone_words":["body","warmth","accept","breathe"],"seed":"3 breaths · 1 line","notes":"Use morning light; keep volume modest."},
-{"youtube_id":"F1JTlnHGa90","url":"https://youtu.be/F1JTlnHGa90","mode":"mirror","tone_hz":160,"task":"Name the true noun in one sentence (no adjectives).","tone_words":["clarity","witness","precise","name"],"seed":"1 sentence · 7 words","notes":"If stuck, write the *opposite* first."},
+{"youtube_id":"F1JTlnHGa90","url":"https://youtu.be/F1JTlnHGa90","mode":"mirror","tone_hz":160,"task":"Name the true noun in one sentence (no adjectives).","tone_words":["clarity","witness","precise","name"],"seed":"1 sentence · 7 words","notes":"If stuck, write the opposite first."},
 {"youtube_id":"n1VTcJfL7RE","url":"https://youtu.be/n1VTcJfL7RE","mode":"release","tone_hz":256,"task":"Exhale the oldest sentence. Keep the learning; drop the charge.","tone_words":["exhale","lightness","open","let go"],"seed":"Breathe out 7 counts","notes":"Loop if the body asks."}
 ]};
 </script>
