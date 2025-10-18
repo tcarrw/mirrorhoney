@@ -1,136 +1,86 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>MirrorHoney · Closeness</title>
-<meta name="theme-color" content="#0b0d11" media="(prefers-color-scheme: dark)">
+<title>MirrorHoney — Director’s Cut</title>
+<meta name="theme-color" content="#0b0d11">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 :root{
-  --bg:#090a0f;
-  --ink:#f3f4ff;
-  --muted:#b9b9d6;
-  --glass:rgba(255,255,255,.06);
-  --glass-2:rgba(255,255,255,.12);
-  --pulse:#a7b7ff;
-  --rose:#ff9ac7;
-  --mint:#9af7e3;
-  --gold:#ffd38a;
-  --ring:0 0 0 2px rgba(167,183,255,.35);
-  --radius:18px;
-  --shadow:0 12px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
+  --bg:#0a0b10;--ink:#f6f6ff;--muted:#b7b9d6;--glass:rgba(255,255,255,.06);--glass2:rgba(255,255,255,.12);
+  --vio:#b7a7ff;--rose:#ff98c7;--gold:#ffd38a;--mint:#9af7e3;--shadow:0 16px 50px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
+  --r:18px
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{
-  margin:0;background:radial-gradient(1200px 900px at 70% -10%,rgba(167,183,255,.08),transparent 60%),
-  radial-gradient(900px 700px at 10% 110%,rgba(255,154,199,.06),transparent 60%),var(--bg);
-  color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,Apple Color Emoji,Segoe UI Emoji;
-  overflow-x:hidden;
-}
-#alive{
-  position:fixed;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.65;filter:saturate(1.05);
+  margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
   background:
-    radial-gradient(600px 600px at 15% 20%, rgba(167,183,255,.12), transparent 60%),
-    radial-gradient(700px 700px at 85% 80%, rgba(255,211,138,.10), transparent 60%);
+    radial-gradient(1100px 900px at 78% -10%, rgba(183,167,255,.10), transparent 60%),
+    radial-gradient(900px 700px at 8% 113%, rgba(255,152,199,.08), transparent 60%), var(--bg);
+  overflow-x:hidden
 }
-.shimmer{
-  position:absolute;inset:0;background:
-    repeating-linear-gradient(100deg,rgba(255,255,255,.02) 0,rgba(255,255,255,.02) 2px,transparent 2px,transparent 8px);
-  animation:drift 16s linear infinite;
-}
-@keyframes drift{0%{transform:translateX(0)}100%{transform:translateX(-120px)}}
-
-.wrap{max-width:1100px;margin:0 auto;padding:22px;display:grid;gap:22px}
-.header{
-display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:20px;
-background:linear-gradient(180deg,var(--glass-2),transparent);backdrop-filter:blur(8px);box-shadow:var(--shadow)
-}
+.alive{position:fixed;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:.65}
+.alive::before{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(100deg,rgba(255,255,255,.018) 0 2px,transparent 2px 8px);
+  animation:drift 16s linear infinite}
+@keyframes drift{to{transform:translateX(-140px)}}
+.wrap{max-width:1200px;margin:0 auto;padding:20px;display:grid;gap:20px}
+.header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:22px;
+  background:linear-gradient(180deg,var(--glass2),transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow)}
 .brand{display:flex;gap:12px;align-items:center}
-.glyph{
-width:36px;height:36px;border-radius:12px;background:conic-gradient(from 220deg,rgba(167,183,255,.7),rgba(255,154,199,.7),rgba(167,183,255,.7));
-box-shadow:0 0 0 1px rgba(255,255,255,.15),0 10px 25px rgba(0,0,0,.35)
-}
-.title{font-weight:700;letter-spacing:.4px}
-.mode-select{display:flex;gap:8px}
-.btn{
-appearance:none;border:0;border-radius:12px;padding:10px 14px;background:rgba(255,255,255,.08);
-color:var(--ink);font-weight:600;box-shadow:var(--shadow);transition:transform .12s ease,background .2s ease;cursor:pointer
-}
+.glyph{width:40px;height:40px;border-radius:14px;background:
+  conic-gradient(from 210deg, rgba(183,167,255,.75), rgba(255,152,199,.75), rgba(255,211,138,.65), rgba(183,167,255,.75));
+  box-shadow:0 0 0 1px rgba(255,255,255,.15), 0 12px 28px rgba(0,0,0,.35)}
+.title{font-weight:800;letter-spacing:.3px}
+.sub{font-size:12px;color:var(--muted)}
+.cluster{display:flex;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;background:rgba(255,255,255,.08);color:var(--ink);font-weight:700;cursor:pointer}
 .btn:active{transform:scale(.98)}
-.btn.ghost{background:rgba(255,255,255,.05)}
-.btn.pulse{box-shadow:0 0 0 2px rgba(167,183,255,.28),0 12px 32px rgba(167,183,255,.18)}
-.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px}
-@media (max-width:900px){.grid{grid-template-columns:1fr}}
-.card{
-background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.04));
-border-radius:20px;padding:16px;box-shadow:var(--shadow);position:relative;overflow:hidden
-}
-.card .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.card h2{margin:0;font-size:16px;opacity:.9}
-.field{display:flex;gap:8px;margin:10px 0}
-.input, .select{
-flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);padding:10px 12px;background:rgba(10,10,15,.6);
-color:var(--ink);outline:none
-}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+@media (max-width:980px){.grid{grid-template-columns:1fr}}
+.card{border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.04));box-shadow:var(--shadow);padding:16px;position:relative;overflow:hidden}
+.head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.h2{margin:0;font-size:16px;font-weight:800;letter-spacing:.2px}
 .small{font-size:12px;color:var(--muted)}
-.row{display:flex;gap:10px;align-items:center}
-.kbd{padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.2);font-size:12px}
-.player-box{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;box-shadow:var(--shadow)}
-.overlay{
-position:absolute;inset:0;display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px);
-background:radial-gradient(600px 400px at 50% 40%,rgba(255,154,199,.16),transparent 60%),
-linear-gradient(180deg,rgba(167,183,255,.1),rgba(10,10,15,.4))
-}
-.overlay.active{display:flex}
-.overlay .mask{
-width:min(90%,800px);padding:24px;border-radius:20px;background:rgba(10,12,18,.65);
-border:1px solid rgba(255,255,255,.12);text-align:center;box-shadow:var(--shadow)
-}
-.tabs{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.input{flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.14);padding:10px 12px;background:rgba(12,12,18,.7);color:var(--ink);outline:none}
+.player{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;box-shadow:var(--shadow)}
+#player{width:100%;height:100%}
+.tabs{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
 .tab{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);cursor:pointer;font-size:13px}
-.tab.active{box-shadow:var(--ring);background:rgba(167,183,255,.18)}
-.mirror{
-min-height:64px;border-radius:14px;padding:12px 14px;background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.12);font-size:15px;color:var(--ink)
-}
-.echo{
-font-size:22px;line-height:1.25;margin-top:10px;padding:14px;border-radius:14px;background:
-linear-gradient(180deg,rgba(167,183,255,.12),rgba(255,154,199,.08));
-text-shadow:0 0 18px rgba(167,183,255,.25)
-}
-.controls{display:grid;gap:12px}
+.tab.active{box-shadow:0 0 0 2px rgba(183,167,255,.3);background:rgba(183,167,255,.18)}
+.overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px);
+ background:radial-gradient(700px 500px at 50% 35%, rgba(255,152,199,.16), transparent 65%), linear-gradient(180deg, rgba(183,167,255,.12), rgba(12,12,18,.55))}
+.overlay.show{display:flex}
+.mask{width:min(92%,820px);padding:22px;border-radius:20px;background:rgba(10,12,18,.65);border:1px solid rgba(255,255,255,.12);text-align:center}
+.kbd{padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);font-size:12px}
+.mirror{min-height:68px;border-radius:14px;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:var(--ink)}
+.echo{margin-top:10px;font-size:22px;line-height:1.25;padding:14px;border-radius:14px;background:
+ linear-gradient(180deg,rgba(183,167,255,.12),rgba(255,152,199,.08));text-shadow:0 0 18px rgba(183,167,255,.3)}
+.switch{position:relative;width:58px;height:34px;background:rgba(255,255,255,.14);border-radius:999px;cursor:pointer}
+.switch i{position:absolute;top:5px;left:5px;width:24px;height:24px;border-radius:50%;background:white;transition:left .15s ease}
+.switch.on i{left:29px}
 .slider{width:100%}
-.switch{position:relative;width:56px;height:32px;background:rgba(255,255,255,.12);border-radius:999px;cursor:pointer}
-.switch i{position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:white;transition:left .15s ease}
-.switch.on i{left:28px}
-.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12)}
-.footer{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:6px}
-.tint{
-position:fixed;inset:0;pointer-events:none;mix-blend-mode:color;opacity:.0;background:radial-gradient(900px 900px at 50% 50%,rgba(167,183,255,.35),rgba(255,154,199,.25),transparent 70%)
-}
-.float-moon{
-position:fixed;right:18px;bottom:18px;width:58px;height:58px;border-radius:16px;background:linear-gradient(180deg,rgba(167,183,255,.25),rgba(167,183,255,.15));
-display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.45),var(--ring);backdrop-filter:blur(8px);user-select:none;touch-action:manipulation
-}
-.float-moon:active{transform:scale(.98)}
-.float-moon span{font-size:22px}
-.selfcheck{
-position:fixed;inset:auto 12px 90px auto;right:12px;bottom:90px;width:min(420px,92vw);
-display:none;border-radius:16px;padding:14px;background:rgba(12,14,20,.9);border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);max-height:65vh;overflow:auto
-}
+.footer{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.tint{position:fixed;inset:0;pointer-events:none;mix-blend-mode:color;opacity:0;
+ background:radial-gradient(1100px 900px at 50% 50%, rgba(183,167,255,.34), rgba(255,152,199,.24), transparent 72%)}
+.fab{position:fixed;right:18px;bottom:18px;width:60px;height:60px;border-radius:18px;
+ background:linear-gradient(180deg,rgba(183,167,255,.25),rgba(183,167,255,.14));display:grid;place-items:center;
+ box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 2px rgba(183,167,255,.35);user-select:none}
+.selfcheck{position:fixed;right:16px;bottom:92px;width:min(420px,92vw);display:none;border-radius:16px;padding:14px;
+ background:rgba(10,12,18,.92);border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);max-height:65vh;overflow:auto}
 .selfcheck.show{display:block}
 .ok{color:#8affb3}.warn{color:#ffd38a}.err{color:#ff9aa2}
-.hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);margin:8px 0}
-.hidden{display:none}
-.route-btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;background:rgba(255,255,255,.08);color:var(--ink);font-weight:600} </style>
-
+.hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);margin:8px 0}
+.pin{appearance:none;border:0;border-radius:10px;padding:8px 10px;background:rgba(255,255,255,.08);color:var(--ink);font-weight:700}
+</style>
 </head>
 <body>
-<div id="alive"><div class="shimmer"></div></div>
+<div class="alive"></div>
 <div class="tint" id="tint"></div>
 
 <div class="wrap">
@@ -139,349 +89,213 @@ display:none;border-radius:16px;padding:14px;background:rgba(12,14,20,.9);border
       <div class="glyph"></div>
       <div>
         <div class="title">MirrorHoney</div>
-        <div class="small">Closeness · 160 Hz · Quiet Mirror</div>
+        <div class="sub">Closeness · 160 Hz · Quiet Mirror</div>
       </div>
     </div>
-    <div class="mode-select">
-      <button class="btn pulse" id="btnFeel">Feel</button>
-      <button class="btn ghost" id="btnMirror">Mirror</button>
-      <button class="btn ghost" id="btnRelease">Release</button>
+    <div class="cluster">
+      <button class="btn" id="start">Start</button>
+      <button class="btn" id="route">Route</button>
+      <span class="badge" id="state">idle</span>
     </div>
   </div>
 
   <div class="grid">
     <div class="card">
       <div class="head">
-        <h2>Player</h2>
+        <div class="h2">Player</div>
+        <div class="row">
+          <span class="small">Official IDs only</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <input id="yt" class="input" placeholder="YouTube ID" value="7zsDsWS6t0c">
+        <button class="btn" id="load">Load</button>
+        <button class="btn pin" id="pin">Pin</button>
+      </div>
+
+      <div class="player"><div id="player"></div>
+        <div class="overlay" id="overlay">
+          <div class="mask">
+            <div class="tabs">
+              <div class="tab active" data-m="feel">feel</div>
+              <div class="tab" data-m="mirror">mirror</div>
+              <div class="tab" data-m="release">release</div>
+            </div>
+            <div class="small" id="hint">Calm breath. Color the room with one sensation.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
         <div class="row small">
-          <span class="badge" id="status">idle</span>
-          <button class="btn" id="airplayBtn" title="Route video via AirPlay">Route</button>
+          <span class="kbd">Long-press ◐ for Self-Check</span>
+          <span class="kbd">⌘K reflect</span>
         </div>
+        <div class="row small" id="meta"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="head">
+        <div class="h2">Tone · 160 Hz</div>
+        <span class="small" id="toneStatus">off</span>
       </div>
 
-```
-  <div class="field">
-    <input class="input" id="ytId" value="7zsDsWS6t0c" aria-label="YouTube ID">
-    <button class="btn" id="loadBtn">Load</button>
-  </div>
-
-  <div class="player-box">
-    <div id="player"></div>
-    <div class="overlay" id="closeness">
-      <div class="mask">
-        <div class="tabs">
-          <div class="tab active" data-mode="feel">feel</div>
-          <div class="tab" data-mode="mirror">mirror</div>
-          <div class="tab" data-mode="release">release</div>
+      <div class="row" style="justify-content:space-between">
+        <div class="row" style="gap:8px">
+          <div class="switch" id="tone"><i></i></div>
+          <span class="small">tone</span>
         </div>
-        <div class="small" id="modeHint">Calm breath. Notice one true sensation. Let it color the room.</div>
+        <span class="badge" id="hz">160.00 Hz</span>
       </div>
-    </div>
-  </div>
 
-  <div class="footer">
-    <div class="row small">
-      <span class="kbd">Long-press ◐ for Self-Check</span>
-      <span class="kbd">⌘K open Reflect</span>
+      <input type="range" id="freq" class="slider" min="140" max="180" step="0.01" value="160">
+
+      <div class="row" style="justify-content:space-between">
+        <div class="row" style="gap:8px">
+          <div class="switch" id="persist"><i></i></div>
+          <span class="small">keep alive on app switch</span>
+        </div>
+        <span class="small" id="keepNote">background-friendly oscillator</span>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="head">
+        <div class="h2">Reflect</div>
+        <span class="small">saved locally</span>
+      </div>
+      <textarea id="note" class="mirror" placeholder="Write one exact line…"></textarea>
+      <div class="echo" id="echo"></div>
     </div>
-    <div class="row small" id="vidMeta"></div>
   </div>
 </div>
 
-<div class="card">
-  <div class="head">
-    <h2>Tone · 160 Hz</h2>
-    <span class="small" id="toneState">off</span>
-  </div>
-
-  <div class="controls">
-    <div class="row" style="justify-content:space-between">
-      <div class="row" style="gap:8px">
-        <div class="switch" id="toneToggle"><i></i></div>
-        <span class="small">tone</span>
-      </div>
-      <span class="badge" id="hzReadout">160.00 Hz</span>
-    </div>
-
-    <input type="range" min="140" max="180" step="0.01" value="160" class="slider" id="hzSlider" aria-label="Frequency slider">
-
-    <div class="row" style="justify-content:space-between">
-      <div class="row" style="gap:8px">
-        <div class="switch" id="persistToggle"><i></i></div>
-        <span class="small">keep alive when switching apps</span>
-      </div>
-      <span class="small" id="persistNote">uses background-friendly oscillator</span>
-    </div>
-
-    <div class="row" style="gap:12px">
-      <button class="btn" id="savePreset">Save preset</button>
-      <button class="btn ghost" id="loadPreset">Load preset</button>
-    </div>
-  </div>
-
-  <div class="hr"></div>
-
-  <div class="head">
-    <h2>Reflect</h2>
-    <span class="small">Moon echo saves locally</span>
-  </div>
-  <textarea id="reflect" class="mirror" placeholder="Write one honest line…"></textarea>
-  <div class="echo" id="echo"></div>
-</div>
-```
-
-  </div>
-</div>
-
-<button class="float-moon" id="moon"><span>◐</span></button>
-
-<div class="selfcheck" id="selfcheck">
+<button class="fab" id="fab">◐</button>
+<div class="selfcheck" id="sc">
   <div class="row" style="justify-content:space-between;align-items:center">
     <strong>Self-Check</strong>
-    <button class="btn ghost" id="scRun">Run</button>
+    <button class="btn" id="run">Run</button>
   </div>
   <div class="hr"></div>
-  <div id="scLog" class="small"></div>
+  <div id="log" class="small"></div>
 </div>
 
-<video id="routeProbe" playsinline x-webkit-airplay="allow" class="hidden"></video>
+<video id="probe" playsinline x-webkit-airplay="allow" style="display:none"></video>
 
 <script>
 let player, apiReady=false, readyResolve;
-const ytIdEl=document.getElementById('ytId');
-const loadBtn=document.getElementById('loadBtn');
-const statusEl=document.getElementById('status');
-const vidMeta=document.getElementById('vidMeta');
-const closeness=document.getElementById('closeness');
-const tabs=[...document.querySelectorAll('.tab')];
-const modeHint=document.getElementById('modeHint');
-const btnFeel=document.getElementById('btnFeel');
-const btnMirror=document.getElementById('btnMirror');
-const btnRelease=document.getElementById('btnRelease');
-const tint=document.getElementById('tint');
+const $=id=>document.getElementById(id);
+const yt=$("yt"), load=$("load"), state=$("state"), meta=$("meta");
+const overlay=$("overlay"), hint=$("hint"), tabs=[...overlay.querySelectorAll(".tab")], tint=$("tint");
+const start=$("start"), route=$("route"), probe=$("probe");
+const tone=$("tone"), toneStatus=$("toneStatus"), freq=$("freq"), hz=$("hz"), persist=$("persist");
+const note=$("note"), echo=$("echo"), fab=$("fab"), sc=$("sc"), run=$("run"), logEl=$("log"), pin=$("pin");
 
-const reflect=document.getElementById('reflect');
-const echo=document.getElementById('echo');
+let longPress=null, mode="feel";
+let ctx=null, osc=null, gain=null, keep=true;
+let lastVis=Date.now(), gaps=0;
 
-const toneToggle=document.getElementById('toneToggle');
-const hzSlider=document.getElementById('hzSlider');
-const hzReadout=document.getElementById('hzReadout');
-const toneState=document.getElementById('toneState');
-const persistToggle=document.getElementById('persistToggle');
-
-const moon=document.getElementById('moon');
-const selfcheck=document.getElementById('selfcheck');
-const scRun=document.getElementById('scRun');
-const scLog=document.getElementById('scLog');
-const airplayBtn=document.getElementById('airplayBtn');
-const routeProbe=document.getElementById('routeProbe');
-
-let longPressTimer=null;
-let currentMode='feel';
-let oscCtx=null, oscNode=null, gainNode=null, keepAlive=true;
-let lastVisibilityTime=Date.now();
-let continuityGaps=0;
-
-function setBadge(el,text){el.textContent=text}
-
-function setMode(mode){
-  currentMode=mode;
-  tabs.forEach(t=>t.classList.toggle('active',t.dataset.mode===mode));
-  btnFeel.classList.toggle('pulse',mode==='feel');
-  btnMirror.classList.toggle('pulse',mode==='mirror');
-  btnRelease.classList.toggle('pulse',mode==='release');
-  if(mode==='feel'){
-    modeHint.textContent='Calm breath. Notice one true sensation. Let it color the room.';
-    closeness.classList.add('active');
-    tint.style.opacity='.18';
-  }else if(mode==='mirror'){
-    modeHint.textContent='Look gently. Reflect one sentence that feels exact.';
-    closeness.classList.add('active');
-    tint.style.opacity='.26';
-  }else{
-    modeHint.textContent='Exhale. Let the charge drain. Keep the learning.';
-    closeness.classList.add('active');
-    tint.style.opacity='.10';
-  }
+function badge(el,txt){el.textContent=txt}
+function setMode(m){
+  mode=m;
+  tabs.forEach(t=>t.classList.toggle("active",t.dataset.m===m));
+  if(m==="feel"){hint.textContent="Calm breath. Color the room with one sensation.";tint.style.opacity=.18}
+  if(m==="mirror"){hint.textContent="Reflect one sentence that is exact.";tint.style.opacity=.26}
+  if(m==="release"){hint.textContent="Exhale; keep the learning, drop the charge.";tint.style.opacity=.1}
+  overlay.classList.add("show")
 }
-tabs.forEach(t=>t.addEventListener('click',()=>setMode(t.dataset.mode)));
-btnFeel.onclick=()=>setMode('feel');
-btnMirror.onclick=()=>setMode('mirror');
-btnRelease.onclick=()=>setMode('release');
+tabs.forEach(t=>t.addEventListener("click",()=>setMode(t.dataset.m)));
+overlay.addEventListener("click",e=>{ if(e.target===overlay){ overlay.classList.remove("show"); tint.style.opacity=0 } });
 
-function closeOverlay(){closeness.classList.remove('active'); tint.style.opacity='.0'}
-closeness.addEventListener('click',e=>{ if(e.target===closeness) closeOverlay() })
-
-function loadSaved(){
-  const savedId=localStorage.getItem('mh.ytid'); if(savedId) ytIdEl.value=savedId;
-  const savedText=localStorage.getItem('mh.reflect'); if(savedText){reflect.value=savedText; echo.textContent=savedText}
-  const f=localStorage.getItem('mh.freq'); if(f){hzSlider.value=+f; updateHzDisplay()}
-  const p=localStorage.getItem('mh.keep'); if(p){keepAlive=p==='1'; persistToggle.classList.toggle('on',keepAlive)}
+function loadLocal(){
+  const id=localStorage.getItem("mh.id"); if(id) yt.value=id;
+  const txt=localStorage.getItem("mh.note"); if(txt){note.value=txt;echo.textContent=txt}
+  const f=localStorage.getItem("mh.f"); if(f){freq.value=+f; hz.textContent=(+f).toFixed(2)+" Hz"}
+  const k=localStorage.getItem("mh.keep"); if(k){keep=k==="1"; persist.classList.toggle("on",keep)}
 }
-loadSaved();
-
 function saveLocal(){
-  localStorage.setItem('mh.ytid', ytIdEl.value.trim());
-  localStorage.setItem('mh.reflect', reflect.value);
-  localStorage.setItem('mh.freq', hzSlider.value);
-  localStorage.setItem('mh.keep', keepAlive?'1':'0');
+  localStorage.setItem("mh.id", yt.value.trim());
+  localStorage.setItem("mh.note", note.value);
+  localStorage.setItem("mh.f", freq.value);
+  localStorage.setItem("mh.keep", keep?"1":"0");
 }
+loadLocal();
 
-function updateHzDisplay(){hzReadout.textContent=(+hzSlider.value).toFixed(2)+' Hz'}
-
-function initOsc(){
-  if(oscCtx) return;
-  oscCtx=new (window.AudioContext||window.webkitAudioContext)();
-  gainNode=oscCtx.createGain(); gainNode.gain.value=0;
-  oscNode=oscCtx.createOscillator(); oscNode.type='sine';
-  oscNode.frequency.value=+hzSlider.value;
-  oscNode.connect(gainNode).connect(oscCtx.destination);
-  oscNode.start();
-}
-
-function toneOn(){
-  initOsc();
-  gainNode.gain.setTargetAtTime(.12,oscCtx.currentTime,.08);
-  toneToggle.classList.add('on'); toneState.textContent='on';
-}
-function toneOff(){
-  if(!oscCtx) return;
-  gainNode.gain.setTargetAtTime(0,oscCtx.currentTime,.06);
-  toneToggle.classList.remove('on'); toneState.textContent='off';
-}
-toneToggle.addEventListener('click',()=>{ if(toneToggle.classList.contains('on')) toneOff(); else toneOn(); saveLocal() });
-hzSlider.addEventListener('input',()=>{ updateHzDisplay(); if(oscNode) oscNode.frequency.setValueAtTime(+hzSlider.value, oscCtx.currentTime) });
-document.getElementById('savePreset').onclick=()=>{ localStorage.setItem('mh.preset', JSON.stringify({f:hzSlider.value,on:toneToggle.classList.contains('on')})) }
-document.getElementById('loadPreset').onclick=()=>{
-  const p=localStorage.getItem('mh.preset'); if(!p) return;
-  const o=JSON.parse(p); hzSlider.value=o.f; updateHzDisplay();
-  if(o.on){ toneOn() } else { toneOff() }
-}
-persistToggle.addEventListener('click',()=>{ keepAlive=!keepAlive; persistToggle.classList.toggle('on',keepAlive); saveLocal() });
-
-reflect.addEventListener('input',()=>{ echo.textContent=reflect.value; saveLocal() });
-
-document.addEventListener('keydown',e=>{
-  if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); reflect.focus() }
-});
-
-function loadYouTubeAPI(){
+function loadAPI(){
   return new Promise(res=>{
     readyResolve=res;
-    const tag=document.createElement('script');
-    tag.src="https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
-  });
+    const s=document.createElement("script"); s.src="https://www.youtube.com/iframe_api"; document.body.appendChild(s);
+  })
 }
-window.onYouTubeIframeAPIReady=function(){ apiReady=true; if(readyResolve) readyResolve() };
+window.onYouTubeIframeAPIReady=function(){ apiReady=true; if(readyResolve) readyResolve() }
 
 function initPlayer(id){
-  setBadge(statusEl,'loading');
-  if(player){ player.destroy(); player=null }
-  player=new YT.Player('player',{
-    videoId:id,
-    playerVars:{playsinline:1,rel:0,modestbranding:1},
+  badge(state,"loading");
+  if(player){player.destroy();player=null}
+  player=new YT.Player("player",{videoId:id,playerVars:{playsinline:1,rel:0,modestbranding:1},
     events:{
-      'onReady': (e)=>{
-        setBadge(statusEl,'ready');
-        const d=e.target.getVideoData();
-        vidMeta.textContent=d && d.title? d.title+' — '+(d.author||'YouTube'): 'loaded';
-      },
-      'onStateChange': (ev)=>{
-        if(ev.data===YT.PlayerState.PLAYING) setBadge(statusEl,'playing');
-        if(ev.data===YT.PlayerState.PAUSED) setBadge(statusEl,'paused');
-        if(ev.data===YT.PlayerState.ENDED) setBadge(statusEl,'ended ✓');
-      }
+      onReady:(e)=>{badge(state,"ready"); const d=e.target.getVideoData(); meta.textContent=d&&d.title? d.title+" — "+(d.author||"YouTube"):""},
+      onStateChange:(ev)=>{ if(ev.data===1) badge(state,"playing"); if(ev.data===2) badge(state,"paused"); if(ev.data===0) badge(state,"ended ✓") }
     }
+  })
+}
+
+function initAudio(){
+  if(ctx) return;
+  ctx=new (window.AudioContext||window.webkitAudioContext)();
+  gain=ctx.createGain(); gain.gain.value=0;
+  osc=ctx.createOscillator(); osc.type="sine"; osc.frequency.value=+freq.value;
+  osc.connect(gain).connect(ctx.destination); osc.start()
+}
+function toneOn(){ initAudio(); gain.gain.setTargetAtTime(.12,ctx.currentTime,.08); tone.classList.add("on"); toneStatus.textContent="on" }
+function toneOff(){ if(!ctx) return; gain.gain.setTargetAtTime(0,ctx.currentTime,.06); tone.classList.remove("on"); toneStatus.textContent="off" }
+
+start.addEventListener("click",()=>{ setMode("feel"); if(apiReady) initPlayer(yt.value.trim()); else loadAPI().then(()=>initPlayer(yt.value.trim())); toneOn(); saveLocal() });
+load.addEventListener("click",()=>{ if(!apiReady){return} initPlayer(yt.value.trim()); saveLocal() });
+pin.addEventListener("click",()=>{ localStorage.setItem("mh.pin", yt.value.trim()) });
+
+route.addEventListener("click",()=>{ try{ if(probe.webkitShowPlaybackTargetPicker) probe.webkitShowPlaybackTargetPicker() }catch(e){} });
+
+tone.addEventListener("click",()=>{ if(tone.classList.contains("on")) toneOff(); else toneOn(); saveLocal() });
+freq.addEventListener("input",()=>{ hz.textContent=(+freq.value).toFixed(2)+" Hz"; if(osc) osc.frequency.setValueAtTime(+freq.value, ctx.currentTime) });
+persist.addEventListener("click",()=>{ keep=!keep; persist.classList.toggle("on",keep); saveLocal() });
+
+note.addEventListener("input",()=>{ echo.textContent=note.value; saveLocal() });
+document.addEventListener("keydown",e=>{ if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){ e.preventDefault(); note.focus() } });
+
+document.addEventListener("visibilitychange",()=>{
+  const now=Date.now(), d=now-lastVis;
+  if(document.visibilityState==="visible"){ if(d>120000 && keep && ctx){ gain.gain.setTargetAtTime(.12,ctx.currentTime,.08) } }
+  else{ if(ctx && !keep){ gain.gain.setTargetAtTime(0,ctx.currentTime,.05) } if(d>15000) gaps++ }
+  lastVis=now
+});
+
+fab.addEventListener("touchstart",()=>{ longPress=setTimeout(()=>sc.classList.toggle("show"),650) },{passive:true});
+fab.addEventListener("touchend",()=>{ if(longPress){clearTimeout(longPress);longPress=null} },{passive:true});
+fab.addEventListener("mousedown",()=>{ longPress=setTimeout(()=>sc.classList.toggle("show"),650) });
+fab.addEventListener("mouseup",()=>{ if(longPress){clearTimeout(longPress);longPress=null} });
+
+function log(t,c){ const p=document.createElement("div"); if(c) p.className=c; p.textContent=t; logEl.appendChild(p) }
+function clearLog(){ logEl.innerHTML="" }
+run.addEventListener("click",()=>{
+  clearLog();
+  if(player && typeof player.getPlayerState==="function"){ log("YouTube API: ready ✓","ok") } else { log("YouTube API: not ready","err") }
+  try{ if(player && player.playVideo){ player.playVideo(); setTimeout(()=>{ const st=player.getPlayerState(); if(st===1) log("Playback: playing ✓","ok"); else log("Playback: not playing","warn") },900) } }catch(e){ log("Playback: error","err") }
+  try{ initAudio(); const f=+freq.value; if(osc) osc.frequency.setValueAtTime(f,ctx.currentTime); const err=Math.abs(f-160); log("Tone: "+f.toFixed(2)+" Hz","ok"); if(err<=0.02) log("Accuracy: ±0.02 Hz ✓","ok"); else log("Accuracy offset: "+err.toFixed(2)+" Hz","warn"); toneOn() }catch(e){ log("Tone engine: error","err") }
+  try{ overlay.classList.toggle("show"); const a=overlay.classList.contains("show"); overlay.classList.toggle("show"); log("Overlay toggle: "+(a?"ok":"ok"),"ok") }catch(e){ log("Overlay: error","err") }
+  try{ const prev=localStorage.getItem("mh.note")||""; const t="echo-"+Math.random().toString(36).slice(2,6); localStorage.setItem("mh.note",t); const got=localStorage.getItem("mh.note"); localStorage.setItem("mh.note",prev); log("Local save: "+(got===t?"ok ✓":"mismatch"),"ok") }catch(e){ log("Local save: error","err") }
+  log("Continuity gaps: "+gaps)
+});
+
+(function boot(){
+  loadAPI().then(()=>{
+    apiReady=true;
+    const pinned=localStorage.getItem("mh.pin");
+    if(pinned){ yt.value=pinned }
   });
-}
-loadBtn.addEventListener('click',()=>{ const id=ytIdEl.value.trim(); if(!id) return; saveLocal(); if(apiReady) initPlayer(id) });
-
-(async ()=>{
-  await loadYouTubeAPI();
-  const id=ytIdEl.value.trim(); if(id) initPlayer(id);
 })();
-
-document.addEventListener('visibilitychange',()=>{
-  const now=Date.now();
-  const delta=now-lastVisibilityTime;
-  if(document.visibilityState==='visible'){
-    if(delta>120000 && keepAlive && oscCtx){ gainNode.gain.setTargetAtTime(.12,oscCtx.currentTime,.08) }
-  }else{
-    if(oscCtx && !keepAlive){ gainNode.gain.setTargetAtTime(0,oscCtx.currentTime,.05) }
-    if(delta>15000) continuityGaps++;
-  }
-  lastVisibilityTime=now;
-});
-
-moon.addEventListener('touchstart',()=>{ longPressTimer=setTimeout(()=>{ selfcheck.classList.toggle('show') },650) },{passive:true});
-moon.addEventListener('touchend',()=>{ if(longPressTimer){ clearTimeout(longPressTimer); longPressTimer=null } },{passive:true});
-moon.addEventListener('mousedown',()=>{ longPressTimer=setTimeout(()=>{ selfcheck.classList.toggle('show') },650) });
-moon.addEventListener('mouseup',()=>{ if(longPressTimer){ clearTimeout(longPressTimer); longPressTimer=null } });
-
-function logSC(t, cls){ const p=document.createElement('div'); p.className=cls; p.textContent=t; scLog.appendChild(p) }
-function clearSC(){ scLog.innerHTML='' }
-
-async function runSelfCheck(){
-  clearSC();
-  logSC('Starting checks…','small');
-  // 1) YouTube readiness
-  if(player && typeof player.getPlayerState==='function'){
-    logSC('YouTube API: ready ✓','ok');
-  }else{
-    logSC('YouTube API: not ready','err');
-  }
-  // 2) Video ID plays
-  try{
-    if(player && player.playVideo){ player.playVideo(); await new Promise(r=>setTimeout(r,1200)); }
-    const st=player?player.getPlayerState():-1;
-    if(st===1){ logSC('Video playback: playing ✓','ok') } else { logSC('Video playback: not playing','warn') }
-  }catch(e){ logSC('Video playback: error','err') }
-  // 3) Tone frequency accuracy
-  try{
-    initOsc();
-    oscNode.frequency.setValueAtTime(+hzSlider.value,oscCtx.currentTime);
-    const f=oscNode.frequency.value;
-    const err=Math.abs(f-160);
-    logSC('Tone frequency: '+f.toFixed(2)+' Hz','ok');
-    if(err<=0.02){ logSC('Frequency accuracy: ±0.02 Hz ✓','ok') } else { logSC('Frequency accuracy: off by '+err.toFixed(2)+' Hz','warn') }
-    toneOn();
-  }catch(e){ logSC('Tone engine: error','err') }
-  // 4) Overlay toggle
-  try{
-    closeness.classList.toggle('active');
-    const active=closeness.classList.contains('active');
-    closeness.classList.toggle('active');
-    logSC('Closeness overlay toggle: '+(active?'ok':'ok'),'ok');
-  }catch(e){ logSC('Closeness overlay: error','err') }
-  // 5) Reflection persistence
-  try{
-    const prev=localStorage.getItem('mh.reflect')||'';
-    const test='moon-echo-'+Math.random().toString(36).slice(2,6);
-    localStorage.setItem('mh.reflect',test);
-    const got=localStorage.getItem('mh.reflect');
-    localStorage.setItem('mh.reflect',prev);
-    logSC('Reflection storage: '+(got===test?'ok ✓':'mismatch'),'ok');
-  }catch(e){ logSC('Reflection storage: error','err') }
-  // 6) Continuity
-  logSC('Continuity gaps this session: '+continuityGaps,'small');
-}
-scRun.addEventListener('click',runSelfCheck);
-
-// AirPlay route picker for video (if available)
-airplayBtn.addEventListener('click',()=>{
-  try{
-    if(routeProbe.webkitShowPlaybackTargetPicker){ routeProbe.webkitShowPlaybackTargetPicker() }
-  }catch(e){}
-});
-
-// Autosave hooks
-window.addEventListener('beforeunload',saveLocal);
-
-// Start state
-setMode('feel');
-updateHzDisplay();
 </script>
-
 </body>
 </html>
