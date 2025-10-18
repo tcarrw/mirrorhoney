@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MirrorHoney · Tracks Builder</title>
+<meta name="color-scheme" content="dark"><meta name="theme-color" content="#0b0d11">
+<style>
+:root{--bg:#0a0b10;--ink:#f6f6ff;--muted:#aeb2c8;--glass:rgba(255,255,255,.08)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}body{margin:0;background:
+ radial-gradient(1200px 900px at 70% -10%,rgba(183,167,255,.10),transparent 60%),
+ radial-gradient(900px 700px at 10% 110%,rgba(255,154,199,.08),transparent 60%),#0a0b10;
+ color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+.wrap{max-width:900px;margin:0 auto;padding:18px;display:grid;gap:14px}
+.h{font-weight:800;letter-spacing:.12em}
+.card{border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.04));box-shadow:0 18px 50px rgba(0,0,0,.5);padding:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;background:var(--glass);color:var(--ink);font-weight:800;cursor:pointer}
+.btn:active{transform:scale(.98)}
+.small{font-size:12px;color:var(--muted)}
+.ta{width:100%;min-height:180px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(10,12,18,.7);color:var(--ink);padding:10px}
+.out{width:100%;min-height:180px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(10,12,18,.7);color:#cfe1ff;padding:10px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent)}
+.kbd{padding:3px 8px;border-radius:8px;border:1px solid rgba(255,255,255,.22);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="h">MirrorHoney · Tracks Builder</div>
+
+  <div class="card">
+    <div class="small">Paste **official Marina** YouTube URLs — one per line (18 lines ideal). No shorts/reuploads if possible.</div>
+    <textarea id="in" class="ta" placeholder="https://www.youtube.com/watch?v=XXXXXXXXXXX&#10;https://www.youtube.com/watch?v=YYYYYYYYYYY&#10;..."></textarea>
+    <div class="row">
+      <button id="build" class="btn">Build</button>
+      <button id="copy" class="btn">Copy JSON</button>
+      <span id="count" class="badge">0 items</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <div class="small">Output `data/tracks.json` (titles resolve at runtime; modes+tones preassigned).</div>
+      <span class="kbd">Cycle: feel → mirror → release</span>
+    </div>
+    <div id="out" class="out" spellcheck="false"></div>
+    <div class="small">Modes map → feel=128 Hz · mirror=160 Hz · release=256 Hz</div>
+  </div>
+
+  <div class="hr"></div>
+  <div class="small">Note: We don’t pull titles here (no external requests). MirrorHoney will fetch official titles on load.</div>
+</div>
+
+<script>
+const elIn=document.getElementById('in');
+const elOut=document.getElementById('out');
+const elBuild=document.getElementById('build');
+const elCopy=document.getElementById('copy');
+const elCount=document.getElementById('count');
+
+function parseId(v){
+  v=v.trim();
+  if(!v) return '';
+  try{
+    if(v.includes('youtu.be/')) return new URL(v).pathname.slice(1);
+    if(v.includes('youtube.com/watch')) return new URL(v).searchParams.get('v')||'';
+    if(v.includes('youtube.com/shorts/')) return new URL(v).pathname.split('/').pop();
+    if(/^[a-zA-Z0-9_-]{6,20}$/.test(v)) return v;
+  }catch(_){}
+  return v;
+}
+
+function assignMode(i){
+  const m=i%3;
+  if(m===0) return {mode:'feel',tone_hz:128};
+  if(m===1) return {mode:'mirror',tone_hz:160};
+  return {mode:'release',tone_hz:256};
+}
+
+function build(){
+  const lines=elIn.value.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  const items=[];
+  for(let i=0;i<lines.length;i++){
+    const url=lines[i];
+    const id=parseId(url);
+    if(!id) continue;
+    const {mode,tone_hz}=assignMode(i);
+    items.push({
+      youtube_id:id,
+      url:url.startsWith('http')?url:`https://www.youtube.com/watch?v=${id}`,
+      title:"",
+      channel:"",
+      duration_sec:0,
+      embeddable:null,
+      checked_at:"",
+      mode,
+      tone_hz,
+      tags:[],
+      notes:""
+    });
+  }
+  elCount.textContent=items.length+" items";
+  const json={
+    name:"mirrorhoney",
+    version:"1.0.0",
+    updated_at:new Date().toISOString(),
+    notes:"Official Marina uploads only. Titles resolved at runtime; embeddability verified in-page.",
+    tracks:items
+  };
+  elOut.textContent=JSON.stringify(json,null,2);
+}
+
+function copyJSON(){
+  const txt=elOut.textContent;
+  if(!txt) return;
+  const ta=document.createElement('textarea'); ta.value=txt;
+  document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+}
+
+elBuild.addEventListener('click',build);
+elCopy.addEventListener('click',copyJSON);
+</script>
+</body>
+</html>
