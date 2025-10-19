@@ -7,7 +7,610 @@
 <meta name="theme-color" content="#0b0d11"><meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
+:root{<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>MirrorHoney</title>
+<meta name="theme-color" content="#0b0d11"><meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
 :root{
+  --bg:#0a0b10;--ink:#f6f6ff;--muted:#aeb2c8;--glass:rgba(255,255,255,.08);--glass2:rgba(255,255,255,.12);
+  --shadow:0 16px 48px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
+  --vio:#b7a7ff;--rose:#ff9ac7;--gold:#ffd38a;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{min-height:100%}
+body{
+  margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  background:
+    radial-gradient(1100px 900px at 78% -10%, rgba(183,167,255,.10), transparent 60%),
+    radial-gradient(900px 700px at 8% 113%, rgba(255,152,199,.08), transparent 60%),var(--bg);
+  overflow:auto;                /* scroll everywhere */
+  overscroll-behavior:none;
+  touch-action:auto;
+}
+.wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px}
+.header{
+  display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:18px;
+  background:linear-gradient(180deg,var(--glass2),transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow)
+}
+.brand{display:flex;gap:10px;align-items:center}
+.glyph{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 210deg, rgba(183,167,255,.75), rgba(255,152,199,.75), rgba(255,211,138,.65), rgba(183,167,255,.75))}
+.title{font-weight:900;letter-spacing:.3px}
+.small{font-size:12px;color:var(--muted)}
+.badge{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)}
+.btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;background:rgba(255,255,255,.12);color:var(--ink);font-weight:800;cursor:pointer}
+.btn:active{transform:scale(.98)}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+.card{border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.04));box-shadow:var(--shadow);padding:14px;position:relative;overflow:hidden}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.input{flex:1;min-width:220px;border-radius:10px;border:1px solid rgba(255,255,255,.16);padding:10px 12px;background:rgba(10,12,18,.7);color:var(--ink);outline:none}
+.input[readonly]{opacity:.9}
+.tabs{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.tab{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);cursor:pointer;font-size:13px}
+.tab.active{box-shadow:0 0 0 2px rgba(183,167,255,.35);background:rgba(183,167,255,.18)}
+.tint{position:fixed;inset:0;pointer-events:none;mix-blend-mode:color;opacity:0;background:radial-gradient(1100px 900px at 50% 50%, rgba(183,167,255,.34), rgba(255,152,199,.24), transparent 72%);z-index:1}
+.player{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;box-shadow:var(--shadow)}
+/* Let touches on the iframe scroll the page normally */
+#player iframe{touch-action:auto}
+#player{width:100%;height:100%}
+.poster{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0))}
+.poster button{appearance:none;border:0;border-radius:999px;padding:14px 18px;font-weight:900;background:rgba(255,255,255,.14);color:#fff;backdrop-filter:blur(10px)}
+.notice{padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);font-size:14px}
+a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
+.mirror{min-height:80px;border-radius:12px;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--ink);width:100%;overflow:auto;-webkit-overflow-scrolling:touch}
+.allow-scroll{overflow:auto;-webkit-overflow-scrolling:touch}
+.echo{margin-top:8px;font-size:18px;line-height:1.35;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(183,167,255,.12),rgba(255,152,199,.08))}
+.switch{position:relative;display:inline-flex;align-items:center;justify-content:flex-start;width:58px;height:34px;background:rgba(255,255,255,.16);border-radius:999px;cursor:pointer}
+.switch[aria-pressed="true"]{background:rgba(255,255,255,.22)}
+.switch i{position:absolute;top:5px;left:5px;width:24px;height:24px;border-radius:50%;background:white;transition:left .15s ease;pointer-events:none}
+.switch[aria-pressed="true"] i{left:29px}
+.slider{width:100%}
+.fab{position:fixed;right:14px;bottom:14px;width:56px;height:56px;border-radius:16px;background:linear-gradient(180deg,rgba(183,167,255,.25),rgba(183,167,255,.14));display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 2px rgba(183,167,255,.35);user-select:none;z-index:3}
+.selfcheck{position:fixed;right:12px;bottom:82px;width:min(520px,94vw);display:none;border-radius:16px;padding:14px;background:rgba(10,12,18,.92);border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);max-height:70vh;overflow:auto;z-index:4}
+.selfcheck.show{display:block}
+.ok{color:#8affb3}.warn{color:#ffd38a}.err{color:#ff9aa2}
+.hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);margin:8px 0}
+.alive{position:fixed;inset:0;z-index:0;opacity:.9;pointer-events:none;touch-action:none}
+.rib{position:relative;z-index:2;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.rib .chip{appearance:none;border:0;border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--ink);font-weight:700;text-decoration:none}
+.rib .chip:active{transform:scale(.98)}
+.word{font-size:12px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
+.kbd{padding:3px 8px;border:1px solid rgba(255,255,255,.22);border-radius:8px;font-size:12px}
+.mini{font-size:12px;color:var(--muted)}
+.locklab{display:inline-flex;gap:8px;align-items:center}
+.energy{display:flex;gap:6px;margin-top:8px}
+.energy button{appearance:none;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:999px;padding:6px 10px;color:var(--ink);font-weight:700}
+.energy button.active{box-shadow:0 0 0 2px rgba(183,167,255,.35);background:rgba(183,167,255,.18)}
+/* ---------- Responsive ---------- */
+@media (max-width: 840px){
+  .grid{grid-template-columns:1fr}
+  .header{padding:10px}
+  .title{font-size:16px}
+  .badge{font-size:11px}
+  .btn{padding:10px 12px}
+  .player{border-radius:12px}
+}
+@media (max-width: 420px){
+  .wrap{padding:12px}
+  .header{border-radius:14px}
+  .input{min-width:0}
+  .tab{padding:7px 10px;font-size:12px}
+  .switch{width:54px;height:32px}
+  .switch i{width:22px;height:22px;top:5px;left:5px}
+  .switch[aria-pressed="true"] i{left:27px}
+  .echo{font-size:16px}
+}
+</style>
+</head>
+<body>
+<canvas id="alive" class="alive"></canvas>
+<div class="tint" id="tint"></div>
+
+<div class="wrap">
+  <div class="header">
+    <div class="brand">
+      <div class="glyph"></div>
+      <div>
+        <div class="title">MirrorHoney</div>
+        <div class="small">Feel · Mirror · Release — tone-linked reflection</div>
+      </div>
+    </div>
+    <div class="row">
+      <span class="badge" id="illClock">—</span>
+      <span class="badge" id="state">idle</span>
+      <span class="badge" id="streakBadge">streak 0 · last —</span>
+      <span class="badge" id="motionBadge">motion: normal</span>
+      <button class="btn" id="toggleMotion">Low Motion</button>
+      <button class="btn" id="route">Route</button>
+      <button class="btn" id="openYT">Open in YouTube</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="card">
+      <div class="row">
+        <input id="yt" class="input" placeholder="YouTube ID or URL" readonly>
+        <button class="btn" id="apply">Play</button>
+        <button class="btn" id="prev">Prev</button>
+        <button class="btn" id="next">Next</button>
+        <span class="badge" id="resumeChip" style="display:none;cursor:pointer">Resume</span>
+        <span class="badge" id="titleBadge">—</span>
+        <span class="badge" id="indexBadge">0/0</span>
+        <label class="locklab" style="margin-left:auto">
+          <div class="switch" id="editId" role="button" aria-pressed="false" tabindex="0"><i></i></div>
+          <span class="small">edit ID</span>
+        </label>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active" data-m="feel">feel</div>
+        <div class="tab" data-m="mirror">mirror</div>
+        <div class="tab" data-m="release">release</div>
+      </div>
+
+      <div class="row">
+        <label class="locklab">
+          <div class="switch" id="loop" role="button" aria-pressed="false" tabindex="0"><i></i></div>
+          <span class="small">loop</span>
+        </label>
+        <label class="locklab">
+          <div class="switch" id="shuffle" role="button" aria-pressed="false" tabindex="0"><i></i></div>
+          <span class="small">shuffle (mode)</span>
+        </label>
+        <label class="locklab">
+          <div class="switch" id="tone" role="button" aria-pressed="false" tabindex="0"><i></i></div>
+          <span class="small">tone</span>
+        </label>
+      </div>
+
+      <div class="player">
+        <div id="player"></div>
+        <div class="poster" id="poster"><button id="start">Tap to start</button></div>
+      </div>
+
+      <div class="notice" id="msg" style="display:none"></div>
+      <div class="small" id="meta"></div>
+      <div class="energy">
+        <button id="eGround">Ground</button>
+        <button id="eFlow">Flow</button>
+        <button id="eRest">Rest</button>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div class="row" style="gap:8px"><span class="small">tone volume</span></div>
+        <span class="badge" id="hz">160.00 Hz</span>
+      </div>
+      <input type="range" id="vol" class="slider" min="0" max="1" step="0.01" value="0.12" aria-label="Tone volume">
+
+      <textarea id="note" class="mirror allow-scroll" placeholder="Write one exact line…"></textarea>
+      <div class="echo" id="echo"></div>
+
+      <div id="practice" class="notice" style="margin-top:10px">
+        <div class="mini" id="taskText">—</div>
+        <div id="toneWords" class="row" style="margin-top:6px;gap:6px;flex-wrap:wrap"></div>
+        <div class="mini" id="seedText" style="margin-top:6px">—</div>
+        <div class="mini" id="notesText" style="margin-top:6px;opacity:.9">—</div>
+      </div>
+
+      <div class="row" style="gap:8px;margin-top:8px">
+        <button class="btn" id="saveEntry">Save Entry</button>
+        <button class="btn" id="exportTxt">Export .txt</button>
+        <button class="btn" id="exportJsonl">Export .jsonl</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="rib">
+    <a class="chip" href="https://honey.plnt.earth" target="_blank" rel="noopener">Honey</a>
+    <a class="chip" href="https://froot.plnt.earth" target="_blank" rel="noopener">Froot</a>
+    <a class="chip" href="https://mirrorsea.plnt.earth" target="_blank" rel="noopener">MirrorSea</a>
+    <a class="chip" href="https://clarity.plnt.earth" target="_blank" rel="noopener">Clarity</a>
+    <a class="chip" href="https://tunes.plnt.earth" target="_blank" rel="noopener">Tunes</a>
+  </div>
+
+  <div class="card">
+    <div class="small"><strong>Ritual</strong> — Morning: 7–12 min (tone 2–3 min, play, write one line). Night: 10–15 min (play, loop if needed, one release line, 1 min tone).</div>
+    <div class="small">Keys: <span class="kbd">J</span> self-check · <span class="kbd">←/→</span> prev/next · <span class="kbd">L</span> loop · <span class="kbd">T</span> tone · <span class="kbd">S</span> save · <span class="kbd">E</span> export.</div>
+  </div>
+</div>
+
+<button class="fab" id="fab">◐</button>
+<div class="selfcheck" id="sc">
+  <div class="row" style="justify-content:space-between;align-items:center">
+    <strong>Self-Check</strong>
+    <button class="btn" id="run">Run</button>
+  </div>
+  <div class="hr"></div>
+  <div id="log" class="small"></div>
+</div>
+
+<audio id="toneOut" playsinline preload="auto"></audio>
+<video id="probe" playsinline muted loop preload="auto" style="display:none"></video>
+
+<script>
+/* ================= Core nodes & helpers ================= */
+const $=id=>document.getElementById(id);
+const yt=$("yt"), apply=$("apply"), prev=$("prev"), next=$("next"), indexBadge=$("indexBadge"), titleBadge=$("titleBadge");
+const poster=$("poster"), start=$("start"), state=$("state"), msg=$("msg"), meta=$("meta");
+const tabs=[...document.querySelectorAll(".tab")], tint=$("tint");
+const toneBtn=$("tone"), vol=$("vol"), hz=$("hz"), note=$("note"), echo=$("echo");
+const toneOut=$("toneOut"), probe=$("probe"), route=$("route"), openYT=$("openYT");
+const fab=$("fab"), sc=$("sc"), run=$("run"), logEl=$("log");
+const loopEl=$("loop"), shuffleEl=$("shuffle"), editId=$("editId");
+const taskText=$("taskText"), toneWordsBox=$("toneWords"), seedText=$("seedText"), notesText=$("notesText");
+const streakBadge=$("streakBadge"), illClock=$("illClock");
+const saveEntryBtn=$("saveEntry"), exportTxtBtn=$("exportTxt"), exportJsonlBtn=$("exportJsonl");
+const toggleMotion=$("toggleMotion"), motionBadge=$("motionBadge");
+const resumeChip=$("resumeChip");
+const eGround=$("eGround"), eFlow=$("eFlow"), eRest=$("eRest");
+
+let player, apiReady=false, readyResolve, resumeTimer=null;
+let ctx=null, osc=null, gain=null, dest=null;
+let mode="mirror";
+let tracks=[], idx=0;
+let motionScale = (lsGet("pe.motion","normal")==="low") ? 0.25 : 1.0;
+
+const EMBED_TONE={feel:128,mirror:160,release:256};
+const DEFAULT_TASK={feel:"Feel the body. Where does the breath land? Write one exact line.",mirror:"Name precisely what is true. No performance.",release:"Exhale. Keep the learning; drop the charge. One closing line."};
+const DEFAULT_WORDS={feel:["body","warmth","accept","breathe"],mirror:["clarity","witness","precise","name"],release:["exhale","lightness","open","let go"]};
+const DEFAULT_SEED={feel:"3 breaths · 1 line",mirror:"1 sentence · 7 words",release:"Breathe out 7 counts · 1 release line"};
+
+function lsGet(k,def=null){try{const v=localStorage.getItem(k);return v===null?def:v}catch(_){return def}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(_){ }}
+
+/* ================= Illumina calendar ================= */
+const ILL_CYCLES = [
+  { idx: 1, name: "Illumina 1 — Launch Cycle",    start: "2025-11-05" },
+  { idx: 2, name: "Illumina 2 — New Year",         start: "2026-01-03" },
+  { idx: 3, name: "Illumina 3 — Early Spring",     start: "2026-03-03" },
+  { idx: 4, name: "Illumina 4 — Summer Solstice",  start: "2026-05-01" },
+  { idx: 5, name: "Illumina 5 — High Summer",      start: "2026-06-30" },
+  { idx: 6, name: "Illumina 6 — Autumn Shift",     start: "2026-08-29" },
+  { idx: 7, name: "Illumina 7 — Year-End",         start: "2026-10-28" }
+];
+function addDays(d,n){const x=new Date(d);x.setDate(x.getDate()+n);return x}
+function parseISODate(d){const [y,m,day]=d.split("-").map(Number);return new Date(y,m-1,day)}
+function illuminaFor(dateObj){
+  const d=new Date(dateObj); d.setHours(0,0,0,0);
+  for(const c of ILL_CYCLES){
+    const start=parseISODate(c.start); start.setHours(0,0,0,0);
+    const end=addDays(start,42); end.setHours(0,0,0,0);
+    if(d>=start && d<end){const day=Math.floor((d-start)/86400000)+1;return{cycle_index:c.idx,cycle_name:c.name,day,label:`I${c.idx} · Day ${day}/42`}}
+  }
+  const first=parseISODate(ILL_CYCLES[0].start); first.setHours(0,0,0,0);
+  if(d<first){const daysUntil=Math.max(0,Math.ceil((first-d)/86400000));return{cycle_index:0,cycle_name:"Pre-Illumina",day:0,label:`Pre-Illumina · ${daysUntil}d until I1`}}
+  return{cycle_index:-1,cycle_name:"Post-schedule",day:0,label:"Illumina (unscheduled)"}
+}
+function tickClock(){
+  const now=new Date(); const ill=illuminaFor(now);
+  const hh=String(now.getHours()).padStart(2,"0"), mm=String(now.getMinutes()).padStart(2,"0");
+  illClock.textContent=`${ill.label} · ${hh}:${mm}`;
+}
+tickClock(); setInterval(tickClock,60000);
+
+/* ================= Tracks & Practice ================= */
+function parseId(v){if(!v)return"";try{if(v.includes("youtu.be/"))return new URL(v).pathname.slice(1).split("/")[0];if(v.includes("youtube.com/watch"))return new URL(v).searchParams.get("v")||"";if(v.includes("youtube.com/shorts/"))return new URL(v).pathname.split("/").pop();if(/^[a-zA-Z0-9_-]{6,20}$/.test(v))return v}catch(_){ }return v.trim()}
+function updateIndexBadge(){indexBadge.textContent=(tracks.length?idx+1:0)+"/"+tracks.length}
+function setMode(m){mode=m;tabs.forEach(t=>t.classList.toggle("active",t.dataset.m===m));tint.style.opacity=m==="feel"? .18 : m==="mirror"? .26 : .10;hz.textContent=(EMBED_TONE[m]||160).toFixed(2)+" Hz";if(osc)osc.frequency.setValueAtTime((EMBED_TONE[m]||160),ctx?ctx.currentTime:0)}
+function setTitleFromPlayer(e){try{const d=e.target.getVideoData&&e.target.getVideoData();const t=d&&d.title?d.title:"";if(t){titleBadge.textContent=t; if('mediaSession' in navigator){try{navigator.mediaSession.metadata=new MediaMetadata({title:t,artist:"MirrorHoney",album:mode});}catch(_){}}}}catch(_){ }}
+
+function renderPractice(item){
+  const m=(mode||item.mode||"mirror");
+  taskText.textContent=item.task || DEFAULT_TASK[m];
+  const words=(item.tone_words&&item.tone_words.length)?item.tone_words:DEFAULT_WORDS[m];
+  toneWordsBox.innerHTML=""; words.forEach(w=>{const s=document.createElement("span");s.className="word";s.textContent=w;toneWordsBox.appendChild(s)});
+  seedText.textContent=item.seed || DEFAULT_SEED[m];
+  notesText.textContent=(item.notes&&item.notes.trim())?item.notes:"—";
+  // seed pipe-in
+  const ill=illuminaFor(new Date());
+  loadSeed(ill.cycle_index>0?ill.cycle_index:1, ill.day||1);
+}
+
+async function loadTracks(){
+  return fetch("/data/tracks.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw 0;return r.json()})
+  .then(j=>{tracks=Array.isArray(j.tracks)?j.tracks:[]})
+  .catch(()=>{tracks=(window.MH_FALLBACK && MH_FALLBACK.tracks)||[]})
+  .finally(()=>{
+    tracks=tracks.filter(x=>x&&parseId(x.youtube_id||x.url));
+    const sIdx=lsGet("mh.index"); if(sIdx!=null){const i=Math.max(0,Math.min(tracks.length-1,parseInt(sIdx,10))); if(!Number.isNaN(i)) idx=i;}
+    const v=parseFloat(lsGet("mh.vol","0.12")); vol.value=Number.isNaN(v)?0.12:Math.max(0,Math.min(1,v));
+    if(lsGet("mh.loop","0")==="1") loopEl.setAttribute("aria-pressed","true");
+    if(lsGet("mh.shuffle","0")==="1") shuffleEl.setAttribute("aria-pressed","true");
+    if(tracks[idx]){ const idSaved=(lsGet("mh.id","")||"").trim(); yt.value=idSaved || tracks[idx].youtube_id || parseId(tracks[idx].url); setMode(tracks[idx].mode||"mirror"); renderPractice(tracks[idx]); }
+    updateIndexBadge(); touchStreak(); updateResumeChip();
+  });
+}
+
+/* ================= YouTube API & Player ================= */
+function loadAPI(){return new Promise(res=>{readyResolve=res;const s=document.createElement("script");s.src="https://www.youtube.com/iframe_api";document.body.appendChild(s)})}
+window.onYouTubeIframeAPIReady=function(){apiReady=true;if(readyResolve)readyResolve()}
+
+function initPlayer(id){
+  state.textContent="loading"; if(player){try{player.destroy()}catch(_){}} player=null;
+  player=new YT.Player('player',{videoId:id,playerVars:{playsinline:1,rel:0,modestbranding:1,autoplay:1},events:{
+    onReady:(e)=>{state.textContent="ready";setTitleFromPlayer(e);
+      const d=e.target.getVideoData(); meta.textContent=d&&d.title? d.title+" — "+(d.author||"YouTube"):"";
+      poster.style.display="none"; try{e.target.playVideo&&e.target.playVideo()}catch(_){}
+      renderPractice(tracks[idx]||{}); startResumeTimer(); updateResumeChip();
+    },
+    onStateChange:(ev)=>{
+      if(ev.data===1){state.textContent="playing"; setTitleFromPlayer({target:player}); startResumeTimer()}
+      if(ev.data===2){state.textContent="paused"; stopResumeTimer(); saveResumeTime()}
+      if(ev.data===0){state.textContent="ended ✓"; stopResumeTimer(); saveResumeTime(true);
+        if(loopEl.getAttribute("aria-pressed")==="true"){try{player.seekTo(0,true);player.playVideo()}catch(_){playIndex(idx)};return}
+        if(shuffleEl.getAttribute("aria-pressed")==="true"){const m=tracks[idx]?.mode||mode;const pool=tracks.map((t,i)=>({t,i})).filter(x=>x.t.mode===m && x.i!==idx); if(pool.length){const pick=pool[Math.floor(Math.random()*pool.length)]; idx=pick.i; lsSet("mh.index",String(idx)); playIndex(idx); return}}
+        if(idx<tracks.length-1){idx++; lsSet("mh.index",String(idx)); playIndex(idx)}
+      }},
+    onError:()=>{state.textContent="blocked";msg.innerHTML="This upload may block embedding. Try another official upload or <a class='btnlink' href='https://www.youtube.com/watch?v="+id+"' target='_blank' rel='noopener'>open on YouTube</a>.";msg.style.display="block"}
+  }});
+  wireMediaSession();
+}
+
+function safeLoadAndPlay(id){
+  if(!id) return;
+  if(!player || !apiReady){ initPlayer(id); return; }
+  try{
+    poster.style.display="none";
+    player.loadVideoById(id);
+    if(typeof player.playVideo==="function") player.playVideo(); // gesture-safe
+    setTitleFromPlayer({target:player}); startResumeTimer(); updateResumeChip();
+  }catch(_){ initPlayer(id); }
+}
+
+function currentId(){const item=tracks[idx];return parseId(yt.value||(item&&(item.youtube_id||item.url)))||""}
+function startPlayback(id){ if(!id) return; msg.style.display="none"; lsSet("mh.id",id); if(player && apiReady){ safeLoadAndPlay(id) } else { initPlayer(id) } }
+function playIndex(i){ idx=i; lsSet("mh.index",String(idx)); updateIndexBadge(); const item=tracks[idx]; if(!item) return; yt.value=parseId(item.youtube_id||item.url); setMode(item.mode||"mirror"); renderPractice(item); safeLoadAndPlay(parseId(item.youtube_id||item.url)) }
+
+/* ================= Tone ================= */
+function ensureAudio(){ if(ctx) return; ctx=new (window.AudioContext||window.webkitAudioContext)(); gain=ctx.createGain(); gain.gain.value=+vol.value; osc=ctx.createOscillator(); osc.type="sine"; osc.frequency.value=(EMBED_TONE[mode]||160); dest=ctx.createMediaStreamDestination(); osc.connect(gain).connect(dest); toneOut.srcObject=dest.stream; toneOut.loop=true; toneOut.autoplay=false; toneOut.playsInline=true; }
+async function toneOn(){ ensureAudio(); try{ await toneOut.play(); if(ctx.state==="suspended") await ctx.resume(); toneBtn.setAttribute("aria-pressed","true"); if("mediaSession" in navigator){navigator.mediaSession.playbackState="playing"} }catch(_){ } }
+function toneOff(){ if(!ctx) return; try{toneOut.pause()}catch(_){ } toneBtn.setAttribute("aria-pressed","false"); if("mediaSession" in navigator){navigator.mediaSession.playbackState="paused"} }
+vol.addEventListener("input",()=>{ lsSet("mh.vol",String(+vol.value)); if(gain&&ctx) gain.gain.setTargetAtTime(+vol.value, ctx.currentTime, .05) });
+
+/* ================= Controls & UI ================= */
+function toggleSwitch(el,saveFn){const val=el.getAttribute("aria-pressed")==="true";el.setAttribute("aria-pressed",(!val).toString()); if(saveFn) saveFn(!val)}
+function saveLoop(v){lsSet("mh.loop",v?"1":"0")} function saveShuffle(v){lsSet("mh.shuffle",v?"1":"0")}
+loopEl.addEventListener("click",()=>toggleSwitch(loopEl,saveLoop));
+loopEl.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleSwitch(loopEl,saveLoop)}});
+shuffleEl.addEventListener("click",()=>toggleSwitch(shuffleEl,saveShuffle));
+shuffleEl.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleSwitch(shuffleEl,saveShuffle)}});
+toneBtn.addEventListener("click",()=>{toneBtn.getAttribute("aria-pressed")==="true"?toneOff():toneOn()});
+toneBtn.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toneBtn.getAttribute("aria-pressed")==="true"?toneOff():toneOn()}});
+
+tabs.forEach(t=>{ t.addEventListener("click",()=>{ setMode(t.dataset.m); renderPractice(tracks[idx]||{}); }) });
+
+function setEdit(on){
+  yt.readOnly=!on; editId.setAttribute("aria-pressed", on?"true":"false"); yt.focus();
+  if(!on){ const id=parseId(yt.value); if(id){ yt.value=id; lsSet("mh.id",id) } else { const item=tracks[idx]; yt.value=(item && (item.youtube_id||parseId(item.url)))||"" } }
+}
+editId.addEventListener("click",()=> setEdit(editId.getAttribute("aria-pressed")!=="true"));
+editId.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setEdit(editId.getAttribute("aria-pressed")!=="true")}});
+yt.addEventListener("blur",()=>{ if(editId.getAttribute("aria-pressed")==="true") setEdit(false) });
+
+apply.onclick=()=>{const id=currentId(); if(!id) return; if(!apiReady || !player) initPlayer(id); else safeLoadAndPlay(id)};
+prev.onclick=()=>{if(idx>0){idx--; lsSet("mh.index",String(idx)); updateIndexBadge(); const item=tracks[idx]; yt.value=parseId(item.youtube_id||item.url); setMode(item.mode||"mirror"); renderPractice(item); safeLoadAndPlay(parseId(item.youtube_id||item.url))}};
+next.onclick=()=>{if(shuffleEl.getAttribute("aria-pressed")==="true"){const m=tracks[idx]?.mode||mode;const pool=tracks.map((t,i)=>({t,i})).filter(x=>x.t.mode===m && x.i!==idx); if(pool.length){const pick=pool[Math.floor(Math.random()*pool.length)]; idx=pick.i; lsSet("mh.index",String(idx)); updateIndexBadge(); const item=tracks[idx]; yt.value=parseId(item.youtube_id||item.url); setMode(item.mode||"mirror"); renderPractice(item); safeLoadAndPlay(parseId(item.youtube_id||item.url)); return}}
+if(idx<tracks.length-1){idx++; lsSet("mh.index",String(idx)); updateIndexBadge(); const item=tracks[idx]; yt.value=parseId(item.youtube_id||item.url); setMode(item.mode||"mirror"); renderPractice(item); safeLoadAndPlay(parseId(item.youtube_id||item.url))}};
+poster.onclick=startBtn; start.onclick=startBtn;
+function startBtn(){const id=currentId(); if(!id) return; if(!apiReady || !player){initPlayer(id)} else {safeLoadAndPlay(id)}}
+
+openYT.onclick=()=>{const id=(tracks[idx]&&(tracks[idx].youtube_id||parseId(tracks[idx].url)))||parseId(yt.value); if(!id) return; window.open("https://youtu.be/"+id,"_blank","noopener")};
+route.onclick=async()=>{try{if(probe.webkitShowPlaybackTargetPicker){probe.webkitShowPlaybackTargetPicker(); await probe.play().catch(()=>{})}else{alert("AirPlay picker not available in this browser.")}}catch(_){ }};
+
+note.addEventListener("input",()=>{echo.textContent=note.value;lsSet("mh.note",note.value)});
+
+/* ================= Energy Path micro-bar ================= */
+const energyState={ground:false,flow:false,rest:false};
+function updateEnergyUI(){eGround.classList.toggle("active",energyState.ground); eFlow.classList.toggle("active",energyState.flow); eRest.classList.toggle("active",energyState.rest)}
+eGround.onclick=()=>{energyState.ground=!energyState.ground; updateEnergyUI()}
+eFlow.onclick=()=>{energyState.flow=!energyState.flow; updateEnergyUI()}
+eRest.onclick=()=>{energyState.rest=!energyState.rest; updateEnergyUI()}
+
+/* ================= Low-motion global pref ================= */
+function updateMotionUI(){motionBadge.textContent="motion: "+(motionScale<1?"low":"normal"); toggleMotion.textContent=motionScale<1?"Normal Motion":"Low Motion"; lsSet("pe.motion", motionScale<1?"low":"normal")}
+toggleMotion.addEventListener("click",()=>{motionScale=motionScale<1?1.0:0.25; updateMotionUI()});
+updateMotionUI();
+
+/* ================= Save / Export / Entry Bus ================= */
+function emitEntry(e){try{window.dispatchEvent(new CustomEvent("pe:entry",{detail:e}))}catch(_){ }}
+function saveEntry(){
+  const item=tracks[idx]||{}; const id=(item.youtube_id)||(item.url)||""; const title=titleBadge.textContent||"";
+  const now=new Date(); const tz=Intl.DateTimeFormat().resolvedOptions().timeZone||"local"; const dtLocal=now.toLocaleString(undefined,{hour12:false});
+  const ill=illuminaFor(now);
+  const entry={t:now.toISOString(), t_local:dtLocal, tz, ill, id, title, mode:(mode||item.mode), hz:(EMBED_TONE[mode]||160), text:note.value||"", energy:{...energyState}};
+  const arr=JSON.parse(lsGet("mh.log","[]")||"[]"); arr.push(entry); lsSet("mh.log",JSON.stringify(arr));
+  lsSet("pe.lastEntry", JSON.stringify(entry)); emitEntry(entry); state.textContent="saved ✓"; touchStreak();
+}
+saveEntryBtn.onclick=saveEntry;
+
+exportTxtBtn.onclick=()=>{
+  const arr=JSON.parse(lsGet("mh.log","[]")||"[]");
+  const lines=["MirrorHoney Reflections","-----------------------",""].concat(arr.map(e=>{
+    const ill=e.ill&&e.ill.label?` · ${e.ill.label}`:""; const local=e.t_local?` (${e.t_local} ${e.tz||""})`:""; const title=e.title||e.id||"—";
+    const energy=e.energy?` [Energy: ${e.energy.ground?"G":""}${e.energy.flow?"F":""}${e.energy.rest?"R":""}]`:"";
+    return `${e.t}${local}${ill}${energy}\n[${e.mode} ${e.hz}Hz] ${title}\n${e.text}\n`;
+  }));
+  const blob=new Blob([lines.join("\n")],{type:"text/plain"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="mirrorhoney_reflections.txt"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+exportJsonlBtn.onclick=()=>{
+  const arr=JSON.parse(lsGet("mh.log","[]")||"[]");
+  const text=arr.map(o=>JSON.stringify(o)).join("\n");
+  const blob=new Blob([text],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="mirrorhoney_reflections.jsonl"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+
+/* ================= Self-Check ================= */
+function log(t,c){const p=document.createElement("div"); if(c)p.className=c; p.textContent=t; logEl.appendChild(p)}
+function clearLog(){logEl.innerHTML=""}
+run.addEventListener("click",()=>{clearLog(); if(player&&typeof player.getPlayerState==="function"){log("YouTube API: ready ✓","ok")}else{log("YouTube API: not ready","err")}
+  try{if(player&&player.playVideo){player.playVideo(); setTimeout(()=>{const st=player.getPlayerState(); log(st===1?"Playback: playing ✓":"Playback: not playing",st===1?"ok":"warn")},900)}}catch(e){log("Playback: error","err")}
+  try{ensureAudio(); gain&&(gain.gain.value=+vol.value); toneOn(); log("Tone: background route ✓","ok")}catch(e){log("Tone engine: error","err")}
+  try{const prev=lsGet("mh.note",""); const t="echo-"+Math.random().toString(36).slice(2,6); lsSet("mh.note",t); const got=lsGet("mh.note",""); lsSet("mh.note",prev); log("Local save: "+(got===t?"ok ✓":"mismatch"),"ok")}catch(e){log("Local save: error","err")}
+});
+
+/* ================= Keyboard shortcuts ================= */
+document.addEventListener("keydown",(e)=>{
+  const tag=(e.target && (e.target.tagName||"")).toLowerCase();
+  if(tag==="input"||tag==="textarea") return;
+  if(e.key==="ArrowLeft"){ e.preventDefault(); prev.click(); }
+  else if(e.key==="ArrowRight"){ e.preventDefault(); next.click(); }
+  else if(e.key.toLowerCase()==="l"){ e.preventDefault(); loopEl.click(); }
+  else if(e.key.toLowerCase()==="t"){ e.preventDefault(); toneBtn.click(); }
+  else if(e.key.toLowerCase()==="s"){ e.preventDefault(); saveEntryBtn.click(); }
+  else if(e.key.toLowerCase()==="e"){ e.preventDefault(); exportTxtBtn.click(); }
+  else if(e.key.toLowerCase()==="j"){ e.preventDefault(); fab.click(); }
+});
+
+/* ================= Streak ================= */
+function touchStreak(){
+  const t=new Date(); t.setHours(0,0,0,0);
+  const last=lsGet("mh.last",""); const s=parseInt(lsGet("mh.streak","0"),10)||0; let ns=s, lastStr;
+  if(!last){ns=1; lastStr=t.toISOString()}
+  else{const d=new Date(last); d.setHours(0,0,0,0); const diff=Math.round((t-d)/86400000);
+    if(diff===0){ns=s; lastStr=last} else if(diff===1){ns=s+1; lastStr=t.toISOString()} else {ns=1; lastStr=t.toISOString()}
+  }
+  lsSet("mh.streak",String(ns)); lsSet("mh.last",lastStr); streakBadge.textContent=`streak ${ns} · last ${new Date(lsGet("mh.last","")).toLocaleDateString()}`
+}
+
+/* ================= Media Session ================= */
+function wireMediaSession(){
+  if(!('mediaSession' in navigator)) return;
+  try{
+    navigator.mediaSession.setActionHandler('nexttrack', ()=>next.click());
+    navigator.mediaSession.setActionHandler('previoustrack', ()=>prev.click());
+    navigator.mediaSession.setActionHandler('play', ()=>{ if(toneBtn.getAttribute("aria-pressed")==="true"){ try{toneOut.play()}catch(_){}} else { if(player && player.playVideo) player.playVideo(); }});
+    navigator.mediaSession.setActionHandler('pause', ()=>{ try{toneOut.pause()}catch(_){} if(player && player.pauseVideo) player.pauseVideo(); });
+  }catch(_){}
+}
+
+/* ================= Resume position per video ================= */
+function resumeStore(){ try{return JSON.parse(lsGet("mh.resume","{}")||"{}")}catch(_){return{}} }
+function saveResumeTime(ended=false){
+  try{
+    if(!player || typeof player.getCurrentTime!=="function") return;
+    const id=(player.getVideoData&&player.getVideoData().video_id)||currentId(); if(!id) return;
+    let t=ended?0:Math.floor(player.getCurrentTime()||0);
+    const map=resumeStore(); map[id]=t; lsSet("mh.resume", JSON.stringify(map)); updateResumeChip();
+  }catch(_){}
+}
+function updateResumeChip(){
+  try{
+    const item=tracks[idx]||{}; const id=parseId(item.youtube_id||item.url)||parseId(yt.value);
+    const map=resumeStore(); const t=map[id]||0; if(t>10){resumeChip.style.display="inline-block"; resumeChip.textContent="Resume "+fmtTime(t)} else {resumeChip.style.display="none"}
+  }catch(_){}
+}
+function fmtTime(s){const m=Math.floor(s/60), ss=String(Math.floor(s%60)).padStart(2,"0"); return m+":"+ss}
+resumeChip.onclick=()=>{ try{const item=tracks[idx]||{}; const id=parseId(item.youtube_id||item.url)||parseId(yt.value); const map=resumeStore(); const t=map[id]||0; if(player && player.seekTo){player.seekTo(t,true); player.playVideo&&player.playVideo();}}catch(_){} }
+function startResumeTimer(){ stopResumeTimer(); resumeTimer=setInterval(()=>saveResumeTime(false), 3000) }
+function stopResumeTimer(){ if(resumeTimer){clearInterval(resumeTimer); resumeTimer=null} }
+
+/* ================= Seed loader ================= */
+async function loadSeed(cycle, day){
+  try{
+    const r=await fetch(`/data/illumina/${cycle}/seed.json`,{cache:"no-store"});
+    if(!r.ok) return; const j=await r.json();
+    const d=(j.days && (j.days[String(day)]||j.days[day])) || null;
+    if(d){ if(d.task) taskText.textContent=d.task; if(d.notes) notesText.textContent=d.notes; if(d.words && Array.isArray(d.words)){toneWordsBox.innerHTML=""; d.words.forEach(w=>{const s=document.createElement("span");s.className="word";s.textContent=w;toneWordsBox.appendChild(s)})} }
+  }catch(_){}
+}
+
+/* ================= Boot ================= */
+(function boot(){
+  const saved=lsGet("mh.note",""); if(saved){note.value=saved; echo.textContent=saved}
+  loadTracks().then(()=>loadAPI()).then(()=>{ const item=tracks[idx]; if(item && !yt.value) yt.value=item.youtube_id||parseId(item.url); updateIndexBadge(); });
+  if('mediaSession' in navigator){
+    try{
+      navigator.mediaSession.setActionHandler('play', ()=>toneOn());
+      navigator.mediaSession.setActionHandler('pause', ()=>toneOff());
+      navigator.mediaSession.setActionHandler('stop', ()=>toneOff());
+    }catch(_){}
+  }
+  // Self-check panel toggle
+  fab.addEventListener("click",()=>{sc.classList.toggle("show")});
+})();
+</script>
+
+<!-- ===== Shader-only WebGL background with DPR cap & low-motion ===== -->
+<script>
+(function(){
+  const cv=document.getElementById('alive');
+  let gl=cv.getContext('webgl2',{premultipliedAlpha:true,antialias:true});
+  if(!gl){ // 2D fallback
+    const cx=cv.getContext('2d'); function size2D(){const dpr=Math.min(devicePixelRatio||1,1.5); cv.width=innerWidth*dpr; cv.height=innerHeight*dpr; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'} size2D(); addEventListener('resize',size2D,{passive:true});
+    const R=2.0, nodes=[{c:['#d9def988','#8aa0ff11'],p:{x:0,y:0,z:0},r:.25},{c:['#b7a7ff66','#ff9ac711'],p:{x:0,y:R,z:0},r:.20},{c:['#c5eeff66','#9fd3ff11'],p:{x:R*.82,y:.12,z:R*.55},r:.18},{c:['#ffd38a66','#ffbfbf11'],p:{x:-R*.82,y:.10,z:R*.50},r:.18},{c:['#78c7ff66','#2a6fbf11'],p:{x:.15,y:-R*.78,z:-R*.75},r:.18},{c:['#9aa0ad66','#d7d9e611'],p:{x:-R*.78,y:-.12,z:R*.48},r:.16},{c:['#ffb39c66','#c49cff11'],p:{x:R*.85,y:-.10,z:-R*.42},r:.17}]; let ax=.3,ay=.36;
+    function rx(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x,y:p.y*c-p.z*s,z:p.y*s+p.z*c}} function ry(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x*c+p.z*s,y:p.y,z:-p.x*s+p.z*c}}
+    function proj(p){const d=5,f=d/(d+p.z);return{x:cv.width/2+p.x*f*120,y:cv.height/2-p.y*f*120,s:f}}
+    function dot(x,y,r,a,b){const g=cx.createRadialGradient(x,y,r*.2,x,y,r);g.addColorStop(0,a);g.addColorStop(1,b);return g}
+    function drawBG(){cx.clearRect(0,0,cv.width,cv.height);cx.strokeStyle='rgba(255,255,255,.08)';cx.lineWidth=1.2;cx.beginPath(); for(let i=0;i<=360;i++){const t=i*Math.PI/180;const q=proj(ry(rx({x:Math.cos(t)*R,y:Math.sin(t)*R,z:0},ax),ay)); if(i===0)cx.moveTo(q.x,q.y); else cx.lineTo(q.x,q.y)} cx.stroke();
+      const rot=nodes.map(o=>{let p=rx(o.p,ax);p=ry(p,ay);return {...o,m:proj(p),dz:p.z}}).sort((a,b)=>a.m.s-b.m.s);
+      for(const o of rot){const r=o.r*60*o.m.s+8;cx.fillStyle=dot(o.m.x,o.m.y,r,o.c[0],o.c[1]);cx.beginPath();cx.arc(o.m.x,o.m.y,r,0,Math.PI*2);cx.fill()}
+    }
+    (function step(){ay+=.0018;ax+=.0008;drawBG();requestAnimationFrame(step)})(); return;
+  }
+
+  const vs=`#version 300 es
+  precision highp float; const vec2 V[3]=vec2[3](vec2(-1.,-1.),vec2(3.,-1.),vec2(-1.,3.));
+  void main(){ gl_Position=vec4(V[gl_VertexID],0.,1.); }`;
+  const fs=`#version 300 es
+  precision highp float; out vec4 frag;
+  uniform vec2 uRes; uniform float uTime; uniform float uTone; uniform float uMode; uniform float uMotion;
+  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
+  float noise(vec2 p){vec2 i=floor(p), f=fract(p); float a=hash(i),b=hash(i+vec2(1,0)),c=hash(i+vec2(0,1)),d=hash(i+vec2(1,1)); vec2 u=f*f*(3.-2.*f); return mix(a,b,u.x)+(c-a)*u.y*(1.-u.x)+(d-b)*u.x*u.y;}
+  float stars(vec2 uv){uv*=vec2(1.6,1.0); float t=0.; for(int i=0;i<3;i++){float n=noise(uv*1.5+float(i)*2.7); t+=smoothstep(0.88,0.995,n)*(0.3+0.7*float(i==0)); uv=(uv+1.3)*1.7;} return clamp(t,0.0,1.0);}
+  bool hitSphere(vec3 ro, vec3 rd, float r, out float t){float b=dot(ro,rd); float c=dot(ro,ro)-r*r; float h=b*b-c; if(h<0.) return false; h=sqrt(h); t=-b-h; if(t<0.) t=-b+h; return t>0.;}
+  void main(){
+    vec2 uv=(gl_FragCoord.xy-0.5*uRes)/min(uRes.x,uRes.y);
+    float tt=uTime*(0.25*uMotion+0.02);
+    vec3 ro=vec3(0.,0.35,2.1), ta=vec3(0.,0.15,0.);
+    vec3 ww=normalize(ta-ro), uu=normalize(cross(vec3(0.,1.,0.),ww)), vv=cross(ww,uu);
+    vec3 rd=normalize(uv.x*uu+uv.y*vv+1.8*ww);
+    float tPlane=(0.-ro.y)/rd.y; vec3 col=vec3(0.06,0.07,0.09);
+    if(tPlane>0.){ vec3 hp=ro+rd*tPlane; float grid=smoothstep(0.45,0.5,abs(sin(hp.x*3.)+sin(hp.z*3.))*0.5); col=mix(col,col+vec3(0.02,0.02,0.03),grid*0.2); }
+    float s=stars(uv*2.+vec2(tt*0.2,-tt*0.18));
+    vec3 tFeel=vec3(0.54,0.66,1.0), tMir=vec3(0.92,0.60,0.93), tRel=vec3(1.00,0.86,0.60);
+    vec3 tint=mix(mix(tFeel,tMir,clamp(uMode,0.,1.)), tRel, clamp(uMode-1.,0.,1.));
+    float calm=mix(1.,0.5,1.-uMotion); col += (s*0.06 + s*s*0.08*tint)*calm;
+    float ts; if(hitSphere(ro,rd,0.55,ts)){ vec3 sp=ro+rd*ts; vec3 n=normalize(sp); vec3 r=reflect(rd,n);
+      float sky=clamp(0.5+0.5*r.y,0.,1.); float sr=stars(r.xz*2.+vec2(tt*0.15,-tt*0.1));
+      vec3 refl=mix(vec3(0.04,0.05,0.08), tint*0.9, sky); refl += sr*0.15*calm;
+      float sparkle=pow(max(dot(n,normalize(vec3(0.6,0.9,0.5))),0.),32.)*(0.25+0.75*uTone)*calm;
+      float rim=pow(1.-max(dot(n,-rd),0.),2.5);
+      vec3 base=mix(vec3(0.12,0.12,0.16), tint*0.35, 0.5);
+      vec3 color=base + refl*0.55 + rim*0.25*tint + sparkle;
+      float fres=pow(1.-max(dot(n,-rd),0.),1.8); color+=fres*0.08; col=mix(col,color,1.0);
+    }
+    float v=dot(uv,uv); col*=smoothstep(1.2,0.0,v);
+    frag=vec4(col,1.0);
+  }`;
+  function compile(gl,type,src){const sh=gl.createShader(type); gl.shaderSource(sh,src); gl.compileShader(sh); return sh;}
+  const prog=gl.createProgram(); gl.attachShader(prog,compile(gl,gl.VERTEX_SHADER,vs)); gl.attachShader(prog,compile(gl,gl.FRAGMENT_SHADER,fs)); gl.linkProgram(prog); gl.useProgram(prog);
+  const uRes=gl.getUniformLocation(prog,"uRes"), uTime=gl.getUniformLocation(prog,"uTime"), uTone=gl.getUniformLocation(prog,"uTone"), uMode=gl.getUniformLocation(prog,"uMode"), uMotion=gl.getUniformLocation(prog,"uMotion");
+  function mVal(){return mode==="feel"?0.:mode==="mirror"?1.:2.}
+  function getTone(){try{return Math.max(0,Math.min(1,(window.gain&&gain.gain&&gain.gain.value)||(+document.getElementById('vol').value||0)))}catch(_){return +document.getElementById('vol').value||0}}
+  function size(){const cap= (localStorage.getItem("pe.motion")==="low") ? 1.0 : 1.5; const dpr=Math.min(devicePixelRatio||1,cap); cv.width=innerWidth*dpr; cv.height=innerHeight*dpr; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px'; gl.viewport(0,0,cv.width,cv.height)}
+  size(); addEventListener('resize',size,{passive:true});
+  let t0=performance.now(); (function frame(){const t=(performance.now()-t0)/1000; gl.uniform2f(uRes, cv.width, cv.height); gl.uniform1f(uTime,t); gl.uniform1f(uTone,getTone()); gl.uniform1f(uMode,mVal()); gl.uniform1f(uMotion, (localStorage.getItem("pe.motion")==="low")?0.25:1.0); gl.drawArrays(gl.TRIANGLES,0,3); requestAnimationFrame(frame)})();
+})();
+</script>
+
+<script>
+/* Fallback tracks if /data/tracks.json missing */
+window.MH_FALLBACK={tracks:[
+{"youtube_id":"Cr-SqRWImmI","url":"https://youtu.be/Cr-SqRWImmI","mode":"feel","tone_hz":128,"task":"Scan the body from throat to chest. Where does the chorus land? Write one exact sensation.","tone_words":["body","warmth","accept","breathe"],"seed":"3 breaths · 1 line","notes":"Use morning light; keep volume modest."},
+{"youtube_id":"F1JTlnHGa90","url":"https://youtu.be/F1JTlnHGa90","mode":"mirror","tone_hz":160,"task":"Name the true noun in one sentence (no adjectives).","tone_words":["clarity","witness","precise","name"],"seed":"1 sentence · 7 words","notes":"If stuck, write the opposite first."},
+{"youtube_id":"n1VTcJfL7RE","url":"https://youtu.be/n1VTcJfL7RE","mode":"release","tone_hz":256,"task":"Exhale the oldest sentence. Keep the learning; drop the charge.","tone_words":["exhale","lightness","open","let go"],"seed":"Breathe out 7 counts","notes":"Loop if the body asks."}
+]};
+</script>
+</body>
+</html>
+
   --bg:#0a0b10;--ink:#f6f6ff;--muted:#aeb2c8;--glass:rgba(255,255,255,.08);--glass2:rgba(255,255,255,.12);
   --shadow:0 16px 48px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
   --vio:#b7a7ff;--rose:#ff9ac7;--gold:#ffd38a;
