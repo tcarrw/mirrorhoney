@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -72,10 +73,11 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
 .hidden{display:none!important}
 .poem{font-size:14px;letter-spacing:.2px;line-height:1.7;color:#f2f3ff}
 .poem i{opacity:.85}
+.help{margin-top:6px}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="container" data-src="/data/mirrorhoney/tracks.json">
   <header class="header">
     <div class="brand">
       <div class="logo">🪞</div>
@@ -112,63 +114,66 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
       </div>
     </section>
 
-    <section class="card col-6" id="toneCard">
-      <div class="gloss"></div>
-      <div class="row">
-        <div>
-          <div class="h1">honey tone</div>
-          <div class="h2">tap Start Session once on iOS to unlock audio</div>
-        </div>
-        <div class="controls">
-          <button class="btn primary" id="startAudio">Start Session</button>
-          <button class="btn" id="stopAudio">Stop</button>
-        </div>
-      </div>
-      <div class="stack">
-        <div class="row">
-          <button class="btn" data-freq="128">128 Hz</button>
-          <button class="btn" data-freq="160">160 Hz</button>
-          <span class="muted small" id="freqLabel">freq: —</span>
-        </div>
-        <label class="small">volume
-          <input id="vol" class="input" type="range" min="0" max="1" step="0.001" value="0.25">
-        </label>
-        <div class="small muted" id="audioState">audio: locked</div>
-      </div>
-    </section>
+```
+<section class="card col-6" id="toneCard">
+  <div class="gloss"></div>
+  <div class="row">
+    <div>
+      <div class="h1">honey tone</div>
+      <div class="h2">tap Start Session once on iOS to unlock audio</div>
+    </div>
+    <div class="controls">
+      <button class="btn primary" id="startAudio">Start Session</button>
+      <button class="btn" id="stopAudio">Stop</button>
+    </div>
+  </div>
+  <div class="stack">
+    <div class="row">
+      <button class="btn" data-freq="128">128 Hz</button>
+      <button class="btn" data-freq="160">160 Hz</button>
+      <span class="muted small" id="freqLabel">freq: —</span>
+    </div>
+    <label class="small">volume
+      <input id="vol" class="input" type="range" min="0" max="1" step="0.001" value="0.25">
+    </label>
+    <div class="small muted" id="audioState">audio: locked</div>
+  </div>
+</section>
 
-    <section class="card col-12" id="playerCard">
-      <div class="gloss"></div>
-      <div class="row">
-        <div>
-          <div class="h1">mirror player</div>
-          <div class="h2">official videos only · add a YouTube link, I’ll fetch the title</div>
-        </div>
-        <div class="controls">
-          <button class="btn primary" id="playFirst">Play First</button>
-          <button class="btn" id="prevBtn">Prev</button>
-          <button class="btn" id="nextBtn">Next</button>
-          <button class="btn" id="exportBtn">Export</button>
-          <label class="btn" for="importFile">Import<input id="importFile" type="file" accept="application/json" class="hidden"></label>
-        </div>
-      </div>
-      <div class="stack">
-        <iframe id="yt" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        <div class="row">
-          <input id="ytInput" class="input" placeholder="Paste YouTube link…">
-          <button class="btn" id="addBtn">Add</button>
-        </div>
-        <div class="queue" id="queue"></div>
-        <div class="small muted">tip: background play on iOS depends on Safari state. if audio stops after lock, unlock and tap Start Session again — your place is saved.</div>
-      </div>
-    </section>
+<section class="card col-12" id="playerCard">
+  <div class="gloss"></div>
+  <div class="row">
+    <div>
+      <div class="h1">mirror player</div>
+      <div class="h2">official videos only · preloads from tracks.json when present</div>
+    </div>
+    <div class="controls">
+      <button class="btn primary" id="playFirst">Play First</button>
+      <button class="btn" id="prevBtn">Prev</button>
+      <button class="btn" id="nextBtn">Next</button>
+      <button class="btn" id="exportBtn">Export</button>
+      <label class="btn" for="importFile">Import<input id="importFile" type="file" accept="application/json" class="hidden"></label>
+    </div>
+  </div>
+  <div class="stack">
+    <iframe id="yt" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="row">
+      <input id="ytInput" class="input" placeholder="Paste YouTube link…">
+      <button class="btn" id="addBtn">Add</button>
+    </div>
+    <div class="queue" id="queue"></div>
+    <div class="help small muted">tip: background play on iOS depends on Safari state. if audio stops after lock, unlock and tap Start Session again — your place is saved.</div>
+  </div>
+</section>
 
-    <section class="card col-12" id="selfCard" aria-live="polite">
-      <div class="gloss"></div>
-      <div class="h1">self-check</div>
-      <div class="h2">automated checks based on your brief</div>
-      <div class="stack" id="results"></div>
-    </section>
+<section class="card col-12" id="selfCard" aria-live="polite">
+  <div class="gloss"></div>
+  <div class="h1">self-check</div>
+  <div class="h2">automated checks based on your brief</div>
+  <div class="stack" id="results"></div>
+</section>
+```
+
   </div>
 </div>
 
@@ -231,7 +236,7 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
   function startAudio(){
     ensureAC();
     if(AC.state==='suspended'){AC.resume();}
-    if(!osc){osc=AC.createOscillator();osc.type='sine';osc.frequency.value=currentFreq||128;osc.connect(gain);osc.start();}
+    if(!osc){osc=AC.createOscillator();osc.type='sine';osc.frequency.value=currentFreq||parseFloat(localStorage.getItem('mh_freq')||'128');osc.connect(gain);osc.start();}
     unlocked=true;persist('mh_unlocked','1');updateAudioState();
   }
   function stopAudio(){
@@ -266,12 +271,12 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
     if(!Array.isArray(Q)){Q=[]}
     renderQueue();
     var pi=parseInt(localStorage.getItem('mh_idx')||'0',10);if(!isNaN(pi)){idx=Math.max(0,Math.min(Q.length-1,pi));}
-    playIndex(idx,false);
+    if(Q.length){playIndex(idx,false)} else {attemptPreload();}
   }
   function persist(k,v){localStorage.setItem(k,v)}
   function renderQueue(){
     queueEl.innerHTML='';
-    if(!Q.length){var d=document.createElement('div');d.className='muted';d.textContent='empty queue — add a YouTube link above';queueEl.appendChild(d);return}
+    if(!Q.length){var d=document.createElement('div');d.className='muted';d.textContent='empty queue — add a YouTube link above or provide tracks.json';queueEl.appendChild(d);return}
     Q.forEach(function(item,i){
       var row=document.createElement('div');row.className='item';
       var meta=document.createElement('div');meta.className='meta';
@@ -298,10 +303,15 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
     var o='https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+id+'&format=json';
     fetch(o,{mode:'cors'}).then(function(r){return r.json()}).then(function(j){cb(j.title||id)}).catch(function(){cb(id)});
   }
+  function addToQueue(id,title){
+    var url='https://www.youtube.com/watch?v='+id;
+    Q.push({id:id,url:url,title:title||id});
+  }
   function playIndex(i,scroll){
     if(!Q.length){yt.src='';return}
     idx=Math.max(0,Math.min(Q.length-1,i));persist('mh_idx',String(idx));
     var item=Q[idx];yt.src='https://www.youtube.com/embed/'+item.id+'?rel=0&modestbranding=1&playsinline=1&enablejsapi=0&autoplay=1';
+    persist('mh_queue',JSON.stringify(Q));
     renderQueue();
     if(scroll){yt.scrollIntoView({behavior:'smooth',block:'start'});}
   }
@@ -311,9 +321,8 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
   document.getElementById('addBtn').addEventListener('click',function(){
     var raw=document.getElementById('ytInput').value.trim();if(!raw)return;
     var id=ytIdFrom(raw);if(!id)return;
-    var url='https://www.youtube.com/watch?v='+id;
     fetchTitle(id,function(title){
-      Q.push({id:id,url:url,title:title});
+      addToQueue(id,title);
       persist('mh_queue',JSON.stringify(Q));
       document.getElementById('ytInput').value='';
       renderQueue();
@@ -350,6 +359,7 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
     var qlen=Array.isArray(Q)?Q.length:0;passRow('Queue loaded',qlen>=0,'items: '+qlen);
     var ifr=!!document.getElementById('yt').contentWindow||document.getElementById('yt').getAttribute('src')!=='';passRow('YouTube player ready',ifr,ifr?'ok':'add a link and press Play First');
     passRow('Persistence',!!(window.localStorage),'localStorage');
+    var srcInfo=getSrc();passRow('tracks.json source',!!srcInfo.src,srcInfo.src||'none');
   }
   document.getElementById('selfcheckBtn').addEventListener('click',runSelfCheck);
 
@@ -363,11 +373,61 @@ iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
     if(localStorage.getItem('mh_unlocked')==='1'){unlocked=true;updateAudioState()}
   }
 
+  function getSrc(){
+    var u=new URL(location.href);
+    var src=u.searchParams.get('src');
+    var laneParam=u.searchParams.get('lane');
+    if(!src){src=(document.querySelector('.container').getAttribute('data-src')||'').trim();}
+    return {src:src||'', lane:laneParam||'marina'};
+  }
+
+  function attemptPreload(){
+    var info=getSrc(); if(!info.src){renderQueue();return}
+    fetch(info.src,{mode:'cors'}).then(function(r){
+      if(!r.ok){throw new Error('no json')}
+      return r.json();
+    }).then(function(data){
+      var tracks=[];
+      if(Array.isArray(data)) { tracks=data; }
+      else if(data && Array.isArray(data.tracks)) {
+        if(data.lane && info.lane && data.lane!==info.lane && Array.isArray(data[info.lane])) {
+          tracks=data[info.lane];
+        } else {
+          tracks=data.tracks;
+        }
+      } else if(data && Array.isArray(data[info.lane])) {
+        tracks=data[info.lane];
+      }
+      var added=0;
+      (tracks||[]).forEach(function(t){
+        var id = (t.youtube_id||t.id||'').trim();
+        if(!id && t.url){ id = ytIdFrom(t.url); }
+        if(/^[\w-]{11}$/.test(id)){
+          addToQueue(id, (t.title||''));
+          added++;
+        }
+      });
+      if(added){
+        var done=0;
+        Q.forEach(function(item,i){
+          if(!item.title || item.title===item.id){
+            fetchTitle(item.id,function(tt){
+              item.title=tt; done++; if(done===Q.length){persist('mh_queue',JSON.stringify(Q));renderQueue();playIndex(0,false);}
+            });
+          } else { done++; if(done===Q.length){persist('mh_queue',JSON.stringify(Q));renderQueue();playIndex(0,false);} }
+        });
+      } else {
+        renderQueue();
+      }
+    }).catch(function(){ renderQueue(); });
+  }
+
   hydrateFromStorage();
   detectLane();
   loadQueue();
   updateAudioState();
 })();
 </script>
+
 </body>
 </html>
