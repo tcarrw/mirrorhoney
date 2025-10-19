@@ -1,0 +1,17 @@
+{
+  "feel": [
+    {"id":"breath-map","name":"Breath Mapping","how":"3 slow inhales; one word per inhale."},
+    {"id":"body-scan","name":"Body Scan Line","how":"Pick one region; one exact line."},
+    {"id":"temp-shift","name":"Temperature Shift","how":"Warm word · Cool word · Balance word."}
+  ],
+  "mirror": [
+    {"id":"mirror-reversal","name":"Mirror Reversal","how":"Line 1 direct; line 2 invert; keep truest."},
+    {"id":"seven-words","name":"Seven-Word Sentence","how":"Constrain to 7 words; cut adjectives."},
+    {"id":"witness","name":"Witness","how":"Begin lines with ‘I notice …’"}
+  ],
+  "release": [
+    {"id":"half-erasure","name":"Half-Erasure","how":"Delete every other word; keep the bones."},
+    {"id":"exhale-phrase","name":"Exhale Phrase","how":"Type on exhale; stop mid-word."},
+    {"id":"forgive-split","name":"Forgiveness Split","how":"Two clauses: learning / letting go."}
+  ]
+}
