@@ -8,21 +8,15 @@
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 :root{
-  /* timing tokens */
   --t-entry-in:2s; --t-entry-hold:4s; --t-entry-out:2s;
   --t-idle-in:1s; --t-idle-hold:3s; --t-idle-out:1s;
   --t-pulse:.6s; --t-ripple:.4s; --t-hue:.8s;
-  /* movement */
   --d-rise:10px; --d-slide:8px; --d-sigh-x:12px; --d-sigh-y:10px;
-  /* opacity */
   --o-soft:.30; --o-mid:.60;
-  /* easing */
   --ease-gentle:cubic-bezier(.22,.61,.36,1);
   --ease-breath:cubic-bezier(.25,.1,.25,1);
   --ease-snap:cubic-bezier(.2,.8,.2,1);
-  /* defaults overridden by band */
   --tone-period:.625s; --whisper-hue:210deg;
-  /* theme */
   --bg:#0a0b10; --ink:#f6f6ff; --muted:#aeb2c8;
   --glass:rgba(255,255,255,.08); --glass2:rgba(255,255,255,.12);
   --shadow:0 16px 48px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
@@ -45,22 +39,15 @@ body{
 }
 .wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px}
 
-/* GLASS (strengthened) */
-.header,
-.card{
+/* GLASS */
+.header,.card{
   background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
   border: 1px solid rgba(255,255,255,.16);
   backdrop-filter: blur(16px) saturate(120%);
   -webkit-backdrop-filter: blur(16px) saturate(120%);
-  box-shadow: var(--shadow);
-  position: relative;
+  box-shadow: var(--shadow); position: relative;
 }
-.header:before,
-.card:before{
-  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
-}
-
+.header:before,.card:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
 .header{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:18px}
 .brand{display:flex;gap:10px;align-items:center}
 .glyph{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 210deg, rgba(183,167,255,.75), rgba(255,152,199,.75), rgba(255,211,138,.65), rgba(183,167,255,.75))}
@@ -144,8 +131,8 @@ body{
 @keyframes padBreath{0%{opacity:.85}50%{opacity:1}100%{opacity:.85}}
 .poempad.tone-on{animation:padBreath var(--tone-period) var(--ease-breath) infinite}
 
-/* background canvas baseline */
-.alive{position:fixed; inset:0; z-index:0; opacity:.65; pointer-events:none; touch-action:none}
+/* bg canvas */
+.alive{position:fixed; inset:0; z-index:0; opacity:.6; pointer-events:none; touch-action:none}
 
 /* responsive */
 @media (max-width: 840px){.grid{grid-template-columns:1fr}.header{padding:10px}.title{font-size:16px}.badge{font-size:11px}.btn{padding:10px 12px}.player{border-radius:12px}}
@@ -229,7 +216,6 @@ body{
         </div>
         <div class="whisper-layer" aria-live="polite" aria-atomic="true"></div>
       </div>
-      <!-- legacy note store (for exports) -->
       <textarea id="note" style="display:none"></textarea>
 
       <div id="practice" class="notice" style="margin-top:10px">
@@ -269,7 +255,7 @@ body{
 <video id="probe" playsinline muted loop preload="auto" style="display:none"></video>
 
 <script>
-/* ===== nodes ===== */
+/* ===== node refs ===== */
 const $=id=>document.getElementById(id);
 const yt=$("yt"), apply=$("apply"), prev=$("prev"), next=$("next"), indexBadge=$("indexBadge"), titleBadge=$("titleBadge");
 const poster=$("poster"), start=$("start"), state=$("state"), msg=$("msg"), meta=$("meta");
@@ -288,7 +274,7 @@ const voiceBee=document.getElementById("voiceBee"), voiceSun=document.getElement
 function lsGet(k,def=null){try{const v=localStorage.getItem(k);return v===null?def:v}catch(_){return def}}
 function lsSet(k,v){try{localStorage.setItem(k,v)}catch(_){ }}
 
-/* identity cycle (long-press) */
+/* identity long-press */
 const idKey="pe.identity"; if(!lsGet(idKey)) lsSet(idKey,"bee");
 function identityLabel(v){return v==="sun"?"☀️ Sun":v==="moon"?"🌙 L. Moon":"🐝 Bee"}
 function refreshIdentity(){identityBadge.textContent=identityLabel(lsGet(idKey,"bee"))}
@@ -357,15 +343,9 @@ function normalizeTracks(json){
   return [];
 }
 function loadTracks(){
-  const candidates=[
-    "/data/tracks.json",
-    "/data/mirrorhoney/tracks.json"
-  ];
+  const candidates=["/data/tracks.json","/data/mirrorhoney/tracks.json"];
   function tryFetch(i){
-    if(i>=candidates.length){
-      tracks=(window.MH_FALLBACK&&MH_FALLBACK.tracks)||[];
-      postTracks(); return;
-    }
+    if(i>=candidates.length){ tracks=(window.MH_FALLBACK&&MH_FALLBACK.tracks)||[]; postTracks(); return; }
     fetch(candidates[i],{cache:"no-store"})
       .then(r=>{if(!r.ok)throw 0;return r.json()})
       .then(j=>{tracks=normalizeTracks(j); postTracks();})
@@ -387,7 +367,7 @@ function loadTracks(){
   tryFetch(0);
 }
 
-/* ===== Tone (fixed with analyser + osc.start) ===== */
+/* ===== Tone (with analyser + osc.start) ===== */
 let ctx=null, osc=null, gain=null, dest=null, analyser=null, anaBuf=null;
 function ensureAudio(){
   if(ctx) return;
@@ -397,12 +377,28 @@ function ensureAudio(){
   analyser=ctx.createAnalyser(); analyser.fftSize=256; anaBuf=new Uint8Array(analyser.frequencyBinCount);
   dest=ctx.createMediaStreamDestination();
   osc.connect(gain).connect(analyser).connect(dest);
-  osc.start();
+  osc.start(); /* critical */
   toneOut.srcObject=dest.stream; toneOut.loop=true; toneOut.autoplay=false; toneOut.playsInline=true;
 }
 async function toneOn(){ ensureAudio(); try{ await toneOut.play(); if(ctx.state==="suspended") await ctx.resume(); toneBtn.checked=true; pad.classList.add("tone-on"); }catch(_){ } }
 function toneOff(){ if(!ctx) return; try{toneOut.pause()}catch(_){ } toneBtn.checked=false; pad.classList.remove("tone-on"); }
 vol.addEventListener("input",()=>{ lsSet("mh.vol",String(+vol.value)); if(gain&&ctx) gain.gain.setTargetAtTime(+vol.value, ctx.currentTime, .05) });
+
+/* ===== Audio unlock (first user interaction) ===== */
+let unlocked=false;
+function unlockAudioOnce(){
+  if(unlocked) return; unlocked=true;
+  try{
+    ensureAudio();
+    const prev=+vol.value;
+    if(gain&&ctx) gain.gain.setValueAtTime(0, ctx.currentTime); // silent
+    toneOut.play().then(()=>{
+      // brief resume to unlock, then stop
+      setTimeout(()=>{ try{toneOut.pause()}catch(_){ } if(gain&&ctx) gain.gain.setValueAtTime(prev, ctx.currentTime); }, 120);
+    }).catch(()=>{ unlocked=false; }); // try again on next gesture if it failed
+  }catch(_){ unlocked=false; }
+}
+["click","touchstart","keydown"].forEach(ev=>document.addEventListener(ev,unlockAudioOnce,{once:false,passive:true}));
 
 /* ===== UI wires ===== */
 const BAND_PROMPTS={
@@ -415,7 +411,7 @@ function renderPractice(item){
   const m=(mode||item.mode||"mirror");
   const band=(document.body.className.match(/band-(\w+)/)||[])[1]||'morning';
   const bandPrompt=(BAND_PROMPTS[band]||[])[0];
-  taskText.textContent = bandPrompt || item.task || (m==="feel"?"Begin with the body.":m==="mirror"?"Write what is already happening.":"Write the line that ends the day.");
+  taskText.textContent = bandPrompt || item?.task || (m==="feel"?"Begin with the body.":m==="mirror"?"Write what is already happening.":"Write the line that ends the day.");
   const words=(m==="feel"?["body","warmth","accept","breathe"]:m==="mirror"?["precise","witness","clear","name"]:["exhale","lightness","open","let go"]);
   toneWordsBox.innerHTML=""; words.forEach(w=>{const s=document.createElement("span");s.className="badge";s.style.fontSize="11px";s.textContent=w;toneWordsBox.appendChild(s)});
   seedText.textContent=(m==="feel"?"3 breaths · 1 line":m==="mirror"?"1 sentence · 7 words":"Breathe out 7 counts");
@@ -431,7 +427,7 @@ route.onclick=async()=>{try{if(probe.webkitShowPlaybackTargetPicker){probe.webki
 toneBtn.addEventListener("change",()=> toneBtn.checked?toneOn():toneOff());
 (function boot(){const v=parseFloat(lsGet("mh.vol","0.12")); if(!Number.isNaN(v)) vol.value=v; loadTracks().then(()=>loadAPI()).then(()=>{const saved=lsGet("mh.id",""); if(saved) yt.value=saved; if(!yt.value && tracks[idx]) yt.value=tracks[idx].youtube_id||parseId(tracks[idx].url); updateIndexBadge();});})();
 
-/* ===== whispers (inline minimal) ===== */
+/* ===== whispers (inline) ===== */
 const WHISPERS={
   morning:{entry:["Begin with the body."],idle5:["Name the noun; don’t decorate."],idle10:["Warmth belongs somewhere; where?"]},
   afternoon:{entry:["Write what is already happening."],idle5:["Precise, not perfect."],idle10:["Let the light through the crack."]},
@@ -485,21 +481,13 @@ pad.addEventListener("focusout",(e)=>{const ln=e.target.closest?.(".line"); if(l
 tagToM.onclick=()=>{markToM=!markToM;tagToM.classList.toggle("active",markToM)};
 voiceBee.onclick=()=>{currentVoice="bee"}; voiceSun.onclick=()=>{currentVoice="sun"}; voiceMoon.onclick=()=>{currentVoice="moon"};
 
-/* ===== Stable 2D background (Option A always) ===== */
+/* ===== Stable 2D background (Option A) ===== */
 (function(){
   const cv = document.getElementById('alive');
   if (!cv) return;
-  cv.style.opacity = '0'; // hide until paint
-
-  function size(){
-    const dpr = Math.min(devicePixelRatio || 1, 1.5);
-    cv.width = innerWidth * dpr;
-    cv.height = innerHeight * dpr;
-    cv.style.width = innerWidth + 'px';
-    cv.style.height = innerHeight + 'px';
-  }
+  cv.style.opacity = '0';
+  function size(){const dpr=Math.min(devicePixelRatio||1,1.5);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px'}
   size(); addEventListener('resize', size, {passive:true});
-
   const cx = cv.getContext('2d');
   let ax=.3, ay=.36; const R=2.0;
   const nodes = [
@@ -512,25 +500,12 @@ voiceBee.onclick=()=>{currentVoice="bee"}; voiceSun.onclick=()=>{currentVoice="s
   function ry(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x*c+p.z*s,y:p.y,z:-p.x*s+p.z*c}}
   function proj(p){const d=5,f=d/(d+p.z);return{x:cv.width/2+p.x*f*120,y:cv.height/2-p.y*f*120,s:f}}
   function dot(x,y,r,a,b){const g=cx.createRadialGradient(x,y,r*.2,x,y,r);g.addColorStop(0,a);g.addColorStop(1,b);return g}
-
   function draw(){
     cx.clearRect(0,0,cv.width,cv.height);
-
     cx.strokeStyle='rgba(255,255,255,.08)'; cx.lineWidth=1.2; cx.beginPath();
-    for(let i=0;i<=360;i++){
-      const t=i*Math.PI/180;
-      const q=proj(ry(rx({x:Math.cos(t)*R,y:Math.sin(t)*R,z:0},ax),ay));
-      i?cx.lineTo(q.x,q.y):cx.moveTo(q.x,q.y);
-    }
+    for(let i=0;i<=360;i++){const t=i*Math.PI/180; const q=proj(ry(rx({x:Math.cos(t)*R,y:Math.sin(t)*R,z:0},ax),ay)); i?cx.lineTo(q.x,q.y):cx.moveTo(q.x,q.y)}
     cx.stroke();
-
-    for(const o of nodes){
-      let p=rx(o.p,ax); p=ry(p,ay);
-      const m=proj(p); const r=o.r*60*m.s+8;
-      cx.fillStyle=dot(m.x,m.y,r,o.c[0],o.c[1]);
-      cx.beginPath(); cx.arc(m.x,m.y,r,0,Math.PI*2); cx.fill();
-    }
-
+    for(const o of nodes){let p=rx(o.p,ax);p=ry(p,ay);const m=proj(p);const r=o.r*60*m.s+8;cx.fillStyle=dot(m.x,m.y,r,o.c[0],o.c[1]);cx.beginPath();cx.arc(m.x,m.y,r,0,Math.PI*2);cx.fill()}
     if (cv.style.opacity === '0') cv.style.opacity = '.6';
     ay+=.0018; ax+=.0008; requestAnimationFrame(draw);
   }
@@ -538,8 +513,60 @@ voiceBee.onclick=()=>{currentVoice="bee"}; voiceSun.onclick=()=>{currentVoice="s
 })();
 </script>
 
+<!-- ===== Self-Check (restored) ===== -->
 <script>
-/* ===== Fallback tracks if /data/tracks.json missing ===== */
+const logEl=document.getElementById("log");
+function log(t,c){const p=document.createElement("div"); if(c)p.className=c; p.textContent=t; logEl.appendChild(p) }
+function clearLog(){logEl.innerHTML=""}
+function ok(t){log("✓ "+t,"ok")} function warn(t){log("• "+t,"warn")} function err(t){log("✕ "+t,"err")}
+function expect(n,c,f){ if(c) ok(n); else err(n+(f?" — "+f:"")) }
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function measureToneRMS(){ try{ if(!analyser||!anaBuf) return 0; analyser.getByteTimeDomainData(anaBuf); let s=0; for(let i=0;i<anaBuf.length;i++){const v=(anaBuf[i]-128)/128; s+=v*v} return Math.sqrt(s/anaBuf.length) }catch(_){ return 0 } }
+
+document.getElementById("run").addEventListener("click", async ()=>{
+  clearLog();
+  // Band & DOM
+  expect("Band class set", /band-(morning|afternoon|evening|latenight)/.test(document.body.className), "circadian apply failed");
+  expect("Whisper layer present", !!document.querySelector(".whisper-layer"));
+  // Player API
+  if(player && typeof player.getPlayerState==="function") ok("YouTube API ready"); else warn("YouTube API not ready yet","Tap Play to init");
+  try{ if(player && player.playVideo){ player.playVideo(); await sleep(600); const st=player.getPlayerState(); expect("Playback playing/buffering", st===1||st===3) }}catch(_){ warn("Programmatic play blocked (OK on iOS)") }
+  // Tone
+  try{
+    ensureAudio();
+    const prev=+vol.value, wasOn=toneBtn.checked;
+    const tv=Math.max(prev,0.12); vol.value=tv; if(gain&&ctx) gain.gain.setTargetAtTime(tv, ctx.currentTime, .05);
+    await toneOn(); await sleep(220);
+    const ctxRun = ctx && ctx.state==="running";
+    const audioPlaying = toneOut && !toneOut.paused;
+    const rms = measureToneRMS();
+    expect("AudioContext running", ctxRun);
+    expect("<audio> playing", audioPlaying, "toggle tone once");
+    expect("Tone RMS > 0.01", rms>0.01, "gain too low or device muted");
+    ok("RMS ≈ "+rms.toFixed(3));
+    if(!wasOn) toneOff(); vol.value=prev; if(gain&&ctx) gain.gain.setTargetAtTime(+prev, ctx.currentTime, .05);
+  }catch(_){ err("Tone engine error","check AudioContext/MediaStreamDestination") }
+  // Storage
+  const k="mh.test."+Math.random().toString(36).slice(2); lsSet(k,"1"); expect("localStorage write/read", lsGet(k,"0")==="1");
+  // Tracks
+  expect("Tracks loaded", Array.isArray(tracks) && tracks.length>0, "check /data/tracks.json path/shape");
+  ok("Self-Check complete");
+});
+
+document.getElementById("mobileGesture").addEventListener("click", ()=>{
+  clearLog();
+  ok("Gesture captured — unlocking audio");
+  unlockAudioOnce();
+  const id=currentId(); if(!apiReady||!player){ initPlayer(id); ok("Initialized player from gesture"); }
+  else { try{ safeLoadAndPlay(id); ok("Inline play current") }catch(_){ err("Inline play failed") } }
+  ok("Mobile gesture test done");
+});
+
+document.getElementById("fab").addEventListener("click",()=>document.getElementById("sc").classList.toggle("show"));
+</script>
+
+<script>
+/* Fallback tracks if /data/tracks.json missing */
 window.MH_FALLBACK={tracks:[
 {"youtube_id":"Cr-SqRWImmI","url":"https://youtu.be/Cr-SqRWImmI","mode":"feel","notes":"Use morning light; keep volume modest."},
 {"youtube_id":"F1JTlnHGa90","url":"https://youtu.be/F1JTlnHGa90","mode":"mirror","notes":"If stuck, write the opposite first."},
