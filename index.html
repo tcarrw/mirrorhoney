@@ -38,12 +38,30 @@ html,body{min-height:100%}
 body{
   margin:0;color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
   background:
-    radial-gradient(1100px 900px at 78% -10%, rgba(183,167,255,.10), transparent 60%),
-    radial-gradient(900px 700px at 8% 113%, rgba(255,152,199,.08), transparent 60%),var(--bg);
+    radial-gradient(1200px 800px at 70% -10%, rgba(183,167,255,.12), transparent 60%),
+    radial-gradient(900px 700px at 10% 110%, rgba(255,152,199,.10), transparent 60%),
+    var(--bg);
   overflow:auto;overscroll-behavior:none;touch-action:auto;
 }
 .wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px}
-.header{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:18px;background:linear-gradient(180deg,var(--glass2),transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow)}
+
+/* GLASS (strengthened) */
+.header,
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  border: 1px solid rgba(255,255,255,.16);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.header:before,
+.card:before{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:18px}
 .brand{display:flex;gap:10px;align-items:center}
 .glyph{width:36px;height:36px;border-radius:12px;background:conic-gradient(from 210deg, rgba(183,167,255,.75), rgba(255,152,199,.75), rgba(255,211,138,.65), rgba(183,167,255,.75))}
 .title{font-weight:900;letter-spacing:.3px}
@@ -52,7 +70,9 @@ body{
 .btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;background:rgba(255,255,255,.12);color:var(--ink);font-weight:800;cursor:pointer}
 .btn:active{transform:scale(.98)}
 .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
-.card{border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.04));box-shadow:var(--shadow);padding:14px;position:relative;overflow:hidden}
+.card{border-radius:18px;padding:14px;overflow:hidden}
+
+/* tabs / tint */
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .input{flex:1;min-width:220px;border-radius:10px;border:1px solid rgba(255,255,255,.16);padding:10px 12px;background:rgba(10,12,18,.7);color:var(--ink);outline:none}
 .input[readonly]{opacity:.9}
@@ -69,8 +89,15 @@ body{
 .poster button{appearance:none;border:0;border-radius:999px;padding:14px 18px;font-weight:900;background:rgba(255,255,255,.14);color:#fff;backdrop-filter:blur(10px)}
 .notice{padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);font-size:14px}
 
-/* poetry pad */
-.poemwrap{position:relative;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:14px;min-height:180px}
+/* poetry pad (glass) */
+.poemwrap{
+  position:relative;border-radius:14px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(14px) saturate(115%);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
+  padding:14px;min-height:180px
+}
 .poempad{outline:0;white-space:pre-wrap;word-break:break-word;caret-color:#fff;font-size:20px;line-height:1.62;letter-spacing:.1px;min-height:120px;
   font-feature-settings:"liga" 1, "kern" 1;-webkit-font-smoothing:antialiased}
 .poempad::before{content:attr(data-placeholder);color:rgba(255,255,255,.35);pointer-events:none}
@@ -118,11 +145,11 @@ body{
 .poempad.tone-on{animation:padBreath var(--tone-period) var(--ease-breath) infinite}
 
 /* background canvas baseline */
-.alive{position:fixed; inset:0; z-index:0; opacity:.9; pointer-events:none; touch-action:none}
+.alive{position:fixed; inset:0; z-index:0; opacity:.65; pointer-events:none; touch-action:none}
 
 /* responsive */
 @media (max-width: 840px){.grid{grid-template-columns:1fr}.header{padding:10px}.title{font-size:16px}.badge{font-size:11px}.btn{padding:10px 12px}.player{border-radius:12px}}
-@media (max-width: 420px){.wrap{padding:12px}.header{border-radius:14px}.input{min-width:0}.tab{padding:7px 10px;font-size:12px}.echo{font-size:16px}}
+@media (max-width: 420px){.wrap{padding:12px}.header{border-radius:14px}.input{min-width:0}.tab{padding:7px 10px;font-size:12px}}
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
   .poempad.tone-on{animation:none}
@@ -202,7 +229,7 @@ body{
         </div>
         <div class="whisper-layer" aria-live="polite" aria-atomic="true"></div>
       </div>
-      <!-- hidden legacy note store to keep exports compatible -->
+      <!-- legacy note store (for exports) -->
       <textarea id="note" style="display:none"></textarea>
 
       <div id="practice" class="notice" style="margin-top:10px">
@@ -254,14 +281,14 @@ const loopEl=$("loop"), shuffleEl=$("shuffle");
 const taskText=$("taskText"), toneWordsBox=$("toneWords"), seedText=$("seedText"), notesText=$("notesText");
 const streakBadge=$("streakBadge"), illClock=$("illClock"), identityBadge=$("identityBadge"), autoBand=$("autoBand");
 const resumeChip=$("resumeChip");
-/* pad */
 const pad=document.getElementById("pad"), tagToM=document.getElementById("tagToM");
 const voiceBee=document.getElementById("voiceBee"), voiceSun=document.getElementById("voiceSun"), voiceMoon=document.getElementById("voiceMoon");
 
 /* ===== helpers ===== */
 function lsGet(k,def=null){try{const v=localStorage.getItem(k);return v===null?def:v}catch(_){return def}}
 function lsSet(k,v){try{localStorage.setItem(k,v)}catch(_){ }}
-/* identity chip (long-press cycle) */
+
+/* identity cycle (long-press) */
 const idKey="pe.identity"; if(!lsGet(idKey)) lsSet(idKey,"bee");
 function identityLabel(v){return v==="sun"?"☀️ Sun":v==="moon"?"🌙 L. Moon":"🐝 Bee"}
 function refreshIdentity(){identityBadge.textContent=identityLabel(lsGet(idKey,"bee"))}
@@ -289,7 +316,7 @@ function detectBandByHour(h=new Date().getHours()){
 function applyBand(band,{override=false}={}){ setBand(band); const m=band==='morning'?'feel':band==='afternoon'?'mirror':band==='evening'?'release':'mirror'; setMode(m); if(override){const sunrise=new Date(); sunrise.setHours(5,0,0,0); if(new Date()>sunrise) sunrise.setDate(sunrise.getDate()+1); lsSet('mh.overrideBandUntil', sunrise.toISOString()); lsSet('mh.overrideBand', band); } showEntryWhisper(band); }
 (function bootBand(){const until=lsGet('mh.overrideBandUntil'),ov=lsGet('mh.overrideBand'); if(until&&ov&&new Date(until)>new Date()){applyBand(ov)} else {applyBand(detectBandByHour())}})();
 
-/* ===== YouTube ===== */
+/* ===== YouTube / Tracks ===== */
 let player, apiReady=false, readyResolve; let tracks=[], idx=0; let mode="mirror";
 function parseId(v){if(!v)return"";try{if(v.includes("youtu.be/"))return new URL(v).pathname.slice(1).split("/")[0];if(v.includes("youtube.com/watch"))return new URL(v).searchParams.get("v")||"";if(v.includes("youtube.com/shorts/"))return new URL(v).pathname.split("/").pop();if(/^[a-zA-Z0-9_-]{6,20}$/.test(v))return v}catch(_){ }return v.trim()}
 function updateIndexBadge(){indexBadge.textContent=(tracks.length?idx+1:0)+"/"+tracks.length}
@@ -320,11 +347,44 @@ function safeLoadAndPlay(id){
 function currentId(){const item=tracks[idx];return parseId(yt.value||(item&&(item.youtube_id||item.url)))||""}
 function startPlayback(id){ if(!id) return; msg.style.display="none"; lsSet("mh.id",id); if(player && apiReady){ safeLoadAndPlay(id) } else { initPlayer(id) } }
 function playIndex(i){ idx=i; lsSet("mh.index",String(idx)); updateIndexBadge(); const item=tracks[idx]; if(!item) return; yt.value=parseId(item.youtube_id||item.url); setMode(item.mode||"mirror"); renderPractice(item); safeLoadAndPlay(parseId(item.youtube_id||item.url)) }
+
+/* robust tracks loader */
+function normalizeTracks(json){
+  if(!json) return [];
+  if(Array.isArray(json)) return json;
+  if(Array.isArray(json.tracks)) return json.tracks;
+  for(const k in json){ if(Array.isArray(json[k])) return json[k]; }
+  return [];
+}
 function loadTracks(){
-  return fetch("/data/tracks.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw 0;return r.json()})
-  .then(j=>{tracks=Array.isArray(j.tracks)?j.tracks:[]})
-  .catch(()=>{tracks=(window.MH_FALLBACK && MH_FALLBACK.tracks)||[]})
-  .finally(()=>{ tracks=tracks.filter(x=>x&&parseId(x.youtube_id||x.url)); const sIdx=lsGet("mh.index"); if(sIdx!=null){const i=Math.max(0,Math.min(tracks.length-1,parseInt(sIdx,10))); if(!Number.isNaN(i)) idx=i} updateIndexBadge(); renderPractice(tracks[idx]||{}); });
+  const candidates=[
+    "/data/tracks.json",
+    "/data/mirrorhoney/tracks.json"
+  ];
+  function tryFetch(i){
+    if(i>=candidates.length){
+      tracks=(window.MH_FALLBACK&&MH_FALLBACK.tracks)||[];
+      postTracks(); return;
+    }
+    fetch(candidates[i],{cache:"no-store"})
+      .then(r=>{if(!r.ok)throw 0;return r.json()})
+      .then(j=>{tracks=normalizeTracks(j); postTracks();})
+      .catch(()=>tryFetch(i+1));
+  }
+  function postTracks(){
+    tracks=(tracks||[]).filter(x=>x&&(x.youtube_id||x.url));
+    if(!tracks.length) tracks=(window.MH_FALLBACK&&MH_FALLBACK.tracks)||[];
+    const sIdx=parseInt(lsGet("mh.index","0"),10);
+    if(!Number.isNaN(sIdx)) idx=Math.max(0,Math.min(tracks.length-1,sIdx));
+    updateIndexBadge();
+    if(tracks[idx]){
+      const savedId=(lsGet("mh.id","")||"").trim();
+      yt.value=savedId || tracks[idx].youtube_id || parseId(tracks[idx].url);
+      setMode(tracks[idx].mode||"mirror");
+      renderPractice(tracks[idx]);
+    }
+  }
+  tryFetch(0);
 }
 
 /* ===== Tone (fixed with analyser + osc.start) ===== */
@@ -337,7 +397,7 @@ function ensureAudio(){
   analyser=ctx.createAnalyser(); analyser.fftSize=256; anaBuf=new Uint8Array(analyser.frequencyBinCount);
   dest=ctx.createMediaStreamDestination();
   osc.connect(gain).connect(analyser).connect(dest);
-  osc.start(); /* important */
+  osc.start();
   toneOut.srcObject=dest.stream; toneOut.loop=true; toneOut.autoplay=false; toneOut.playsInline=true;
 }
 async function toneOn(){ ensureAudio(); try{ await toneOut.play(); if(ctx.state==="suspended") await ctx.resume(); toneBtn.checked=true; pad.classList.add("tone-on"); }catch(_){ } }
@@ -471,7 +531,7 @@ voiceBee.onclick=()=>{currentVoice="bee"}; voiceSun.onclick=()=>{currentVoice="s
       cx.beginPath(); cx.arc(m.x,m.y,r,0,Math.PI*2); cx.fill();
     }
 
-    if (cv.style.opacity === '0') cv.style.opacity = '.9';
+    if (cv.style.opacity === '0') cv.style.opacity = '.6';
     ay+=.0018; ax+=.0008; requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
