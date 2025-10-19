@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
 <title>MirrorHoney</title>
 <meta name="theme-color" content="#0b0d11"><meta name="color-scheme" content="dark">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,7 +19,9 @@ body{
   background:
     radial-gradient(1100px 900px at 78% -10%, rgba(183,167,255,.10), transparent 60%),
     radial-gradient(900px 700px at 8% 113%, rgba(255,152,199,.08), transparent 60%),var(--bg);
-  overflow-x:hidden
+  overflow:hidden; /* hard lock */
+  overscroll-behavior:none;
+  touch-action:manipulation;
 }
 .wrap{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px}
 .header{
@@ -47,7 +50,8 @@ body{
 .poster button{appearance:none;border:0;border-radius:999px;padding:14px 18px;font-weight:900;background:rgba(255,255,255,.14);color:#fff;backdrop-filter:blur(10px)}
 .notice{padding:12px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);font-size:14px}
 a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
-.mirror{min-height:80px;border-radius:12px;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--ink);width:100%}
+.mirror{min-height:80px;border-radius:12px;padding:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);color:var(--ink);width:100%;overflow:auto;-webkit-overflow-scrolling:touch}
+.allow-scroll{overflow:auto;-webkit-overflow-scrolling:touch}
 .echo{margin-top:8px;font-size:18px;line-height:1.35;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(183,167,255,.12),rgba(255,152,199,.08))}
 .switch{position:relative;display:inline-flex;align-items:center;justify-content:flex-start;width:58px;height:34px;background:rgba(255,255,255,.16);border-radius:999px;cursor:pointer}
 .switch[aria-pressed="true"]{background:rgba(255,255,255,.22)}
@@ -59,7 +63,7 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
 .selfcheck.show{display:block}
 .ok{color:#8affb3}.warn{color:#ffd38a}.err{color:#ff9aa2}
 .hr{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);margin:8px 0}
-.alive{position:fixed;inset:0;z-index:0;opacity:.6;pointer-events:none}
+.alive{position:fixed;inset:0;z-index:0;opacity:.9;pointer-events:none;touch-action:none}
 .rib{position:relative;z-index:2;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .rib .chip{appearance:none;border:0;border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--ink);font-weight:700;text-decoration:none}
 .rib .chip:active{transform:scale(.98)}
@@ -105,13 +109,15 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
     <div class="row">
       <span class="badge" id="state">idle</span>
       <span class="badge" id="streakBadge">streak 0 · last —</span>
+      <span class="badge" id="motionBadge">motion: normal</span>
+      <button class="btn" id="toggleMotion">Low Motion</button>
       <button class="btn" id="route">Route</button>
       <button class="btn" id="openYT">Open in YouTube</button>
     </div>
   </div>
 
   <div class="grid">
-    <!-- LEFT: Player & controls -->
+    <!-- LEFT -->
     <div class="card">
       <div class="row">
         <input id="yt" class="input" placeholder="YouTube ID or URL" readonly>
@@ -156,7 +162,7 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
       <div class="small" id="meta"></div>
     </div>
 
-    <!-- RIGHT: Tone + practice -->
+    <!-- RIGHT -->
     <div class="card">
       <div class="row" style="justify-content:space-between">
         <div class="row" style="gap:8px"><span class="small">tone volume</span></div>
@@ -164,7 +170,7 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
       </div>
       <input type="range" id="vol" class="slider" min="0" max="1" step="0.01" value="0.12" aria-label="Tone volume">
 
-      <textarea id="note" class="mirror" placeholder="Write one exact line…"></textarea>
+      <textarea id="note" class="mirror allow-scroll" placeholder="Write one exact line…"></textarea>
       <div class="echo" id="echo"></div>
 
       <div id="practice" class="notice" style="margin-top:10px">
@@ -210,6 +216,7 @@ a.btnlink{display:inline-block;margin-top:10px;text-decoration:none}
 <video id="probe" playsinline muted loop preload="auto" style="display:none"></video>
 
 <script>
+/* --------- helpers / elements --------- */
 const $=id=>document.getElementById(id);
 const yt=$("yt"), apply=$("apply"), prev=$("prev"), next=$("next"), indexBadge=$("indexBadge"), titleBadge=$("titleBadge");
 const poster=$("poster"), start=$("start"), state=$("state"), msg=$("msg"), meta=$("meta");
@@ -218,19 +225,22 @@ const toneBtn=$("tone"), vol=$("vol"), hz=$("hz"), note=$("note"), echo=$("echo"
 const toneOut=$("toneOut"), probe=$("probe"), route=$("route"), openYT=$("openYT");
 const fab=$("fab"), sc=$("sc"), run=$("run"), logEl=$("log");
 const loopEl=$("loop"), shuffleEl=$("shuffle"), editId=$("editId");
-const taskText=document.getElementById("taskText"), toneWordsBox=document.getElementById("toneWords"), seedText=document.getElementById("seedText"), notesText=document.getElementById("notesText");
-const streakBadge=document.getElementById("streakBadge");
-const saveEntryBtn=document.getElementById("saveEntry"), exportTxtBtn=document.getElementById("exportTxt");
+const taskText=$("taskText"), toneWordsBox=$("toneWords"), seedText=$("seedText"), notesText=$("notesText");
+const streakBadge=$("streakBadge");
+const saveEntryBtn=$("saveEntry"), exportTxtBtn=$("exportTxt");
+const toggleMotion=$("toggleMotion"), motionBadge=$("motionBadge");
 
 let player, apiReady=false, readyResolve;
-let ctx=null, osc=null, gain=null, dest=null;  // dest routes tone to <audio>
+let ctx=null, osc=null, gain=null, dest=null;
 let mode="mirror";
 let tracks=[], idx=0;
+let motionScale = (lsGet("mh.lowmotion","0")==="1") ? 0.25 : 1.0;
 const EMBED_TONE={feel:128,mirror:160,release:256};
 const DEFAULT_TASK={feel:"Feel the body. Where does the breath land? Write one exact line.",mirror:"Name precisely what is true. No performance.",release:"Exhale. Keep the learning; drop the charge. One closing line."};
 const DEFAULT_WORDS={feel:["body","warmth","accept","breathe"],mirror:["clarity","witness","precise","name"],release:["exhale","lightness","open","let go"]};
 const DEFAULT_SEED={feel:"3 breaths · 1 line",mirror:"1 sentence · 7 words",release:"Breathe out 7 counts · 1 release line"};
 
+/* --------- localStorage --------- */
 function lsGet(k,def=null){try{const v=localStorage.getItem(k);return v===null?def:v}catch(_){return def}}
 function lsSet(k,v){try{localStorage.setItem(k,v)}catch(_){ }}
 function saveIndex(){lsSet("mh.index",String(idx))}
@@ -248,6 +258,7 @@ function touchStreak(){const t=new Date();t.setHours(0,0,0,0);const last=lsGet("
  lsSet("mh.streak",String(ns)); lsSet("mh.last",lastStr); streakBadge.textContent=`streak ${ns} · last ${new Date(lsGet("mh.last","")).toLocaleDateString()}`
 }
 
+/* --------- YouTube --------- */
 function parseId(v){if(!v)return"";try{if(v.includes("youtu.be/"))return new URL(v).pathname.slice(1).split("/")[0];if(v.includes("youtube.com/watch"))return new URL(v).searchParams.get("v")||"";if(v.includes("youtube.com/shorts/"))return new URL(v).pathname.split("/").pop();if(/^[a-zA-Z0-9_-]{6,20}$/.test(v))return v}catch(_){ }return v.trim()}
 function setMode(m){mode=m;tabs.forEach(t=>t.classList.toggle("active",t.dataset.m===m));tint.style.opacity=m==="feel"? .18 : m==="mirror"? .26 : .10;hz.textContent=(EMBED_TONE[m]||160).toFixed(2)+" Hz";if(osc)osc.frequency.setValueAtTime((EMBED_TONE[m]||160),ctx?ctx.currentTime:0)}
 function updateIndexBadge(){indexBadge.textContent=(tracks.length?idx+1:0)+"/"+tracks.length}
@@ -303,13 +314,13 @@ function startPlayback(id){if(!id)return; msg.style.display="none"; saveId(id);
 }
 function playIndex(i){idx=i;saveIndex();updateIndexBadge();const item=tracks[idx];if(!item)return;yt.value=parseId(item.youtube_id||item.url);setMode(item.mode||"mirror");renderPractice(item);startPlayback(parseId(item.youtube_id||item.url))}
 
-/* ---------- Tone (background-capable) ---------- */
+/* --------- Tone (background-capable) --------- */
 function ensureAudio(){
   if(ctx) return;
   ctx=new (window.AudioContext||window.webkitAudioContext)();
   gain=ctx.createGain(); gain.gain.value=+vol.value;
   osc=ctx.createOscillator(); osc.type="sine"; osc.frequency.value=(EMBED_TONE[mode]||160);
-  dest=ctx.createMediaStreamDestination();   // route WebAudio -> <audio> for background play
+  dest=ctx.createMediaStreamDestination();   // WebAudio -> <audio> for background play
   osc.connect(gain).connect(dest);
   toneOut.srcObject = dest.stream;
   toneOut.loop = true; toneOut.autoplay = false; toneOut.playsInline = true;
@@ -317,10 +328,9 @@ function ensureAudio(){
 async function toneOn(){
   ensureAudio();
   try{
-    await toneOut.play();                  // iOS requires a user gesture—this is called from a button
+    await toneOut.play();
     if(ctx.state==="suspended") await ctx.resume();
     toneBtn.setAttribute("aria-pressed","true");
-    // Media Session metadata (helps background controls)
     if("mediaSession" in navigator){
       navigator.mediaSession.metadata = new MediaMetadata({title:"MirrorHoney Tone", artist:"MirrorHoney", album:"Clarity Field"});
       navigator.mediaSession.playbackState = "playing";
@@ -335,7 +345,7 @@ function toneOff(){
 }
 vol.addEventListener("input",()=>{ saveVol(+vol.value); if(gain && ctx) gain.gain.setTargetAtTime(+vol.value, ctx.currentTime, .05) });
 
-/* ---------- Controls & toggles ---------- */
+/* --------- Toggles --------- */
 function toggleSwitch(el,saveFn){const val=el.getAttribute("aria-pressed")==="true";el.setAttribute("aria-pressed",(!val).toString()); if(saveFn) saveFn(!val)}
 loopEl.addEventListener("click",()=>toggleSwitch(loopEl,saveLoop));
 loopEl.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleSwitch(loopEl,saveLoop)}});
@@ -344,12 +354,10 @@ shuffleEl.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.pr
 toneBtn.addEventListener("click",()=>{toneBtn.getAttribute("aria-pressed")==="true"?toneOff():toneOn()});
 toneBtn.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toneBtn.getAttribute("aria-pressed")==="true"?toneOff():toneOn()}});
 
-/* Mode tabs */
-tabs.forEach(t=>{
-  t.addEventListener("click",()=>{ setMode(t.dataset.m); renderPractice(tracks[idx]||{}); });
-});
+/* --------- Tabs --------- */
+tabs.forEach(t=>{ t.addEventListener("click",()=>{ setMode(t.dataset.m); renderPractice(tracks[idx]||{}); }); });
 
-/* Safe edit for ID */
+/* --------- Edit ID --------- */
 function setEdit(on){
   yt.readOnly=!on;
   editId.setAttribute("aria-pressed", on?"true":"false");
@@ -363,7 +371,7 @@ editId.addEventListener("click",()=> setEdit(editId.getAttribute("aria-pressed")
 editId.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setEdit(editId.getAttribute("aria-pressed")!=="true")}});
 yt.addEventListener("blur",()=>{ if(editId.getAttribute("aria-pressed")==="true") setEdit(false) });
 
-/* Transport */
+/* --------- Transport --------- */
 apply.onclick=async()=>{const id=currentId();if(!id)return;await ensureAPI();startPlayback(id)};
 prev.onclick=async()=>{if(idx>0){idx--;saveIndex();updateIndexBadge();const item=tracks[idx];yt.value=parseId(item.youtube_id||item.url);setMode(item.mode||"mirror");renderPractice(item);await ensureAPI();startPlayback(parseId(item.youtube_id||item.url))}};
 next.onclick=async()=>{if(shuffleEl.getAttribute("aria-pressed")==="true"){const m=tracks[idx]?.mode||mode;const pool=tracks.map((t,i)=>({t,i})).filter(x=>x.t.mode===m && x.i!==idx);if(pool.length){const pick=pool[Math.floor(Math.random()*pool.length)];idx=pick.i;saveIndex();playIndex(idx);return}}
@@ -371,15 +379,16 @@ if(idx<tracks.length-1){idx++;saveIndex();updateIndexBadge();const item=tracks[i
 poster.onclick=startBtn;start.onclick=startBtn;
 async function startBtn(){const id=currentId();if(!id)return;await ensureAPI();startPlayback(id)}
 
+/* --------- External --------- */
 openYT.onclick=()=>{const id=(tracks[idx]&&(tracks[idx].youtube_id||parseId(tracks[idx].url)))||parseId(yt.value);if(!id)return;window.open("https://youtu.be/"+id,"_blank","noopener")};
 route.onclick=async()=>{try{if(probe.webkitShowPlaybackTargetPicker){probe.webkitShowPlaybackTargetPicker();await probe.play().catch(()=>{})}else{alert("AirPlay picker not available in this browser.")}}catch(_){ }};
 
-/* Text & log */
+/* --------- Text & log --------- */
 note.addEventListener("input",()=>{echo.textContent=note.value;lsSet("mh.note",note.value)});
 saveEntryBtn.onclick=()=>{const item=tracks[idx]||{};const id=(item.youtube_id)||(item.url)||"";const title=titleBadge.textContent||"";const now=new Date().toISOString();const entry={t:now,id,title,mode:(mode||item.mode),hz:(EMBED_TONE[mode]||160),text:note.value||""};const arr=JSON.parse(lsGet("mh.log","[]")||"[]");arr.push(entry);lsSet("mh.log",JSON.stringify(arr));state.textContent="saved ✓";touchStreak()};
 exportTxtBtn.onclick=()=>{const arr=JSON.parse(lsGet("mh.log","[]")||"[]");const lines=["MirrorHoney Reflections","-----------------------",""].concat(arr.map(e=>`${e.t} • [${e.mode} ${e.hz}Hz] ${e.title||e.id}\n${e.text}\n`));const blob=new Blob([lines.join("\n")],{type:"text/plain"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="mirrorhoney_reflections.txt";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)};
 
-/* Self-Check */
+/* --------- Self-Check --------- */
 function log(t,c){const p=document.createElement("div");if(c)p.className=c;p.textContent=t;logEl.appendChild(p)}
 function clearLog(){logEl.innerHTML=""}
 run.addEventListener("click",()=>{clearLog();if(player&&typeof player.getPlayerState==="function"){log("YouTube API: ready ✓","ok")}else{log("YouTube API: not ready","err")}
@@ -388,12 +397,52 @@ run.addEventListener("click",()=>{clearLog();if(player&&typeof player.getPlayerS
  try{const prev=lsGet("mh.note","");const t="echo-"+Math.random().toString(36).slice(2,6);lsSet("mh.note",t);const got=lsGet("mh.note","");lsSet("mh.note",prev);log("Local save: "+(got===t?"ok ✓":"mismatch"),"ok")}catch(e){log("Local save: error","err")}
 });
 
-/* Boot */
+/* --------- Keyboard shortcuts --------- */
+document.addEventListener("keydown",(e)=>{
+  const tag=(e.target && (e.target.tagName||"")).toLowerCase();
+  const editing = tag==="input" || tag==="textarea";
+  if(editing) return;
+  if(e.key==="ArrowLeft"){ e.preventDefault(); prev.click(); }
+  else if(e.key==="ArrowRight"){ e.preventDefault(); next.click(); }
+  else if(e.key.toLowerCase()==="l"){ e.preventDefault(); loopEl.click(); }
+  else if(e.key.toLowerCase()==="t"){ e.preventDefault(); toneBtn.click(); }
+  else if(e.key.toLowerCase()==="s"){ e.preventDefault(); saveEntryBtn.click(); }
+  else if(e.key.toLowerCase()==="e"){ e.preventDefault(); exportTxtBtn.click(); }
+  else if(e.key.toLowerCase()==="j"){ e.preventDefault(); fab.click(); }
+});
+
+/* --------- Low-motion toggle --------- */
+function updateMotionUI(){
+  motionBadge.textContent = "motion: " + (motionScale<1 ? "low" : "normal");
+  toggleMotion.textContent = motionScale<1 ? "Normal Motion" : "Low Motion";
+  lsSet("mh.lowmotion", motionScale<1 ? "1":"0");
+}
+toggleMotion.addEventListener("click",()=>{
+  motionScale = motionScale<1 ? 1.0 : 0.25;
+  updateMotionUI();
+});
+updateMotionUI();
+
+/* --------- iPhone scroll lock --------- */
+(function lockScrollIOS(){
+  const iOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+  if(!iOS) return; // desktop and android already locked via CSS overflow:hidden
+
+  // Prevent pinch-zoom and rubber-band
+  document.addEventListener("gesturestart",e=>e.preventDefault());
+  document.addEventListener("touchmove",(e)=>{
+    // Allow scrolling inside explicit scrollable zones (e.g., textarea)
+    if(e.target.closest(".allow-scroll")) return;
+    // Otherwise block page pan/bounce
+    e.preventDefault();
+  }, {passive:false});
+})();
+
+/* --------- Boot --------- */
 (function boot(){
   const saved=lsGet("mh.note",""); if(saved){note.value=saved; echo.textContent=saved}
   const volSaved=loadVol(); vol.value=volSaved;
   loadTracks().then(()=>loadAPI()).then(()=>{loadSavedId(); if(tracks.length){const item=tracks[idx]; if(!yt.value) yt.value=item.youtube_id||parseId(item.url)} updateIndexBadge();});
-  // Media Session actions for background controls
   if('mediaSession' in navigator){
     try{
       navigator.mediaSession.setActionHandler('play', ()=>toneOn());
@@ -404,24 +453,176 @@ run.addEventListener("click",()=>{clearLog();if(player&&typeof player.getPlayerS
 })();
 </script>
 
+<!-- ===== Shader-only WebGL background with 2D fallback ===== -->
 <script>
-/* Lattice background */
-const cv=document.getElementById('alive'), cx=cv.getContext('2d');
-let W=innerWidth,H=innerHeight;
-function rs(){cv.width=W=innerWidth;cv.height=H=innerHeight}
-rs();addEventListener('resize',rs);
-const R=2.0, nodesBG=[{c:['#d9def988','#8aa0ff11'],p:{x:0,y:0,z:0},r:.25},{c:['#b7a7ff66','#ff9ac711'],p:{x:0,y:R,z:0},r:.20},{c:['#c5eeff66','#9fd3ff11'],p:{x:R*.82,y:.12,z:R*.55},r:.18},{c:['#ffd38a66','#ffbfbf11'],p:{x:-R*.82,y:.10,z:R*.50},r:.18},{c:['#78c7ff66','#2a6fbf11'],p:{x:.15,y:-R*.78,z:-R*.75},r:.18},{c:['#9aa0ad66','#d7d9e611'],p:{x:-R*.78,y:-.12,z:R*.48},r:.16},{c:['#ffb39c66','#c49cff11'],p:{x:R*.85,y:-.10,z:-R*.42},r:.17}];
-let ax=.3,ay=.36;
-function rx(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x,y:p.y*c-p.z*s,z:p.y*s+p.z*c}}
-function ry(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x*c+p.z*s,y:p.y,z:-p.x*s+p.z*c}}
-function proj(p){const d=5,f=d/(d+p.z);return{x:W/2+p.x*f*120,y:H/2-p.y*f*120,s:f}}
-function dot(x,y,r,a,b){const g=cx.createRadialGradient(x,y,r*.2,x,y,r);g.addColorStop(0,a);g.addColorStop(1,b);return g}
-function drawBG(){cx.clearRect(0,0,W,H);cx.strokeStyle='rgba(255,255,255,.08)';cx.lineWidth=1.2;cx.beginPath();for(let i=0;i<=360;i++){const t=i*Math.PI/180;const q=proj(ry(rx({x:Math.cos(t)*R,y:Math.sin(t)*R,z:0},ax),ay));if(i===0)cx.moveTo(q.x,q.y);else cx.lineTo(q.x,q.y)}cx.stroke();const rot=nodesBG.map(o=>{let p=rx(o.p,ax);p=ry(p,ay);return {...o,m:proj(p),dz:p.z}});rot.sort((a,b)=>a.m.s-b.m.s);for(const o of rot){const r=o.r*60*o.m.s+8;cx.fillStyle=dot(o.m.x,o.m.y,r,o.c[0],o.c[1]);cx.beginPath();cx.arc(o.m.x,o.m.y,r,0,Math.PI*2);cx.fill()}}
-function step(){ay+=.0018;ax+=.0008;drawBG();requestAnimationFrame(step)}requestAnimationFrame(step);
+(function(){
+  const cv=document.getElementById('alive');
+  let gl = cv.getContext('webgl2',{premultipliedAlpha:true, antialias:true});
+  if(!gl){
+    // 2D fallback (soft lattice)
+    const cx=cv.getContext('2d');
+    function size2D(){const dpr=Math.min(devicePixelRatio||1,2);cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px'}
+    size2D(); addEventListener('resize', size2D, {passive:true});
+    const R=2.0, nodes=[{c:['#d9def988','#8aa0ff11'],p:{x:0,y:0,z:0},r:.25},{c:['#b7a7ff66','#ff9ac711'],p:{x:0,y:R,z:0},r:.20},{c:['#c5eeff66','#9fd3ff11'],p:{x:R*.82,y:.12,z:R*.55},r:.18},{c:['#ffd38a66','#ffbfbf11'],p:{x:-R*.82,y:.10,z:R*.50},r:.18},{c:['#78c7ff66','#2a6fbf11'],p:{x:.15,y:-R*.78,z:-R*.75},r:.18},{c:['#9aa0ad66','#d7d9e611'],p:{x:-R*.78,y:-.12,z:R*.48},r:.16},{c:['#ffb39c66','#c49cff11'],p:{x:R*.85,y:-.10,z:-R*.42},r:.17}];
+    let ax=.3,ay=.36;
+    function rx(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x,y:p.y*c-p.z*s,z:p.y*s+p.z*c}}
+    function ry(p,a){const s=Math.sin(a),c=Math.cos(a);return{x:p.x*c+p.z*s,y:p.y,z:-p.x*s+p.z*c}}
+    function proj(p){const d=5,f=d/(d+p.z);return{x:cv.width/2+p.x*f*120,y:cv.height/2-p.y*f*120,s:f}}
+    function dot(x,y,r,a,b){const g=cx.createRadialGradient(x,y,r*.2,x,y,r);g.addColorStop(0,a);g.addColorStop(1,b);return g}
+    function drawBG(){cx.clearRect(0,0,cv.width,cv.height);cx.strokeStyle='rgba(255,255,255,.08)';cx.lineWidth=1.2;cx.beginPath();
+      for(let i=0;i<=360;i++){const t=i*Math.PI/180;const q=proj(ry(rx({x:Math.cos(t)*R,y:Math.sin(t)*R,z:0},ax),ay));if(i===0)cx.moveTo(q.x,q.y);else cx.lineTo(q.x,q.y)}cx.stroke();
+      const rot=nodes.map(o=>{let p=rx(o.p,ax);p=ry(p,ay);return {...o,m:proj(p),dz:p.z}}).sort((a,b)=>a.m.s-b.m.s);
+      for(const o of rot){const r=o.r*60*o.m.s+8;cx.fillStyle=dot(o.m.x,o.m.y,r,o.c[0],o.c[1]);cx.beginPath();cx.arc(o.m.x,o.m.y,r,0,Math.PI*2);cx.fill()}
+    }
+    (function step(){ay+=.0018;ax+=.0008;drawBG();requestAnimationFrame(step)})();
+    return;
+  }
+
+  const vs = `#version 300 es
+  precision highp float;
+  const vec2 verts[3]=vec2[3](vec2(-1.,-1.),vec2(3.,-1.),vec2(-1.,3.));
+  void main(){gl_Position=vec4(verts[gl_VertexID],0.,1.);}`;
+
+  const fs = `#version 300 es
+  precision highp float;
+  out vec4 frag;
+  uniform vec2 uRes;
+  uniform float uTime;
+  uniform float uTone;      // 0..1 (volume)
+  uniform float uMode;      // 0:feel, 1:mirror, 2:release
+  uniform float uMotion;    // 0..1 speed scale
+
+  float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123);}
+  float noise(vec2 p){
+    vec2 i=floor(p), f=fract(p);
+    float a=hash(i), b=hash(i+vec2(1,0)), c=hash(i+vec2(0,1)), d=hash(i+vec2(1,1));
+    vec2 u=f*f*(3.-2.*f);
+    return mix(a,b,u.x)+ (c-a)*u.y*(1.-u.x) + (d-b)*u.x*u.y;
+  }
+  float stars(vec2 uv){
+    uv*=vec2(1.6,1.0);
+    float t = 0.0;
+    for(int i=0;i<3;i++){
+      float n = noise(uv*1.5 + float(i)*2.7);
+      t += smoothstep(0.88,0.995,n) * (0.3+0.7*float(i==0));
+      uv = (uv+1.3)*1.7;
+    }
+    return clamp(t,0.0,1.0);
+  }
+  bool hitSphere(vec3 ro, vec3 rd, float r, out float t){
+    float b = dot(ro,rd);
+    float c = dot(ro,ro)-r*r;
+    float h = b*b - c;
+    if(h<0.0) return false;
+    h = sqrt(h);
+    t = -b - h;
+    if(t<0.0) t = -b + h;
+    return t>0.0;
+  }
+  void main(){
+    vec2 uv = (gl_FragCoord.xy - 0.5*uRes)/min(uRes.x,uRes.y);
+
+    float tt = uTime * (0.25*uMotion + 0.02); // respect low-motion
+    vec3 ro = vec3(0.0, 0.35, 2.1);
+    vec3 ta = vec3(0.0, 0.15, 0.0);
+    vec3 ww = normalize(ta-ro);
+    vec3 uu = normalize(cross(vec3(0.0,1.0,0.0), ww));
+    vec3 vv = cross(ww,uu);
+    vec3 rd = normalize(uv.x*uu + uv.y*vv + 1.8*ww);
+
+    float h = 0.0;
+    float tPlane = (h - ro.y) / rd.y;
+    vec3 col = vec3(0.06,0.07,0.09);
+    if(tPlane>0.0){
+      vec3 hp = ro + rd*tPlane;
+      float grid = smoothstep(0.45,0.5,abs(sin(hp.x*3.0)+sin(hp.z*3.0))*0.5);
+      col = mix(col, col+vec3(0.02,0.02,0.03), grid*0.2);
+    }
+
+    float s = stars(uv*2.0 + vec2(tt*0.2,-tt*0.18));
+    vec3 tintFeel    = vec3(0.54,0.66,1.0);
+    vec3 tintMirror  = vec3(0.92,0.60,0.93);
+    vec3 tintRelease = vec3(1.00,0.86,0.60);
+    vec3 modeTint = mix(mix(tintFeel,tintMirror,clamp(uMode,0.0,1.0)),
+                        tintRelease, clamp(uMode-1.0,0.0,1.0));
+    float calm = mix(1.0, 0.5, 1.0-uMotion); // damp brightness in low motion
+    col += (s*0.06 + s*s*0.08*modeTint) * calm;
+
+    float ts;
+    if(hitSphere(ro, rd, 0.55, ts)){
+      vec3 sp = ro + rd*ts;
+      vec3 n = normalize(sp);
+      vec3 r = reflect(rd,n);
+      float sky = clamp(0.5 + 0.5*r.y, 0.0, 1.0);
+      float starRefl = stars(r.xz*2.0 + vec2(tt*0.15, -tt*0.1));
+      vec3 refl = mix(vec3(0.04,0.05,0.08), modeTint*0.9, sky);
+      refl += starRefl*0.15*calm;
+
+      float sparkle = pow(max(dot(n,normalize(vec3(0.6,0.9,0.5))),0.0), 32.0);
+      sparkle *= (0.25 + 0.75*uTone) * calm;
+
+      float rim = pow(1.0-max(dot(n,-rd),0.0), 2.5);
+      vec3 base = mix(vec3(0.12,0.12,0.16), modeTint*0.35, 0.5);
+      vec3 color = base + refl*0.55 + rim*0.25*modeTint + sparkle;
+
+      float fres = pow(1.0-max(dot(n,-rd),0.0), 1.8);
+      color += fres*0.08;
+
+      col = mix(col, color, 1.0);
+    }
+
+    float r2 = dot(uv,uv);
+    col *= smoothstep(1.2, 0.0, r2);
+
+    frag = vec4(col, 1.0);
+  }`;
+
+  function compile(gl, type, src){
+    const sh = gl.createShader(type);
+    gl.shaderSource(sh, src);
+    gl.compileShader(sh);
+    return sh;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl, gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, compile(gl, gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+
+  const uRes = gl.getUniformLocation(prog, "uRes");
+  const uTime = gl.getUniformLocation(prog, "uTime");
+  const uTone = gl.getUniformLocation(prog, "uTone");
+  const uMode = gl.getUniformLocation(prog, "uMode");
+  const uMotion = gl.getUniformLocation(prog, "uMotion");
+
+  gl.useProgram(prog);
+
+  function mVal(){ return mode==="feel"?0.0: mode==="mirror"?1.0:2.0; }
+  function getTone(){ try{ return Math.max(0, Math.min(1, (gain && gain.gain && gain.gain.value) || (+document.getElementById('vol').value||0))); }catch(_){ return +document.getElementById('vol').value||0; } }
+
+  function size(){
+    const dpr=Math.min(devicePixelRatio||1,2);
+    cv.width=innerWidth*dpr; cv.height=innerHeight*dpr; cv.style.width=innerWidth+'px'; cv.style.height=innerHeight+'px';
+    gl.viewport(0,0,cv.width,cv.height);
+  }
+  size(); addEventListener('resize', size, {passive:true});
+
+  let t0 = performance.now();
+  function frame(){
+    const t = (performance.now()-t0)/1000;
+    gl.uniform2f(uRes, cv.width, cv.height);
+    gl.uniform1f(uTime, t);
+    gl.uniform1f(uTone, getTone());
+    gl.uniform1f(uMode, mVal());
+    gl.uniform1f(uMotion, motionScale);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
 </script>
 
 <script>
-/* Fallback — ignored if /data/tracks.json exists */
+/* Fallback tracks if /data/tracks.json missing */
 window.MH_FALLBACK={tracks:[
 {"youtube_id":"Cr-SqRWImmI","url":"https://youtu.be/Cr-SqRWImmI","mode":"feel","tone_hz":128,"task":"Scan the body from throat to chest. Where does the chorus land? Write one exact sensation.","tone_words":["body","warmth","accept","breathe"],"seed":"3 breaths · 1 line","notes":"Use morning light; keep volume modest."},
 {"youtube_id":"F1JTlnHGa90","url":"https://youtu.be/F1JTlnHGa90","mode":"mirror","tone_hz":160,"task":"Name the true noun in one sentence (no adjectives).","tone_words":["clarity","witness","precise","name"],"seed":"1 sentence · 7 words","notes":"If stuck, write the opposite first."},
