@@ -1,0 +1,22 @@
+{
+  "morning": {
+    "entry":  ["Begin with the body."],
+    "idle5":  ["Name the noun; don’t decorate."],
+    "idle10": ["Warmth belongs somewhere; where?"]
+  },
+  "afternoon": {
+    "entry":  ["Write what is already happening."],
+    "idle5":  ["Precise, not perfect."],
+    "idle10": ["Let the light through the crack."]
+  },
+  "evening": {
+    "entry":  ["Write the line that ends the day."],
+    "idle5":  ["Keep the lesson, not the story."],
+    "idle10": ["Let it fade like breath on glass."]
+  },
+  "latenight": {
+    "entry":  ["Write what returned."],
+    "idle5":  ["Dreams remember you too."],
+    "idle10": ["This is not memory — it’s pollen."]
+  }
+}
