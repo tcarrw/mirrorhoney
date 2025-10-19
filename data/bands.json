@@ -1,0 +1,20 @@
+{
+  "prompts": {
+    "morning":   ["Begin with the body.", "Locate the noun."],
+    "afternoon": ["Write what is already happening.", "Precise, not perfect."],
+    "evening":   ["Write the line that ends the day.", "Keep the lesson, not the story."],
+    "latenight": ["Write what returned.", "Dreams remember you too."]
+  },
+  "tones": {
+    "morning": 128,
+    "afternoon": 160,
+    "evening": 256,
+    "latenight": 128
+  },
+  "modes": {
+    "morning": "feel",
+    "afternoon": "mirror",
+    "evening": "release",
+    "latenight": "mirror"
+  }
+}
