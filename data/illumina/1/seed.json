@@ -1,0 +1,13 @@
+{
+  "cycle": 1,
+  "start": "2025-11-05",
+  "days": {
+    "1":  { "task": "3 breaths · 1 line", "notes": "Morning light. Keep volume modest.", "words": ["body","breath","warmth"] },
+    "2":  { "task": "Name the noun (1 sentence, 7 words).", "notes": "No adjectives. If stuck, write the opposite first." },
+    "3":  { "task": "Exhale the oldest sentence. Keep learning; drop charge.", "notes": "Loop if body asks." },
+    "4":  { "task": "Scan throat→chest; write the exact sensation." },
+    "5":  { "task": "Mirror: one precise line of truth." },
+    "6":  { "task": "Release: one closing line. Breathe 7 counts." },
+    "7":  { "task": "Feel: locate where the chorus lands.", "notes": "Low motion night? Use low-motion toggle." }
+  }
+}
