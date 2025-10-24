@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,14 +17,14 @@
       --l1: 99%;
       --l2: 96%;
       --pulse: 6s;        /* breathing speed (tone dependent) */
-      --glass: rgba(255,255,255,0.58);
-      --glass-edge: rgba(255,255,255,0.8);
-      --ink: #1b1b1b;
-      --ink-soft: #323232;
-      --gold: #e6c768;
+      --glass: rgba(255,255,255,0.72);     /* ↑ more solid for readability */
+      --glass-edge: rgba(0,0,0,0.08);      /* subtle, higher-contrast edge */
+      --ink: #121212;                       /* darker body text */
+      --ink-soft: #2b2b2b;                  /* darker secondary */
+      --gold: #e1b948;
       --glow: 0.22;       /* grows with visits */
       --ring-blur: 36px;
-      --shadow: 0 10px 40px rgba(0,0,0,.10);
+      --shadow: 0 12px 44px rgba(0,0,0,.12);
       --radius: 20px;
       --focus: 0 0 0 3px rgba(230,199,104,.45);
     }
@@ -33,24 +32,24 @@
     @media (prefers-color-scheme: dark){
       :root{
         --ink: #f6f6f6;
-        --ink-soft: #cfcfcf;
-        --glass: rgba(20,20,22,0.36);
-        --glass-edge: rgba(255,255,255,0.14);
-        --shadow: 0 10px 40px rgba(0,0,0,.35);
+        --ink-soft: #d6d6d6;
+        --glass: rgba(24,24,26,0.55);
+        --glass-edge: rgba(255,255,255,0.16);
+        --shadow: 0 12px 44px rgba(0,0,0,.45);
       }
     }
 
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 
     html, body {
       margin: 0;
       height: 100%;
       color: var(--ink);
       font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Cantarell, Ubuntu, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
-      line-height: 1.5;
+      line-height: 1.55;
       background:
         radial-gradient(80% 60% at 50% 0%,
-          hsla(var(--hue), var(--sat), var(--l2), .85),
+          hsla(var(--hue), var(--sat), var(--l2), .9),
           transparent 60%)
         ,
         linear-gradient(120deg,
@@ -59,29 +58,29 @@
       background-attachment: fixed;
     }
 
-    /* Breathing light */
+    /* Breathing light (softer to avoid washing text) */
     body::before{
       content:"";
       position: fixed; inset: 0;
       pointer-events: none;
       background:
         radial-gradient(1200px 800px at 50% 120%,
-          hsla(calc(var(--hue) + 35), 80%, 90%, .18),
+          hsla(calc(var(--hue) + 35), 80%, 90%, .14),
           transparent 70%)
         ,
         radial-gradient(800px 600px at 10% 10%,
-          hsla(calc(var(--hue) - 12), 90%, 88%, .15),
+          hsla(calc(var(--hue) - 12), 90%, 88%, .12),
           transparent 70%);
       animation: breathe var(--pulse) ease-in-out infinite alternate;
       mix-blend-mode: screen;
     }
-    @keyframes breathe { from{ opacity: .55 } to{ opacity: .95 } }
+    @keyframes breathe { from{ opacity: .28 } to{ opacity: .6 } }
 
-    /* Ghost idle glow loop */
+    /* Ghost idle glow loop — tightened for contrast */
     .ghost{
       animation: ghost 8s ease-in-out infinite alternate;
     }
-    @keyframes ghost { from{ opacity:.35 } to{ opacity:1 } }
+    @keyframes ghost { from{ opacity:.92 } to{ opacity:1 } }
 
     .wrap{
       min-height: 100dvh;
@@ -95,11 +94,11 @@
       padding: clamp(16px, 3.2vw, 28px);
       border-radius: var(--radius);
       background: var(--glass);
-      backdrop-filter: blur(14px) saturate(1.1);
-      -webkit-backdrop-filter: blur(14px) saturate(1.1);
+      backdrop-filter: blur(14px) saturate(1.08);
+      -webkit-backdrop-filter: blur(14px) saturate(1.08);
       border: 1px solid var(--glass-edge);
       box-shadow:
-        0 0 0 1px rgba(255,255,255,.25) inset,
+        0 0 0 1px rgba(255,255,255,.35) inset,
         var(--shadow);
       position: relative;
       isolation: isolate;
@@ -110,20 +109,18 @@
       border-radius: inherit;
       pointer-events: none;
       box-shadow:
-        0 0 calc(80px + var(--glow)*160px) hsla(var(--hue), 90%, 60%, .22),
-        0 0 var(--ring-blur) hsla(var(--hue), 95%, 65%, .28);
+        0 0 calc(80px + var(--glow)*160px) hsla(var(--hue), 90%, 56%, .2),
+        0 0 var(--ring-blur) hsla(var(--hue), 95%, 60%, .22);
       filter: drop-shadow(0 16px 50px rgba(255,191,0,.18));
     }
 
-    header{
-      display: grid; gap: 6px;
-      margin-bottom: 16px;
-    }
+    header{ display: grid; gap: 6px; margin-bottom: 16px; }
     .title{
       font-family: ui-serif, "Georgia", "Times New Roman", serif;
-      font-weight: 300; letter-spacing: .2px;
+      font-weight: 400; letter-spacing: .2px;
       font-size: clamp(22px, 2.6vw, 34px);
       line-height: 1.2;
+      color: #0a0a0a;
     }
     .subtitle{
       color: var(--ink-soft);
@@ -136,8 +133,8 @@
       border: 0; border-radius: 999px;
       padding: 14px 22px;
       display: inline-grid; place-items: center; gap: 2px;
-      font-weight: 600; letter-spacing: .25px;
-      background: linear-gradient(180deg, #ffeaa7, #f2cf70);
+      font-weight: 700; letter-spacing: .25px;
+      background: linear-gradient(180deg, #ffe39a, #f2c85f);
       color: #221a00;
       box-shadow:
         0 3px 0 #d6b65c inset,
@@ -152,11 +149,11 @@
     .begin .ring{
       position: absolute; inset: -8px;
       border-radius: 999px; pointer-events: none;
-      box-shadow: 0 0 0 2px rgba(244, 210, 104, .45), 0 0 40px rgba(244,210,104,.45);
-      opacity: .85;
+      box-shadow: 0 0 0 2px rgba(244, 210, 104, .5), 0 0 40px rgba(244,210,104,.5);
+      opacity: .9;
       animation: ring 3.8s ease-in-out infinite alternate;
     }
-    @keyframes ring { from{opacity:.65; transform: scale(.98)} to{opacity:1; transform: scale(1.03)} }
+    @keyframes ring { from{opacity:.7; transform: scale(.98)} to{opacity:1; transform: scale(1.03)} }
 
     /* Grid */
     .grid{
@@ -177,64 +174,59 @@
       background: #000;
       box-shadow: var(--shadow);
     }
-    .player iframe{
-      position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
-    }
+    .player iframe{ position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
     /* Controls */
     .controls{
       display: grid; gap: 10px;
       border-radius: 14px;
       padding: 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.45));
-      border: 1px solid var(--glass-edge);
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.8)); /* ↑ */
+      border: 1px solid rgba(0,0,0,.08);
     }
-    .chipbar{
-      display: flex; flex-wrap: wrap; gap: 8px;
-    }
+    .chipbar{ display: flex; flex-wrap: wrap; gap: 8px; }
     .chip{
-      appearance: none; border: 0;
+      appearance: none; border: 1px solid rgba(0,0,0,.06);
       padding: 10px 12px; border-radius: 999px;
-      background: hsl(calc(var(--hue) + 10), 90%, 94%);
-      color: #1e1a10; font-weight: 600;
+      background: hsl(calc(var(--hue) + 6), 90%, 94%);
+      color: #141414; font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 1px 0 rgba(0,0,0,.04);
+      box-shadow: 0 1px 0 rgba(0,0,0,.05);
     }
     .chip[aria-pressed="true"]{
-      background: linear-gradient(180deg, #ffe19e, #f0c25a);
-      color: #1f1502;
+      background: linear-gradient(180deg, #ffd97f, #efbf4c);
+      color: #1a1200;
+      border-color: rgba(0,0,0,.08);
     }
     .row{ display: grid; gap: 8px; }
-    .row label{ font-size: 12px; color: var(--ink-soft); }
+    .row label{ font-size: 12px; color: #444; }
     input[type="range"]{ width: 100%; }
 
     /* Reflection + archive */
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.45));
-      border: 1px solid var(--glass-edge);
+      background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.84)); /* ↑ */
+      border: 1px solid rgba(0,0,0,.08);
       border-radius: 14px;
       padding: 14px;
     }
-    .summary{
-      display: grid; gap: 6px;
-      font-size: 14px;
-    }
-    .note-area{
-      display: grid; gap: 10px; margin-top: 8px;
-    }
+    .summary{ display: grid; gap: 6px; font-size: 14px; color: #1a1a1a; }
+    .note-area{ display: grid; gap: 10px; margin-top: 8px; }
     textarea{
       width: 100%; min-height: 96px; resize: vertical;
       border-radius: 12px; padding: 12px 12px 14px;
-      border: 1px solid rgba(0,0,0,.08);
-      background: rgba(255,255,255,.7);
+      border: 1px solid rgba(0,0,0,.12);
+      background: rgba(255,255,255,.95);
+      color: #111; 
       font: inherit; outline: none;
     }
+    textarea::placeholder{ color:#6b6b6b; }
     textarea:focus{ box-shadow: var(--focus); border-color: rgba(230,199,104,.55); }
 
     .btn{
-      appearance: none; border: 0; border-radius: 10px;
-      padding: 10px 12px; font-weight: 700; cursor: pointer;
-      background: hsl(calc(var(--hue) + 4), 80%, 86%);
+      appearance: none; border: 1px solid rgba(0,0,0,.08); border-radius: 10px;
+      padding: 10px 12px; font-weight: 800; cursor: pointer;
+      background: hsl(calc(var(--hue) + 4), 80%, 90%);
+      color:#141414;
     }
     .btn.primary{
       background: linear-gradient(180deg, #ffd77f, #efc151);
@@ -252,10 +244,10 @@
     }
     .cta{
       display: grid; place-items: center;
-      width: 54px; height: 54px; border-radius: 50%;
-      text-decoration: none; color: #151515; font-weight: 700;
-      background: radial-gradient(120% 120% at 30% 30%, #fff, hsl(calc(var(--hue)+6), 90%, 86%));
-      border: 1px solid rgba(255,255,255,.75);
+      width: 56px; height: 56px; border-radius: 50%;
+      text-decoration: none; color: #151515; font-weight: 800;
+      background: radial-gradient(120% 120% at 30% 30%, #fff, hsl(calc(var(--hue)+6), 90%, 88%));
+      border: 1px solid rgba(0,0,0,.08);
       box-shadow: 0 10px 30px rgba(0,0,0,.12), 0 0 60px hsla(var(--hue), 90%, 60%, .24);
       transform: translateY(0);
       transition: transform .2s ease, filter .2s ease;
@@ -269,37 +261,42 @@
       position: fixed; top: 0; right: 0; height: 100dvh; width: min(420px, 94vw);
       transform: translateX(100%);
       transition: transform .36s cubic-bezier(.2,.7,.2,1);
-      backdrop-filter: blur(18px) saturate(1.15);
-      -webkit-backdrop-filter: blur(18px) saturate(1.15);
-      background: rgba(255,255,255,.62);
-      border-left: 1px solid var(--glass-edge);
+      backdrop-filter: blur(20px) saturate(1.12);
+      -webkit-backdrop-filter: blur(20px) saturate(1.12);
+      background: rgba(255,255,255,.88);  /* ↑ much crisper */
+      border-left: 1px solid rgba(0,0,0,.08);
       z-index: 60; overflow: auto;
+      isolation: isolate; /* prevents background bleed */
+      color:#111;
     }
     .side.open{ transform: translateX(0%); }
     .side .inside{ padding: 18px 18px 90px; }
     .side h3{
-      margin: 6px 0 8px; font-weight: 800; letter-spacing: .2px;
-      font-family: ui-serif, Georgia, serif;
+      margin: 6px 0 8px; font-weight: 900; letter-spacing: .2px;
+      font-family: ui-serif, Georgia, serif; color:#0a0a0a;
     }
-    .side p{ margin: 6px 0 10px; color: var(--ink-soft); }
+    .side p{ margin: 6px 0 10px; color:#2b2b2b; }
     .s-toggle{
       position: fixed; right: 12px; top: 12px; z-index: 70;
-      border-radius: 999px; border: 1px solid var(--glass-edge);
-      background: radial-gradient(140% 140% at 25% 25%, #fff, hsl(calc(var(--hue) + 10), 90%, 90%));
-      padding: 10px 12px; cursor: pointer; font-weight: 800;
+      border-radius: 999px; border: 1px solid rgba(0,0,0,.08);
+      background: radial-gradient(140% 140% at 25% 25%, #fff, hsl(calc(var(--hue) + 10), 90%, 92%));
+      padding: 10px 12px; cursor: pointer; font-weight: 900;
+      color:#141414;
       box-shadow: 0 8px 24px rgba(0,0,0,.15);
     }
 
     table{
       width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 10px;
-      background: rgba(255,255,255,.7); border: 1px solid var(--glass-edge);
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(0,0,0,.08);
       margin: 8px 0 16px;
+      color:#131313;
     }
-    th, td{ padding: 8px 10px; font-size: 13px; text-align: left; }
-    th{ background: rgba(255,255,255,.7); }
-    tr + tr td{ border-top: 1px solid rgba(0,0,0,.06); }
+    th, td{ padding: 10px 12px; font-size: 14px; text-align: left; }
+    th{ background: rgba(255,255,255,1); font-weight: 800; }
+    tr + tr td{ border-top: 1px solid rgba(0,0,0,.07); }
 
-    details summary{ cursor: pointer; font-weight: 700; }
+    details summary{ cursor: pointer; font-weight: 800; color:#141414; }
     .soft{ color: var(--ink-soft); }
 
     /* Accessibility helpers */
@@ -398,7 +395,7 @@
 
       <!-- Illumina Cycle Overview -->
       <section class="card" style="margin-top:14px;">
-        <h2 style="margin:0 0 8px; font-size:18px; font-family: ui-serif, Georgia, serif;">Illumina Cycle Overview</h2>
+        <h2 style="margin:0 0 8px; font-size:18px; font-family: ui-serif, Georgia, serif; color:#0a0a0a;">Illumina Cycle Overview</h2>
         <div class="soft" style="margin-bottom:6px;">42‑day cycles anchored to a full moon. Return often; let light accumulate.</div>
         <div style="overflow:auto;">
           <table aria-label="Illumina cycles">
@@ -513,9 +510,7 @@
       currentHz = hz;
       if (osc) osc.frequency.setValueAtTime(hz, ctx.currentTime);
       localStorage.setItem(K_TONE, String(hz));
-      // UI: toggle pressed state
       toneBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.freq == String(hz)));
-      // Visual temperature + pulse speed
       if (hz === 128){
         document.documentElement.style.setProperty('--hue', '46');  // warm
         document.documentElement.style.setProperty('--pulse', '6s');
@@ -527,7 +522,6 @@
         document.documentElement.style.setProperty('--pulse', '7.2s');
       }
     }
-
     function updateVolume(v){
       if (!ctx) return;
       fadeTo(v, .25);
@@ -536,9 +530,7 @@
 
     /* ---------- Visits / brightness ---------- */
     function nowISO(){ return new Date().toISOString(); }
-    function getVisits(){
-      return Number(localStorage.getItem(K_VISITS) || 0);
-    }
+    function getVisits(){ return Number(localStorage.getItem(K_VISITS) || 0); }
     function setVisits(n){
       localStorage.setItem(K_VISITS, String(n));
       const glow = Math.min(.6, .22 + n*0.03);
@@ -549,9 +541,7 @@
     }
 
     /* ---------- Archive ---------- */
-    function getLog(){
-      try { return JSON.parse(localStorage.getItem(K_LOG) || '[]'); } catch { return []; }
-    }
+    function getLog(){ try { return JSON.parse(localStorage.getItem(K_LOG) || '[]'); } catch { return []; } }
     function setLog(arr){
       localStorage.setItem(K_LOG, JSON.stringify(arr));
       archiveCount.textContent = String(arr.length);
@@ -560,15 +550,13 @@
     function renderArchive(arr){
       if (!arr.length){ archiveList.innerHTML = '<em>No saved reflections yet.</em>'; return; }
       const items = arr.slice().reverse().map(it =>
-        `<div style="padding:8px 0; border-top:1px solid rgba(0,0,0,.06)">
+        `<div style="padding:8px 0; border-top:1px solid rgba(0,0,0,.08)">
           <div><strong>${new Date(it.t).toLocaleString()}</strong> · <span class="soft">${it.hz} Hz</span></div>
           <div>${escapeHTML(it.note)}</div>
         </div>`).join('');
       archiveList.innerHTML = items;
     }
-    function escapeHTML(s){
-      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
+    function escapeHTML(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
     /* ---------- YouTube helpers (no external API) ---------- */
     function postToYT(cmd){
@@ -576,7 +564,6 @@
         yt.contentWindow.postMessage(JSON.stringify({ event: 'command', func: cmd, args: [] }), '*');
       } catch {}
     }
-
     function unmuteVideo(unmute){
       toggleVideoSound.setAttribute('aria-pressed', String(!!unmute));
       postToYT(unmute ? 'unMute' : 'mute');
@@ -593,18 +580,14 @@
 
     /* ---------- Initialize UI from storage ---------- */
     (function init(){
-      // Tone + volume defaults
       vol.value = String(storedVol);
       setTone(currentHz);
 
-      // Visits & brightness
       const v = getVisits();
       setVisits(v);
 
-      // Archive
       setLog(getLog());
 
-      // Summary for returners
       if (v > 0){
         const last = getLog().slice(-1)[0];
         summary.innerHTML = `
@@ -617,17 +600,13 @@
 
     /* ---------- Events ---------- */
     beginBtn.addEventListener('click', function(){
-      // Unlock audio on user gesture
       initAudio();
-      // Count visit on first start of the session
       let v = getVisits() + 1;
       setVisits(v);
       localStorage.setItem(K_BRIGHT, String(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--glow')) || 0));
 
-      // Soft-start video sound kept muted unless user toggles
       postToYT('playVideo');
 
-      // Micro-affirmation
       summary.insertAdjacentHTML('beforeend', `<div class="soft">Brightness increased. Come back tomorrow — continuity builds time.</div>`);
       beginBtn.disabled = true;
       beginBtn.textContent = 'You’re in ✨';
@@ -643,19 +622,16 @@
 
     vol.addEventListener('input', () => { if (started) updateVolume(Number(vol.value)); });
 
-    // Video sound toggle
     toggleVideoSound.addEventListener('click', () => {
       const pressed = toggleVideoSound.getAttribute('aria-pressed') === 'true';
       unmuteVideo(!pressed);
     });
 
-    // Replay gently
     replayBtn.addEventListener('click', () => {
-      postToYT('seekTo'); // seekTo(0) is not accepted via raw post; do playVideo to loop
+      postToYT('seekTo'); // Best-effort gentle replay
       postToYT('playVideo');
     });
 
-    // Save note
     saveNote.addEventListener('click', () => {
       const text = (noteEl.value || '').trim();
       if (!text) return;
@@ -666,28 +642,18 @@
       summary.insertAdjacentHTML('beforeend', `<div class="soft">Saved to <code>mirrorhoney_log</code>.</div>`);
     });
 
-    // Archive
     showArchiveBtn.addEventListener('click', () => { archiveBox.open = !archiveBox.open; });
 
-    // Sidebar open/close
     openSide.addEventListener('click', () => toggleSidebar());
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleSidebar(false); });
 
-    // Close sidebar with Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleSidebar(false);
-    });
-
-    // Respect visibility: gently lower tone volume when tab hidden (keeps the vibe polite)
     document.addEventListener('visibilitychange', () => {
       if (!started || !ctx) return;
       if (document.hidden) { fadeTo(Number(vol.value) * 0.3, .35); }
       else { fadeTo(Number(localStorage.getItem(K_VOL) || vol.value), .35); }
     });
 
-    // iOS resume fix
-    window.addEventListener('touchend', () => {
-      if (ctx && ctx.state === 'suspended') ctx.resume();
-    }, { passive: true });
+    window.addEventListener('touchend', () => { if (ctx && ctx.state === 'suspended') ctx.resume(); }, { passive: true });
 
     /* ---------- Minimal inline Service Worker (offline shell) ---------- */
     if ('serviceWorker' in navigator) {
@@ -714,4 +680,3 @@
   </div>
 </body>
 </html>
-
