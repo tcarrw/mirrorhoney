@@ -1,433 +1,717 @@
-<!DOCTYPE html>
 
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>MirrorHoney — Marina · Butterfly Mirror</title>
-<meta name="theme-color" content="#0b0d11" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#0b0d11">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<style>
-:root{
-  --bg:#0b0d11;--ink:#f3f4ff;--muted:#b8bed6;--accent:#b7a7ff;--accent2:#73e7ff;
-  --glass:rgba(255,255,255,.07);--glass-strong:rgba(255,255,255,.12);
-  --rim:rgba(255,255,255,.20);--radius:18px;--shadow:0 18px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.05);
-}
-*{box-sizing:border-box}html,body{height:100%}
-body{
-  margin:0;background:
-  radial-gradient(1100px 700px at -10% -20%, rgba(183,167,255,.18), transparent 60%),
-  radial-gradient(900px 600px at 110% 10%, rgba(115,231,255,.12), transparent 60%),
-  linear-gradient(180deg,#0b0d11,#0a0a12 45%,#0b0d11 100%);
-  color:var(--ink);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-}
-.container{max-width:1080px;margin:0 auto;padding:18px 14px 80px}
-.header{
-  position:sticky;top:0;z-index:20;margin:-18px -14px 18px;padding:14px 12px;
-  backdrop-filter:saturate(1.1) blur(10px);
-  background:linear-gradient(180deg,rgba(18,20,30,.65),rgba(18,20,30,.35));
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.brand{display:flex;gap:12px;align-items:center}
-.logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
-  background:linear-gradient(135deg, rgba(183,167,255,.45), rgba(115,231,255,.28));
-  box-shadow:0 0 0 2px rgba(220,209,255,.6), 0 0 40px rgba(183,167,255,.2);font-size:18px}
-.title{font-weight:700;letter-spacing:.3px}
-.subtitle{color:var(--muted);font-size:14px;margin-top:2px}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-.tab{border:1px solid rgba(255,255,255,.10);background:var(--glass);color:var(--ink);
-  padding:8px 12px;border-radius:14px;cursor:pointer;transition:transform .08s ease,border-color .15s ease,background .15s ease}
-.tab:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.2)}
-.tab[aria-pressed="true"]{background:linear-gradient(135deg, rgba(183,167,255,.28), rgba(115,231,255,.18));border-color:rgba(255,255,255,.26)}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(12,1fr)}
-.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
-@media (max-width:1000px){.col-6,.col-8{grid-column:span 12}}
-.card{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
-  border:1px solid rgba(255,255,255,.10);border-radius:18px;box-shadow:var(--shadow);padding:14px}
-.gloss{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.1),transparent 22%,transparent 78%,rgba(255,255,255,.05));mix-blend-mode:screen;opacity:.35}
-.h{font-weight:700}
-.h1{font-size:18px}.h2{font-size:14px;color:var(--muted);margin-top:2px}
-.body{font-size:14px;color:#e9ebff}.muted{color:var(--muted)}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.btn{appearance:none;border:1px solid rgba(255,255,255,.12);background:var(--glass);color:var(--ink);
-  border-radius:12px;padding:8px 12px;font-size:13px;cursor:pointer}
-.btn:hover{border-color:rgba(255,255,255,.22)}
-.btn.primary{background:linear-gradient(135deg, rgba(183,167,255,.32), rgba(115,231,255,.22));border-color:rgba(255,255,255,.26)}
-.input,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:var(--ink)}
-.small{font-size:12px}
-.kbd{font:12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);border:1px solid rgba(255,255,255,.15);padding:3px 6px;border-radius:6px;background:rgba(255,255,255,.04)}
-.stack{display:flex;flex-direction:column;gap:10px}
-.pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
-.pill{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);border-radius:999px;padding:6px 10px;font-size:12px;color:var(--muted)}
-.section{margin:10px 0 6px;padding-left:10px;border-left:3px solid rgba(183,167,255,.35);color:var(--muted);font-size:14px}
-iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
-.queue{display:flex;flex-direction:column;gap:8px;margin-top:10px}
-.item{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);padding:10px;border-radius:12px}
-.item .meta{display:flex;gap:10px;align-items:center;min-width:0}
-.item .thumb{width:56px;height:32px;flex:0 0 auto;border-radius:8px;background:#111;display:block;background-size:cover;background-position:center}
-.item .title{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:520px}
-.hidden{display:none!important}
-.poem{font-size:14px;letter-spacing:.2px;line-height:1.7;color:#f2f3ff}
-.poem i{opacity:.85}
-.help{margin-top:6px}
-</style>
+  <meta charset="utf-8" />
+  <title>MirrorHoney Illumina 1 — “Do It Again.”</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f6e7b8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="MirrorHoney v1 — a reflection room of light, tone, and gentle repetition. Featuring MARINA — “HELLO KITTY”.">
+  <!-- Video source: MARINA — HELLO KITTY (Visualiser) @ YouTube ID 81tlcIq4kPA -->
+  <style>
+    :root{
+      /* Visual palette (updated by tone mode) */
+      --hue: 46;          /* warm honey default */
+      --sat: 92%;
+      --l1: 99%;
+      --l2: 96%;
+      --pulse: 6s;        /* breathing speed (tone dependent) */
+      --glass: rgba(255,255,255,0.58);
+      --glass-edge: rgba(255,255,255,0.8);
+      --ink: #1b1b1b;
+      --ink-soft: #323232;
+      --gold: #e6c768;
+      --glow: 0.22;       /* grows with visits */
+      --ring-blur: 36px;
+      --shadow: 0 10px 40px rgba(0,0,0,.10);
+      --radius: 20px;
+      --focus: 0 0 0 3px rgba(230,199,104,.45);
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --ink: #f6f6f6;
+        --ink-soft: #cfcfcf;
+        --glass: rgba(20,20,22,0.36);
+        --glass-edge: rgba(255,255,255,0.14);
+        --shadow: 0 10px 40px rgba(0,0,0,.35);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      color: var(--ink);
+      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Cantarell, Ubuntu, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+      line-height: 1.5;
+      background:
+        radial-gradient(80% 60% at 50% 0%,
+          hsla(var(--hue), var(--sat), var(--l2), .85),
+          transparent 60%)
+        ,
+        linear-gradient(120deg,
+          hsl(calc(var(--hue) + 16), 80%, var(--l1)),
+          hsl(calc(var(--hue) - 10), 78%, var(--l1)));
+      background-attachment: fixed;
+    }
+
+    /* Breathing light */
+    body::before{
+      content:"";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(1200px 800px at 50% 120%,
+          hsla(calc(var(--hue) + 35), 80%, 90%, .18),
+          transparent 70%)
+        ,
+        radial-gradient(800px 600px at 10% 10%,
+          hsla(calc(var(--hue) - 12), 90%, 88%, .15),
+          transparent 70%);
+      animation: breathe var(--pulse) ease-in-out infinite alternate;
+      mix-blend-mode: screen;
+    }
+    @keyframes breathe { from{ opacity: .55 } to{ opacity: .95 } }
+
+    /* Ghost idle glow loop */
+    .ghost{
+      animation: ghost 8s ease-in-out infinite alternate;
+    }
+    @keyframes ghost { from{ opacity:.35 } to{ opacity:1 } }
+
+    .wrap{
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: clamp(16px, 3vw, 32px);
+    }
+
+    .room{
+      width: min(1020px, 96vw);
+      padding: clamp(16px, 3.2vw, 28px);
+      border-radius: var(--radius);
+      background: var(--glass);
+      backdrop-filter: blur(14px) saturate(1.1);
+      -webkit-backdrop-filter: blur(14px) saturate(1.1);
+      border: 1px solid var(--glass-edge);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.25) inset,
+        var(--shadow);
+      position: relative;
+      isolation: isolate;
+    }
+
+    .halo{
+      position: absolute; inset: -2px;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow:
+        0 0 calc(80px + var(--glow)*160px) hsla(var(--hue), 90%, 60%, .22),
+        0 0 var(--ring-blur) hsla(var(--hue), 95%, 65%, .28);
+      filter: drop-shadow(0 16px 50px rgba(255,191,0,.18));
+    }
+
+    header{
+      display: grid; gap: 6px;
+      margin-bottom: 16px;
+    }
+    .title{
+      font-family: ui-serif, "Georgia", "Times New Roman", serif;
+      font-weight: 300; letter-spacing: .2px;
+      font-size: clamp(22px, 2.6vw, 34px);
+      line-height: 1.2;
+    }
+    .subtitle{
+      color: var(--ink-soft);
+      font-size: clamp(13px, 1.5vw, 16px);
+    }
+
+    /* Begin button */
+    .begin{
+      appearance: none;
+      border: 0; border-radius: 999px;
+      padding: 14px 22px;
+      display: inline-grid; place-items: center; gap: 2px;
+      font-weight: 600; letter-spacing: .25px;
+      background: linear-gradient(180deg, #ffeaa7, #f2cf70);
+      color: #221a00;
+      box-shadow:
+        0 3px 0 #d6b65c inset,
+        0 8px 24px rgba(210, 170, 70, .45);
+      transition: transform .15s ease, filter .2s ease;
+      cursor: pointer;
+      position: relative;
+      outline: none;
+    }
+    .begin:focus-visible{ box-shadow: 0 0 0 3px rgba(235,206,112,.55), 0 8px 24px rgba(210,170,70,.45); }
+    .begin:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+    .begin .ring{
+      position: absolute; inset: -8px;
+      border-radius: 999px; pointer-events: none;
+      box-shadow: 0 0 0 2px rgba(244, 210, 104, .45), 0 0 40px rgba(244,210,104,.45);
+      opacity: .85;
+      animation: ring 3.8s ease-in-out infinite alternate;
+    }
+    @keyframes ring { from{opacity:.65; transform: scale(.98)} to{opacity:1; transform: scale(1.03)} }
+
+    /* Grid */
+    .grid{
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: clamp(14px, 2.4vw, 22px);
+    }
+    @media (max-width: 880px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    /* Player */
+    .player{
+      position: relative;
+      aspect-ratio: 16/9;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: var(--shadow);
+    }
+    .player iframe{
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+    }
+
+    /* Controls */
+    .controls{
+      display: grid; gap: 10px;
+      border-radius: 14px;
+      padding: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.45));
+      border: 1px solid var(--glass-edge);
+    }
+    .chipbar{
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .chip{
+      appearance: none; border: 0;
+      padding: 10px 12px; border-radius: 999px;
+      background: hsl(calc(var(--hue) + 10), 90%, 94%);
+      color: #1e1a10; font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 1px 0 rgba(0,0,0,.04);
+    }
+    .chip[aria-pressed="true"]{
+      background: linear-gradient(180deg, #ffe19e, #f0c25a);
+      color: #1f1502;
+    }
+    .row{ display: grid; gap: 8px; }
+    .row label{ font-size: 12px; color: var(--ink-soft); }
+    input[type="range"]{ width: 100%; }
+
+    /* Reflection + archive */
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.45));
+      border: 1px solid var(--glass-edge);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .summary{
+      display: grid; gap: 6px;
+      font-size: 14px;
+    }
+    .note-area{
+      display: grid; gap: 10px; margin-top: 8px;
+    }
+    textarea{
+      width: 100%; min-height: 96px; resize: vertical;
+      border-radius: 12px; padding: 12px 12px 14px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.7);
+      font: inherit; outline: none;
+    }
+    textarea:focus{ box-shadow: var(--focus); border-color: rgba(230,199,104,.55); }
+
+    .btn{
+      appearance: none; border: 0; border-radius: 10px;
+      padding: 10px 12px; font-weight: 700; cursor: pointer;
+      background: hsl(calc(var(--hue) + 4), 80%, 86%);
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, #ffd77f, #efc151);
+      color: #2a1b00;
+      box-shadow: 0 2px 0 #d4aa4c inset, 0 8px 20px rgba(210,170,70,.25);
+    }
+    .btn:focus-visible{ box-shadow: var(--focus); outline: none; }
+
+    /* CTAs: Honey, Froot, School, Jar */
+    .float-ctas{
+      position: fixed;
+      right: 12px; bottom: 12px;
+      display: grid; gap: 10px;
+      z-index: 50;
+    }
+    .cta{
+      display: grid; place-items: center;
+      width: 54px; height: 54px; border-radius: 50%;
+      text-decoration: none; color: #151515; font-weight: 700;
+      background: radial-gradient(120% 120% at 30% 30%, #fff, hsl(calc(var(--hue)+6), 90%, 86%));
+      border: 1px solid rgba(255,255,255,.75);
+      box-shadow: 0 10px 30px rgba(0,0,0,.12), 0 0 60px hsla(var(--hue), 90%, 60%, .24);
+      transform: translateY(0);
+      transition: transform .2s ease, filter .2s ease;
+    }
+    .cta:hover{ transform: translateY(-3px); filter: brightness(1.05); }
+    .cta small{ font-size: 10px; letter-spacing: .2px; }
+    .cta .glyph{ font-size: 20px; }
+
+    /* Sidebar (physics + tone map) */
+    .side{
+      position: fixed; top: 0; right: 0; height: 100dvh; width: min(420px, 94vw);
+      transform: translateX(100%);
+      transition: transform .36s cubic-bezier(.2,.7,.2,1);
+      backdrop-filter: blur(18px) saturate(1.15);
+      -webkit-backdrop-filter: blur(18px) saturate(1.15);
+      background: rgba(255,255,255,.62);
+      border-left: 1px solid var(--glass-edge);
+      z-index: 60; overflow: auto;
+    }
+    .side.open{ transform: translateX(0%); }
+    .side .inside{ padding: 18px 18px 90px; }
+    .side h3{
+      margin: 6px 0 8px; font-weight: 800; letter-spacing: .2px;
+      font-family: ui-serif, Georgia, serif;
+    }
+    .side p{ margin: 6px 0 10px; color: var(--ink-soft); }
+    .s-toggle{
+      position: fixed; right: 12px; top: 12px; z-index: 70;
+      border-radius: 999px; border: 1px solid var(--glass-edge);
+      background: radial-gradient(140% 140% at 25% 25%, #fff, hsl(calc(var(--hue) + 10), 90%, 90%));
+      padding: 10px 12px; cursor: pointer; font-weight: 800;
+      box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    }
+
+    table{
+      width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 10px;
+      background: rgba(255,255,255,.7); border: 1px solid var(--glass-edge);
+      margin: 8px 0 16px;
+    }
+    th, td{ padding: 8px 10px; font-size: 13px; text-align: left; }
+    th{ background: rgba(255,255,255,.7); }
+    tr + tr td{ border-top: 1px solid rgba(0,0,0,.06); }
+
+    details summary{ cursor: pointer; font-weight: 700; }
+    .soft{ color: var(--ink-soft); }
+
+    /* Accessibility helpers */
+    .sr-only{
+      position: absolute !important;
+      height: 1px; width: 1px; overflow: hidden;
+      clip: rect(1px,1px,1px,1px); white-space: nowrap;
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      body::before, .begin .ring, .ghost{ animation: none !important; }
+    }
+  </style>
 </head>
-<body>
-<div class="container" data-src="/data/mirrorhoney/tracks.json">
-  <header class="header">
-    <div class="brand">
-      <div class="logo">🪞</div>
-      <div>
-        <div class="title h">MirrorHoney</div>
-        <div class="subtitle">Marina’s mirror · glass calm · poems that play</div>
+<body class="ghost">
+  <button class="s-toggle" id="openSide" aria-expanded="false" aria-controls="sidebar" title="Open physics + tone map">🧮</button>
+
+  <div class="wrap">
+    <main class="room" role="main" aria-label="MirrorHoney reflection room">
+      <div class="halo" aria-hidden="true"></div>
+
+      <header>
+        <div class="subtitle">PLNT Earth · MirrorHoney · Illumina 1</div>
+        <h1 class="title">“Do It Again.” — Marina’s First Reflection Room</h1>
+        <div class="subtitle">
+          Featuring MARINA — <em>HELLO KITTY</em>. We journey toward <strong>700,000,000</strong> views by Illumina 6 (Aug 2026). Each gentle replay adds light.
+        </div>
+      </header>
+
+      <!-- Begin Reflection -->
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap; margin: 8px 0 16px;">
+        <button id="begin" class="begin">
+          <span class="ring" aria-hidden="true"></span>
+          <span>Begin Reflection</span>
+        </button>
+        <div class="soft" id="visitBadge" aria-live="polite"></div>
       </div>
-    </div>
-    <div class="toolbar" role="toolbar" aria-label="Time-of-day lanes">
-      <button class="tab" data-lane="morning" aria-pressed="false">Morning · Open</button>
-      <button class="tab" data-lane="midday" aria-pressed="false">Midday · Flow</button>
-      <button class="tab" data-lane="night" aria-pressed="false">Night · Archive</button>
-      <button class="tab" id="selfcheckBtn" aria-pressed="false">Run Self-Check</button>
-    </div>
-  </header>
 
-  <div class="grid">
-    <section class="card col-6" id="poemCard">
-      <div class="gloss"></div>
-      <div class="h1">today’s mirror</div>
-      <div class="h2" id="laneLabel">route: detecting light…</div>
-      <div class="poem" id="poem">
-        i set the glass down where your breath won’t break it.<br>
-        we listen first. <i>then</i> we decide what to carry.
-      </div>
-      <div class="pillrow">
-        <span class="pill" id="clock"></span>
-        <span class="pill" id="mood"></span>
-        <span class="pill">Butterfly Mirror</span>
-      </div>
-      <div class="controls">
-        <button class="btn" id="cyclePoem">New Line</button>
-        <button class="btn" id="copyLine">Copy Line</button>
-      </div>
-    </section>
+      <section class="grid" aria-label="Video and tone controls">
+        <!-- Video -->
+        <div class="player" id="playerWrap" aria-label="HELLO KITTY video player">
+          <iframe
+            id="yt"
+            title="MARINA — HELLO KITTY (Visualiser)"
+            src="https://www.youtube.com/embed/81tlcIq4kPA?autoplay=1&mute=1&playsinline=1&loop=1&playlist=81tlcIq4kPA&modestbranding=1&rel=0&enablejsapi=1&color=white"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+        </div>
 
-```
-<section class="card col-6" id="toneCard">
-  <div class="gloss"></div>
-  <div class="row">
-    <div>
-      <div class="h1">honey tone</div>
-      <div class="h2">tap Start Session once on iOS to unlock audio</div>
-    </div>
-    <div class="controls">
-      <button class="btn primary" id="startAudio">Start Session</button>
-      <button class="btn" id="stopAudio">Stop</button>
-    </div>
+        <!-- Tone + reflection controls -->
+        <div class="controls">
+          <div class="row">
+            <strong>Honey Tones</strong>
+            <div class="chipbar" role="group" aria-label="Tone map">
+              <button class="chip" id="tone128" data-freq="128" aria-pressed="true" title="128 Hz — Honey Tone 🐝">🐝 128 Hz</button>
+              <button class="chip" id="tone160" data-freq="160" aria-pressed="false" title="160 Hz — Clarity Tone 💎 (Sigrid √2 mode)">💎 160 Hz</button>
+              <button class="chip" id="tone432" data-freq="432" aria-pressed="false" title="432 Hz — Balance Tone 🌙">🌙 432 Hz</button>
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="vol">Tone Volume</label>
+            <input id="vol" type="range" min="0" max="1" step="0.001" value="0.06" />
+          </div>
+
+          <div class="chipbar" role="group" aria-label="Video sound + loop">
+            <button class="chip" id="toggleVideoSound" aria-pressed="false" title="Toggle video sound">🔊 Video Sound</button>
+            <button class="chip" id="replay" title="Play again softly">⟲ Do It Again</button>
+            <a class="chip" id="openYT" href="https://www.youtube.com/watch?v=81tlcIq4kPA" target="_blank" rel="noopener noreferrer" title="Open on YouTube (new tab)">↗︎ Open on YouTube</a>
+          </div>
+
+          <div class="card">
+            <div class="summary" id="summary">
+              <div><strong>Welcome, Light Carrier.</strong> This mirror learns your rhythm.</div>
+              <div>Tip: headphones + slow breathing 6–6.</div>
+              <div class="soft">Each return brightens the room. Tomorrow counts.</div>
+            </div>
+
+            <div class="note-area">
+              <label for="note"><strong>What shifted today?</strong></label>
+              <textarea id="note" placeholder="A sentence is enough."></textarea>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn primary" id="saveNote">Save Reflection</button>
+                <button class="btn" id="showArchive">Open Archive</button>
+              </div>
+              <details id="archiveBox" style="margin-top:6px;">
+                <summary>Local Archive (<span id="archiveCount">0</span>)</summary>
+                <div id="archiveList" class="soft" style="margin-top:8px;"></div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Illumina Cycle Overview -->
+      <section class="card" style="margin-top:14px;">
+        <h2 style="margin:0 0 8px; font-size:18px; font-family: ui-serif, Georgia, serif;">Illumina Cycle Overview</h2>
+        <div class="soft" style="margin-bottom:6px;">42‑day cycles anchored to a full moon. Return often; let light accumulate.</div>
+        <div style="overflow:auto;">
+          <table aria-label="Illumina cycles">
+            <tr><th>Cycle</th><th>Dates</th><th>Theme</th><th>Focus</th></tr>
+            <tr><td>1 – Launch Cycle</td><td>Nov 5 → Dec 17 2025</td><td>Beginning · Light · Invitation</td><td>Open MirrorHoney & Honey loops</td></tr>
+            <tr><td>2 – New Year Illumina</td><td>Jan 3 → Feb 14 2026</td><td>Connection · Love · Frequency</td><td>Sigrid √2 clarity integration</td></tr>
+            <tr><td>3 – Early Spring</td><td>Mar 3 → Apr 14 2026</td><td>Growth · Voice · Renewal</td><td>Merge Bee and Sun intentions</td></tr>
+            <tr><td>4 – Summer Solstice Build</td><td>May 1 → Jun 12 2026</td><td>Expansion · Community · Warmth</td><td>Collective reflections</td></tr>
+            <tr><td>5 – High Summer</td><td>Jun 30 → Aug 11 2026</td><td>Joy · Play · Collaboration</td><td>School launch · Anchor chorus</td></tr>
+            <tr><td>6 – Autumn Shift</td><td>Aug 29 → Oct 10 2026</td><td>Reflection · Harvest · Continuity</td><td>Goal check → 700 M views</td></tr>
+            <tr><td>7 – Year-End Reflection</td><td>Oct 28 → Dec 9 2026</td><td>Integration · Closure · Vision</td><td>Archive & seed Illumina 2</td></tr>
+          </table>
+        </div>
+      </section>
+    </main>
   </div>
-  <div class="stack">
-    <div class="row">
-      <button class="btn" data-freq="128">128 Hz</button>
-      <button class="btn" data-freq="160">160 Hz</button>
-      <span class="muted small" id="freqLabel">freq: —</span>
+
+  <!-- Floating glyph CTAs -->
+  <nav class="float-ctas" aria-label="Domains">
+    <a class="cta" href="https://honey.plnt.earth/" target="_blank" rel="noopener noreferrer" title="Honey — Sabrina">
+      <span class="glyph" aria-hidden="true">🍯</span><small>Honey</small>
+    </a>
+    <a class="cta" href="https://froot.plnt.earth/" target="_blank" rel="noopener noreferrer" title="Froot — Marina">
+      <span class="glyph" aria-hidden="true">🍎</span><small>Froot</small>
+    </a>
+    <a class="cta" href="https://school.plnt.earth/" target="_blank" rel="noopener noreferrer" title="School — Taylor">
+      <span class="glyph" aria-hidden="true">🏫</span><small>School</small>
+    </a>
+    <a class="cta" href="https://jar.plnt.earth/" target="_blank" rel="noopener noreferrer" title="Jar — Daily Bee tasks">
+      <span class="glyph" aria-hidden="true">🌿</span><small>Jar</small>
+    </a>
+  </nav>
+
+  <!-- Physics + Tone Map Sidebar -->
+  <aside class="side" id="sidebar" aria-label="Physics & Tone Map" aria-hidden="true">
+    <div class="inside">
+      <h3>Mathematical Curiosity</h3>
+      <p><strong>τ = E / c³</strong> — In this mirror, time (τ) blooms when energy (E) meets breath-light (c). Each press, play, and return adds gentle duration to the loop.</p>
+
+      <h3>Tone‑Map Key</h3>
+      <table aria-label="Tone map">
+        <tr><th>Frequency</th><th>Name</th><th>Role</th><th>Symbol</th></tr>
+        <tr><td>128 Hz</td><td>Honey Tone</td><td>Ground · Warmth · Body</td><td>🐝</td></tr>
+        <tr><td>160 Hz</td><td>Clarity Tone</td><td>Focus · Air · Thought</td><td>💎</td></tr>
+        <tr><td>432 Hz</td><td>Balance Tone</td><td>Integration · Unity</td><td>🌙</td></tr>
+      </table>
+      <p class="soft">Switch tones anytime. The background’s color‑temperature and pulse speed follow your choice.</p>
+
+      <h3>Visitor Rhythm</h3>
+      <ul class="soft">
+        <li>First Light: tap <em>Begin Reflection</em> to unlock audio and start softly at 128 Hz.</li>
+        <li>Return: your visit count glows; add a note to the local archive.</li>
+        <li>Gentle replays help <em>HELLO KITTY</em> grow. Open on YouTube to amplify.</li>
+      </ul>
     </div>
-    <label class="small">volume
-      <input id="vol" class="input" type="range" min="0" max="1" step="0.001" value="0.25">
-    </label>
-    <div class="small muted" id="audioState">audio: locked</div>
-  </div>
-</section>
+  </aside>
 
-<section class="card col-12" id="playerCard">
-  <div class="gloss"></div>
-  <div class="row">
-    <div>
-      <div class="h1">mirror player</div>
-      <div class="h2">official videos only · preloads from tracks.json when present</div>
-    </div>
-    <div class="controls">
-      <button class="btn primary" id="playFirst">Play First</button>
-      <button class="btn" id="prevBtn">Prev</button>
-      <button class="btn" id="nextBtn">Next</button>
-      <button class="btn" id="exportBtn">Export</button>
-      <label class="btn" for="importFile">Import<input id="importFile" type="file" accept="application/json" class="hidden"></label>
-    </div>
-  </div>
-  <div class="stack">
-    <iframe id="yt" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-    <div class="row">
-      <input id="ytInput" class="input" placeholder="Paste YouTube link…">
-      <button class="btn" id="addBtn">Add</button>
-    </div>
-    <div class="queue" id="queue"></div>
-    <div class="help small muted">tip: background play on iOS depends on Safari state. if audio stops after lock, unlock and tap Start Session again — your place is saved.</div>
-  </div>
-</section>
+  <script>
+  (function(){
+    /* ---------- Local state + DOM ---------- */
+    const beginBtn = document.getElementById('begin');
+    const visitBadge = document.getElementById('visitBadge');
+    const summary = document.getElementById('summary');
+    const toneBtns = [ 'tone128', 'tone160', 'tone432' ].map(id => document.getElementById(id));
+    const vol = document.getElementById('vol');
+    const yt = document.getElementById('yt');
+    const replayBtn = document.getElementById('replay');
+    const toggleVideoSound = document.getElementById('toggleVideoSound');
+    const openYT = document.getElementById('openYT');
+    const saveNote = document.getElementById('saveNote');
+    const showArchiveBtn = document.getElementById('showArchive');
+    const archiveBox = document.getElementById('archiveBox');
+    const archiveList = document.getElementById('archiveList');
+    const archiveCount = document.getElementById('archiveCount');
+    const noteEl = document.getElementById('note');
+    const sidebar = document.getElementById('sidebar');
+    const openSide = document.getElementById('openSide');
 
-<section class="card col-12" id="selfCard" aria-live="polite">
-  <div class="gloss"></div>
-  <div class="h1">self-check</div>
-  <div class="h2">automated checks based on your brief</div>
-  <div class="stack" id="results"></div>
-</section>
-```
+    /* ---------- LocalStorage keys ---------- */
+    const K_VISITS = 'mirrorhoney_visits';
+    const K_BRIGHT = 'mirrorhoney_brightness';
+    const K_LOG = 'mirrorhoney_log';
+    const K_TONE = 'mirrorhoney_toneHz';
+    const K_VOL = 'mirrorhoney_vol';
 
-  </div>
-</div>
+    /* ---------- Audio ---------- */
+    let ctx, gain, osc, started = false;
+    let currentHz = Number(localStorage.getItem(K_TONE) || 128);
+    let storedVol = Number(localStorage.getItem(K_VOL) || 0.06);
 
-<script>
-(function(){
-  var lane='';var poems={
-    morning:[
-      "we begin where the light is kind.",
-      "open palms, open glass; no hurry, only breath.",
-      "today is soft: let the mirror choose its angle."
-    ],
-    midday:[
-      "the beam sharpens; we work in clear lines.",
-      "rhythm first, then color; the rest bows to flow.",
-      "clarity is a kindness: shape what wants to live."
-    ],
-    night:[
-      "the day folds itself into a small bright shell.",
-      "write one truth, then let the water keep it.",
-      "close gently; even stars need rooms to rest."
-    ]
-  };
-  function detectLane(){
-    var d=new Date();var h=d.getHours();
-    var L=h<12?'morning':(h<18?'midday':'night');
-    setLane(L);
-  }
-  function setLane(L){
-    lane=L;
-    var label=document.getElementById('laneLabel');
-    if(L==='morning'){label.textContent='route: Morning · Open';document.getElementById('mood').textContent='mood · petal';}
-    if(L==='midday'){label.textContent='route: Midday · Flow';document.getElementById('mood').textContent='mood · beam';}
-    if(L==='night'){label.textContent='route: Night · Archive';document.getElementById('mood').textContent='mood · hush';}
-    cyclePoem();
-    setPressed(L);
-  }
-  function setPressed(L){
-    Array.prototype.forEach.call(document.querySelectorAll('.tab[data-lane]'),function(b){
-      b.setAttribute('aria-pressed', b.getAttribute('data-lane')===L?'true':'false');
-    });
-  }
-  function cyclePoem(){
-    var p=poems[lane]||poems.morning;
-    var t=p[Math.floor(Math.random()*p.length)];
-    document.getElementById('poem').textContent=t;
-  }
-  document.getElementById('cyclePoem').addEventListener('click',cyclePoem);
-  document.getElementById('copyLine').addEventListener('click',function(){
-    var t=document.getElementById('poem').textContent;
-    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t);}
-  });
-  setInterval(function(){
-    var d=new Date();document.getElementById('clock').textContent='time · '+d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  },1000);
-
-  var AC=null,osc=null,gain=null,currentFreq=0,unlocked=false;
-  function ensureAC(){
-    if(!AC){AC=new (window.AudioContext||window.webkitAudioContext)();gain=AC.createGain();gain.gain.value=parseFloat(localStorage.getItem('mh_vol')||'0.25');gain.connect(AC.destination);}
-  }
-  function startAudio(){
-    ensureAC();
-    if(AC.state==='suspended'){AC.resume();}
-    if(!osc){osc=AC.createOscillator();osc.type='sine';osc.frequency.value=currentFreq||parseFloat(localStorage.getItem('mh_freq')||'128');osc.connect(gain);osc.start();}
-    unlocked=true;persist('mh_unlocked','1');updateAudioState();
-  }
-  function stopAudio(){
-    if(osc){try{osc.stop()}catch(e){};osc.disconnect();osc=null;}
-    updateAudioState();
-  }
-  function setFreq(f){
-    currentFreq=f;persist('mh_freq',String(f));
-    if(osc){osc.frequency.setTargetAtTime(f, AC.currentTime, 0.01);}
-    document.getElementById('freqLabel').textContent='freq: '+f+' Hz';
-  }
-  document.getElementById('startAudio').addEventListener('click',startAudio);
-  document.getElementById('stopAudio').addEventListener('click',stopAudio);
-  Array.prototype.forEach.call(document.querySelectorAll('#toneCard [data-freq]'),function(b){
-    b.addEventListener('click',function(){ setFreq(parseFloat(b.getAttribute('data-freq'))); });
-  });
-  document.getElementById('vol').addEventListener('input',function(e){
-    ensureAC();var v=parseFloat(e.target.value||'0');gain.gain.setTargetAtTime(v, AC.currentTime, 0.01);persist('mh_vol',String(v));
-  });
-  function updateAudioState(){
-    var s='audio: '+(unlocked?'running':'locked'); if(AC){s+=' · '+AC.state;}
-    document.getElementById('audioState').textContent=s;
-  }
-  document.addEventListener('visibilitychange',function(){
-    if(document.visibilityState==='visible'){ if(AC&&AC.state==='suspended'&&localStorage.getItem('mh_unlocked')==='1'){AC.resume();updateAudioState();} }
-  });
-
-  var yt=document.getElementById('yt');var queueEl=document.getElementById('queue');
-  var Q=[];var idx=0;
-  function loadQueue(){
-    try{Q=JSON.parse(localStorage.getItem('mh_queue')||'[]');}catch(e){Q=[]}
-    if(!Array.isArray(Q)){Q=[]}
-    renderQueue();
-    var pi=parseInt(localStorage.getItem('mh_idx')||'0',10);if(!isNaN(pi)){idx=Math.max(0,Math.min(Q.length-1,pi));}
-    if(Q.length){playIndex(idx,false)} else {attemptPreload();}
-  }
-  function persist(k,v){localStorage.setItem(k,v)}
-  function renderQueue(){
-    queueEl.innerHTML='';
-    if(!Q.length){var d=document.createElement('div');d.className='muted';d.textContent='empty queue — add a YouTube link above or provide tracks.json';queueEl.appendChild(d);return}
-    Q.forEach(function(item,i){
-      var row=document.createElement('div');row.className='item';
-      var meta=document.createElement('div');meta.className='meta';
-      var thumb=document.createElement('a');thumb.className='thumb';thumb.href=item.url;thumb.target='_blank';
-      thumb.style.backgroundImage='url(https://i.ytimg.com/vi/'+item.id+'/hqdefault.jpg)';
-      var title=document.createElement('div');title.className='title';title.textContent=item.title||item.id;
-      meta.appendChild(thumb);meta.appendChild(title);
-      var right=document.createElement('div');right.style.display='flex';right.style.gap='8px';
-      var playB=document.createElement('button');playB.className='btn';playB.textContent=(i===idx?'Playing':'Play');playB.addEventListener('click',function(){playIndex(i,true)});
-      var delB=document.createElement('button');delB.className='btn';delB.textContent='Remove';delB.addEventListener('click',function(){Q.splice(i,1);persist('mh_queue',JSON.stringify(Q));if(idx>=Q.length){idx=Math.max(0,Q.length-1);}renderQueue();playIndex(idx,false)});
-      right.appendChild(playB);right.appendChild(delB);
-      row.appendChild(meta);row.appendChild(right);queueEl.appendChild(row);
-    });
-  }
-  function ytIdFrom(url){
-    try{
-      if(/^[\w-]{11}$/.test(url))return url;
-      var u=new URL(url);var v=u.searchParams.get('v');if(v&&/^[\w-]{11}$/.test(v))return v;
-      var p=u.pathname.split('/');var last=p[p.length-1];if(/^[\w-]{11}$/.test(last))return last;
-    }catch(e){}
-    return '';
-  }
-  function fetchTitle(id,cb){
-    var o='https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v='+id+'&format=json';
-    fetch(o,{mode:'cors'}).then(function(r){return r.json()}).then(function(j){cb(j.title||id)}).catch(function(){cb(id)});
-  }
-  function addToQueue(id,title){
-    var url='https://www.youtube.com/watch?v='+id;
-    Q.push({id:id,url:url,title:title||id});
-  }
-  function playIndex(i,scroll){
-    if(!Q.length){yt.src='';return}
-    idx=Math.max(0,Math.min(Q.length-1,i));persist('mh_idx',String(idx));
-    var item=Q[idx];yt.src='https://www.youtube.com/embed/'+item.id+'?rel=0&modestbranding=1&playsinline=1&enablejsapi=0&autoplay=1';
-    persist('mh_queue',JSON.stringify(Q));
-    renderQueue();
-    if(scroll){yt.scrollIntoView({behavior:'smooth',block:'start'});}
-  }
-  document.getElementById('playFirst').addEventListener('click',function(){playIndex(0,true)});
-  document.getElementById('prevBtn').addEventListener('click',function(){if(Q.length){playIndex((idx-1+Q.length)%Q.length,true)}});
-  document.getElementById('nextBtn').addEventListener('click',function(){if(Q.length){playIndex((idx+1)%Q.length,true)}});
-  document.getElementById('addBtn').addEventListener('click',function(){
-    var raw=document.getElementById('ytInput').value.trim();if(!raw)return;
-    var id=ytIdFrom(raw);if(!id)return;
-    fetchTitle(id,function(title){
-      addToQueue(id,title);
-      persist('mh_queue',JSON.stringify(Q));
-      document.getElementById('ytInput').value='';
-      renderQueue();
-      if(Q.length===1){playIndex(0,false)}
-    });
-  });
-  document.getElementById('exportBtn').addEventListener('click',function(){
-    var data=JSON.stringify(Q);var blob=new Blob([data],{type:'application/json'});
-    var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mirrorhoney_queue.json';a.click();
-    setTimeout(function(){URL.revokeObjectURL(a.href)},1500);
-  });
-  document.getElementById('importFile').addEventListener('change',function(e){
-    var f=e.target.files[0];if(!f)return;var r=new FileReader();
-    r.onload=function(){try{var arr=JSON.parse(r.result||'[]');if(Array.isArray(arr)){Q=arr.filter(Boolean);persist('mh_queue',JSON.stringify(Q));renderQueue();playIndex(0,false);}}catch(err){}};
-    r.readAsText(f);
-  });
-
-  function passRow(name,ok,detail){
-    var row=document.createElement('div');row.className='item';
-    var meta=document.createElement('div');meta.className='meta';var title=document.createElement('div');title.className='title';title.textContent=name+(ok?' · PASS':' · CHECK');
-    var note=document.createElement('div');note.className='muted small';note.textContent=detail||'';
-    meta.appendChild(title);meta.appendChild(note);
-    var tag=document.createElement('div');tag.className='pill';tag.textContent=ok?'ok':'attention';
-    row.appendChild(meta);row.appendChild(tag);
-    document.getElementById('results').appendChild(row);
-  }
-  function runSelfCheck(){
-    var results=document.getElementById('results');results.innerHTML='';
-    var a1=!!window.AudioContext||!!window.webkitAudioContext;passRow('Audio engine available',a1,a1?'WebAudio present':'No WebAudio');
-    ensureAC();var s1=!!AC;passRow('AudioContext created',s1,s1?AC.state:'failed');
-    var u1=unlocked||localStorage.getItem('mh_unlocked')==='1';passRow('iOS unlock state',u1,u1?'unlocked or remembered':'tap Start Session once');
-    var f=localStorage.getItem('mh_freq');passRow('Tone frequency remembered',!!f,f?f+' Hz':'not set');
-    var v=localStorage.getItem('mh_vol');passRow('Volume remembered',!!v,v?v:'not set');
-    var qlen=Array.isArray(Q)?Q.length:0;passRow('Queue loaded',qlen>=0,'items: '+qlen);
-    var ifr=!!document.getElementById('yt').contentWindow||document.getElementById('yt').getAttribute('src')!=='';passRow('YouTube player ready',ifr,ifr?'ok':'add a link and press Play First');
-    passRow('Persistence',!!(window.localStorage),'localStorage');
-    var srcInfo=getSrc();passRow('tracks.json source',!!srcInfo.src,srcInfo.src||'none');
-  }
-  document.getElementById('selfcheckBtn').addEventListener('click',runSelfCheck);
-
-  Array.prototype.forEach.call(document.querySelectorAll('.tab[data-lane]'),function(b){
-    b.addEventListener('click',function(){ setLane(b.getAttribute('data-lane')); });
-  });
-
-  function hydrateFromStorage(){
-    var f=localStorage.getItem('mh_freq');if(f){currentFreq=parseFloat(f);document.getElementById('freqLabel').textContent='freq: '+f+' Hz'}
-    var v=localStorage.getItem('mh_vol');if(v){document.getElementById('vol').value=v}
-    if(localStorage.getItem('mh_unlocked')==='1'){unlocked=true;updateAudioState()}
-  }
-
-  function getSrc(){
-    var u=new URL(location.href);
-    var src=u.searchParams.get('src');
-    var laneParam=u.searchParams.get('lane');
-    if(!src){src=(document.querySelector('.container').getAttribute('data-src')||'').trim();}
-    return {src:src||'', lane:laneParam||'marina'};
-  }
-
-  function attemptPreload(){
-    var info=getSrc(); if(!info.src){renderQueue();return}
-    fetch(info.src,{mode:'cors'}).then(function(r){
-      if(!r.ok){throw new Error('no json')}
-      return r.json();
-    }).then(function(data){
-      var tracks=[];
-      if(Array.isArray(data)) { tracks=data; }
-      else if(data && Array.isArray(data.tracks)) {
-        if(data.lane && info.lane && data.lane!==info.lane && Array.isArray(data[info.lane])) {
-          tracks=data[info.lane];
-        } else {
-          tracks=data.tracks;
-        }
-      } else if(data && Array.isArray(data[info.lane])) {
-        tracks=data[info.lane];
-      }
-      var added=0;
-      (tracks||[]).forEach(function(t){
-        var id = (t.youtube_id||t.id||'').trim();
-        if(!id && t.url){ id = ytIdFrom(t.url); }
-        if(/^[\w-]{11}$/.test(id)){
-          addToQueue(id, (t.title||''));
-          added++;
-        }
-      });
-      if(added){
-        var done=0;
-        Q.forEach(function(item,i){
-          if(!item.title || item.title===item.id){
-            fetchTitle(item.id,function(tt){
-              item.title=tt; done++; if(done===Q.length){persist('mh_queue',JSON.stringify(Q));renderQueue();playIndex(0,false);}
-            });
-          } else { done++; if(done===Q.length){persist('mh_queue',JSON.stringify(Q));renderQueue();playIndex(0,false);} }
-        });
+    function initAudio(){
+      if (started) return;
+      const AC = window.AudioContext || window.webkitAudioContext;
+      ctx = new AC({ latencyHint: 'interactive' });
+      gain = ctx.createGain();
+      gain.gain.value = 0.0;
+      osc = ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = currentHz;
+      osc.connect(gain).connect(ctx.destination);
+      osc.start();
+      fadeTo(storedVol, 1.2);
+      started = true;
+    }
+    function fadeTo(v, t){
+      const now = ctx.currentTime;
+      gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(gain.gain.value, now);
+      gain.gain.linearRampToValueAtTime(Math.max(0, Math.min(1, v)), now + Math.max(.05, t||.3));
+    }
+    function setTone(hz){
+      currentHz = hz;
+      if (osc) osc.frequency.setValueAtTime(hz, ctx.currentTime);
+      localStorage.setItem(K_TONE, String(hz));
+      // UI: toggle pressed state
+      toneBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.freq == String(hz)));
+      // Visual temperature + pulse speed
+      if (hz === 128){
+        document.documentElement.style.setProperty('--hue', '46');  // warm
+        document.documentElement.style.setProperty('--pulse', '6s');
+      } else if (hz === 160){
+        document.documentElement.style.setProperty('--hue', '205'); // airy-cool
+        document.documentElement.style.setProperty('--pulse', '5.2s');
       } else {
-        renderQueue();
+        document.documentElement.style.setProperty('--hue', '266'); // balanced-violet
+        document.documentElement.style.setProperty('--pulse', '7.2s');
       }
-    }).catch(function(){ renderQueue(); });
-  }
+    }
 
-  hydrateFromStorage();
-  detectLane();
-  loadQueue();
-  updateAudioState();
-})();
-</script>
+    function updateVolume(v){
+      if (!ctx) return;
+      fadeTo(v, .25);
+      localStorage.setItem(K_VOL, String(v));
+    }
 
+    /* ---------- Visits / brightness ---------- */
+    function nowISO(){ return new Date().toISOString(); }
+    function getVisits(){
+      return Number(localStorage.getItem(K_VISITS) || 0);
+    }
+    function setVisits(n){
+      localStorage.setItem(K_VISITS, String(n));
+      const glow = Math.min(.6, .22 + n*0.03);
+      const blurPx = (36 + Math.min(120, n*10)) + 'px';
+      document.documentElement.style.setProperty('--glow', String(glow));
+      document.documentElement.style.setProperty('--ring-blur', blurPx);
+      visitBadge.textContent = n > 0 ? `Visit #${n} — thank you for returning.` : `First Light — welcome.`;
+    }
+
+    /* ---------- Archive ---------- */
+    function getLog(){
+      try { return JSON.parse(localStorage.getItem(K_LOG) || '[]'); } catch { return []; }
+    }
+    function setLog(arr){
+      localStorage.setItem(K_LOG, JSON.stringify(arr));
+      archiveCount.textContent = String(arr.length);
+      renderArchive(arr);
+    }
+    function renderArchive(arr){
+      if (!arr.length){ archiveList.innerHTML = '<em>No saved reflections yet.</em>'; return; }
+      const items = arr.slice().reverse().map(it =>
+        `<div style="padding:8px 0; border-top:1px solid rgba(0,0,0,.06)">
+          <div><strong>${new Date(it.t).toLocaleString()}</strong> · <span class="soft">${it.hz} Hz</span></div>
+          <div>${escapeHTML(it.note)}</div>
+        </div>`).join('');
+      archiveList.innerHTML = items;
+    }
+    function escapeHTML(s){
+      return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    /* ---------- YouTube helpers (no external API) ---------- */
+    function postToYT(cmd){
+      try {
+        yt.contentWindow.postMessage(JSON.stringify({ event: 'command', func: cmd, args: [] }), '*');
+      } catch {}
+    }
+
+    function unmuteVideo(unmute){
+      toggleVideoSound.setAttribute('aria-pressed', String(!!unmute));
+      postToYT(unmute ? 'unMute' : 'mute');
+      if (unmute) postToYT('playVideo');
+    }
+
+    /* ---------- Sidebar ---------- */
+    function toggleSidebar(open){
+      const want = (open === undefined) ? !sidebar.classList.contains('open') : open;
+      sidebar.classList.toggle('open', want);
+      openSide.setAttribute('aria-expanded', String(want));
+      sidebar.setAttribute('aria-hidden', String(!want));
+    }
+
+    /* ---------- Initialize UI from storage ---------- */
+    (function init(){
+      // Tone + volume defaults
+      vol.value = String(storedVol);
+      setTone(currentHz);
+
+      // Visits & brightness
+      const v = getVisits();
+      setVisits(v);
+
+      // Archive
+      setLog(getLog());
+
+      // Summary for returners
+      if (v > 0){
+        const last = getLog().slice(-1)[0];
+        summary.innerHTML = `
+          <div><strong>Welcome back.</strong> Your mirror remembers.</div>
+          <div>Visits: <strong>${v}</strong> · Tone: <strong>${currentHz} Hz</strong></div>
+          ${last ? `<div class="soft">Last note: “${escapeHTML(last.note)}”</div>` : `<div class="soft">Add your first note below.</div>`}
+        `;
+      }
+    })();
+
+    /* ---------- Events ---------- */
+    beginBtn.addEventListener('click', function(){
+      // Unlock audio on user gesture
+      initAudio();
+      // Count visit on first start of the session
+      let v = getVisits() + 1;
+      setVisits(v);
+      localStorage.setItem(K_BRIGHT, String(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--glow')) || 0));
+
+      // Soft-start video sound kept muted unless user toggles
+      postToYT('playVideo');
+
+      // Micro-affirmation
+      summary.insertAdjacentHTML('beforeend', `<div class="soft">Brightness increased. Come back tomorrow — continuity builds time.</div>`);
+      beginBtn.disabled = true;
+      beginBtn.textContent = 'You’re in ✨';
+    }, { once: true });
+
+    toneBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const hz = Number(btn.dataset.freq);
+        if (!started) initAudio();
+        setTone(hz);
+      });
+    });
+
+    vol.addEventListener('input', () => { if (started) updateVolume(Number(vol.value)); });
+
+    // Video sound toggle
+    toggleVideoSound.addEventListener('click', () => {
+      const pressed = toggleVideoSound.getAttribute('aria-pressed') === 'true';
+      unmuteVideo(!pressed);
+    });
+
+    // Replay gently
+    replayBtn.addEventListener('click', () => {
+      postToYT('seekTo'); // seekTo(0) is not accepted via raw post; do playVideo to loop
+      postToYT('playVideo');
+    });
+
+    // Save note
+    saveNote.addEventListener('click', () => {
+      const text = (noteEl.value || '').trim();
+      if (!text) return;
+      const arr = getLog();
+      arr.push({ t: nowISO(), note: text, hz: currentHz });
+      setLog(arr);
+      noteEl.value = '';
+      summary.insertAdjacentHTML('beforeend', `<div class="soft">Saved to <code>mirrorhoney_log</code>.</div>`);
+    });
+
+    // Archive
+    showArchiveBtn.addEventListener('click', () => { archiveBox.open = !archiveBox.open; });
+
+    // Sidebar open/close
+    openSide.addEventListener('click', () => toggleSidebar());
+
+    // Close sidebar with Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleSidebar(false);
+    });
+
+    // Respect visibility: gently lower tone volume when tab hidden (keeps the vibe polite)
+    document.addEventListener('visibilitychange', () => {
+      if (!started || !ctx) return;
+      if (document.hidden) { fadeTo(Number(vol.value) * 0.3, .35); }
+      else { fadeTo(Number(localStorage.getItem(K_VOL) || vol.value), .35); }
+    });
+
+    // iOS resume fix
+    window.addEventListener('touchend', () => {
+      if (ctx && ctx.state === 'suspended') ctx.resume();
+    }, { passive: true });
+
+    /* ---------- Minimal inline Service Worker (offline shell) ---------- */
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
+        self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+        const offline = '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MirrorHoney — Offline</title><style>body{font:16px system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.6;margin:0;padding:32px;background:#faf7ee;color:#222}main{max-width:720px;margin:0 auto}</style><main><h1>MirrorHoney is offline</h1><p>You’re offline. Video playback requires a connection, but your local reflections stay safe. Reopen when online to continue the loop.</p></main>';
+        self.addEventListener('fetch', e => {
+          if (e.request.mode === 'navigate') {
+            e.respondWith(fetch(e.request).catch(() => new Response(offline, { headers: { 'Content-Type': 'text/html; charset=utf-8' }})));
+          }
+        });
+      `;
+      const blob = new Blob([swCode], {type: 'text/javascript'});
+      const url = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(url);
+    }
+  })();
+  </script>
+
+  <!-- Opening Line for New Chat (visible in page copy) -->
+  <div class="sr-only">
+    Hi, I’m Tristan. Let’s build MirrorHoney Illumina 1 — “Do It Again.” One file. One light. Return tomorrow.
+  </div>
 </body>
 </html>
+
