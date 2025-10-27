@@ -6,70 +6,146 @@
 <title>MirrorHoney</title>
 <meta name="description" content="MirrorHoney — one drop of honey, one video, one gentle color tint." />
 <meta name="color-scheme" content="dark light" />
+
 <style>
   :root{
-    --accent:#ffd89a; --ink:#1a1a1a; --bg:#fffaf2; --ring:rgba(0,0,0,.15);
+    --accent: #ffd89a;        /* honey */
+    --ink: #141416;
+    --bg0: #0e0f12;
+    --bg1: #14161a;
+    --ring: rgba(0,0,0,.18);
+    --glow: 0 10px 40px rgba(255, 216, 154, .18);
   }
-  @media (prefers-color-scheme: dark){
-    :root{ --ink:#eee; --bg:#0f0f10; --ring:rgba(255,255,255,.2); }
+  @media (prefers-color-scheme: light){
+    :root{ --ink:#101012; --bg0:#fffaf2; --bg1:#fff4e1; --ring:rgba(0,0,0,.12); --glow:0 10px 36px rgba(255, 216, 154, .22); }
   }
   *{box-sizing:border-box}
-  body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
-  header.nav{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;padding:12px 16px;border-bottom:1px solid var(--ring);position:sticky;top:0;background:color-mix(in oklab, var(--bg), transparent 0%)}
-  .pill{display:inline-flex;align-items:center;gap:.5rem;border:1px solid var(--ring);padding:.4rem .7rem;border-radius:999px;text-decoration:none;color:inherit}
-  .pill[aria-disabled="true"]{opacity:.5;pointer-events:none}
-  main{max-width:900px;margin:0 auto;padding:20px 16px 48px}
-  h1{font-weight:700;font-size:clamp(22px,3vw,30px);margin:.2rem 0 .2rem}
-  p.purpose{opacity:.9;margin:.2rem 0 1rem}
-  .vid-wrap{width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--ring);background:#000}
-  .vid-wrap iframe{width:100%;height:100%;display:block;border:0}
-  .controls{display:flex;gap:.5rem;flex-wrap:wrap;margin:12px 0 2px}
-  .btn{appearance:none;border:1px solid var(--ring);background:transparent;color:inherit;border-radius:12px;padding:.55rem .8rem;cursor:pointer}
-  .btn:focus-visible{outline:3px solid color-mix(in oklab, var(--accent), transparent 50%);outline-offset:2px}
-  .next{margin-top:14px}
-  .next a{color:inherit;text-decoration:none;border-bottom:1px dashed var(--ring)}
+  body{
+    margin:0; color:var(--ink);
+    font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 10% 0%, color-mix(in oklab, var(--accent), #000 80%), transparent 50%),
+      radial-gradient(1000px 500px at 100% 100%, color-mix(in oklab, var(--accent), #000 85%), transparent 50%),
+      linear-gradient(180deg, var(--bg0), var(--bg1));
+    min-height:100svh;
+  }
+
+  header.nav{
+    position:sticky; top:0; z-index:3;
+    display:flex; gap:.6rem; flex-wrap:wrap; align-items:center;
+    padding:12px 16px;
+    backdrop-filter: blur(8px);
+    background: color-mix(in oklab, var(--bg0), transparent 40%);
+    border-bottom: 1px solid color-mix(in oklab, var(--ring), transparent 30%);
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:.5rem;
+    text-decoration:none; color:inherit;
+    border:1px solid var(--ring); padding:.42rem .72rem; border-radius:999px;
+    background: color-mix(in oklab, var(--bg1), transparent 20%);
+  }
+  .pill[aria-disabled="true"]{opacity:.55; pointer-events:none}
+
+  main{max-width:980px; margin:0 auto; padding:26px 16px 56px}
+
+  .card{
+    border:1px solid var(--ring);
+    border-radius:18px; overflow:hidden;
+    background: color-mix(in oklab, var(--bg1), transparent 10%);
+    box-shadow: var(--glow);
+  }
+  .hero{
+    padding:20px 20px 0;
+    background:
+      radial-gradient(700px 260px at 10% -10%, color-mix(in oklab, var(--accent), transparent 80%), transparent 60%),
+      linear-gradient(180deg, transparent, color-mix(in oklab, var(--bg1), transparent 70%));
+    border-bottom:1px solid color-mix(in oklab, var(--ring), transparent 30%);
+  }
+  h1{
+    margin:.2rem 0 .1rem;
+    font-size:clamp(22px,3.4vw,32px); font-weight:800; letter-spacing:.2px;
+    text-shadow:0 1px 0 rgba(0,0,0,.04);
+  }
+  p.purpose{margin:.1rem 0 1rem; opacity:.92}
+
+  .vid-wrap{width:100%; aspect-ratio:16/9; background:#000; border-radius:14px; overflow:hidden; border:1px solid var(--ring)}
+  .vid-wrap iframe{width:100%; height:100%; display:block; border:0}
+
+  .section{padding:16px 20px 20px}
+  .controls{display:flex; gap:.6rem; flex-wrap:wrap; margin:12px 0 2px}
+  .btn{
+    appearance:none; cursor:pointer;
+    border:1px solid var(--ring);
+    background: color-mix(in oklab, var(--bg1), transparent 10%);
+    color:inherit; border-radius:12px; padding:.58rem .85rem;
+  }
+  .btn:focus-visible{outline:3px solid color-mix(in oklab, var(--accent), transparent 45%); outline-offset:2px}
+
+  .tint{
+    margin:14px 0 0; padding:12px; border:1px dashed var(--ring); border-radius:12px;
+    background: color-mix(in oklab, var(--bg1), transparent 15%);
+  }
+  .tint input[type=range]{width:100%}
+
+  .next{margin:14px 0 0}
+  .next a{color:inherit; text-decoration:none; border-bottom:1px dashed color-mix(in oklab, var(--ring), transparent 40%)}
+
   details.more{margin-top:18px}
   summary{cursor:pointer}
-  .more-box{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem}
-  .tint{position:relative;margin:14px 0 0;padding:10px 12px;border:1px dashed var(--ring);border-radius:12px}
-  .tint input[type=range]{width:100%}
-  .badge{font:12px system-ui;opacity:.75;margin-top:8px}
+  .more-box{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.6rem}
+  .badge{font:12px system-ui; opacity:.75; margin-top:8px}
+
+  /* subtle honey film controlled by slider */
+  .honey-film{
+    pointer-events:none; position:fixed; inset:0; z-index:1; mix-blend-mode:soft-light; opacity:0;
+    background: radial-gradient(1200px 600px at 0% 0%, color-mix(in oklab, var(--accent), transparent 65%), transparent 60%),
+                radial-gradient(800px 400px at 100% 100%, color-mix(in oklab, var(--accent), transparent 75%), transparent 60%);
+    transition: opacity .25s ease;
+  }
 </style>
 </head>
 <body>
 
+<div class="honey-film" id="honeyFilm" aria-hidden="true"></div>
+
 <header class="nav" data-plnt="nav" aria-label="Global navigation"></header>
 
 <main>
-  <h1 data-plnt="title">🍯 MirrorHoney</h1>
-  <p class="purpose" data-plnt="purpose">Send one drop of honey.</p>
+  <div class="card">
+    <div class="hero">
+      <h1 data-plnt="title">🍯 MirrorHoney</h1>
+      <p class="purpose" data-plnt="purpose">Send one drop of honey.</p>
+    </div>
 
-  <!-- Responsive YouTube video -->
-  <section class="vid-wrap" aria-label="Featured video">
-    <iframe id="mh-video"
-      title="MirrorHoney Video"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
-      src="https://www.youtube-nocookie.com/embed/81tlcIq4kPA?rel=0&modestbranding=1&playsinline=1">
-    </iframe>
-  </section>
+    <div class="section">
+      <section class="vid-wrap" aria-label="Featured video">
+        <!-- Default to Hello Kitty; JSON can override -->
+        <iframe id="mh-video"
+          title="MirrorHoney Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          src="https://www.youtube-nocookie.com/embed/81tlcIq4kPA?rel=0&modestbranding=1&playsinline=1">
+        </iframe>
+      </section>
 
-  <!-- Rendered micro-actions from JSON -->
-  <div class="controls" data-plnt="actions" aria-label="Actions"></div>
+      <div class="controls" data-plnt="actions" aria-label="Actions">
+        <!-- buttons from JSON render here -->
+      </div>
 
-  <!-- Optional local tint control (also shown if JSON includes a slider action) -->
-  <div class="tint" id="tintBox" hidden>
-    <label for="tintRange">Color tint</label>
-    <input id="tintRange" type="range" min="0" max="100" step="1" aria-label="Color tint amount" />
+      <div class="tint" id="tintBox" hidden>
+        <label for="tintRange">Color tint</label>
+        <input id="tintRange" type="range" min="0" max="100" step="1" aria-label="Color tint amount" />
+      </div>
+
+      <p class="next" data-plnt="next"></p>
+
+      <details class="more">
+        <summary>More</summary>
+        <div class="more-box" data-plnt="more"></div>
+        <div id="nav-health" class="badge" aria-live="polite"></div>
+      </details>
+    </div>
   </div>
-
-  <p class="next" data-plnt="next"></p>
-
-  <details class="more">
-    <summary>More</summary>
-    <div class="more-box" data-plnt="more"></div>
-    <div id="nav-health" class="badge" aria-live="polite"></div>
-  </details>
 </main>
 
 <script>
@@ -78,7 +154,7 @@ window.CURRENT_SLUG = "mirrorhoney";
 const CANON = "https://www.plnt.earth/rooms.json";
 const CACHE_KEY = "plnt.rooms.v1";
 
-/* helpers */
+/* helpers (no console logs) */
 function $(sel){ return document.querySelector(sel); }
 function setVideoFromUrl(url){
   try{
@@ -154,7 +230,11 @@ function renderRoom(slug){
   var room=(d.rooms||[]).find(r=>r.slug===slug)||null;
 
   var title=$("[data-plnt=title]"), purpose=$("[data-plnt=purpose]");
-  if(title) title.textContent=(room&&(room.glyph?room.glyph+" ":""))+(room?room.title:"MirrorHoney");
+  if(title){
+    var glyph = room && room.glyph ? room.glyph + " " : "";
+    var name  = room && room.title ? room.title : "MirrorHoney";
+    title.textContent = glyph + name;
+  }
   if(purpose) purpose.textContent=room&&room.purpose?room.purpose:"Send one drop of honey.";
 
   try{ if(room&&room.theme&&room.theme.color){ document.documentElement.style.setProperty("--accent",room.theme.color); } }catch(_){}
@@ -165,11 +245,11 @@ function renderRoom(slug){
     var actions=(room&&room.actions)?room.actions.slice(0,3):[];
     actions.forEach(a=>{
       var b=document.createElement("button");
-      b.type="button"; b.className="btn"; b.textContent=a.label||"Do"; b.dataset.action=a.id||"";
+      b.type="button"; b.className="btn"; b.textContent=a.label||"Do";
       b.onclick=function(){
         if(a.type==="video"&&a.target){ setVideoFromUrl(a.target); }
         if(a.type==="toggle"){ b.setAttribute("aria-pressed", b.getAttribute("aria-pressed")==="true"?"false":"true"); }
-        if(a.type==="tone"&&a.hz){ toneOnce(a.hz,(a.seconds||8)); }
+        if(a.type==="tone"&&a.hz){ toneOnce(a.hz,(a.seconds||10)); }
         if(a.type==="slider"){ var tb=document.getElementById("tintBox"); if(tb) tb.hidden=false; }
         if(a.type==="link"&&a.target){ location.href=a.target; }
       };
@@ -177,7 +257,7 @@ function renderRoom(slug){
     });
   }
 
-  /* prefer JSON video; else keep your default (81tlcIq4kPA) already set in iframe */
+  /* prefer JSON video; else keep Hello Kitty default already in iframe */
   try{
     var vidAct=(room&&room.actions)?room.actions.find(x=>x.type==="video"&&x.target):null;
     if(vidAct&&vidAct.target){ setVideoFromUrl(vidAct.target); }
@@ -194,8 +274,9 @@ function renderRoom(slug){
     }
   }
 
-  var tint=document.getElementById("tintRange"), tintBox=document.getElementById("tintBox");
-  if(tint&&tintBox){
+  /* optional tint + background honey film */
+  var tint=document.getElementById("tintRange"), tintBox=document.getElementById("tintBox"), film=document.getElementById("honeyFilm");
+  if(tint&&tintBox&&film){
     var hasSlider=room&&room.actions&&room.actions.some(a=>a.type==="slider");
     tintBox.hidden=!hasSlider;
     var key="mirrorhoney.tint";
@@ -203,14 +284,13 @@ function renderRoom(slug){
     tint.addEventListener("input", function(){
       try{ localStorage.setItem(key,String(tint.value)); }catch(_){}
       var v=Math.max(0,Math.min(100,parseInt(tint.value||"0",10)));
-      var overlay="linear-gradient(to bottom right, color-mix(in oklab, var(--accent), transparent "+(100-v)+"%), transparent "+(100-v)+"%)";
-      document.body.style.backgroundImage = v>0 ? overlay : "none";
+      film.style.opacity = v/120; /* gentle */
     });
     var ev=new Event("input"); tint.dispatchEvent(ev);
   }
 }
 
-/* tiny WebAudio tone for 'breath' action */
+/* tiny WebAudio tone (iOS-safe once user taps) */
 function toneOnce(hz,seconds){
   try{
     var ctx=(window._plntAudioCtx)||new (window.AudioContext||window.webkitAudioContext)();
@@ -219,12 +299,14 @@ function toneOnce(hz,seconds){
     o.type="sine"; o.frequency.value=hz||128; g.gain.value=0.0001;
     o.connect(g); g.connect(ctx.destination); o.start();
     var now=ctx.currentTime;
-    g.gain.setTargetAtTime(0.1,now,0.05);
-    g.gain.setTargetAtTime(0.0001,now+(seconds||8),0.15);
-    o.stop(now+(seconds||8)+0.3);
+    g.gain.setTargetAtTime(0.08,now,0.05);
+    g.gain.setTargetAtTime(0.0001,now+(seconds||10),0.15);
+    o.stop(now+(seconds||10)+0.3);
   }catch(_){}
 }
 </script>
 
+<!-- Optional inline fallback JSON shape (kept empty on purpose) -->
+<script id="rooms-fallback" type="application/json">{ "updated": "", "rooms": [] }</script>
 </body>
 </html>
