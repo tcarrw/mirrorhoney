@@ -59,6 +59,11 @@
        border-radius:12px; padding:.62rem .9rem; font-weight:600}
   .btn:hover{background:var(--btnH)} .btn:focus-visible{outline:3px solid color-mix(in oklab, var(--accent), transparent 35%); outline-offset:2px}
   .btn:active{transform:translateY(1px)}
+  .btn[disabled]{opacity:.6; cursor:default}
+
+  .inline{
+    display:inline-flex; align-items:center; gap:.5rem; font-size:.95rem; color:var(--text-soft)
+  }
 
   .notebox{display:flex; flex-direction:column; gap:.35rem; margin-top:.5rem; width:100%}
   .notebox textarea{width:100%; min-height:88px; resize:vertical; border:1px solid var(--border); border-radius:12px; background:var(--btn); color:var(--text); padding:.7rem .85rem}
@@ -71,16 +76,9 @@
   summary{cursor:pointer; color:var(--text-strong)}
   .more-box{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.6rem}
   .badge{font:12px system-ui; opacity:.8; margin-top:8px; color:var(--text-soft)}
-
-  .honey-film{pointer-events:none; position:fixed; inset:0; z-index:1; mix-blend-mode:soft-light; opacity:0;
-    background: radial-gradient(1200px 600px at 0% 0%, color-mix(in oklab, var(--accent), transparent 60%), transparent 60%),
-                radial-gradient(800px 400px at 100% 100%, color-mix(in oklab, var(--accent), transparent 72%), transparent 60%);
-    transition:opacity .25s ease}
 </style>
 </head>
 <body>
-
-<div class="honey-film" id="honeyFilm" aria-hidden="true"></div>
 
 <header class="nav" data-plnt="nav" aria-label="Global navigation"></header>
 
@@ -92,6 +90,7 @@
     </div>
 
     <div class="section">
+      <!-- Song -->
       <section class="vid-wrap" aria-label="Featured video">
         <!-- Default to Hello Kitty; JSON can override -->
         <iframe id="mh-video"
@@ -102,8 +101,11 @@
         </iframe>
       </section>
 
-      <!-- Actions from JSON render here -->
+      <!-- Actions (tone button + note field) come from JSON; fallback provided below -->
       <div class="controls" data-plnt="actions" aria-label="Actions"></div>
+
+      <p class="inline" id="toneStatus" hidden>⏳ Tone: <span id="toneCountdown">--</span></p>
+      <p class="inline" id="noteStatus" hidden>✓ Saved</p>
 
       <p class="next" data-plnt="next"></p>
 
@@ -144,6 +146,46 @@ function roomLink(room){
   return {label:(room.glyph?room.glyph+" ":"")+room.title,href:href,disabled:false};
 }
 
+/* Tone engine (iOS-safe) */
+let audioCtx = null;
+function ensureAudioCtx(){
+  if (!audioCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    audioCtx = new Ctx();
+  }
+  if (audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+function playTone(hz, seconds, onTick, onDone){
+  try{
+    const ctx = ensureAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = hz || 160;
+    gain.gain.value = 0.0001;
+    osc.connect(gain); gain.connect(ctx.destination);
+    const now = ctx.currentTime;
+    osc.start(now);
+    gain.gain.setTargetAtTime(0.09, now, 0.05);
+    gain.gain.setTargetAtTime(0.0001, now + seconds, 0.15);
+    osc.stop(now + seconds + 0.35);
+
+    // simple countdown
+    let remaining = seconds;
+    onTick && onTick(remaining);
+    const id = setInterval(()=>{
+      remaining -= 1;
+      if (remaining <= 0){ clearInterval(id); onDone && onDone(); }
+      else { onTick && onTick(remaining); }
+    }, 1000);
+  }catch(_){
+    onDone && onDone();
+  }
+}
+
 /* fetch rooms.json with fallback + cache */
 (async function(){
   var inline=null,cached=null;
@@ -160,7 +202,25 @@ function roomLink(room){
     } else { if(badge) badge.textContent="Nav issue: status"; }
   }catch(_){ if(badge) badge.textContent="Nav issue: CORS/network"; }
 
-  window.PLNT_ROOMS=data||{rooms:[]};
+  // Fallback to a local triad if JSON absent or room missing
+  if (!data || !Array.isArray(data.rooms)) {
+    data = {
+      hub:{title:"PLNT Earth", home:"https://www.plnt.earth"},
+      rooms:[{
+        slug:"mirrorhoney", title:"MirrorHoney", glyph:"🍯",
+        purpose:"Play one song, breathe one tone, write one line.",
+        status:"live", coming_soon:false,
+        actions:[
+          {id:"play",type:"video",label:"Play “Hello Kitty”",target:"https://www.youtube.com/watch?v=81tlcIq4kPA"},
+          {id:"breath",type:"tone",label:"60-second honey tone",hz:160,seconds:60},
+          {id:"note",type:"note",label:"One Bee Note",key:"mirrorhoney.note"}
+        ],
+        next:{slug:"froot",label:"Visit Froot →"}
+      }]
+    };
+  }
+
+  window.PLNT_ROOMS=data;
   renderNav(window.PLNT_ROOMS);
   renderRoom("mirrorhoney");
 })();
@@ -197,7 +257,7 @@ function renderRoom(slug){
   var d=window.PLNT_ROOMS||{rooms:[]};
   var room=(d.rooms||[]).find(r=>r.slug===slug)||null;
 
-  var title=$("[data-plnt=title]"), purpose=$("[data-plnt=purpose]");
+  var title=document.querySelector("[data-plnt=title]"), purpose=document.querySelector("[data-plnt=purpose]");
   if(title){
     var glyph = room && room.glyph ? room.glyph + " " : "";
     var name  = room && room.title ? room.title : "MirrorHoney";
@@ -205,43 +265,54 @@ function renderRoom(slug){
   }
   if(purpose) purpose.textContent=room&&room.purpose?room.purpose:"Play one song, breathe one tone, write one line.";
 
-  try{ if(room&&room.theme&&room.theme.color){ document.documentElement.style.setProperty("--accent",room.theme.color); } }catch(_){}
-
+  // Buttons + Note
   var actionsBox=document.querySelector("[data-plnt=actions]");
   if(actionsBox){
     actionsBox.innerHTML="";
     var actions=(room&&room.actions)?room.actions.slice(0,3):[];
 
     actions.forEach(function(a){
-      /* NOTE ACTION (inline textarea) */
+      // NOTE FIELD
       if(a.type==="note"){
         var wrap=document.createElement("div"); wrap.className="notebox";
         var label=document.createElement("label"); label.textContent=a.label||"Bee Note";
         var ta=document.createElement("textarea");
         var key=a.key||"mirrorhoney.note";
         try{ var saved=localStorage.getItem(key); if(saved) ta.value=saved; }catch(_){}
-        ta.addEventListener("input", function(){ try{ localStorage.setItem(key, ta.value.trim()); }catch(_){} });
+        ta.addEventListener("input", function(){
+          try{ localStorage.setItem(key, ta.value.trim()); }catch(_){}
+          var ns=$("#noteStatus"); if(ns){ ns.hidden=false; setTimeout(()=>ns.hidden=true, 1000); }
+        });
         var hint=document.createElement("small"); hint.textContent="Saved locally · one line is enough";
         wrap.appendChild(label); wrap.appendChild(ta); wrap.appendChild(hint);
         actionsBox.appendChild(wrap);
         return;
       }
 
-      /* DEFAULT BUTTON ACTIONS */
+      // DEFAULT BUTTONS
       var b=document.createElement("button");
       b.type="button"; b.className="btn"; b.textContent=a.label||"Do"; b.dataset.action=a.id||"";
       b.onclick=function(){
         if(a.type==="video"&&a.target){ setVideoFromUrl(a.target); }
+        if(a.type==="tone"&&a.hz){
+          // lock button + countdown
+          b.disabled = true;
+          const status = $("#toneStatus"), timer = $("#toneCountdown");
+          if(status) status.hidden=false;
+          playTone(a.hz, a.seconds||60, (rem)=>{ if(timer) timer.textContent = rem + "s"; }, ()=>{
+            if(status) status.hidden=true;
+            b.disabled=false;
+          });
+        }
         if(a.type==="toggle"){ b.setAttribute("aria-pressed", b.getAttribute("aria-pressed")==="true"?"false":"true"); }
-        if(a.type==="tone"&&a.hz){ toneOnce(a.hz,(a.seconds||60)); }
-        if(a.type==="slider"){ /* not used in this triad, but supported */ }
+        if(a.type==="slider"){ /* unused here */ }
         if(a.type==="link"&&a.target){ location.href=a.target; }
       };
       actionsBox.appendChild(b);
     });
   }
 
-  /* prefer JSON video; else keep Hello Kitty default already in iframe */
+  // Prefer JSON video
   try{
     var vidAct=(room&&room.actions)?room.actions.find(x=>x.type==="video"&&x.target):null;
     if(vidAct&&vidAct.target){ setVideoFromUrl(vidAct.target); }
@@ -257,29 +328,25 @@ function renderRoom(slug){
       next.appendChild(a);
     }
   }
-
-  /* subtle honey film (optional aesthetic if you later re-add slider) */
-  var film=document.getElementById("honeyFilm");
-  if(film){ film.style.opacity = .22; } /* light, constant warmth */
-}
-
-/* tiny WebAudio tone (tap-initiated, iOS-safe) */
-function toneOnce(hz,seconds){
-  try{
-    var ctx=(window._plntAudioCtx)||new (window.AudioContext||window.webkitAudioContext)();
-    window._plntAudioCtx=ctx;
-    var o=ctx.createOscillator(), g=ctx.createGain();
-    o.type="sine"; o.frequency.value=hz||160; g.gain.value=0.0001;
-    o.connect(g); g.connect(ctx.destination); o.start();
-    var now=ctx.currentTime;
-    g.gain.setTargetAtTime(0.09,now,0.05);
-    g.gain.setTargetAtTime(0.0001,now+(seconds||60),0.15);
-    o.stop(now+(seconds||60)+0.3);
-  }catch(_){}
 }
 </script>
 
-<!-- (Optional) inline fallback shape; usually empty -->
-<script id="rooms-fallback" type="application/json">{ "updated": "", "rooms": [] }</script>
+<!-- Inline fallback (used only if canon JSON is unreachable) -->
+<script id="rooms-fallback" type="application/json">
+{
+  "hub": {"title":"PLNT Earth","home":"https://www.plnt.earth"},
+  "rooms": [{
+    "slug":"mirrorhoney","title":"MirrorHoney","glyph":"🍯",
+    "purpose":"Play one song, breathe one tone, write one line.",
+    "status":"live","coming_soon":false,
+    "actions":[
+      {"id":"play","type":"video","label":"Play “Hello Kitty”","target":"https://www.youtube.com/watch?v=81tlcIq4kPA"},
+      {"id":"breath","type":"tone","label":"60-second honey tone","hz":160,"seconds":60},
+      {"id":"note","type":"note","label":"One Bee Note","key":"mirrorhoney.note"}
+    ],
+    "next":{"slug":"froot","label":"Visit Froot →"}
+  }]
+}
+</script>
 </body>
 </html>
