@@ -9,97 +9,137 @@
 
 <style>
   :root{
-    --accent: #ffd89a;        /* honey */
-    --ink: #141416;
-    --bg0: #0e0f12;
-    --bg1: #14161a;
-    --ring: rgba(0,0,0,.18);
-    --glow: 0 10px 40px rgba(255, 216, 154, .18);
+    /* Base palette (tuned for contrast) */
+    --accent: #ffd089;             /* honey */
+    --ink: #0f1115;                /* dark text in light mode */
+    --ink-weak: #2a2e36;
+    --bg0: #0b0d10;                /* dark background */
+    --bg1: #12151b;
+    --ring: rgba(255,255,255,.20); /* borders in dark mode */
+    --pill-bg: #1b1f27;
+    --card-bg: #141821;
+    --btn-bg: #1b2130;
+    --btn-bg-hover: #263049;
+    --btn-border: rgba(255,255,255,.28);
+    --text-strong: #f3f6fb;        /* high-contrast text */
+    --text: #dbe2ee;
+    --text-soft: #b7c1d4;
+    --glow: 0 10px 36px rgba(255, 208, 137, .26);
   }
   @media (prefers-color-scheme: light){
-    :root{ --ink:#101012; --bg0:#fffaf2; --bg1:#fff4e1; --ring:rgba(0,0,0,.12); --glow:0 10px 36px rgba(255, 216, 154, .22); }
+    :root{
+      --ink:#0f1115; --ink-weak:#333a46;
+      --bg0:#fff9ee; --bg1:#fff4e1;
+      --ring: rgba(0,0,0,.22);
+      --pill-bg: #fff;
+      --card-bg: #fffdf8;
+      --btn-bg: #ffffff;
+      --btn-bg-hover: #f4efe6;
+      --btn-border: rgba(0,0,0,.28);
+      --text-strong:#111318;
+      --text:#20242c;
+      --text-soft:#4b5567;
+      --glow: 0 10px 36px rgba(255, 208, 137, .28);
+    }
   }
+
   *{box-sizing:border-box}
   body{
-    margin:0; color:var(--ink);
+    margin:0;
+    color:var(--text);
     font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     background:
-      radial-gradient(1200px 600px at 10% 0%, color-mix(in oklab, var(--accent), #000 80%), transparent 50%),
-      radial-gradient(1000px 500px at 100% 100%, color-mix(in oklab, var(--accent), #000 85%), transparent 50%),
+      radial-gradient(1100px 520px at 8% -10%, color-mix(in oklab, var(--accent), transparent 80%), transparent 60%),
+      radial-gradient(1000px 520px at 100% 110%, color-mix(in oklab, var(--accent), transparent 82%), transparent 60%),
       linear-gradient(180deg, var(--bg0), var(--bg1));
     min-height:100svh;
   }
 
+  /* NAV */
   header.nav{
     position:sticky; top:0; z-index:3;
     display:flex; gap:.6rem; flex-wrap:wrap; align-items:center;
     padding:12px 16px;
     backdrop-filter: blur(8px);
-    background: color-mix(in oklab, var(--bg0), transparent 40%);
-    border-bottom: 1px solid color-mix(in oklab, var(--ring), transparent 30%);
+    background: color-mix(in oklab, var(--bg0), transparent 36%);
+    border-bottom:1px solid color-mix(in oklab, var(--ring), transparent 18%);
   }
   .pill{
     display:inline-flex; align-items:center; gap:.5rem;
-    text-decoration:none; color:inherit;
-    border:1px solid var(--ring); padding:.42rem .72rem; border-radius:999px;
-    background: color-mix(in oklab, var(--bg1), transparent 20%);
+    text-decoration:none; color:var(--text-strong);
+    border:1px solid var(--btn-border);
+    padding:.44rem .8rem; border-radius:999px;
+    background: var(--pill-bg);
   }
-  .pill[aria-disabled="true"]{opacity:.55; pointer-events:none}
+  .pill[aria-disabled="true"]{opacity:.6; pointer-events:none}
 
   main{max-width:980px; margin:0 auto; padding:26px 16px 56px}
 
+  /* CARD */
   .card{
-    border:1px solid var(--ring);
+    border:1px solid var(--btn-border);
     border-radius:18px; overflow:hidden;
-    background: color-mix(in oklab, var(--bg1), transparent 10%);
+    background: var(--card-bg);
     box-shadow: var(--glow);
+    color:var(--text);
   }
   .hero{
     padding:20px 20px 0;
     background:
-      radial-gradient(700px 260px at 10% -10%, color-mix(in oklab, var(--accent), transparent 80%), transparent 60%),
+      radial-gradient(700px 260px at 10% -10%, color-mix(in oklab, var(--accent), transparent 78%), transparent 60%),
       linear-gradient(180deg, transparent, color-mix(in oklab, var(--bg1), transparent 70%));
-    border-bottom:1px solid color-mix(in oklab, var(--ring), transparent 30%);
+    border-bottom:1px solid color-mix(in oklab, var(--ring), transparent 26%);
   }
   h1{
-    margin:.2rem 0 .1rem;
+    margin:.1rem 0 .1rem;
     font-size:clamp(22px,3.4vw,32px); font-weight:800; letter-spacing:.2px;
+    color:var(--text-strong);
     text-shadow:0 1px 0 rgba(0,0,0,.04);
   }
-  p.purpose{margin:.1rem 0 1rem; opacity:.92}
+  p.purpose{margin:.2rem 0 1rem; color:var(--text-soft)}
 
-  .vid-wrap{width:100%; aspect-ratio:16/9; background:#000; border-radius:14px; overflow:hidden; border:1px solid var(--ring)}
+  .vid-wrap{width:100%; aspect-ratio:16/9; background:#000; border-radius:14px; overflow:hidden; border:1px solid var(--btn-border)}
   .vid-wrap iframe{width:100%; height:100%; display:block; border:0}
 
   .section{padding:16px 20px 20px}
   .controls{display:flex; gap:.6rem; flex-wrap:wrap; margin:12px 0 2px}
+
+  /* HIGH-CONTRAST BUTTONS */
   .btn{
     appearance:none; cursor:pointer;
-    border:1px solid var(--ring);
-    background: color-mix(in oklab, var(--bg1), transparent 10%);
-    color:inherit; border-radius:12px; padding:.58rem .85rem;
+    border:1px solid var(--btn-border);
+    background: var(--btn-bg);
+    color: var(--text);
+    border-radius:12px; padding:.62rem .9rem;
+    font-weight:600;
   }
-  .btn:focus-visible{outline:3px solid color-mix(in oklab, var(--accent), transparent 45%); outline-offset:2px}
+  .btn:hover{ background: var(--btn-bg-hover); }
+  .btn:focus-visible{ outline:3px solid color-mix(in oklab, var(--accent), transparent 35%); outline-offset:2px }
+  .btn:active{ transform: translateY(1px) }
 
+  /* TINT */
   .tint{
-    margin:14px 0 0; padding:12px; border:1px dashed var(--ring); border-radius:12px;
-    background: color-mix(in oklab, var(--bg1), transparent 15%);
+    margin:16px 0 0; padding:12px;
+    border:1px dashed var(--btn-border); border-radius:12px;
+    background: color-mix(in oklab, var(--card-bg), white 6%);
+    color:var(--text);
   }
+  .tint label{display:block; margin-bottom:.35rem; color:var(--text)}
   .tint input[type=range]{width:100%}
 
   .next{margin:14px 0 0}
-  .next a{color:inherit; text-decoration:none; border-bottom:1px dashed color-mix(in oklab, var(--ring), transparent 40%)}
+  .next a{color:var(--text-strong); text-decoration:none; border-bottom:1px dashed color-mix(in oklab, var(--btn-border), transparent 35%)}
 
   details.more{margin-top:18px}
-  summary{cursor:pointer}
+  summary{cursor:pointer; color:var(--text-strong)}
   .more-box{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.6rem}
-  .badge{font:12px system-ui; opacity:.75; margin-top:8px}
+  .badge{font:12px system-ui; opacity:.8; margin-top:8px; color:var(--text-soft)}
 
   /* subtle honey film controlled by slider */
   .honey-film{
     pointer-events:none; position:fixed; inset:0; z-index:1; mix-blend-mode:soft-light; opacity:0;
-    background: radial-gradient(1200px 600px at 0% 0%, color-mix(in oklab, var(--accent), transparent 65%), transparent 60%),
-                radial-gradient(800px 400px at 100% 100%, color-mix(in oklab, var(--accent), transparent 75%), transparent 60%);
+    background: radial-gradient(1200px 600px at 0% 0%, color-mix(in oklab, var(--accent), transparent 60%), transparent 60%),
+                radial-gradient(800px 400px at 100% 100%, color-mix(in oklab, var(--accent), transparent 72%), transparent 60%);
     transition: opacity .25s ease;
   }
 </style>
@@ -124,12 +164,14 @@
           title="MirrorHoney Video"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowfullscreen
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
           src="https://www.youtube-nocookie.com/embed/81tlcIq4kPA?rel=0&modestbranding=1&playsinline=1">
         </iframe>
       </section>
 
       <div class="controls" data-plnt="actions" aria-label="Actions">
-        <!-- buttons from JSON render here -->
+        <!-- JSON-rendered buttons go here -->
       </div>
 
       <div class="tint" id="tintBox" hidden>
@@ -149,12 +191,12 @@
 </main>
 
 <script>
-/* page identity & canon */
+/* identity & canon */
 window.CURRENT_SLUG = "mirrorhoney";
 const CANON = "https://www.plnt.earth/rooms.json";
 const CACHE_KEY = "plnt.rooms.v1";
 
-/* helpers (no console logs) */
+/* helpers (no logs) */
 function $(sel){ return document.querySelector(sel); }
 function setVideoFromUrl(url){
   try{
@@ -274,23 +316,26 @@ function renderRoom(slug){
     }
   }
 
-  /* optional tint + background honey film */
+  /* tint + honey film */
   var tint=document.getElementById("tintRange"), tintBox=document.getElementById("tintBox"), film=document.getElementById("honeyFilm");
   if(tint&&tintBox&&film){
     var hasSlider=room&&room.actions&&room.actions.some(a=>a.type==="slider");
     tintBox.hidden=!hasSlider;
     var key="mirrorhoney.tint";
-    try{ var saved=localStorage.getItem(key); if(saved!==null) tint.value=saved; }catch(_){}
+    try{
+      var saved=localStorage.getItem(key);
+      if(saved===null){ tint.value = 28; } else { tint.value = saved; }
+    }catch(_){ tint.value = 28; }
     tint.addEventListener("input", function(){
       try{ localStorage.setItem(key,String(tint.value)); }catch(_){}
       var v=Math.max(0,Math.min(100,parseInt(tint.value||"0",10)));
-      film.style.opacity = v/120; /* gentle */
+      film.style.opacity = v/110;
     });
     var ev=new Event("input"); tint.dispatchEvent(ev);
   }
 }
 
-/* tiny WebAudio tone (iOS-safe once user taps) */
+/* tiny WebAudio tone */
 function toneOnce(hz,seconds){
   try{
     var ctx=(window._plntAudioCtx)||new (window.AudioContext||window.webkitAudioContext)();
@@ -299,14 +344,14 @@ function toneOnce(hz,seconds){
     o.type="sine"; o.frequency.value=hz||128; g.gain.value=0.0001;
     o.connect(g); g.connect(ctx.destination); o.start();
     var now=ctx.currentTime;
-    g.gain.setTargetAtTime(0.08,now,0.05);
+    g.gain.setTargetAtTime(0.09,now,0.05);
     g.gain.setTargetAtTime(0.0001,now+(seconds||10),0.15);
     o.stop(now+(seconds||10)+0.3);
   }catch(_){}
 }
 </script>
 
-<!-- Optional inline fallback JSON shape (kept empty on purpose) -->
+<!-- Optional inline fallback shape -->
 <script id="rooms-fallback" type="application/json">{ "updated": "", "rooms": [] }</script>
 </body>
 </html>
