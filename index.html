@@ -73,6 +73,23 @@
     font:700 12px ui-monospace,SFMono-Regular,Menlo,monospace; color:#f6f0ff; background:rgba(208,139,255,.10)
   }
 
+  /* Pill buttons */
+  .pillbtn{
+    display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+    border:1px solid rgba(240,230,255,.35); background:rgba(255,255,255,.06); color:#fff;
+    font:800 11px ui-monospace,SFMono-Regular,Menlo,monospace; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;
+  }
+  .pillbtn.violet{ border-color:rgba(208,139,255,.6); background:linear-gradient(180deg, rgba(208,139,255,.16), rgba(208,139,255,.06)) }
+  .pillbtn.mint{ border-color:rgba(115,227,197,.65); background:linear-gradient(180deg, rgba(115,227,197,.16), rgba(115,227,197,.06)) }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border-radius:10px; text-decoration:none; cursor:pointer;
+    border:1px solid rgba(240,230,255,.35); color:#fff; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+    background:linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+  }
+  .btn.violet{ border-color:rgba(208,139,255,.6); background:linear-gradient(180deg, rgba(208,139,255,.16), rgba(208,139,255,.06)) }
+  .btn.mint{ border-color:rgba(115,227,197,.65); background:linear-gradient(180deg, rgba(115,227,197,.16), rgba(115,227,197,.06)) }
+
   /* Froot dial block */
   .dial{
     display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px;
@@ -103,14 +120,8 @@
     transition:transform .3s ease;
   }
   .mirror.mirrored{ transform:scaleX(-1) }
+
   .controls{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px }
-  .btn{
-    display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border-radius:10px; text-decoration:none; cursor:pointer;
-    border:1px solid rgba(240,230,255,.35); color:#fff; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
-    background:linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
-  }
-  .btn.violet{ border-color:rgba(208,139,255,.6); background:linear-gradient(180deg, rgba(208,139,255,.16), rgba(208,139,255,.06)) }
-  .btn.mint{ border-color:rgba(115,227,197,.65); background:linear-gradient(180deg, rgba(115,227,197,.16), rgba(115,227,197,.06)) }
 
   .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
   @media (max-width:860px){ .grid{ grid-template-columns:1fr } }
@@ -134,6 +145,12 @@
           <span class="muted">Pearl</span>
           <span id="tintMeter" class="meter">0%</span>
           <button id="tintReset" class="btn violet" type="button">Reset</button>
+
+          <!-- Follow Froot (pill switch) -->
+          <span class="muted" style="margin-left:6px">Follow on load</span>
+          <span id="followFroot" class="pillbtn mint" role="switch" aria-checked="false">
+            <span id="followFrootState">OFF</span>
+          </span>
         </div>
       </div>
       <div class="chips">
@@ -158,6 +175,10 @@
         <button id="copy" class="btn" type="button">Copy</button>
         <button id="mirror" class="btn" type="button">Mirror</button>
         <button id="sendFroot" class="btn violet" type="button">Send to Froot</button>
+
+        <!-- NEW: pill-badge “Listen to Froot” -->
+        <span id="pullFroot" class="pillbtn violet" role="button" tabindex="0">Listen to Froot</span>
+
         <a class="btn mint" href="https://earth.plnt.earth" rel="noopener">Earth</a>
         <a class="btn" href="https://garlic.plnt.earth" rel="noopener">Garlic</a>
         <a class="btn" href="https://school.plnt.earth/inspector/" rel="noopener">Inspector</a>
@@ -290,7 +311,7 @@
     btn.addEventListener('click', function(){
       try{
         var n = parseInt(localStorage.getItem('mirrorhoney.tint') || '0', 10);
-        localStorage.setItem('froot.currentTint', String(n));   // shared key Froot can read
+        localStorage.setItem('froot.currentTint', String(n));
         btn.textContent = 'Sent ✓';
         setTimeout(function(){ btn.textContent = 'Send to Froot'; }, 1400);
       }catch(e){
@@ -311,12 +332,59 @@
     meter.textContent = n + '%';
     try{ localStorage.setItem('mirrorhoney.tint', String(n)); }catch(e){}
   }
+  // expose for shim
+  window.applyTint = applyTint;
+
   // restore saved tint
   applyTint(localStorage.getItem('mirrorhoney.tint')||0);
   tint.value = localStorage.getItem('mirrorhoney.tint')||0;
 
   tint.addEventListener('input', function(e){ applyTint(e.target.value); }, {passive:true});
   reset.addEventListener('click', function(){ tint.value = 0; applyTint(0); }, {passive:true});
+
+  // ---- MirrorHoney ⇄ Froot tint sync (pill badge + follow switch) ----
+  function getFrootTint(){
+    var v = localStorage.getItem('froot.currentTint');
+    var n = parseInt(v==null ? '0' : v, 10);
+    if (isNaN(n)) n = 0;
+    return n;
+  }
+  function applyFromFroot(){
+    var n = getFrootTint();
+    applyTint(n);
+    // flash label on pill
+    var pill = document.getElementById('pullFroot');
+    if(pill){
+      var old = pill.textContent; pill.textContent = 'Applied ✓';
+      setTimeout(function(){ pill.textContent = old; }, 1200);
+    }
+  }
+
+  // One-shot pill action
+  (function(){
+    var pill = document.getElementById('pullFroot');
+    if(!pill) return;
+    pill.addEventListener('click', applyFromFroot, {passive:true});
+    pill.addEventListener('keydown', function(e){
+      if(e.key===' '||e.key==='Enter'){ e.preventDefault(); applyFromFroot(); }
+    });
+  })();
+
+  // Follow on load switch
+  (function(){
+    var sw = document.getElementById('followFroot');
+    var state = document.getElementById('followFrootState');
+    if(!sw || !state) return;
+    var on = localStorage.getItem('mirrorhoney.followFroot') === 'true';
+    function render(){ sw.setAttribute('aria-checked', on ? 'true':'false'); state.textContent = on ? 'ON':'OFF'; }
+    function toggle(){ on=!on; try{ localStorage.setItem('mirrorhoney.followFroot', on?'true':'false'); }catch(e){} render(); if(on) applyFromFroot(); }
+    sw.addEventListener('click', toggle, {passive:true});
+    sw.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(); }});
+    render();
+    // if already following, pull immediately on load
+    if(on) applyFromFroot();
+  })();
+
 })();
 </script>
 </body>
