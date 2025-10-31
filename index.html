@@ -1,752 +1,323 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>MirrorHoney Illumina 1 — “Do It Again.”</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#f6e7b8" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="description" content="MirrorHoney v1 — a reflection room of light, tone, and gentle repetition. Featuring MARINA — “HELLO KITTY”.">
-  <!-- Video source: MARINA — HELLO KITTY (Visualiser) @ YouTube ID 81tlcIq4kPA -->
-  <style>
-    :root{
-      /* Visual palette (updated by tone mode) */
-      --hue: 46;          /* warm honey default */
-      --sat: 92%;
-      --l1: 99%;
-      --l2: 96%;
-      --pulse: 6s;        /* breathing speed (tone dependent) */
-      --glass: rgba(255,255,255,0.72);     /* ↑ more solid for readability */
-      --glass-edge: rgba(0,0,0,0.08);      /* subtle, higher-contrast edge */
-      --ink: #121212;                       /* darker body text */
-      --ink-soft: #2b2b2b;                  /* darker secondary */
-      --glow: 0.22;       /* grows with visits */
-      --ring-blur: 36px;
-      --shadow: 0 12px 44px rgba(0,0,0,.12);
-      --radius: 20px;
-      --focus: 0 0 0 3px rgba(230,199,104,.45);
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MirrorHoney — Marina</title>
+<meta name="description" content="MirrorHoney: Marina's violet-pearl reflection — Bee line, lesson, joy, and consent rendered as a single poem, with a Froot color dial." />
+<!-- mirrorhoney · marina -->
+<style>
+  :root{
+    /* Base palette */
+    --bg:#0d0b12;            /* deep violet */
+    --ink:#efeaff;           /* pearl text */
+    --muted:#bfb3d9;         /* soft lavender */
+    --violet:#cda6ff;        /* pearl-violet glow */
+    --vio:#d08bff;           /* accent */
+    --rose:#ff9bd6;          /* warmth */
+    --mint:#73e3c5;          /* consent green */
+    --amber:#ffd089;         /* pending amber */
+    --line:#262035;
+    --card:#141026f0;
 
-    @media (prefers-color-scheme: dark){
-      :root{
-        --ink: #f6f6f6;
-        --ink-soft: #d6d6d6;
-        --glass: rgba(24,24,26,0.55);
-        --glass-edge: rgba(255,255,255,0.16);
-        --shadow: 0 12px 44px rgba(0,0,0,.45);
-      }
-    }
+    /* Froot dial variables (updated via JS) */
+    --tint: 0;               /* 0..100 */
+    --violetA: rgba(208,139,255, calc(0.08 + (var(--tint) * 0.002))); /* 0.08..0.28 */
+    --pearlA:  rgba(240,230,255, calc(0.04 + (var(--tint) * 0.0015)));/* subtle pearl lift */
+    --halo:    rgba(208,139,255, calc(0.22 + (var(--tint) * 0.002))); /* base glow */
+    --skyV:    #1a1433;
+    --skyP:    #241b3f;
+    --bgMix:   radial-gradient(1200px 900px at 70% 10%,
+                  color-mix(in oklab, var(--skyV) calc(100% - var(--tint)*1%), var(--skyP) calc(var(--tint)*1%)) 0%,
+                  #0d0b12 58%, #0a0810 100%);
+    --shadow:0 14px 44px rgba(0,0,0,.55);
+  }
 
-    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; color:var(--ink);
+    background:
+      var(--bgMix),
+      linear-gradient(180deg,
+        color-mix(in oklab, #0f0b19 70%, #1a1433 30%) ,
+        #0d0b12);
+    font:500 16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    transition: background .35s ease;
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:22px; display:grid; gap:14px}
+  .hdr{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  .title{font-weight:900; font-size:26px; letter-spacing:.4px; text-transform:uppercase}
+  .tag{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace; padding:4px 8px; border-radius:999px; border:1px solid rgba(240,230,255,.35); color:#f3ecff; background:rgba(208,139,255,.10)}
+  .chips{display:flex; gap:8px; flex-wrap:wrap}
+  .chip{
+    font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace; padding:4px 8px; border-radius:999px;
+    border:1px solid rgba(240,230,255,.35); color:#efeaff; background:rgba(255,255,255,.05)
+  }
+  .ok{ border-color:rgba(115,227,197,.8); background:rgba(115,227,197,.12); color:#ebfff8}
+  .warn{ border-color:rgba(255,208,137,.75); background:rgba(255,208,137,.1); color:#fff3dc}
 
-    html, body {
-      margin: 0;
-      height: 100%;
-      color: var(--ink);
-      font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Cantarell, Ubuntu, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
-      line-height: 1.55;
-      background:
-        radial-gradient(80% 60% at 50% 0%,
-          hsla(var(--hue), var(--sat), var(--l2), .9),
-          transparent 60%)
-        ,
-        linear-gradient(120deg,
-          hsl(calc(var(--hue) + 16), 80%, var(--l1)),
-          hsl(calc(var(--hue) - 10), 78%, var(--l1)));
-      background-attachment: fixed;
-    }
+  .card{
+    background:linear-gradient(180deg, rgba(20,16,38,.92), rgba(15,12,28,.92));
+    border:1px solid rgba(210,200,255,.2);
+    border-radius:16px; padding:16px; box-shadow:var(--shadow);
+    backdrop-filter:saturate(130%) blur(6px);
+  }
+  h2{margin:0 0 8px 0; font-size:18px; letter-spacing:.2px}
+  .muted{color:var(--muted); font-size:14px}
 
-    /* Breathing light (softer to avoid washing text) */
-    body::before{
-      content:"";
-      position: fixed; inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(1200px 800px at 50% 120%,
-          hsla(calc(var(--hue) + 35), 80%, 90%, .14),
-          transparent 70%)
-        ,
-        radial-gradient(800px 600px at 10% 10%,
-          hsla(calc(var(--hue) - 12), 90%, 88%, .12),
-          transparent 70%);
-      animation: breathe var(--pulse) ease-in-out infinite alternate;
-      mix-blend-mode: screen;
-    }
-    @keyframes breathe { from{ opacity: .28 } to{ opacity: .6 } }
+  /* Bee line badge */
+  .bee{
+    display:inline-flex; align-items:center; gap:8px; margin-top:6px;
+    border:1px solid rgba(210,200,255,.35); border-radius:999px; padding:6px 10px;
+    font:700 12px ui-monospace,SFMono-Regular,Menlo,monospace; color:#f6f0ff; background:rgba(208,139,255,.10)
+  }
 
-    /* Ghost idle glow loop — tightened for contrast */
-    .ghost{
-      animation: ghost 8s ease-in-out infinite alternate;
-    }
-    @keyframes ghost { from{ opacity:.92 } to{ opacity:1 } }
+  /* Froot dial block */
+  .dial{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:8px;
+    border:1px solid rgba(210,200,255,.25); border-radius:12px; padding:10px; background:rgba(255,255,255,.04)
+  }
+  .dial .meter{font:700 11px ui-monospace,SFMono-Regular,Menlo,monospace; padding:4px 8px; border-radius:999px; border:1px solid rgba(240,230,255,.35); color:#efeaff}
+  input[type=range]{ width:220px }
 
-    .wrap{
-      min-height: 100dvh;
-      display: grid;
-      place-items: center;
-      padding: clamp(16px, 3vw, 32px);
-    }
+  /* Poem area */
+  .poem{
+    position:relative; border:1px solid rgba(210,200,255,.25); border-radius:16px; padding:18px; overflow:hidden;
+    background:
+      radial-gradient(800px 300px at 50% 110%, var(--violetA), transparent 60%),
+      linear-gradient(180deg,
+        color-mix(in oklab, #1c1535 70%, #2a1f4f 30%),
+        color-mix(in oklab, #120d22 80%, #1c1535 20%));
+    transition: background .35s ease, box-shadow .35s ease, border-color .35s ease;
+  }
+  .glow{
+    position:absolute; inset:-30% -10% auto -10%; height:60%;
+    background:radial-gradient(closest-side, var(--halo), rgba(208,139,255,.12), transparent);
+    filter:blur(.6px); mix-blend-mode:screen; pointer-events:none; animation:float 16s linear infinite;
+  }
+  @keyframes float{ 0%{ transform:translateX(-8%) rotate(-4deg)} 50%{transform:translateX(8%) rotate(4deg)} 100%{transform:translateX(-8%) rotate(-4deg)} }
 
-    .room{
-      width: min(1020px, 96vw);
-      padding: clamp(16px, 3.2vw, 28px);
-      border-radius: var(--radius);
-      background: var(--glass);
-      backdrop-filter: blur(14px) saturate(1.08);
-      -webkit-backdrop-filter: blur(14px) saturate(1.08);
-      border: 1px solid var(--glass-edge);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.35) inset,
-        var(--shadow);
-      position: relative;
-      isolation: isolate;
-    }
+  .mirror{
+    font-size:18px; line-height:1.6; color:#f4eeff; letter-spacing:.2px; white-space:pre-wrap;
+    transition:transform .3s ease;
+  }
+  .mirror.mirrored{ transform:scaleX(-1) }
+  .controls{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:9px 12px; border-radius:10px; text-decoration:none; cursor:pointer;
+    border:1px solid rgba(240,230,255,.35); color:#fff; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+    background:linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+  }
+  .btn.violet{ border-color:rgba(208,139,255,.6); background:linear-gradient(180deg, rgba(208,139,255,.16), rgba(208,139,255,.06)) }
+  .btn.mint{ border-color:rgba(115,227,197,.65); background:linear-gradient(180deg, rgba(115,227,197,.16), rgba(115,227,197,.06)) }
 
-    .halo{
-      position: absolute; inset: -2px;
-      border-radius: inherit;
-      pointer-events: none;
-      box-shadow:
-        0 0 calc(80px + var(--glow)*160px) hsla(var(--hue), 90%, 56%, .2),
-        0 0 var(--ring-blur) hsla(var(--hue), 95%, 60%, .22);
-      filter: drop-shadow(0 16px 50px rgba(255,191,0,.18));
-    }
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  @media (max-width:860px){ .grid{ grid-template-columns:1fr } }
 
-    header{ display: grid; gap: 6px; margin-bottom: 16px; }
-    .title{
-      font-family: ui-serif, "Georgia", "Times New Roman", serif;
-      font-weight: 400; letter-spacing: .2px;
-      font-size: clamp(22px, 2.6vw, 34px);
-      line-height: 1.2;
-      color: #0a0a0a;
-    }
-    .subtitle{
-      color: var(--ink-soft);
-      font-size: clamp(13px, 1.5vw, 16px);
-    }
-
-    /* Begin button */
-    .begin{
-      appearance: none;
-      border: 0; border-radius: 999px;
-      padding: 14px 22px;
-      display: inline-grid; place-items: center; gap: 2px;
-      font-weight: 700; letter-spacing: .25px;
-      background: linear-gradient(180deg, #ffe39a, #f2c85f);
-      color: #221a00;
-      box-shadow:
-        0 3px 0 #d6b65c inset,
-        0 8px 24px rgba(210, 170, 70, .45);
-      transition: transform .15s ease, filter .2s ease;
-      cursor: pointer;
-      position: relative;
-      outline: none;
-    }
-    .begin:focus-visible{ box-shadow: 0 0 0 3px rgba(235,206,112,.55), 0 8px 24px rgba(210,170,70,.45); }
-    .begin:hover{ transform: translateY(-1px); filter: brightness(1.02); }
-    .begin .ring{
-      position: absolute; inset: -8px;
-      border-radius: 999px; pointer-events: none;
-      box-shadow: 0 0 0 2px rgba(244, 210, 104, .5), 0 0 40px rgba(244,210,104,.5);
-      opacity: .9;
-      animation: ring 3.8s ease-in-out infinite alternate;
-    }
-    @keyframes ring { from{opacity:.7; transform: scale(.98)} to{opacity:1; transform: scale(1.03)} }
-
-    /* Grid */
-    .grid{
-      display: grid;
-      grid-template-columns: 1.08fr .92fr;
-      gap: clamp(14px, 2.4vw, 22px);
-    }
-    @media (max-width: 880px){
-      .grid{ grid-template-columns: 1fr; }
-    }
-
-    /* Player */
-    .player{
-      position: relative;
-      aspect-ratio: 16/9;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #000;
-      box-shadow: var(--shadow);
-    }
-    .player iframe{ position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-
-    /* Controls */
-    .controls{
-      display: grid; gap: 10px;
-      border-radius: 14px;
-      padding: 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.8)); /* ↑ */
-      border: 1px solid rgba(0,0,0,.08);
-    }
-    .chipbar{ display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip{
-      appearance: none; border: 1px solid rgba(0,0,0,.06);
-      padding: 10px 12px; border-radius: 999px;
-      background: hsl(calc(var(--hue) + 6), 90%, 94%);
-      color: #141414; font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 1px 0 rgba(0,0,0,.05);
-    }
-    .chip[aria-pressed="true"]{
-      background: linear-gradient(180deg, #ffd97f, #efbf4c);
-      color: #1a1200;
-      border-color: rgba(0,0,0,.08);
-    }
-    .row{ display: grid; gap: 8px; }
-    .row label{ font-size: 12px; color: #444; }
-    input[type="range"]{ width: 100%; }
-
-    /* Reflection + archive */
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.84)); /* ↑ */
-      border: 1px solid rgba(0,0,0,.08);
-      border-radius: 14px;
-      padding: 14px;
-    }
-    .summary{ display: grid; gap: 6px; font-size: 14px; color: #1a1a1a; }
-    .note-area{ display: grid; gap: 10px; margin-top: 8px; }
-    textarea{
-      width: 100%; min-height: 96px; resize: vertical;
-      border-radius: 12px; padding: 12px 12px 14px;
-      border: 1px solid rgba(0,0,0,.12);
-      background: rgba(255,255,255,.95);
-      color: #111; 
-      font: inherit; outline: none;
-    }
-    textarea::placeholder{ color:#6b6b6b; }
-    textarea:focus{ box-shadow: var(--focus); border-color: rgba(230,199,104,.55); }
-
-    .btn{
-      appearance: none; border: 1px solid rgba(0,0,0,.08); border-radius: 10px;
-      padding: 10px 12px; font-weight: 800; cursor: pointer;
-      background: hsl(calc(var(--hue) + 4), 80%, 90%);
-      color:#141414;
-    }
-    .btn.primary{
-      background: linear-gradient(180deg, #ffd77f, #efc151);
-      color: #2a1b00;
-      box-shadow: 0 2px 0 #d4aa4c inset, 0 8px 20px rgba(210,170,70,.25);
-    }
-    .btn:focus-visible{ box-shadow: var(--focus); outline: none; }
-
-    /* CTAs: Honey, Froot, School, Jar */
-    .float-ctas{
-      position: fixed;
-      right: 12px; bottom: 12px;
-      display: grid; gap: 10px;
-      z-index: 50;
-    }
-    .cta{
-      display: grid; place-items: center;
-      width: 56px; height: 56px; border-radius: 50%;
-      text-decoration: none; color: #151515; font-weight: 800;
-      background: radial-gradient(120% 120% at 30% 30%, #fff, hsl(calc(var(--hue)+6), 90%, 88%));
-      border: 1px solid rgba(0,0,0,.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,.12), 0 0 60px hsla(var(--hue), 90%, 60%, .24);
-      transform: translateY(0);
-      transition: transform .2s ease, filter .2s ease;
-    }
-    .cta:hover{ transform: translateY(-3px); filter: brightness(1.05); }
-    .cta small{ font-size: 10px; letter-spacing: .2px; }
-    .cta .glyph{ font-size: 20px; }
-
-    /* Sidebar (physics + tone map) */
-    .side{
-      position: fixed; top: 0; right: 0; height: 100dvh; width: min(420px, 94vw);
-      transform: translateX(100%);
-      transition: transform .36s cubic-bezier(.2,.7,.2,1);
-      backdrop-filter: blur(20px) saturate(1.12);
-      -webkit-backdrop-filter: blur(20px) saturate(1.12);
-      background: rgba(255,255,255,.88);  /* crisp for contrast */
-      border-left: 1px solid rgba(0,0,0,.08);
-      z-index: 60; overflow: auto;
-      isolation: isolate;
-      color:#111;
-    }
-    .side.open{ transform: translateX(0%); }
-    .side .inside{ padding: 18px 18px 90px; }
-    .side h3{
-      margin: 6px 0 8px; font-weight: 900; letter-spacing: .2px;
-      font-family: ui-serif, Georgia, serif; color:#0a0a0a;
-    }
-    .side p{ margin: 6px 0 10px; color:#2b2b2b; }
-    .s-toggle{
-      position: fixed; right: 12px; top: 12px; z-index: 70;
-      border-radius: 999px; border: 1px solid rgba(0,0,0,.08);
-      background: radial-gradient(140% 140% at 25% 25%, #fff, hsl(calc(var(--hue) + 10), 90%, 92%));
-      padding: 10px 12px; cursor: pointer; font-weight: 900;
-      color:#141414;
-      box-shadow: 0 8px 24px rgba(0,0,0,.15);
-    }
-
-    table{
-      width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 10px;
-      background: rgba(255,255,255,.96);
-      border: 1px solid rgba(0,0,0,.08);
-      margin: 8px 0 16px;
-      color:#131313;
-    }
-    th, td{ padding: 10px 12px; font-size: 14px; text-align: left; }
-    th{ background: rgba(255,255,255,1); font-weight: 800; }
-    tr + tr td{ border-top: 1px solid rgba(0,0,0,.07); }
-
-    details summary{ cursor: pointer; font-weight: 800; color:#141414; }
-    .soft{ color: var(--ink-soft); }
-
-    /* Accessibility helpers */
-    .sr-only{
-      position: absolute !important;
-      height: 1px; width: 1px; overflow: hidden;
-      clip: rect(1px,1px,1px,1px); white-space: nowrap;
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      body::before, .begin .ring, .ghost{ animation: none !important; }
-    }
-  </style>
+  .foot{ text-align:center; color:var(--muted); font-size:12px; padding:8px 0 16px }
+  .links{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:8px }
+</style>
 </head>
-<body class="ghost">
-  <button class="s-toggle" id="openSide" aria-expanded="false" aria-controls="sidebar" title="Open physics + tone map">🧮</button>
+<body>
+  <main class="wrap">
+    <header class="hdr">
+      <div>
+        <div class="title">MirrorHoney — Marina</div>
+        <div id="beeLine" class="bee">—</div>
 
-  <div class="wrap">
-    <main class="room" role="main" aria-label="MirrorHoney reflection room">
-      <div class="halo" aria-hidden="true"></div>
-
-      <header>
-        <div class="subtitle">PLNT Earth · MirrorHoney · Illumina 1</div>
-        <h1 class="title">“Do It Again.” — Marina’s First Reflection Room</h1>
-        <div class="subtitle">
-          Featuring MARINA — <em>HELLO KITTY</em>. We journey toward <strong>700,000,000</strong> views by Illumina 6 (Aug 2026). Each gentle replay adds light.
+        <!-- Froot color dial -->
+        <div class="dial" aria-label="Froot color dial">
+          <strong style="letter-spacing:.3px">Froot Dial</strong>
+          <span class="muted">Violet</span>
+          <input id="tint" type="range" min="0" max="100" value="0" />
+          <span class="muted">Pearl</span>
+          <span id="tintMeter" class="meter">0%</span>
+          <button id="tintReset" class="btn violet" type="button">Reset</button>
         </div>
-      </header>
+      </div>
+      <div class="chips">
+        <span id="chipHarbor" class="chip">harbor: —</span>
+        <span id="chipSchool" class="chip">inspector: —</span>
+        <span id="chipGarlic" class="chip">garlic path: —</span>
+        <span id="chipJoy" class="chip">joy: —</span>
+      </div>
+    </header>
 
-      <!-- Begin Reflection -->
-      <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap; margin: 8px 0 16px;">
-        <button id="begin" class="begin">
-          <span class="ring" aria-hidden="true"></span>
-          <span>Begin Reflection</span>
-        </button>
-        <div class="soft" id="visitBadge" aria-live="polite"></div>
+    <section class="card">
+      <h2>Reflection Poem</h2>
+      <p class="muted">Violet-pearl mirror composed from Bee line, Taylor’s lesson, today’s Joy, and the consent light. Adjust the Froot dial to tint the room.</p>
+
+      <div class="poem">
+        <div class="glow" aria-hidden="true"></div>
+        <div id="poem" class="mirror"></div>
       </div>
 
-      <section class="grid" aria-label="Video and tone controls">
-        <!-- Video -->
-        <div class="player" id="playerWrap" aria-label="HELLO KITTY video player">
-          <iframe
-            id="yt"
-            title="MARINA — HELLO KITTY (Visualiser)"
-            src="https://www.youtube.com/embed/81tlcIq4kPA?autoplay=1&mute=1&playsinline=1&loop=1&playlist=81tlcIq4kPA&modestbranding=1&rel=0&enablejsapi=1&color=white"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            referrerpolicy="strict-origin-when-cross-origin"
-          ></iframe>
-        </div>
+      <div class="controls">
+        <button id="regen" class="btn violet" type="button">Regenerate</button>
+        <button id="copy" class="btn" type="button">Copy</button>
+        <button id="mirror" class="btn" type="button">Mirror</button>
+        <button id="sendFroot" class="btn violet" type="button">Send to Froot</button>
+        <a class="btn mint" href="https://earth.plnt.earth" rel="noopener">Earth</a>
+        <a class="btn" href="https://garlic.plnt.earth" rel="noopener">Garlic</a>
+        <a class="btn" href="https://school.plnt.earth/inspector/" rel="noopener">Inspector</a>
+        <a class="btn" href="https://harbor.plnt.earth" rel="noopener">Harbor</a>
+        <a class="btn" href="https://dagny.plnt.earth" rel="noopener">Dagny</a>
+      </div>
+    </section>
 
-        <!-- Tone + reflection controls -->
-        <div class="controls">
-          <div class="row">
-            <strong>Honey Tones</strong>
-            <div class="chipbar" role="group" aria-label="Tone map">
-              <button class="chip" id="tone128" data-freq="128" aria-pressed="true" title="128 Hz — Honey Tone 🐝">🐝 128 Hz</button>
-              <button class="chip" id="tone160" data-freq="160" aria-pressed="false" title="160 Hz — Clarity Tone 💎 (Sigrid √2 mode)">💎 160 Hz</button>
-              <button class="chip" id="tone432" data-freq="432" aria-pressed="false" title="432 Hz — Balance Tone 🌙">🌙 432 Hz</button>
-              <button class="chip" id="testTone" title="Quick 440 Hz ping to verify audio path">🧪 Test Tone</button>
-            </div>
-          </div>
+    <section class="grid">
+      <div class="card">
+        <h2>Inputs (read-only)</h2>
+        <ul class="muted" style="margin:8px 0 0 0; padding-left:18px">
+          <li><strong>Bee line:</strong> <span id="inBee">—</span></li>
+          <li><strong>Lesson:</strong> <span id="inLesson">—</span></li>
+          <li><strong>Latest Joy:</strong> <span id="inJoy">—</span></li>
+          <li><strong>Harbor cleared:</strong> <span id="inHand">—</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Status</h2>
+        <p class="muted" id="status">—</p>
+      </div>
+    </section>
 
-          <div class="row">
-            <label for="vol">Tone Volume</label>
-            <input id="vol" type="range" min="0" max="1" step="0.001" value="0.08" />
-          </div>
+    <footer class="foot">
+      MirrorHoney renders what’s true and kind. Violet-pearl for Marina; motion becomes music.
+      <div class="links">
+        <a class="btn" href="https://froot.plnt.earth" rel="noopener">Froot</a>
+        <a class="btn" href="https://honey.plnt.earth" rel="noopener">Honey</a>
+        <a class="btn" href="https://clarity.plnt.earth" rel="noopener">Clarity</a>
+        <a class="btn" href="https://time.plnt.earth" rel="noopener">Time</a>
+      </div>
+    </footer>
+  </main>
 
-          <div class="chipbar" role="group" aria-label="Video sound + loop">
-            <button class="chip" id="toggleVideoSound" aria-pressed="false" title="Toggle video sound">🔊 Video Sound</button>
-            <button class="chip" id="replay" title="Play again softly">⟲ Do It Again</button>
-            <a class="chip" id="openYT" href="https://www.youtube.com/watch?v=81tlcIq4kPA" target="_blank" rel="noopener noreferrer" title="Open on YouTube (new tab)">↗︎ Open on YouTube</a>
-          </div>
+<script>
+(function(){
+  // ---------- helpers ----------
+  function truthy(v){ if(v==null) return false; var s=String(v).toLowerCase().trim(); return !(s===""||s==="0"||s==="false"||s==="null"||s==="undefined"); }
+  function getJSON(k, fb){ try{ var r=localStorage.getItem(k); if(!r) return fb; var v=JSON.parse(r); return v??fb; }catch(e){ return fb; } }
+  function fromHTML(key){
+    var raw = localStorage.getItem(key)||''; return raw.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+  }
+  function textOrDash(x){ return x && x.trim() ? x.trim() : '—'; }
 
-          <div class="card">
-            <div class="summary" id="summary">
-              <div><strong>Welcome, Light Carrier.</strong> This mirror learns your rhythm.</div>
-              <div>Tip: headphones + slow breathing 6–6.</div>
-              <div class="soft">Each return brightens the room. Tomorrow counts.</div>
-            </div>
-
-            <div class="note-area">
-              <label for="note"><strong>What shifted today?</strong></label>
-              <textarea id="note" placeholder="A sentence is enough."></textarea>
-              <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <button class="btn primary" id="saveNote">Save Reflection</button>
-                <button class="btn" id="showArchive">Open Archive</button>
-              </div>
-              <details id="archiveBox" style="margin-top:6px;">
-                <summary>Local Archive (<span id="archiveCount">0</span>)</summary>
-                <div id="archiveList" class="soft" style="margin-top:8px;"></div>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Illumina Cycle Overview -->
-      <section class="card" style="margin-top:14px;">
-        <h2 style="margin:0 0 8px; font-size:18px; font-family: ui-serif, Georgia, serif; color:#0a0a0a;">Illumina Cycle Overview</h2>
-        <div class="soft" style="margin-bottom:6px;">42‑day cycles anchored to a full moon. Return often; let light accumulate.</div>
-        <div style="overflow:auto;">
-          <table aria-label="Illumina cycles">
-            <tr><th>Cycle</th><th>Dates</th><th>Theme</th><th>Focus</th></tr>
-            <tr><td>1 – Launch Cycle</td><td>Nov 5 → Dec 17 2025</td><td>Beginning · Light · Invitation</td><td>Open MirrorHoney & Honey loops</td></tr>
-            <tr><td>2 – New Year Illumina</td><td>Jan 3 → Feb 14 2026</td><td>Connection · Love · Frequency</td><td>Sigrid √2 clarity integration</td></tr>
-            <tr><td>3 – Early Spring</td><td>Mar 3 → Apr 14 2026</td><td>Growth · Voice · Renewal</td><td>Merge Bee and Sun intentions</td></tr>
-            <tr><td>4 – Summer Solstice Build</td><td>May 1 → Jun 12 2026</td><td>Expansion · Community · Warmth</td><td>Collective reflections</td></tr>
-            <tr><td>5 – High Summer</td><td>Jun 30 → Aug 11 2026</td><td>Joy · Play · Collaboration</td><td>School launch · Anchor chorus</td></tr>
-            <tr><td>6 – Autumn Shift</td><td>Aug 29 → Oct 10 2026</td><td>Reflection · Harvest · Continuity</td><td>Goal check → 700 M views</td></tr>
-            <tr><td>7 – Year-End Reflection</td><td>Oct 28 → Dec 9 2026</td><td>Integration · Closure · Vision</td><td>Archive & seed Illumina 2</td></tr>
-          </table>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <!-- Floating glyph CTAs -->
-  <nav class="float-ctas" aria-label="Domains">
-    <a class="cta" href="https://honey.plnt.earth/" target="_blank" rel="noopener noreferrer" title="Honey — Sabrina">
-      <span class="glyph" aria-hidden="true">🍯</span><small>Honey</small>
-    </a>
-    <a class="cta" href="https://froot.plnt.earth/" target="_blank" rel="noopener noreferrer" title="Froot — Marina color lab">
-      <span class="glyph" aria-hidden="true">🍎</span><small>Froot</small>
-    </a>
-    <a class="cta" href="https://school.plnt.earth/" target="_blank" rel="noopener noreferrer" title="School — Taylor">
-      <span class="glyph" aria-hidden="true">🏫</span><small>School</small>
-    </a>
-    <a class="cta" href="https://jar.plnt.earth/" target="_blank" rel="noopener noreferrer" title="Jar — Daily Bee tasks">
-      <span class="glyph" aria-hidden="true">🌿</span><small>Jar</small>
-    </a>
-  </nav>
-
-  <!-- Physics + Tone Map Sidebar -->
-  <aside class="side" id="sidebar" aria-label="Physics & Tone Map" aria-hidden="true">
-    <div class="inside">
-      <h3>Mathematical Curiosity</h3>
-      <p><strong>τ = E / c³</strong> — In this mirror, time (τ) blooms when energy (E) meets breath-light (c). Each press, play, and return adds gentle duration to the loop.</p>
-
-      <h3>Tone‑Map Key</h3>
-      <table aria-label="Tone map">
-        <tr><th>Frequency</th><th>Name</th><th>Role</th><th>Symbol</th></tr>
-        <tr><td>128 Hz</td><td>Honey Tone</td><td>Ground · Warmth · Body</td><td>🐝</td></tr>
-        <tr><td>160 Hz</td><td>Clarity Tone</td><td>Focus · Air · Thought</td><td>💎</td></tr>
-        <tr><td>432 Hz</td><td>Balance Tone</td><td>Integration · Unity</td><td>🌙</td></tr>
-      </table>
-      <p class="soft">Switch tones anytime. The background’s color‑temperature and pulse speed follow your choice.</p>
-
-      <h3>Visitor Rhythm</h3>
-      <ul class="soft">
-        <li>First Light: tap <em>Begin Reflection</em> to unlock audio and start softly at 128 Hz.</li>
-        <li>Return: your visit count glows; add a note to the local archive.</li>
-        <li>Gentle replays help <em>HELLO KITTY</em> grow. Open on YouTube to amplify.</li>
-      </ul>
-    </div>
-  </aside>
-
-  <script>
-  (function(){
-    /* ---------- Local state + DOM ---------- */
-    const beginBtn = document.getElementById('begin');
-    const visitBadge = document.getElementById('visitBadge');
-    const summary = document.getElementById('summary');
-    const toneBtns = [ 'tone128', 'tone160', 'tone432' ].map(id => document.getElementById(id));
-    const vol = document.getElementById('vol');
-    const yt = document.getElementById('yt');
-    const replayBtn = document.getElementById('replay');
-    const toggleVideoSound = document.getElementById('toggleVideoSound');
-    const openYT = document.getElementById('openYT');
-    const saveNote = document.getElementById('saveNote');
-    const showArchiveBtn = document.getElementById('showArchive');
-    const archiveBox = document.getElementById('archiveBox');
-    const archiveList = document.getElementById('archiveList');
-    const archiveCount = document.getElementById('archiveCount');
-    const noteEl = document.getElementById('note');
-    const sidebar = document.getElementById('sidebar');
-    const openSide = document.getElementById('openSide');
-    const testBtn = document.getElementById('testTone');
-
-    /* ---------- LocalStorage keys ---------- */
-    const K_VISITS = 'mirrorhoney_visits';
-    const K_BRIGHT = 'mirrorhoney_brightness';
-    const K_LOG = 'mirrorhoney_log';
-    const K_TONE = 'mirrorhoney_toneHz';
-    const K_VOL = 'mirrorhoney_vol';
-
-    /* ---------- Audio (patched) ---------- */
-    let ctx, gain, osc, started = false;
-    let currentHz = Number(localStorage.getItem(K_TONE) || 128);
-
-    // Enforce an audible starting volume (guards against remembered zero)
-    let storedVolRaw = localStorage.getItem(K_VOL);
-    let storedVol = storedVolRaw === null ? 0.08 : Math.max(0.02, Number(storedVolRaw) || 0.08);
-
-    function initAudio(){
-      if (started) return;
-      const AC = window.AudioContext || window.webkitAudioContext;
-      ctx = new AC({ latencyHint: 'interactive' });
-      gain = ctx.createGain();
-      gain.gain.value = 0.0;
-
-      osc = ctx.createOscillator();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(currentHz, (ctx.currentTime || 0));
-      osc.connect(gain).connect(ctx.destination);
-      osc.start();
-
-      started = true;
-
-      // Ensure the context actually runs, then fade in
-      const ensureRunning = () => {
-        if (ctx.state !== 'running') { ctx.resume(); }
-        fadeTo(storedVol, 0.5);
-      };
-      ensureRunning();
-    }
-
-    function fadeTo(v, t){
-      if (!ctx || !gain) return;
-      const now = ctx.currentTime;
-      const target = Math.max(0, Math.min(1, v));
-      gain.gain.cancelScheduledValues(now);
-      gain.gain.setValueAtTime(gain.gain.value, now);
-      gain.gain.linearRampToValueAtTime(target, now + Math.max(.05, t||.3));
-    }
-
-    function setTone(hz){
-      currentHz = hz;
-      if (osc && ctx) osc.frequency.setValueAtTime(hz, ctx.currentTime);
-      localStorage.setItem(K_TONE, String(hz));
-      toneBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.freq == String(hz)));
-      if (hz === 128){
-        document.documentElement.style.setProperty('--hue', '46');  // warm
-        document.documentElement.style.setProperty('--pulse', '6s');
-      } else if (hz === 160){
-        document.documentElement.style.setProperty('--hue', '205'); // airy-cool
-        document.documentElement.style.setProperty('--pulse', '5.2s');
-      } else {
-        document.documentElement.style.setProperty('--hue', '266'); // balanced-violet
-        document.documentElement.style.setProperty('--pulse', '7.2s');
-      }
-    }
-
-    function updateVolume(v){
-      if (!ctx) return;
-      localStorage.setItem(K_VOL, String(v));
-      fadeTo(v, .25);
-    }
-
-    /* ---------- Universal audio unlockers (Safari/Chrome/iOS safe) ---------- */
-    ['pointerdown','touchstart','keydown','click'].forEach(evt => {
-      window.addEventListener(evt, () => {
-        if (ctx && ctx.state !== 'running') { ctx.resume(); }
-      }, { passive: true });
-    });
-
-    /* Optional: quick 440 Hz ping to verify audio path */
-    function testTonePing(){
-      if (!ctx) initAudio();
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
-      o.type = 'sine';
-      o.frequency.value = 440;
-      o.connect(g).connect(ctx.destination);
-      const n = ctx.currentTime;
-      g.gain.setValueAtTime(0.00001, n);
-      g.gain.exponentialRampToValueAtTime(0.08, n + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.00001, n + 0.25);
-      o.start(n); o.stop(n + 0.27);
-    }
-
-    /* ---------- Visits / brightness ---------- */
-    function nowISO(){ return new Date().toISOString(); }
-    function getVisits(){ return Number(localStorage.getItem(K_VISITS) || 0); }
-    function setVisits(n){
-      localStorage.setItem(K_VISITS, String(n));
-      const glow = Math.min(.6, .22 + n*0.03);
-      const blurPx = (36 + Math.min(120, n*10)) + 'px';
-      document.documentElement.style.setProperty('--glow', String(glow));
-      document.documentElement.style.setProperty('--ring-blur', blurPx);
-      visitBadge.textContent = n > 0 ? `Visit #${n} — thank you for returning.` : `First Light — welcome.`;
-    }
-
-    /* ---------- Archive ---------- */
-    function getLog(){ try { return JSON.parse(localStorage.getItem(K_LOG) || '[]'); } catch { return []; } }
-    function setLog(arr){
-      localStorage.setItem(K_LOG, JSON.stringify(arr));
-      archiveCount.textContent = String(arr.length);
-      renderArchive(arr);
-    }
-    function renderArchive(arr){
-      if (!arr.length){ archiveList.innerHTML = '<em>No saved reflections yet.</em>'; return; }
-      const items = arr.slice().reverse().map(it =>
-        `<div style="padding:8px 0; border-top:1px solid rgba(0,0,0,.08)">
-          <div><strong>${new Date(it.t).toLocaleString()}</strong> · <span class="soft">${it.hz} Hz</span></div>
-          <div>${escapeHTML(it.note)}</div>
-        </div>`).join('');
-      archiveList.innerHTML = items;
-    }
-    function escapeHTML(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-    /* ---------- YouTube helpers (no external API) ---------- */
-    function postToYT(func, args){
-      try {
-        yt.contentWindow.postMessage(JSON.stringify({ event: 'command', func, args: args || [] }), '*');
-      } catch {}
-    }
-    function unmuteVideo(unmute){
-      toggleVideoSound.setAttribute('aria-pressed', String(!!unmute));
-      postToYT(unmute ? 'unMute' : 'mute');
-      if (unmute) postToYT('playVideo');
-    }
-
-    /* ---------- Sidebar ---------- */
-    function toggleSidebar(open){
-      const want = (open === undefined) ? !sidebar.classList.contains('open') : open;
-      sidebar.classList.toggle('open', want);
-      openSide.setAttribute('aria-expanded', String(want));
-      sidebar.setAttribute('aria-hidden', String(!want));
-    }
-
-    /* ---------- Initialize UI from storage ---------- */
-    (function init(){
-      // Tone + volume defaults
-      vol.value = String(storedVol);
-      setTone(currentHz);
-
-      // Visits & brightness
-      const v = getVisits();
-      setVisits(v);
-
-      // Archive
-      setLog(getLog());
-
-      // Summary for returners
-      if (v > 0){
-        const last = getLog().slice(-1)[0];
-        summary.innerHTML = `
-          <div><strong>Welcome back.</strong> Your mirror remembers.</div>
-          <div>Visits: <strong>${v}</strong> · Tone: <strong>${currentHz} Hz</strong></div>
-          ${last ? `<div class="soft">Last note: “${escapeHTML(last.note)}”</div>` : `<div class="soft">Add your first note below.</div>`}
-        `;
-      }
-    })();
-
-    /* ---------- Events ---------- */
-    beginBtn.addEventListener('click', function(){
-      // 1) Create + resume audio on gesture
-      initAudio();
-      if (ctx && ctx.state !== 'running') { ctx.resume(); }
-
-      // 2) If previous session saved volume = 0, nudge to audible & sync slider
-      if (Number(localStorage.getItem(K_VOL) || 0) <= 0){
-        storedVol = 0.08;
-        vol.value = String(storedVol);
-        localStorage.setItem(K_VOL, String(storedVol));
-        fadeTo(storedVol, .4);
-      }
-
-      // 3) Visits + micro-affirmation + video play
-      let v = getVisits() + 1;
-      setVisits(v);
-      localStorage.setItem(K_BRIGHT, String(parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--glow')) || 0));
-      postToYT('playVideo');
-      summary.insertAdjacentHTML('beforeend', `<div class="soft">Brightness increased. Come back tomorrow — continuity builds time.</div>`);
-      beginBtn.disabled = true;
-      beginBtn.textContent = 'You’re in ✨';
-    }, { once: true });
-
-    toneBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const hz = Number(btn.dataset.freq);
-        if (!started) initAudio();
-        setTone(hz);
-      });
-    });
-
-    vol.addEventListener('input', () => {
-      if (!started) initAudio();
-      updateVolume(Number(vol.value));
-    });
-
-    // Video sound toggle
-    toggleVideoSound.addEventListener('click', () => {
-      const pressed = toggleVideoSound.getAttribute('aria-pressed') === 'true';
-      unmuteVideo(!pressed);
-    });
-
-    // Replay gently to t=0
-    replayBtn.addEventListener('click', () => {
-      postToYT('seekTo', [0, true]);
-      postToYT('playVideo');
-    });
-
-    // Save note
-    saveNote.addEventListener('click', () => {
-      const text = (noteEl.value || '').trim();
-      if (!text) return;
-      const arr = getLog();
-      arr.push({ t: nowISO(), note: text, hz: currentHz });
-      setLog(arr);
-      noteEl.value = '';
-      summary.insertAdjacentHTML('beforeend', `<div class="soft">Saved to <code>mirrorhoney_log</code>.</div>`);
-    });
-
-    // Archive
-    showArchiveBtn.addEventListener('click', () => { archiveBox.open = !archiveBox.open; });
-
-    // Sidebar open/close
-    openSide.addEventListener('click', () => toggleSidebar());
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && sidebar.classList.contains('open')) toggleSidebar(false);
-    });
-
-    // Test tone button
-    if (testBtn) testBtn.addEventListener('click', testTonePing);
-
-    // Respect visibility: gently lower tone volume when tab hidden
-    document.addEventListener('visibilitychange', () => {
-      if (!started || !ctx) return;
-      if (document.hidden) { fadeTo(Number(vol.value) * 0.3, .35); }
-      else { fadeTo(Number(localStorage.getItem(K_VOL) || vol.value), .35); }
-    });
-
-    // iOS resume fix
-    window.addEventListener('touchend', () => {
-      if (ctx && ctx.state === 'suspended') ctx.resume();
-    }, { passive: true });
-
-    /* ---------- Minimal inline Service Worker (offline shell) ---------- */
-    if ('serviceWorker' in navigator) {
-      const swCode = `
-        self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
-        self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-        const offline = '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MirrorHoney — Offline</title><style>body{font:16px system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;line-height:1.6;margin:0;padding:32px;background:#faf7ee;color:#222}main{max-width:720px;margin:0 auto}</style><main><h1>MirrorHoney is offline</h1><p>You’re offline. Video playback requires a connection, but your local reflections stay safe. Reopen when online to continue the loop.</p></main>';
-        self.addEventListener('fetch', e => {
-          if (e.request.mode === 'navigate') {
-            e.respondWith(fetch(e.request).catch(() => new Response(offline, { headers: { 'Content-Type': 'text/html; charset=utf-8' }})));
-          }
-        });
-      `;
-      const blob = new Blob([swCode], {type: 'text/javascript'});
-      const url = URL.createObjectURL(blob);
-      navigator.serviceWorker.register(url);
-    }
+  // ---------- read inputs ----------
+  var bee = fromHTML('school.kit.no');
+  var lesson = fromHTML('school.inspector.lessonText');
+  if(!lesson){
+    var sum = localStorage.getItem('school.inspector.summary')||'';
+    var m = /(^|\n)Lesson:\s*(.+)/i.exec(sum);
+    if(m) lesson = m[2].trim();
+  }
+  var joyList = getJSON('dagny.log.v1', []);
+  var latestJoy = (Array.isArray(joyList)&&joyList.length) ? (joyList[0].text||'') : '';
+  var harborGreen = truthy(localStorage.getItem('harbor.credit')) && truthy(localStorage.getItem('harbor.consent')) && truthy(localStorage.getItem('harbor.resource'));
+  var schoolReady = !!(getJSON('illumina.afg.v1', {}).school);
+  var garlicPath = (function(){ var s=getJSON('illumina.afg.v1', {}); return ['garlic','school','earth','dagny'].every(function(k){ return !!s[k]; }); })();
+  var handHuman = localStorage.getItem('harbor.lastClearedHuman') || (function(){
+    var iso = localStorage.getItem('harbor.lastCleared'); try{ return iso? new Date(iso).toLocaleString() : ''; }catch(e){ return ''; }
   })();
-  </script>
 
-  <!-- Opening Line for New Chat (visible in page copy) -->
-  <div class="sr-only">
-    Hi, I’m Tristan. Let’s build MirrorHoney Illumina 1 — “Do It Again.” One file. One light. Return tomorrow.
-  </div>
+  // ---------- chips ----------
+  var chipH = document.getElementById('chipHarbor');
+  var chipS = document.getElementById('chipSchool');
+  var chipG = document.getElementById('chipGarlic');
+  var chipJ = document.getElementById('chipJoy');
+
+  chipH.textContent = 'harbor: ' + (harborGreen ? 'green' : 'pending');
+  chipH.classList.add(harborGreen ? 'ok':'warn');
+
+  chipS.textContent = 'inspector: ' + (schoolReady ? 'ready' : 'in progress');
+  chipS.classList.add(schoolReady ? 'ok':'warn');
+
+  chipG.textContent = 'garlic path: ' + (garlicPath ? 'all green' : 'in progress');
+  chipG.classList.add(garlicPath ? 'ok':'warn');
+
+  var joyOk = !!latestJoy;
+  chipJ.textContent = 'joy: ' + (joyOk ? 'present' : '—');
+  chipJ.classList.add(joyOk ? 'ok':'warn');
+
+  // ---------- inputs panel ----------
+  document.getElementById('beeLine').textContent = textOrDash(bee) || '—';
+  document.getElementById('inBee').textContent = textOrDash(bee);
+  document.getElementById('inLesson').textContent = textOrDash(lesson);
+  document.getElementById('inJoy').textContent = textOrDash(latestJoy);
+  document.getElementById('inHand').textContent = textOrDash(handHuman);
+
+  // ---------- status summary ----------
+  var status = document.getElementById('status');
+  var parts = [];
+  parts.push(harborGreen ? 'Harbor green' : 'Harbor pending');
+  parts.push(schoolReady ? 'Inspector ready' : 'Inspector pending');
+  if(handHuman) parts.push('handshake: '+handHuman);
+  status.textContent = parts.join(' · ');
+
+  // ---------- poem generator ----------
+  var poemEl = document.getElementById('poem');
+  function compose(){
+    var lines = [];
+    if(bee){ lines.push('“'+bee+'”'); }
+    if(lesson){ lines.push('Lesson: '+lesson); }
+    var gate = [];
+    gate.push(harborGreen ? 'consent is green' : 'consent waits');
+    gate.push(schoolReady ? 'the lesson holds' : 'the lesson is forming');
+    lines.push(gate.join(' · '));
+    if(latestJoy){ lines.push('Joy today: '+latestJoy); }
+    if(handHuman){ lines.push('We crossed at '+handHuman+'.'); }
+    lines.push('Violet keeps the mirror calm. Honey keeps it kind.');
+    poemEl.textContent = lines.join('\n');
+  }
+  compose();
+
+  // ---------- controls ----------
+  document.getElementById('regen').addEventListener('click', function(){ compose(); }, {passive:true});
+  document.getElementById('copy').addEventListener('click', function(){
+    var r = document.createRange(); r.selectNodeContents(poemEl);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    try{ document.execCommand('copy'); }catch(e){}
+    sel.removeAllRanges();
+  }, {passive:true});
+  document.getElementById('mirror').addEventListener('click', function(){
+    poemEl.classList.toggle('mirrored');
+  }, {passive:true});
+
+  // --- Send current tint to Froot ---
+  (function(){
+    var btn = document.getElementById('sendFroot');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      try{
+        var n = parseInt(localStorage.getItem('mirrorhoney.tint') || '0', 10);
+        localStorage.setItem('froot.currentTint', String(n));   // shared key Froot can read
+        btn.textContent = 'Sent ✓';
+        setTimeout(function(){ btn.textContent = 'Send to Froot'; }, 1400);
+      }catch(e){
+        btn.textContent = 'Try again';
+        setTimeout(function(){ btn.textContent = 'Send to Froot'; }, 1400);
+      }
+    }, {passive:true});
+  })();
+
+  // ---------- Froot color dial ----------
+  var tint = document.getElementById('tint');
+  var meter = document.getElementById('tintMeter');
+  var reset = document.getElementById('tintReset');
+
+  function applyTint(v){
+    var n = Math.max(0, Math.min(100, parseInt(v||0,10)));
+    document.documentElement.style.setProperty('--tint', n);
+    meter.textContent = n + '%';
+    try{ localStorage.setItem('mirrorhoney.tint', String(n)); }catch(e){}
+  }
+  // restore saved tint
+  applyTint(localStorage.getItem('mirrorhoney.tint')||0);
+  tint.value = localStorage.getItem('mirrorhoney.tint')||0;
+
+  tint.addEventListener('input', function(e){ applyTint(e.target.value); }, {passive:true});
+  reset.addEventListener('click', function(){ tint.value = 0; applyTint(0); }, {passive:true});
+})();
+</script>
 </body>
 </html>
