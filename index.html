@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>MirrorHoney — Marina</title>
-<meta name="description" content="MirrorHoney: Marina's violet-pearl reflection — Bee line, lesson, joy, and consent rendered as a single poem, with a Froot color dial." />
+<meta name="description" content="MirrorHoney: Marina's violet-pearl reflection — Bee line, lesson, joy, and consent rendered as a single poem, with a Froot color dial and export." />
 <!-- mirrorhoney · marina -->
 <style>
   :root{
@@ -176,8 +176,11 @@
         <button id="mirror" class="btn" type="button">Mirror</button>
         <button id="sendFroot" class="btn violet" type="button">Send to Froot</button>
 
-        <!-- NEW: pill-badge “Listen to Froot” -->
+        <!-- Pill-badge “Listen to Froot” -->
         <span id="pullFroot" class="pillbtn violet" role="button" tabindex="0">Listen to Froot</span>
+
+        <!-- NEW: Export — Page 42 · Eat the World -->
+        <button id="export42" class="btn mint" type="button">Export — Page 42 · Eat the World</button>
 
         <a class="btn mint" href="https://earth.plnt.earth" rel="noopener">Earth</a>
         <a class="btn" href="https://garlic.plnt.earth" rel="noopener">Garlic</a>
@@ -352,7 +355,6 @@
   function applyFromFroot(){
     var n = getFrootTint();
     applyTint(n);
-    // flash label on pill
     var pill = document.getElementById('pullFroot');
     if(pill){
       var old = pill.textContent; pill.textContent = 'Applied ✓';
@@ -381,8 +383,63 @@
     sw.addEventListener('click', toggle, {passive:true});
     sw.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); toggle(); }});
     render();
-    // if already following, pull immediately on load
     if(on) applyFromFroot();
+  })();
+
+  // ---------- EXPORT: Page 42 · Eat the World ----------
+  (function(){
+    var btn = document.getElementById('export42');
+    if(!btn) return;
+    function pad(n){ return (n<10?'0':'')+n; }
+    btn.addEventListener('click', function(){
+      // gather fields
+      var poem = (document.getElementById('poem').textContent||'').trim();
+      var beeLine = (document.getElementById('inBee').textContent||'').trim();
+      var les = (document.getElementById('inLesson').textContent||'').trim();
+      var joy = (document.getElementById('inJoy').textContent||'').trim();
+      var hand = (document.getElementById('inHand').textContent||'').trim();
+      var harbor = chipH.textContent.trim();
+      var school = chipS.textContent.trim();
+      var tintVal = localStorage.getItem('mirrorhoney.tint') || '0';
+
+      var now = new Date();
+      var stamp = now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+'_'+pad(now.getHours())+pad(now.getMinutes());
+
+      var lines = [];
+      lines.push('PAGE 42 — EAT THE WORLD');
+      lines.push('MirrorHoney · Marina');
+      lines.push('Exported: '+ now.toString());
+      lines.push('');
+      lines.push('— Bee line —');
+      lines.push(beeLine || '—');
+      lines.push('');
+      lines.push('— Lesson —');
+      lines.push(les || '—');
+      lines.push('');
+      lines.push('— Joy —');
+      lines.push(joy || '—');
+      lines.push('');
+      lines.push('— Consent / Inspector —');
+      lines.push(harbor + ' · ' + school);
+      if(hand) lines.push('Handshake: ' + hand);
+      lines.push('Tint (0–100): ' + tintVal);
+      lines.push('');
+      lines.push('— Poem —');
+      lines.push(poem || '—');
+      lines.push('');
+      lines.push('# all from garlic · mirrored with care');
+
+      var blob = new Blob([lines.join('\n')], {type:'text/plain;charset=utf-8'});
+      var a = document.createElement('a');
+      a.download = 'page-42-eat-the-world_' + stamp + '.txt';
+      a.href = URL.createObjectURL(blob);
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 0);
+
+      btn.textContent = 'Exported ✓';
+      setTimeout(function(){ btn.textContent = 'Export — Page 42 · Eat the World'; }, 1400);
+    }, {passive:true});
   })();
 
 })();
