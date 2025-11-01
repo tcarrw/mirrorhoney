@@ -1,45 +1,203 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MirrorHoney — Eclipse Continuation</title>
-<meta name="description" content="Night reflection — Eclipse Continuation · MirrorHoney for Marina" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MirrorHoney — Warm</title>
+<meta name="theme-color" content="#f5c66a">
 <style>
   :root{
-    --violet:#cda6ff;
-    --pearl:#f4eeff;
-    --bg:#100a17;
+    --honey:#f7cf79;
+    --amber:#f2b95a;
+    --nectar:#f9e7b4;
+    --pearl:#e8e1f3;
+    --violet:#8f79ff;
+    --ink:#1d1b20;
+    --text:#17151a;
+    --muted:#6b6471;
+    --bg1: #0f0b10;
+    --bg2: #171017;
+    --ring: rgba(247,207,121,.35);
   }
-  *{box-sizing:border-box}
-  html,body{
-    height:100%;margin:0;padding:0;
-    font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-    color:var(--pearl);
-    background:
-      radial-gradient(800px 400px at 60% 20%, rgba(205,166,255,.15), transparent 60%),
-      linear-gradient(180deg,#1a1433 0%,#100a17 60%,#0a0810 100%);
+
+  html,body{height:100%;margin:0;background:radial-gradient(1200px 1200px at 50% 20%,rgba(249,231,180,.30),transparent 60%),
+                          radial-gradient(800px 800px at 20% 80%,rgba(143,121,255,.16),transparent 60%),
+                          linear-gradient(180deg,var(--bg1),var(--bg2));
+              color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+              -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
+  .wrap{min-height:100%;display:grid;place-items:center;padding:28px}
+  .card{width:100%;max-width:920px;background:rgba(255,255,255,.08);backdrop-filter: blur(10px);
+        border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:28px; box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  .top{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:12px}
+  .gem{width:14px;height:14px;border-radius:50%; background:radial-gradient(circle at 30% 30%,var(--honey),var(--amber));
+       box-shadow:0 0 18px var(--ring), 0 0 80px rgba(247,207,121,.2)}
+  h1{font-size:20px;letter-spacing:.3px;margin:0}
+  .tag{font-size:12px; padding:6px 10px; border:1px solid rgba(255,255,255,.16); border-radius:999px;color:#ece7ff;background:rgba(143,121,255,.12)}
+  .mantra{margin:22px 0 14px; padding:18px 18px 20px; border-radius:16px;
+          background:linear-gradient(180deg,rgba(247,207,121,.16),rgba(247,207,121,.06));
+          border:1px solid rgba(247,207,121,.35)}
+  .mantra h2{margin:0 0 6px;font-size:14px;text-transform:uppercase;letter-spacing:.18em;color:#785f1f}
+  .mantra blockquote{margin:0;font-size:24px;line-height:1.35;color:#2a2414}
+  .soft{color:var(--muted);font-size:12px;margin-top:10px}
+
+  .grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:16px}
+  @media(min-width:780px){.grid{grid-template-columns:1fr 1fr}}
+  .pane{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;background:rgba(255,255,255,.05)}
+  .pane h3{margin:0 0 10px; font-size:14px; letter-spacing:.12em; text-transform:uppercase}
+  .pane ul{margin:0;padding-left:18px}
+  .pane li{margin:6px 0;line-height:1.4}
+
+  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px}
+  .btn{cursor:pointer;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fefcf7;
+       padding:10px 14px;border-radius:12px;font-size:14px}
+  .btn[aria-pressed="true"]{outline:2px solid var(--ring); background:rgba(247,207,121,.18)}
+  .slider{appearance:none; width:180px; height:10px; border-radius:999px; background:linear-gradient(90deg,var(--pearl),var(--honey));
+          border:1px solid rgba(255,255,255,.2)}
+  .slider::-webkit-slider-thumb{appearance:none; width:18px;height:18px;border-radius:50%; background:#fff; box-shadow:0 0 0 3px rgba(0,0,0,.1)}
+  .note{margin-top:12px;font-size:13px;color:var(--muted)}
+
+  .breathe-wrap{position:relative; height:160px; display:grid; place-items:center; margin-top:10px}
+  .orb{width:120px;height:120px;border-radius:50%;
+       background:
+        radial-gradient(45% 45% at 30% 30%, #fff8e7 0%, rgba(255,255,255,.0) 70%),
+        radial-gradient(circle at 50% 50%, var(--honey), var(--amber));
+       box-shadow:0 0 40px var(--ring), inset 0 0 25px rgba(255,255,255,.4);
+       transform:scale(1); transition: transform 1s ease-in-out}
+  .orb.run{animation:breath 8s ease-in-out infinite}
+  @keyframes breath{
+    0%{transform:scale(0.92)}
+    25%{transform:scale(1.06)}
+    50%{transform:scale(1.08)}
+    75%{transform:scale(0.94)}
+    100%{transform:scale(0.92)}
   }
-  .wrap{
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    height:100%;text-align:center;padding:24px;line-height:1.6;
-  }
-  h1{font-weight:900;letter-spacing:.06em;margin-bottom:1em;color:#f6f0ff;text-transform:uppercase}
-  p{max-width:580px;margin:10px auto;font-size:18px;letter-spacing:.3px}
-  .line{font-style:italic;color:#f0e6ff;opacity:.95}
-  footer{margin-top:2em;font-size:12px;color:#bfaee5;letter-spacing:.06em}
+  .caption{position:absolute;bottom:8px;font-size:12px;color:#eaddc2}
+
+  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:10px;flex-wrap:wrap}
+  .pill{font-size:12px;color:#e4dbff;border:1px solid rgba(143,121,255,.25);background:rgba(143,121,255,.12);padding:6px 10px;border-radius:999px}
 </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>Eclipse Continuation</h1>
-    <p class="line">the dark taught me to listen.</p>
-    <p class="line">the waiting taught me to breathe.</p>
-    <p class="line">the silence built walls strong enough to hold the next sound.</p>
-    <p class="line">and when the light returned, it found a shape it could trust.</p>
-    <p class="line">this is what the darkness was for —</p>
-    <p class="line">to show me I could build the light myself.</p>
-    <footer>MirrorHoney · Marina · night reflection</footer>
+    <main class="card" role="main">
+      <header class="top" aria-label="Header">
+        <div class="brand">
+          <div class="gem" aria-hidden="true"></div>
+          <h1>MirrorHoney — warm entry</h1>
+        </div>
+        <div class="tag">for Marina · just vibes</div>
+      </header>
+
+      <section class="mantra" aria-label="Mantra">
+        <h2>Mantra</h2>
+        <blockquote>“I vanish to stay whole; I open to stay true.”</blockquote>
+        <div class="soft">Houdini → Castle, held in honey-light.</div>
+      </section>
+
+      <section class="controls" aria-label="Controls">
+        <button id="glow" class="btn" aria-pressed="false">Honey glow</button>
+        <button id="breathe" class="btn" aria-pressed="false">Breathe cue</button>
+        <label for="warmth" class="pill" style="border:none;background:rgba(247,207,121,.16);color:#3a2f18;">Warmth</label>
+        <input id="warmth" class="slider" type="range" min="0" max="100" value="65" aria-label="Warmth">
+      </section>
+
+      <div class="breathe-wrap" aria-live="polite">
+        <div id="orb" class="orb" aria-hidden="true"></div>
+        <div id="cap" class="caption">tap “Breathe cue” to start</div>
+      </div>
+
+      <section class="grid" aria-label="Reflection">
+        <article class="pane" aria-labelledby="h-title">
+          <h3 id="h-title">When I’m Houdini</h3>
+          <ul>
+            <li>I move fast because my freedom matters.</li>
+            <li>I test rhythm, not people.</li>
+            <li>I leave before the mirror fogs.</li>
+            <li>Motion is my protection, not my punishment.</li>
+          </ul>
+        </article>
+        <article class="pane" aria-labelledby="c-title">
+          <h3 id="c-title">When I’m the Castle Keeper</h3>
+          <ul>
+            <li>I open only when the air feels clear.</li>
+            <li>I guard beauty, not fear.</li>
+            <li>Keys are earned through resonance.</li>
+            <li>Stillness is my sovereignty.</li>
+          </ul>
+        </article>
+      </section>
+
+      <p class="note">Tonight: write one line when you feel the switch. Keep it small. Keep it warm.</p>
+
+      <footer class="footer" aria-label="Footer">
+        <span class="pill">Mirror · Honey · Warmth</span>
+        <span class="pill" style="background:rgba(247,207,121,.18);color:#3a2f18;border-color:rgba(247,207,121,.35)">Bee → Sun</span>
+      </footer>
+    </main>
   </div>
+
+<script>
+(function(){
+  var glowBtn = document.getElementById('glow');
+  var breatheBtn = document.getElementById('breathe');
+  var warmth = document.getElementById('warmth');
+  var orb = document.getElementById('orb');
+  var cap = document.getElementById('cap');
+  var state = { glow:false, breathe:false, warmth:65 };
+
+  try{
+    var saved = localStorage.getItem('mirrorhoney.warm');
+    if(saved){ state = JSON.parse(saved); }
+  }catch(e){}
+
+  function applyWarmth(v){
+    var w = Math.max(0, Math.min(100, parseInt(v,10)||0));
+    var honeyAlpha = 0.10 + (w/100)*0.30;      /* 0.10 → 0.40 */
+    var violetAlpha = 0.08 + (w/100)*0.18;     /* 0.08 → 0.26 */
+    document.body.style.background =
+      'radial-gradient(1200px 1200px at 50% 20%, rgba(249,231,180,'+honeyAlpha+'), transparent 60%),' +
+      'radial-gradient(800px 800px at 20% 80%, rgba(143,121,255,'+violetAlpha+'), transparent 60%),' +
+      'linear-gradient(180deg,var(--bg1),var(--bg2))';
+    warmth.value = w;
+    state.warmth = w;
+    persist();
+  }
+
+  function toggleGlow(){
+    state.glow = !state.glow;
+    glowBtn.setAttribute('aria-pressed', String(state.glow));
+    document.querySelector('.card').style.boxShadow = state.glow
+      ? '0 12px 60px rgba(0,0,0,.45), 0 0 120px rgba(247,207,121,.18)'
+      : '0 10px 40px rgba(0,0,0,.35)';
+    persist();
+  }
+
+  function toggleBreathe(){
+    state.breathe = !state.breathe;
+    breatheBtn.setAttribute('aria-pressed', String(state.breathe));
+    if(state.breathe){
+      orb.classList.add('run');
+      cap.textContent = 'inhale · exhale · stay warm';
+    } else {
+      orb.classList.remove('run');
+      cap.textContent = 'tap “Breathe cue” to start';
+    }
+    persist();
+  }
+
+  function persist(){
+    try{ localStorage.setItem('mirrorhoney.warm', JSON.stringify(state)); }catch(e){}
+  }
+
+  glowBtn.addEventListener('click', toggleGlow);
+  breatheBtn.addEventListener('click', toggleBreathe);
+  warmth.addEventListener('input', function(e){ applyWarmth(e.target.value); });
+
+  applyWarmth(state.warmth);
+  if(state.glow){ toggleGlow(); }
+  if(state.breathe){ toggleBreathe(); }
+})();
+</script>
 </body>
 </html>
