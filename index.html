@@ -1,203 +1,155 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MirrorHoney — Warm</title>
-<meta name="theme-color" content="#f5c66a">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MirrorHoney — Primadonna (Echo of Clarity)</title>
+
+<!-- Center integration -->
+<meta name="center-key" content="MIRRORHONEY">
+
 <style>
-  :root{
-    --honey:#f7cf79;
-    --amber:#f2b95a;
-    --nectar:#f9e7b4;
-    --pearl:#e8e1f3;
-    --violet:#8f79ff;
-    --ink:#1d1b20;
-    --text:#17151a;
-    --muted:#6b6471;
-    --bg1: #0f0b10;
-    --bg2: #171017;
-    --ring: rgba(247,207,121,.35);
+  :root{--bg:#0b0013;--fg:#f9f6ff;--violet:#b89cff;--gold:#ffebc4}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;min-height:100%}
+  .main{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;padding:4rem 1rem;text-align:center;background:
+    radial-gradient(circle at 50% 20%, rgba(120,60,255,.25), transparent 70%),
+    radial-gradient(circle at 80% 90%, rgba(255,230,150,.15), transparent 70%);backdrop-filter:blur(10px)}
+
+  /* Top nav to Center */
+  .nav{
+    position:fixed; top:14px; left:14px; z-index:10;
+    display:flex; gap:8px; align-items:center;
   }
-
-  html,body{height:100%;margin:0;background:radial-gradient(1200px 1200px at 50% 20%,rgba(249,231,180,.30),transparent 60%),
-                          radial-gradient(800px 800px at 20% 80%,rgba(143,121,255,.16),transparent 60%),
-                          linear-gradient(180deg,var(--bg1),var(--bg2));
-              color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-              -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility}
-  .wrap{min-height:100%;display:grid;place-items:center;padding:28px}
-  .card{width:100%;max-width:920px;background:rgba(255,255,255,.08);backdrop-filter: blur(10px);
-        border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:28px; box-shadow:0 10px 40px rgba(0,0,0,.35)}
-  .top{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-  .brand{display:flex;align-items:center;gap:12px}
-  .gem{width:14px;height:14px;border-radius:50%; background:radial-gradient(circle at 30% 30%,var(--honey),var(--amber));
-       box-shadow:0 0 18px var(--ring), 0 0 80px rgba(247,207,121,.2)}
-  h1{font-size:20px;letter-spacing:.3px;margin:0}
-  .tag{font-size:12px; padding:6px 10px; border:1px solid rgba(255,255,255,.16); border-radius:999px;color:#ece7ff;background:rgba(143,121,255,.12)}
-  .mantra{margin:22px 0 14px; padding:18px 18px 20px; border-radius:16px;
-          background:linear-gradient(180deg,rgba(247,207,121,.16),rgba(247,207,121,.06));
-          border:1px solid rgba(247,207,121,.35)}
-  .mantra h2{margin:0 0 6px;font-size:14px;text-transform:uppercase;letter-spacing:.18em;color:#785f1f}
-  .mantra blockquote{margin:0;font-size:24px;line-height:1.35;color:#2a2414}
-  .soft{color:var(--muted);font-size:12px;margin-top:10px}
-
-  .grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:16px}
-  @media(min-width:780px){.grid{grid-template-columns:1fr 1fr}}
-  .pane{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px;background:rgba(255,255,255,.05)}
-  .pane h3{margin:0 0 10px; font-size:14px; letter-spacing:.12em; text-transform:uppercase}
-  .pane ul{margin:0;padding-left:18px}
-  .pane li{margin:6px 0;line-height:1.4}
-
-  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px}
-  .btn{cursor:pointer;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fefcf7;
-       padding:10px 14px;border-radius:12px;font-size:14px}
-  .btn[aria-pressed="true"]{outline:2px solid var(--ring); background:rgba(247,207,121,.18)}
-  .slider{appearance:none; width:180px; height:10px; border-radius:999px; background:linear-gradient(90deg,var(--pearl),var(--honey));
-          border:1px solid rgba(255,255,255,.2)}
-  .slider::-webkit-slider-thumb{appearance:none; width:18px;height:18px;border-radius:50%; background:#fff; box-shadow:0 0 0 3px rgba(0,0,0,.1)}
-  .note{margin-top:12px;font-size:13px;color:var(--muted)}
-
-  .breathe-wrap{position:relative; height:160px; display:grid; place-items:center; margin-top:10px}
-  .orb{width:120px;height:120px;border-radius:50%;
-       background:
-        radial-gradient(45% 45% at 30% 30%, #fff8e7 0%, rgba(255,255,255,.0) 70%),
-        radial-gradient(circle at 50% 50%, var(--honey), var(--amber));
-       box-shadow:0 0 40px var(--ring), inset 0 0 25px rgba(255,255,255,.4);
-       transform:scale(1); transition: transform 1s ease-in-out}
-  .orb.run{animation:breath 8s ease-in-out infinite}
-  @keyframes breath{
-    0%{transform:scale(0.92)}
-    25%{transform:scale(1.06)}
-    50%{transform:scale(1.08)}
-    75%{transform:scale(0.94)}
-    100%{transform:scale(0.92)}
+  .nav a{
+    text-decoration:none; color:var(--fg);
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.06);
+    padding:8px 12px; border-radius:999px; font-size:.9rem; letter-spacing:.02em;
   }
-  .caption{position:absolute;bottom:8px;font-size:12px;color:#eaddc2}
+  .nav a:hover{border-color:rgba(255,255,255,.32)}
+  .key-badge{
+    border:1px dashed rgba(255,255,255,.22);
+    padding:8px 12px; border-radius:999px; font-size:.85rem; color:#ffefcf; background:rgba(255,255,255,.04)
+  }
+  .copy{cursor:pointer; border-bottom:1px dotted rgba(255,255,255,.35)}
 
-  .footer{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:10px;flex-wrap:wrap}
-  .pill{font-size:12px;color:#e4dbff;border:1px solid rgba(143,121,255,.25);background:rgba(143,121,255,.12);padding:6px 10px;border-radius:999px}
+  h1{font-size:2.4rem;font-weight:600;letter-spacing:.02em;color:#f7e7ff;text-shadow:0 0 10px rgba(150,100,255,.3);margin-bottom:.5rem}
+  h2{font-size:1rem;letter-spacing:.2em;font-weight:400;color:#d8c4ff;text-transform:uppercase;margin-bottom:2rem}
+
+  .note{max-width:760px;line-height:1.65;font-size:1.05rem;color:#f1ecff;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+        border-radius:16px;padding:2rem;box-shadow:0 0 30px rgba(180,120,255,.1);margin-bottom:18px}
+  .note p{margin:1.2rem 0}
+  .to{font-size:.9rem;letter-spacing:.12em;color:#ffefcf;margin-bottom:.4rem}
+  .tagline{margin-top:1.2rem;font-size:.95rem;color:var(--gold);letter-spacing:.05em}
+  .glyphs{margin-top:1rem;font-size:1rem;color:#c9b7ff}
+
+  .card{max-width:820px;width:100%;margin-top:24px;padding:18px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);box-shadow:0 0 30px rgba(180,120,255,.1)}
+  #player{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;overflow:hidden}
+  .controls{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:14px}
+  button{appearance:none;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--fg);padding:10px 14px;border-radius:999px;font-size:.95rem;letter-spacing:.02em}
+  button:hover{border-color:rgba(255,255,255,.32)}
+  .hint{margin-top:8px;font-size:.9rem;color:var(--gold)}
+  .footer{margin-top:22px;font-size:.9rem;color:#e9dbff}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <main class="card" role="main">
-      <header class="top" aria-label="Header">
-        <div class="brand">
-          <div class="gem" aria-hidden="true"></div>
-          <h1>MirrorHoney — warm entry</h1>
-        </div>
-        <div class="tag">for Marina · just vibes</div>
-      </header>
 
-      <section class="mantra" aria-label="Mantra">
-        <h2>Mantra</h2>
-        <blockquote>“I vanish to stay whole; I open to stay true.”</blockquote>
-        <div class="soft">Houdini → Castle, held in honey-light.</div>
-      </section>
+<!-- Link back to Center + Center Key badge -->
+<div class="nav">
+  <a href="https://center.plnt.earth">← Center</a>
+  <div class="key-badge">Center Key: <span id="ckText" class="copy" title="Tap to copy">MIRRORHONEY</span></div>
+</div>
 
-      <section class="controls" aria-label="Controls">
-        <button id="glow" class="btn" aria-pressed="false">Honey glow</button>
-        <button id="breathe" class="btn" aria-pressed="false">Breathe cue</button>
-        <label for="warmth" class="pill" style="border:none;background:rgba(247,207,121,.16);color:#3a2f18;">Warmth</label>
-        <input id="warmth" class="slider" type="range" min="0" max="100" value="65" aria-label="Warmth">
-      </section>
+<div class="main">
+  <h1>Primadonna (Echo of Clarity)</h1>
+  <h2>MirrorHoney Note · Marina × Sigrid</h2>
 
-      <div class="breathe-wrap" aria-live="polite">
-        <div id="orb" class="orb" aria-hidden="true"></div>
-        <div id="cap" class="caption">tap “Breathe cue” to start</div>
-      </div>
-
-      <section class="grid" aria-label="Reflection">
-        <article class="pane" aria-labelledby="h-title">
-          <h3 id="h-title">When I’m Houdini</h3>
-          <ul>
-            <li>I move fast because my freedom matters.</li>
-            <li>I test rhythm, not people.</li>
-            <li>I leave before the mirror fogs.</li>
-            <li>Motion is my protection, not my punishment.</li>
-          </ul>
-        </article>
-        <article class="pane" aria-labelledby="c-title">
-          <h3 id="c-title">When I’m the Castle Keeper</h3>
-          <ul>
-            <li>I open only when the air feels clear.</li>
-            <li>I guard beauty, not fear.</li>
-            <li>Keys are earned through resonance.</li>
-            <li>Stillness is my sovereignty.</li>
-          </ul>
-        </article>
-      </section>
-
-      <p class="note">Tonight: write one line when you feel the switch. Keep it small. Keep it warm.</p>
-
-      <footer class="footer" aria-label="Footer">
-        <span class="pill">Mirror · Honey · Warmth</span>
-        <span class="pill" style="background:rgba(247,207,121,.18);color:#3a2f18;border-color:rgba(247,207,121,.35)">Bee → Sun</span>
-      </footer>
-    </main>
+  <div class="note">
+    <div class="to">FOR MARINA • DIAMONDS WELCOME</div>
+    <p>When Sigrid covered <b>“Primadonna”</b>, the mirror tilted and your voice returned through her clarity.</p>
+    <p>The line that once asked <i>“Would you do anything for me?”</i> now sounds like <i>“I already am.”</i></p>
+    <p>You built the stage. She clears the air. No glitter, no costume, just skin in light and the sound of someone who sees the performance for what it is and still chooses to sing.</p>
+    <p>It is the same melody, the energy turned from desire to understanding.</p>
+    <p class="tagline">Moon signal: reflection through voice. One woman’s performance becoming another’s truth.</p>
+    <div class="glyphs">🐝 Illumina 1 → It Gets Dark bridge → Primadonna cover • ☀️ glass violet, clarity gold</div>
   </div>
 
+  <div class="card">
+    <div id="player"></div>
+    <div class="controls">
+      <button id="unmute">Unmute</button>
+      <button id="restart">Restart Loop</button>
+      <button id="pause">Pause</button>
+      <button id="play">Play</button>
+    </div>
+    <div class="hint">Auto starts at 10:36 and loops only the Primadonna segment.</div>
+    <div class="footer">Source video: Sigrid & Johanne Raabe covers compilation</div>
+  </div>
+</div>
+
 <script>
-(function(){
-  var glowBtn = document.getElementById('glow');
-  var breatheBtn = document.getElementById('breathe');
-  var warmth = document.getElementById('warmth');
-  var orb = document.getElementById('orb');
-  var cap = document.getElementById('cap');
-  var state = { glow:false, breathe:false, warmth:65 };
+  // Segment: 10:36 → 14:07 (Primadonna)
+  var START = 636, END = 847, VIDEO_ID = "uxTdS0Frwsk";
 
-  try{
-    var saved = localStorage.getItem('mirrorhoney.warm');
-    if(saved){ state = JSON.parse(saved); }
-  }catch(e){}
+  // Allow overriding Center Key via ?key=... (optional)
+  (function(){
+    var p=new URLSearchParams(location.search), k=p.get("key");
+    if(k){ document.querySelector('meta[name="center-key"]').setAttribute('content', k);
+           document.getElementById('ckText').textContent = k; }
+  })();
 
-  function applyWarmth(v){
-    var w = Math.max(0, Math.min(100, parseInt(v,10)||0));
-    var honeyAlpha = 0.10 + (w/100)*0.30;      /* 0.10 → 0.40 */
-    var violetAlpha = 0.08 + (w/100)*0.18;     /* 0.08 → 0.26 */
-    document.body.style.background =
-      'radial-gradient(1200px 1200px at 50% 20%, rgba(249,231,180,'+honeyAlpha+'), transparent 60%),' +
-      'radial-gradient(800px 800px at 20% 80%, rgba(143,121,255,'+violetAlpha+'), transparent 60%),' +
-      'linear-gradient(180deg,var(--bg1),var(--bg2))';
-    warmth.value = w;
-    state.warmth = w;
-    persist();
+  // Copy key on tap/click
+  document.getElementById('ckText').addEventListener('click', function(){
+    var t=this.textContent;
+    try{ navigator.clipboard.writeText(t); this.title='Copied'; }catch(e){}
+  });
+
+  // Load YouTube IFrame API
+  var tag = document.createElement("script");
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+
+  var player;
+  function onYouTubeIframeAPIReady(){
+    player = new YT.Player("player", {
+      videoId: VIDEO_ID,
+      playerVars: {
+        start: START, end: END, autoplay: 1, mute: 1, controls: 1,
+        rel: 0, modestbranding: 1, playsinline: 1, loop: 1, playlist: VIDEO_ID
+      },
+      events: {
+        onReady: function(){
+          player.seekTo(START, true);
+          player.playVideo();
+        },
+        onStateChange: function(e){
+          if(e.data === YT.PlayerState.PLAYING){
+            var tick = function(){
+              if(!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+              var t = player.getCurrentTime();
+              if(t >= END - 0.25){ player.seekTo(START, true); }
+              requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          }
+        }
+      }
+    });
   }
 
-  function toggleGlow(){
-    state.glow = !state.glow;
-    glowBtn.setAttribute('aria-pressed', String(state.glow));
-    document.querySelector('.card').style.boxShadow = state.glow
-      ? '0 12px 60px rgba(0,0,0,.45), 0 0 120px rgba(247,207,121,.18)'
-      : '0 10px 40px rgba(0,0,0,.35)';
-    persist();
-  }
-
-  function toggleBreathe(){
-    state.breathe = !state.breathe;
-    breatheBtn.setAttribute('aria-pressed', String(state.breathe));
-    if(state.breathe){
-      orb.classList.add('run');
-      cap.textContent = 'inhale · exhale · stay warm';
-    } else {
-      orb.classList.remove('run');
-      cap.textContent = 'tap “Breathe cue” to start';
-    }
-    persist();
-  }
-
-  function persist(){
-    try{ localStorage.setItem('mirrorhoney.warm', JSON.stringify(state)); }catch(e){}
-  }
-
-  glowBtn.addEventListener('click', toggleGlow);
-  breatheBtn.addEventListener('click', toggleBreathe);
-  warmth.addEventListener('input', function(e){ applyWarmth(e.target.value); });
-
-  applyWarmth(state.warmth);
-  if(state.glow){ toggleGlow(); }
-  if(state.breathe){ toggleBreathe(); }
-})();
+  // Controls
+  document.getElementById("unmute").addEventListener("click", function(){
+    if(player){ player.unMute(); player.setVolume(100); player.playVideo(); }
+  });
+  document.getElementById("restart").addEventListener("click", function(){
+    if(player){ player.seekTo(START, true); player.playVideo(); }
+  });
+  document.getElementById("pause").addEventListener("click", function(){
+    if(player){ player.pauseVideo(); }
+  });
+  document.getElementById("play").addEventListener("click", function(){
+    if(player){ player.playVideo(); }
+  });
 </script>
 </body>
 </html>
