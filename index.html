@@ -64,7 +64,7 @@
         border-radius:16px;padding:2rem;box-shadow:0 0 30px rgba(180,120,255,.1);margin-bottom:18px}
   .note p{margin:1.2rem 0}
   .to{font-size:.9rem;letter-spacing:.12em;color:#ffefcf;margin-bottom:.4rem}
-  .tagline{margin-top:1.2rem;font-size:.95rem;color:var(--gold);letter-spacing:.05em}
+  .tagline{margin-top:1.2rem;font-size:.95rem;color:#ffebc4;letter-spacing:.05em}
   .glyphs{margin-top:1rem;font-size:1rem;color:#c9b7ff}
 
   /* Bee note */
@@ -77,7 +77,7 @@
   .bee ul{margin:.4rem 0 0 1rem; padding:0}
   .bee li{margin:.35rem 0; list-style: "🐝  "}
 
-  /* Bonus block (hidden by default; shown on repeat visits) */
+  /* Bonus block (hidden by default; shown on repeat visits or Marina flag) */
   .bonus{
     display:none; margin-top:12px; padding:12px 14px; border-radius:12px;
     background:rgba(184,156,255,.12); border:1px solid rgba(184,156,255,.28);
@@ -93,8 +93,19 @@
     padding:10px 14px;border-radius:999px;font-size:.95rem;letter-spacing:.02em
   }
   button:hover{border-color:rgba(255,255,255,.32)}
-  .hint{margin-top:8px;font-size:.9rem;color:var(--gold)}
-  .footer{margin-top:22px;font-size:.9rem;color:#e9dbff}
+  .hint{margin-top:8px;font-size:.9rem;color:#ffebc4}
+  .footer{margin-top:14px;font-size:.9rem;color:#e9dbff}
+
+  /* Rest window note */
+  .restnote{
+    display:none; margin-top:8px; font-size:.9rem; padding:8px 10px; border-radius:999px; 
+    border:1px solid rgba(255,212,0,.35); background:rgba(255,212,0,.10); color:#1b1400; 
+    width:max-content; margin-left:auto; margin-right:auto;
+  }
+  .restnote.glow{
+    box-shadow:0 0 10px rgba(255,212,0,.35), 0 0 26px rgba(255,212,0,.18);
+    border-color:rgba(255,212,0,.55);
+  }
 </style>
 </head>
 <body>
@@ -149,15 +160,17 @@
     </div>
     <div class="hint">Auto starts at 10:36 and loops only the Primadonna segment.</div>
     <div class="footer">Source video · Sigrid & Johanne Raabe covers compilation</div>
+    <div id="restNote" class="restnote" aria-live="polite"></div>
   </div>
 </div>
 
 <script>
+  /* --- Video segment loop --- */
   const START=636, END=847, VIDEO_ID="uxTdS0Frwsk";
   const badge=document.getElementById('centerBadge');
   const keySpan=document.getElementById('ckText');
 
-  /* Capture ?mk=YELLOW once and clean URL */
+  // Capture ?mk=YELLOW once and clean URL (Marina relay)
   (function(){
     const PARAM='mk', FLAG='mh.marina.flag';
     const q=new URLSearchParams(location.search); const v=q.get(PARAM);
@@ -197,7 +210,9 @@
               rafId=requestAnimationFrame(tick);
             };
             if(!rafId) rafId=requestAnimationFrame(tick);
-          } else if(rafId){cancelAnimationFrame(rafId);rafId=null;}
+          } else if(rafId){
+            cancelAnimationFrame(rafId); rafId=null;
+          }
         }
       }
     });
@@ -234,6 +249,68 @@
       const bonus=document.getElementById('bonus');
       if(bonus){bonus.textContent=pick; bonus.style.display='block';}
     }
+  })();
+
+  /* --- Rest window badge (same calendar logic as Center) --- */
+  const FIRST_START = { y: 2025, m: 11, d: 5 }; // Fixed Illumina 1 start
+  const BASE_FULL_MOON = { y: 2025, m: 11, d: 5 }; // Anchor for stepping
+  const SYNODIC = 29.530588853;   // days
+  const STEP_DAYS = SYNODIC * 2;  // every other full moon
+  const CYCLE_LENGTH = 42;        // days
+  const DAY_MS = 86400000;
+
+  function dLocal(y,m,d){ return new Date(y, m-1, d); }
+  function addDays(date, days){ return new Date(date.getTime() + days*DAY_MS); }
+  function fmtDate(d){ return d.toLocaleDateString(undefined,{weekday:'short', month:'short', day:'numeric', year:'numeric'}); }
+  function nextMondayAfter(date){
+    const dow = date.getDay();
+    let delta = (1 - dow + 7) % 7;
+    if (delta === 0) delta = 7;
+    return addDays(date, delta);
+  }
+  function genCycles(n=20){
+    const cycles=[];
+    const firstStart = dLocal(FIRST_START.y, FIRST_START.m, FIRST_START.d);
+    const firstEnd   = addDays(firstStart, CYCLE_LENGTH - 1);
+    const baseFM     = dLocal(BASE_FULL_MOON.y, BASE_FULL_MOON.m, BASE_FULL_MOON.d);
+    cycles.push({ n:1, fm: baseFM, start:firstStart, end:firstEnd, fixed:true });
+    for(let i=1;i<n;i++){
+      const fm = addDays(baseFM, STEP_DAYS * i);
+      const start = nextMondayAfter(fm);
+      const end   = addDays(start, CYCLE_LENGTH - 1);
+      cycles.push({ n:i+1, fm, start, end });
+    }
+    return cycles;
+  }
+  function pickCycle(cycles, now){
+    for(const c of cycles){ if(now >= c.start && now <= c.end) return c; }
+    for(const c of cycles){ if(now < c.start) return c; }
+    return cycles[cycles.length-1];
+  }
+  function computeRestWindow(cycles, current){
+    const idx = cycles.findIndex(c=>c.n===current.n);
+    const next = idx>=0 ? cycles[idx+1] : null;
+    if(!next) return null;
+    const diffDays = Math.round((next.start - current.end) / DAY_MS);
+    const rest = Math.max(0, diffDays - 1);
+    return { days: rest, nextStart: next.start };
+  }
+
+  (function(){
+    const note = document.getElementById('restNote');
+    if(!note) return;
+    const now = new Date();
+    const cycles = genCycles(20);
+    const active = pickCycle(cycles, now);
+    const rest = computeRestWindow(cycles, active);
+    if(rest && rest.days>0){
+      note.textContent = `Rest window: ${rest.days} day${rest.days===1?'':'s'} · Next start: ${fmtDate(rest.nextStart)}`;
+      note.classList.add('glow');
+      note.style.display='inline-block';
+    } else if (rest && rest.days===0) {
+      note.textContent = 'Rest window: none';
+      note.style.display='inline-block';
+    } // else keep hidden at end of last known cycle
   })();
 </script>
 </body>
