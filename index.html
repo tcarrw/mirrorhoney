@@ -6,32 +6,56 @@
 <title>MirrorHoney — Primadonna (Echo of Clarity)</title>
 
 <!-- Center integration -->
-<meta name="center-key" content="MIRRORHONEY">
+<meta name="center-key" content="YELLOW">
 
 <style>
-  :root{--bg:#0b0013;--fg:#f9f6ff;--violet:#b89cff;--gold:#ffebc4}
+  :root{
+    --bg:#0b0013; --fg:#f9f6ff; --violet:#b89cff; --gold:#ffebc4;
+    --key:#ffd400; /* YELLOW glow */
+  }
   html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;min-height:100%}
-  .main{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;padding:4rem 1rem;text-align:center;background:
-    radial-gradient(circle at 50% 20%, rgba(120,60,255,.25), transparent 70%),
-    radial-gradient(circle at 80% 90%, rgba(255,230,150,.15), transparent 70%);backdrop-filter:blur(10px)}
+  .main{
+    display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;padding:4rem 1rem;text-align:center;
+    background:
+      radial-gradient(circle at 50% 20%, rgba(120,60,255,.25), transparent 70%),
+      radial-gradient(circle at 80% 90%, rgba(255,230,150,.15), transparent 70%);
+    backdrop-filter:blur(10px)
+  }
 
   /* Top nav to Center */
-  .nav{
-    position:fixed; top:14px; left:14px; z-index:10;
-    display:flex; gap:8px; align-items:center;
-  }
+  .nav{position:fixed;top:14px;left:14px;z-index:10;display:flex;gap:8px;align-items:center}
   .nav a{
-    text-decoration:none; color:var(--fg);
+    text-decoration:none;color:var(--fg);
     border:1px solid rgba(255,255,255,.18);
     background:rgba(255,255,255,.06);
-    padding:8px 12px; border-radius:999px; font-size:.9rem; letter-spacing:.02em;
+    padding:8px 12px;border-radius:999px;font-size:.9rem;letter-spacing:.02em
   }
   .nav a:hover{border-color:rgba(255,255,255,.32)}
+
+  /* Pulsing Center Key */
   .key-badge{
+    position:relative;display:flex;align-items:center;gap:.4rem;
     border:1px dashed rgba(255,255,255,.22);
-    padding:8px 12px; border-radius:999px; font-size:.85rem; color:#ffefcf; background:rgba(255,255,255,.04)
+    padding:8px 12px;border-radius:999px;font-size:.85rem;
+    color:#1b1400;background:rgba(255,212,0,.12);
+    transition:transform .18s ease, box-shadow .18s ease;
   }
-  .copy{cursor:pointer; border-bottom:1px dotted rgba(255,255,255,.35)}
+  .key-dot{
+    width:.6rem;height:.6rem;border-radius:50%;background:var(--key);
+    box-shadow:0 0 6px var(--key), 0 0 14px rgba(255,212,0,.65);
+    animation:keypulse 2.4s ease-in-out infinite
+  }
+  .key-badge.flash{transform:scale(1.06);box-shadow:0 0 10px var(--key), 0 0 26px rgba(255,212,0,.85)}
+  .copy{cursor:pointer;border-bottom:1px dotted rgba(255,255,255,.35);color:#fff3a6}
+
+  @keyframes keypulse{
+    0%,100% { transform:scale(1); box-shadow:0 0 6px var(--key), 0 0 14px rgba(255,212,0,.65); }
+    50%    { transform:scale(1.18); box-shadow:0 0 10px var(--key), 0 0 28px rgba(255,212,0,.9); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .key-dot{animation:none}
+    .key-badge, .key-badge.flash{transform:none}
+  }
 
   h1{font-size:2.4rem;font-weight:600;letter-spacing:.02em;color:#f7e7ff;text-shadow:0 0 10px rgba(150,100,255,.3);margin-bottom:.5rem}
   h2{font-size:1rem;letter-spacing:.2em;font-weight:400;color:#d8c4ff;text-transform:uppercase;margin-bottom:2rem}
@@ -43,10 +67,31 @@
   .tagline{margin-top:1.2rem;font-size:.95rem;color:var(--gold);letter-spacing:.05em}
   .glyphs{margin-top:1rem;font-size:1rem;color:#c9b7ff}
 
-  .card{max-width:820px;width:100%;margin-top:24px;padding:18px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);box-shadow:0 0 30px rgba(180,120,255,.1)}
+  /* Bee note */
+  .bee{
+    max-width:760px;margin-top:18px;padding:14px 16px;border-radius:12px;
+    background:rgba(255,230,150,.10); border:1px solid rgba(255,230,150,.25);
+    color:#fff6d1; font-size:.98rem; text-align:left
+  }
+  .bee .label{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:#ffeaa1;margin-bottom:.4rem}
+  .bee ul{margin:.4rem 0 0 1rem; padding:0}
+  .bee li{margin:.35rem 0; list-style: "🐝  "}
+
+  /* Bonus block (hidden by default; shown on repeat visits) */
+  .bonus{
+    display:none; margin-top:12px; padding:12px 14px; border-radius:12px;
+    background:rgba(184,156,255,.12); border:1px solid rgba(184,156,255,.28);
+    color:#efe6ff; font-size:.98rem;
+  }
+
+  .card{max-width:820px;width:100%;margin-top:24px;padding:18px;border-radius:16px;border:1px solid rgba(255,255,255,.08);
+        background:rgba(255,255,255,.04);box-shadow:0 0 30px rgba(180,120,255,.1)}
   #player{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;overflow:hidden}
   .controls{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:14px}
-  button{appearance:none;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--fg);padding:10px 14px;border-radius:999px;font-size:.95rem;letter-spacing:.02em}
+  button{
+    appearance:none;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--fg);
+    padding:10px 14px;border-radius:999px;font-size:.95rem;letter-spacing:.02em
+  }
   button:hover{border-color:rgba(255,255,255,.32)}
   .hint{margin-top:8px;font-size:.9rem;color:var(--gold)}
   .footer{margin-top:22px;font-size:.9rem;color:#e9dbff}
@@ -55,9 +100,12 @@
 <body>
 
 <!-- Link back to Center + Center Key badge -->
-<div class="nav">
+<div class="nav" aria-label="Center navigation">
   <a href="https://center.plnt.earth">← Center</a>
-  <div class="key-badge">Center Key: <span id="ckText" class="copy" title="Tap to copy">MIRRORHONEY</span></div>
+  <div id="centerBadge" class="key-badge" aria-live="polite" title="Center Key">
+    <span class="key-dot" aria-hidden="true"></span>
+    Center Key: <span id="ckText" class="copy" title="Tap to copy">YELLOW</span>
+  </div>
 </div>
 
 <div class="main">
@@ -68,10 +116,27 @@
     <div class="to">FOR MARINA • DIAMONDS WELCOME</div>
     <p>When Sigrid covered <b>“Primadonna”</b>, the mirror tilted and your voice returned through her clarity.</p>
     <p>The line that once asked <i>“Would you do anything for me?”</i> now sounds like <i>“I already am.”</i></p>
-    <p>You built the stage. She clears the air. No glitter, no costume, just skin in light and the sound of someone who sees the performance for what it is and still chooses to sing.</p>
-    <p>It is the same melody, the energy turned from desire to understanding.</p>
+    <p>You built the stage. She clears the air. No glitter. No costume. Just skin in light and the sound of someone who sees the performance for what it is and still chooses to sing.</p>
+    <p>It is the same melody. The energy turns from desire to understanding.</p>
     <p class="tagline">Moon signal: reflection through voice. One woman’s performance becoming another’s truth.</p>
     <div class="glyphs">🐝 Illumina 1 → It Gets Dark bridge → Primadonna cover • ☀️ glass violet, clarity gold</div>
+  </div>
+
+  <!-- Bee note (playful, multiple signs, shuffled) -->
+  <div class="bee" aria-live="polite">
+    <div class="label">Bee note</div>
+    <p>Do not worry about catching every clue. The field leaves many. If one flies past, another lands in your hand. Tonight we play a color game. Same promise. New doors.</p>
+    <ul id="beeSigns">
+      <li>A title that is a color. The key matches it.</li>
+      <li>Stars glow. Someone promises to try until night feels kind.</li>
+      <li>Paint on fingers. You look down and the color is there.</li>
+      <li>Balloons in the mind. The word is simple and bright.</li>
+      <li>Skin and bone feel small, then turn into light.</li>
+      <li>A traffic light turns warm. You cross with a smile.</li>
+      <li>Sunflowers, lemons, street signs, tiny stickers. All say the same word.</li>
+    </ul>
+    <div id="bonus" class="bonus"></div>
+    <p>If you miss one sign, another will arrive. You cannot fall out of the rhythm. The color keeps coming back.</p>
   </div>
 
   <div class="card">
@@ -83,73 +148,93 @@
       <button id="play">Play</button>
     </div>
     <div class="hint">Auto starts at 10:36 and loops only the Primadonna segment.</div>
-    <div class="footer">Source video: Sigrid & Johanne Raabe covers compilation</div>
+    <div class="footer">Source video · Sigrid & Johanne Raabe covers compilation</div>
   </div>
 </div>
 
 <script>
-  // Segment: 10:36 → 14:07 (Primadonna)
-  var START = 636, END = 847, VIDEO_ID = "uxTdS0Frwsk";
+  const START=636, END=847, VIDEO_ID="uxTdS0Frwsk";
+  const badge=document.getElementById('centerBadge');
+  const keySpan=document.getElementById('ckText');
 
-  // Allow overriding Center Key via ?key=... (optional)
+  /* Capture ?mk=YELLOW once and clean URL */
   (function(){
-    var p=new URLSearchParams(location.search), k=p.get("key");
-    if(k){ document.querySelector('meta[name="center-key"]').setAttribute('content', k);
-           document.getElementById('ckText').textContent = k; }
+    const PARAM='mk', FLAG='mh.marina.flag';
+    const q=new URLSearchParams(location.search); const v=q.get(PARAM);
+    if(v){ try{localStorage.setItem(FLAG,v);}catch(e){}
+      const url=new URL(location.href); url.searchParams.delete(PARAM);
+      history.replaceState({},'',url.toString());
+    }
   })();
 
   // Copy key on tap/click
-  document.getElementById('ckText').addEventListener('click', function(){
-    var t=this.textContent;
-    try{ navigator.clipboard.writeText(t); this.title='Copied'; }catch(e){}
-  });
+  keySpan.addEventListener('click',()=>{navigator.clipboard.writeText(keySpan.textContent).catch(()=>{});keySpan.title='Copied';});
+
+  // Flash the key badge in sync with loop restart
+  function flashKey(){
+    if(!badge) return;
+    badge.classList.add('flash');
+    setTimeout(()=>badge.classList.remove('flash'), 240);
+  }
 
   // Load YouTube IFrame API
-  var tag = document.createElement("script");
-  tag.src = "https://www.youtube.com/iframe_api";
+  const tag=document.createElement("script");
+  tag.src="https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
 
-  var player;
+  let player, rafId=null;
   function onYouTubeIframeAPIReady(){
-    player = new YT.Player("player", {
-      videoId: VIDEO_ID,
-      playerVars: {
-        start: START, end: END, autoplay: 1, mute: 1, controls: 1,
-        rel: 0, modestbranding: 1, playsinline: 1, loop: 1, playlist: VIDEO_ID
-      },
-      events: {
-        onReady: function(){
-          player.seekTo(START, true);
-          player.playVideo();
-        },
-        onStateChange: function(e){
-          if(e.data === YT.PlayerState.PLAYING){
-            var tick = function(){
-              if(!player || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
-              var t = player.getCurrentTime();
-              if(t >= END - 0.25){ player.seekTo(START, true); }
-              requestAnimationFrame(tick);
+    player=new YT.Player("player",{
+      videoId:VIDEO_ID,
+      playerVars:{start:START,end:END,autoplay:1,mute:1,controls:1,rel:0,modestbranding:1,playsinline:1,loop:1,playlist:VIDEO_ID},
+      events:{
+        onReady:()=>{player.seekTo(START,true);player.playVideo();flashKey();},
+        onStateChange:e=>{
+          if(e.data===YT.PlayerState.PLAYING){
+            const tick=()=>{
+              if(!player||player.getPlayerState()!==YT.PlayerState.PLAYING){rafId=null;return;}
+              if(player.getCurrentTime()>=END-0.25){player.seekTo(START,true);flashKey();}
+              rafId=requestAnimationFrame(tick);
             };
-            requestAnimationFrame(tick);
-          }
+            if(!rafId) rafId=requestAnimationFrame(tick);
+          } else if(rafId){cancelAnimationFrame(rafId);rafId=null;}
         }
       }
     });
   }
 
   // Controls
-  document.getElementById("unmute").addEventListener("click", function(){
-    if(player){ player.unMute(); player.setVolume(100); player.playVideo(); }
-  });
-  document.getElementById("restart").addEventListener("click", function(){
-    if(player){ player.seekTo(START, true); player.playVideo(); }
-  });
-  document.getElementById("pause").addEventListener("click", function(){
-    if(player){ player.pauseVideo(); }
-  });
-  document.getElementById("play").addEventListener("click", function(){
-    if(player){ player.playVideo(); }
-  });
+  document.getElementById("unmute").onclick=()=>player&&player.unMute();
+  document.getElementById("restart").onclick=()=>{if(player){player.seekTo(START,true);player.playVideo();flashKey();}};
+  document.getElementById("pause").onclick=()=>player&&player.pauseVideo();
+  document.getElementById("play").onclick=()=>player&&player.playVideo();
+
+  // Shuffle Bee signs each load
+  (function(){
+    const ul=document.getElementById('beeSigns'); if(!ul) return;
+    const items=[...ul.children];
+    for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}
+    ul.innerHTML=""; items.forEach(li=>ul.appendChild(li));
+  })();
+
+  // Hidden bonus for repeat visits (or Marina relay)
+  (function(){
+    const VISIT_KEY='mh.visits.mirrorhoney', SHOW_AFTER=1, MARINA_FLAG='mh.marina.flag';
+    let visits=0, marina=null;
+    try{visits=parseInt(localStorage.getItem(VISIT_KEY)||'0',10);}catch(e){}
+    try{localStorage.setItem(VISIT_KEY,String((isNaN(visits)?0:visits)+1));}catch(e){}
+    try{marina=localStorage.getItem(MARINA_FLAG);}catch(e){}
+    const allowByVisit=visits>=SHOW_AFTER, allowByMarina=!!marina;
+    if(allowByVisit||allowByMarina){
+      const msgs=[
+        'You did not miss anything. The light still waited. The song kept looping for you.',
+        'You are allowed to want again. Even the sun rests before it burns.'
+      ];
+      const pick=msgs[Math.floor(Math.random()*msgs.length)];
+      const bonus=document.getElementById('bonus');
+      if(bonus){bonus.textContent=pick; bonus.style.display='block';}
+    }
+  })();
 </script>
 </body>
 </html>
