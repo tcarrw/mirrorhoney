@@ -101,12 +101,14 @@ p{opacity:.85;margin:4px 0}
 
 <script>
 (function(){
-  function pick(s){var m=String(s||"").match(/[#?&]k=([^&]+)/);return m?decodeURIComponent(m[1]):""}
-  var k=pick(location.hash)||pick(location.search);
-  if(!k)return;
-  if(!localStorage.getItem("mh.key")) localStorage.setItem("mh.key",JSON.stringify(k));
-  localStorage.setItem("mh.key.set","true");
-  localStorage.setItem("mh.unlock","true");
+  function pick(s,pat){var m=String(s||"").match(pat);return m?decodeURIComponent(m[1]):""}
+  var src=pick(location.search,/[\?&]s=([^&]+)/), k=pick(location.hash,/[#?&]k=([^&]+)/);
+  if(src) localStorage.setItem("mh.src",JSON.stringify(src));
+  if(k){
+    if(!localStorage.getItem("mh.key")) localStorage.setItem("mh.key",JSON.stringify(k));
+    localStorage.setItem("mh.key.set","true");
+    localStorage.setItem("mh.unlock","true");
+  }
   history.replaceState({},document.title,location.pathname);
 })();
 </script>
@@ -127,22 +129,22 @@ function illuminaStamp(now){const diff=Math.floor((now.getTime()-START_DATE)/864
 function pulse(){overlay.style.opacity=1;setTimeout(()=>overlay.style.opacity=0,2800)}
 function renderArchive(){const facets=jget(LS_FACETS,"[]");if(facets.length)archive.innerText="Facets: "+facets.join(" • ")}
 function logMoon(kind,msg){const now=new Date(),stamp=illuminaStamp(now);const entry={ts:now.getTime(),phase:stamp.phase,illumina:stamp.label,kind:kind,msg:msg||""};const log=jget(LS_LOG,"[]");log.push(entry);jset(LS_LOG,log)}
-function renderMoon(){const rows=jget(LS_LOG,"[]").slice().reverse();listMoon.innerHTML="";if(!rows.length){listMoon.innerHTML='<div class="row"><div class="dim">No entries yet.</div></div>';return}rows.forEach(r=>{const row=document.createElement("div");row.className="row";const left=document.createElement("div");const a=document.createElement("div");a.textContent=r.phase+" · "+r.illumina;const b=document.createElement("div");b.className="dim";b.textContent=new Date(r.ts).toLocaleString();const c=document.createElement("div");c.className="dim";c.textContent=r.msg||"";left.appendChild(a);left.appendChild(b);left.appendChild(c);const actions=document.createElement("div");const copy=document.createElement("button");copy.className="btn";copy.textContent="copy";copy.onclick=()=>{const text=r.phase+" | "+r.illumina+" | "+new Date(r.ts).toISOString()+(r.msg?(" | "+r.msg):"");navigator.clipboard.writeText(text)};actions.appendChild(copy);row.appendChild(left);row.appendChild(actions);listMoon.appendChild(row)})}
+function renderMoon(){const rows=jget(LS_LOG,"[]").slice().reverse();listMoon.innerHTML="";if(!rows.length){listMoon.innerHTML='<div class="row"><div class="dim">No entries yet.</div></div>';return}rows.forEach(function(r){const row=document.createElement("div");row.className="row";const left=document.createElement("div");const a=document.createElement("div");a.textContent=r.phase+" · "+r.illumina;const b=document.createElement("div");b.className="dim";b.textContent=new Date(r.ts).toLocaleString();const c=document.createElement("div");c.className="dim";c.textContent=r.msg||"";left.appendChild(a);left.appendChild(b);left.appendChild(c);const actions=document.createElement("div");const copy=document.createElement("button");copy.className="btn";copy.textContent="copy";copy.onclick=function(){const text=r.phase+" | "+r.illumina+" | "+new Date(r.ts).toISOString()+(r.msg?(" | "+r.msg):"");navigator.clipboard.writeText(text)};actions.appendChild(copy);row.appendChild(left);row.appendChild(actions);listMoon.appendChild(row)})}
 function unlockUI(){locked.style.display="none";app.classList.remove("hidden");app.setAttribute("aria-hidden","false");gateStatus.textContent="unlocked";transfer.classList.remove("hidden")}
-function checkUnlock(){const ok=jget(LS_UNLOCK,"false");if(ok){unlockUI()}}
-function doUnlock(val){const expect=jget(LS_KEY,"");if(expect&&val===expect){jset(LS_UNLOCK,true);unlockUI();logMoon("gate","unlocked");return true}return false}
+function checkUnlock(){const ok=jget(LS_UNLOCK,"false");if(ok){unlockUI();var src=jget("mh.src","\"garlic.watch\"");logMoon("gate","auto-unlocked · "+src)}}
+function doUnlock(val){const expect=jget(LS_KEY,"");if(expect&&val===expect){jset(LS_UNLOCK,true);unlockUI();var src=jget("mh.src","\"manual\"");logMoon("gate","unlocked · "+src);return true}return false}
 function genCode(){return Math.random().toString(36).slice(2,6)+"-"+Math.random().toString(36).slice(2,6)+"-"+Math.random().toString(36).slice(2,6)}
 function issueNext(who){const pack=jget(LS_NEXT,"{}");if(pack[who])return pack[who];const code=genCode();pack[who]=code;jset(LS_NEXT,pack);return code}
-tryKey.addEventListener("click",()=>{const v=keyInput.value.trim();if(doUnlock(v)){keyInput.value=""}})
-keyBadge.addEventListener("click",()=>{panelKey.style.display="flex"})
-closeKey.addEventListener("click",()=>{panelKey.style.display="none"})
-panelKey.addEventListener("click",e=>{if(e.target===panelKey)panelKey.style.display="none"})
-badgeMoon.addEventListener("click",()=>{panelMoon.style.display="flex";renderMoon()})
-closeMoon.addEventListener("click",()=>{panelMoon.style.display="none"})
-panelMoon.addEventListener("click",e=>{if(e.target===panelMoon)panelMoon.style.display="none"})
-truth.addEventListener("change",()=>{const val=truth.value.trim();if(!val)return;pulse();const old=jget(LS_FACETS,"[]");old.push(val);jset(LS_FACETS,old);renderArchive();logMoon("facet",val)})
-transfer.addEventListener("click",e=>{const t=e.target;if(t.tagName!=="BUTTON"||!t.dataset.who)return;const code=issueNext(t.dataset.who);navigator.clipboard.writeText(code);copyStatus.textContent=t.dataset.who+" key copied"})
-window.addEventListener("load",()=>{renderArchive();checkUnlock()})
+document.getElementById("tryKey").addEventListener("click",function(){const v=keyInput.value.trim();if(doUnlock(v)){keyInput.value=""}})
+document.getElementById("keyBadge").addEventListener("click",function(){panelKey.style.display="flex"})
+document.getElementById("closeKey").addEventListener("click",function(){panelKey.style.display="none"})
+panelKey.addEventListener("click",function(e){if(e.target===panelKey)panelKey.style.display="none"})
+badgeMoon.addEventListener("click",function(){panelMoon.style.display="flex";renderMoon()})
+closeMoon.addEventListener("click",function(){panelMoon.style.display="none"})
+panelMoon.addEventListener("click",function(e){if(e.target===panelMoon)panelMoon.style.display="none"})
+truth.addEventListener("change",function(){const val=truth.value.trim();if(!val)return;pulse();const old=jget(LS_FACETS,"[]");old.push(val);jset(LS_FACETS,old);renderArchive();logMoon("facet",val)})
+document.getElementById("transfer").addEventListener("click",function(e){const t=e.target;if(t.tagName!=="BUTTON"||!t.dataset.who)return;const code=issueNext(t.dataset.who);navigator.clipboard.writeText(code);copyStatus.textContent=t.dataset.who+" key copied"})
+window.addEventListener("load",function(){renderArchive();checkUnlock()})
 </script>
 </body>
 </html>
