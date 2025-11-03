@@ -1,316 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MirrorHoney · Index</title>
-<meta name="theme-color" content="#b6a8ff" />
-<meta name="description" content="MirrorHoney · Marina’s mirror hub for keys and reflections." />
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MirrorHoney · Yellow Key Room</title>
 <style>
-  :root{
-    --bg0:#0e0b17; --bg1:#17122e; --bg2:#221b45;
-    --ink:#efeaff; --inkd:#d9d3ff; --pearl:#ffffff; --accent:#c2b6ff;
-  }
-  html,body{height:100%;margin:0}
-  body{
-    min-height:100%;
-    background:
-      radial-gradient(1000px 700px at 70% 8%, #2f2569 0%, var(--bg2) 36%, var(--bg1) 62%, var(--bg0) 100%),
-      linear-gradient(180deg, #0a0916, #0d0a16);
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", Helvetica;
-    color:var(--ink); -webkit-font-smoothing:antialiased; letter-spacing:.15px;
-    display:flex; flex-direction:column;
-  }
-  header, footer{
-    padding: clamp(12px, 3vw, 22px);
-    color: var(--inkd);
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-  }
-  .brand{font-weight:700; color:var(--pearl)}
-  .crumbs a{color:var(--inkd); text-decoration:none; border-bottom:1px dotted #cfc9ff66}
-
-  .section{width:min(1100px, 94vw); margin:0 auto; padding:clamp(12px,3vw,28px)}
-  .h{margin:0 0 8px; font-weight:700; font-size:clamp(18px,2.6vw,24px); color:var(--pearl); text-shadow:0 10px 30px #c2b6ff33}
-  .grid{display:grid; gap:clamp(12px,2.4vw,22px); grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-
-  /* Tile */
-  .tile{
-    position:relative; border-radius:20px; padding:18px;
-    background: linear-gradient(180deg, #ffffff14, #ffffff08);
-    border:1px solid #ffffff24;
-    box-shadow: 0 18px 60px #00000088, inset 0 0 0 1px #ffffff1e, inset 0 0 120px #c2b6ff22;
-    backdrop-filter: blur(10px) saturate(118%); -webkit-backdrop-filter: blur(10px) saturate(118%);
-    overflow:hidden; isolation:isolate;
-  }
-  .tile::before{
-    content:""; position:absolute; inset:0;
-    background:
-      linear-gradient(122deg, transparent 0 38%, #ffffff18 40%, #ffffff0a 43%, transparent 46% 100%),
-      radial-gradient(900px 400px at 70% -12%, #efeaff12 0%, transparent 62%);
-    mix-blend-mode: screen; pointer-events:none; animation: sheen 16s ease-in-out infinite;
-  }
-  @keyframes sheen{0%,100%{transform:translateX(-1%)}50%{transform:translateX(1%)}}
-
-  .row{display:flex; align-items:center; justify-content:space-between; gap:10px}
-  .name{font-weight:700; font-size:clamp(16px,2.8vw,20px); color:var(--pearl)}
-  .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid #ffffff44; background:linear-gradient(180deg,#ffffff22,#ffffff0d)}
-  .hint{margin:8px 0 0; color:var(--inkd); font-size:13px}
-
-  .plate{
-    margin-top:14px; position:relative; height:160px; border-radius:16px;
-    border:1px solid #ffffff30;
-    background: radial-gradient(110% 100% at 60% 10%, #ffffff18 0%, #ffffff0a 45%, transparent 70%),
-                linear-gradient(180deg,#ffffff14,#ffffff08);
-    overflow:hidden;
-  }
-  .aura{
-    position:absolute; inset:0; pointer-events:none; opacity:0;
-    background:
-      radial-gradient(180px 140px at 28% 36%, #c2b6ff44 0%, transparent 70%),
-      radial-gradient(240px 180px at 72% 30%, #a4f1ff44 0%, transparent 72%);
-    filter: blur(8px) saturate(112%); transition: opacity .45s ease;
-  }
-  .gate{
-    position:absolute; bottom:10px; right:10px;
-    display:inline-flex; align-items:center; gap:10px;
-    padding:10px 14px; border-radius:12px;
-    border:1px solid #ffffff3a; background: linear-gradient(180deg,#ffffff24,#ffffff12);
-    color:var(--ink); text-decoration:none; user-select:none;
-  }
-  .keyicon{ width:16px; height:16px; border-radius:3px;
-    background: radial-gradient(circle at 30% 30%, #fff, #d9d1ff 40%, #9b86ff 72%, #5f4fb9);
-    box-shadow:0 2px 10px #c2b6ff55;
-  }
-
-  /* States */
-  .bright .aura{ opacity:1 }
-  .unlocked .tag{ border-color:#a4f1ffbb; box-shadow:0 0 18px #a4f1ff55 inset }
-  .unlocked .hint{ color:#e9fdff }
-
-  /* Badge */
-  .badge{
-    position:fixed; right:14px; bottom:14px; z-index:30;
-    font-size:12px; color:var(--ink);
-    padding:8px 12px; border-radius:999px;
-    border:1px solid #ffffff33;
-    background:linear-gradient(180deg,#ffffff22,#ffffff12);
-    box-shadow:0 10px 30px #00000066; opacity:.9;
-  }
+:root{--bg:#0a0a0f;--ink:#fff;--soft:#ffc83d;--line:rgba(255,255,255,.12);--pane:rgba(255,255,255,.08);--veil:rgba(12,12,18,.9)}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+.center{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px}
+h1{font-size:1.25rem;margin:0 0 8px 0;font-weight:600;letter-spacing:.01em}
+p{opacity:.85;margin:4px 0}
+.hidden{display:none}
+.lockveil{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 40%,rgba(255,200,61,.08),transparent 45%),linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.7));z-index:10}
+.lockcard{width:92%;max-width:540px;background:rgba(15,15,22,.9);border:1px solid var(--line);border-radius:16px;padding:22px;backdrop-filter:blur(10px)}
+.lockcard h2{margin:0 0 8px;font-size:1.05rem}
+.lockcard .hint{font-size:.92rem;opacity:.85}
+.input{background:transparent;border:none;border-bottom:1px solid var(--ink);outline:none;color:var(--ink);padding:6px 4px;width:100%;font-size:1rem;text-align:center}
+.btn{background:var(--pane);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:var(--ink);cursor:pointer}
+.btn.yellow{background:linear-gradient(180deg,#ffe07a,#ffc83d);color:#2b2300;border:1px solid rgba(0,0,0,.2)}
+.badgestrip{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.badge{background:var(--pane);border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:.85rem}
+#diamond{width:120px;height:120px;transform-style:preserve-3d;animation:spin 8s linear infinite;margin:24px 0}
+.facet{position:absolute;width:120px;height:120px;background:linear-gradient(45deg,#fafafa,#bbb);opacity:.92;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+@keyframes spin{0%{transform:rotateX(0)rotateY(0)}100%{transform:rotateX(360deg)rotateY(360deg)}}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.pill{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--pane);border-radius:999px;padding:8px 10px;font-size:.9rem}
+#overlay{position:fixed;inset:0;background:radial-gradient(circle at center,rgba(255,200,61,.18),rgba(255,170,0,.08),transparent);opacity:0;transition:opacity 2s;z-index:5}
+#archive{position:fixed;bottom:20px;width:100%;text-align:center;font-size:.92rem;opacity:.8}
+.panel{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,transparent,rgba(0,0,0,.45));z-index:30}
+.sheet{width:100%;max-width:600px;background:var(--veil);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px 22px}
+.row{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px dashed var(--line);gap:10px}
+.klabel{display:flex;align-items:center;gap:8px;font-weight:600}
+.dim{opacity:.75}
+.copy{white-space:nowrap}
+#badgeMoon{position:fixed;right:16px;bottom:72px;background:var(--pane);border:1px solid var(--line);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
+.keybadge{position:fixed;right:16px;bottom:16px;background:linear-gradient(180deg,#ffd84f,#ffb300);color:#201a00;border:1px solid rgba(0,0,0,.25);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:20}
 </style>
 </head>
 <body>
-  <header>
-    <div class="brand">MirrorHoney</div>
-    <div class="crumbs"><a href="/">home</a> / index</div>
-  </header>
+<div id="overlay"></div>
 
-  <section class="section" aria-label="Keys (mirror)">
-    <div class="h">Keys (Mirror)</div>
-    <p class="hint" style="margin:6px 0 16px">When the canon is learned at School, mirrors glow here. Yellow glows when the color key is set.</p>
-
-    <div class="grid">
-      <!-- For Good (mirror) -->
-      <article class="tile" id="m-forgood">
-        <div class="row">
-          <div class="name">For Good · Mirror</div>
-          <span class="tag" id="mt-forgood">Locked</span>
-        </div>
-        <p class="hint" id="mh-forgood">Soft violet-pearl reflection of the forgiveness gate.</p>
-        <div class="plate">
-          <div class="aura" id="ma-forgood" aria-hidden="true"></div>
-          <a class="gate" href="/keys/for-good" aria-label="Open MirrorHoney For Good">
-            <span class="keyicon" aria-hidden="true"></span> Open Mirror
-          </a>
-        </div>
-      </article>
-
-      <!-- Wonderland (mirror stub) -->
-      <article class="tile" id="m-wonderland">
-        <div class="row">
-          <div class="name">Wonderland · Mirror</div>
-          <span class="tag" id="mt-wonderland">Locked</span>
-        </div>
-        <p class="hint" id="mh-wonderland">When you follow the question at School, the mirror clears.</p>
-        <div class="plate">
-          <div class="aura" id="ma-wonderland" aria-hidden="true"></div>
-          <a class="gate" href="/keys/wonderland" aria-label="Open Wonderland mirror">
-            <span class="keyicon"></span> Open Mirror
-          </a>
-        </div>
-      </article>
-
-      <!-- Dear John (mirror stub) -->
-      <article class="tile" id="m-dearjohn">
-        <div class="row">
-          <div class="name">Dear John · Mirror</div>
-          <span class="tag" id="mt-dearjohn">Locked</span>
-        </div>
-        <p class="hint" id="mh-dearjohn">Reckoning reflected with care.</p>
-        <div class="plate">
-          <div class="aura" id="ma-dearjohn" aria-hidden="true"></div>
-          <a class="gate" href="/keys/dear-john" aria-label="Open Dear John mirror">
-            <span class="keyicon"></span> Open Mirror
-          </a>
-        </div>
-      </article>
-
-      <!-- New Romantics (mirror stub) -->
-      <article class="tile" id="m-newromantics">
-        <div class="row">
-          <div class="name">New Romantics · Mirror</div>
-          <span class="tag" id="mt-newromantics">Locked</span>
-        </div>
-        <p class="hint" id="mh-newromantics">Freedom’s glitter, held steady.</p>
-        <div class="plate">
-          <div class="aura" id="ma-newromantics" aria-hidden="true"></div>
-          <a class="gate" href="/keys/new-romantics" aria-label="Open New Romantics mirror">
-            <span class="keyicon"></span> Open Mirror
-          </a>
-        </div>
-      </article>
-
-      <!-- Yellow · Sigrid (Primadonna @10:36) -->
-      <article class="tile" id="m-yellow" aria-label="Yellow · Sigrid (Primadonna)">
-        <div class="row">
-          <div class="name">Yellow · Sigrid</div>
-          <span class="tag" id="mt-yellow">Locked</span>
-        </div>
-        <p class="hint" id="mh-yellow">Glows after the Yellow key is set.</p>
-        <div class="plate">
-          <div class="aura" id="ma-yellow" aria-hidden="true"></div>
-          <a class="gate" id="go-yellow" href="#" aria-label="Open Sigrid · Primadonna (timestamp)">
-            <span class="keyicon" aria-hidden="true"></span>
-            Open Timestamp
-          </a>
-        </div>
-      </article>
+<div id="locked" class="lockveil">
+  <div class="lockcard">
+    <h2>🍯 MirrorHoney — Yellow Key</h2>
+    <p class="hint">Sigrid holds the key. If you were sent here from garlic, the door will open. Otherwise, enter the key.</p>
+    <div style="margin:12px 0">
+      <input id="keyInput" class="input" placeholder="enter key">
     </div>
-  </section>
-
-  <section class="section" aria-label="Portals">
-    <div class="h">Portals</div>
-    <div class="grid">
-      <article class="tile">
-        <div class="row"><div class="name">School</div><span class="tag">Canon</span></div>
-        <p class="hint">Learn the keys in the academy.</p>
-        <div class="plate">
-          <div class="aura" id="ma-school" aria-hidden="true"></div>
-          <a class="gate" href="https://school.plnt.earth" aria-label="Open School"><span class="keyicon"></span> Go to School</a>
-        </div>
-      </article>
-      <article class="tile">
-        <div class="row"><div class="name">Four · Castle</div><span class="tag">Map</span></div>
-        <p class="hint">Gates respond to what you’ve learned.</p>
-        <div class="plate">
-          <div class="aura" id="ma-four" aria-hidden="true"></div>
-          <a class="gate" href="https://four.plnt.earth/castle" aria-label="Open Four Castle"><span class="keyicon"></span> Enter Castle</a>
-        </div>
-      </article>
-      <article class="tile">
-        <div class="row"><div class="name">Center</div><span class="tag">Home</span></div>
-        <p class="hint">Keys across the ecosystem.</p>
-        <div class="plate">
-          <div class="aura" id="ma-center" aria-hidden="true"></div>
-          <a class="gate" href="https://center.plnt.earth" aria-label="Open Center"><span class="keyicon"></span> Go to Center</a>
-        </div>
-      </article>
+    <div class="badgestrip">
+      <div class="badge">key: <b style="color:#ffc83d">yellow</b></div>
+      <div class="badge">holder: Sigrid → Marina</div>
     </div>
-  </section>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:14px">
+      <button id="tryKey" class="btn yellow">unlock</button>
+    </div>
+  </div>
+</div>
 
-  <div class="badge">MirrorHoney · Keys</div>
+<div id="app" class="center hidden" aria-hidden="true">
+  <h1>Diamond Landing</h1>
+  <p class="dim">cut clean · set warm · turn slowly</p>
+  <div id="diamond"><div class="facet"></div></div>
+  <div style="width:min(320px,86%);margin-top:10px">
+    <input id="truth" class="input" placeholder="enter one true line">
+  </div>
+  <div class="grid">
+    <div class="pill">Sigrid ▸ Marina</div>
+    <div class="pill">Next: Taylor</div>
+    <div class="pill">Next: Dua</div>
+    <div class="pill">Next: Ariana</div>
+  </div>
+</div>
 
-  <footer>
-    <div>© MirrorHoney · Illumina</div>
-    <div>Violet-pearl mirror</div>
-  </footer>
+<div id="archive"></div>
+
+<div id="badgeMoon">🌕 <span>Moon Log</span></div>
+<div id="panelMoon" class="panel">
+  <div class="sheet">
+    <div class="row"><div class="klabel">🌕 Moon Log <span class="dim">#moonlog</span></div><button id="closeMoon" class="btn">close</button></div>
+    <div id="listMoon"></div>
+  </div>
+</div>
+
+<div id="keyBadge" class="keybadge">🔑 <span>yellow</span> <small>gate</small></div>
+<div id="panelKey" class="panel">
+  <div class="sheet">
+    <div class="row"><div class="klabel">🔑 Yellow Key</div><button id="closeKey" class="btn">close</button></div>
+    <div class="row"><div class="dim">status</div><div id="gateStatus">locked</div></div>
+    <div id="transfer" class="hidden">
+      <div class="row"><div class="klabel">issue next keys</div><div class="dim">Marina →</div></div>
+      <div class="row">
+        <button data-who="taylor" class="btn">to Taylor</button>
+        <button data-who="dua" class="btn">to Dua</button>
+        <button data-who="ariana" class="btn">to Ariana</button>
+      </div>
+      <div class="row"><div class="dim">copies</div><div id="copyStatus" class="copy"></div></div>
+    </div>
+  </div>
+</div>
 
 <script>
 (function(){
-  // --- helpers: normalize School "learned" flags (plain + snake) ---
-  function learned(slugPlain, slugSnake){
-    try{
-      var a = localStorage.getItem('castle.key.'+slugPlain) === 'true';
-      var b = localStorage.getItem('castle.key.'+slugSnake) === 'true';
-      if(a||b){
-        localStorage.setItem('castle.key.'+slugPlain,'true');
-        localStorage.setItem('castle.key.'+slugSnake,'true');
-      }
-      return a||b;
-    }catch(_){ return false; }
-  }
-  function setMirror(id, on){
-    var tile = document.getElementById('m-'+id);
-    var tag  = document.getElementById('mt-'+id);
-    var hint = document.getElementById('mh-'+id);
-    var aura = document.getElementById('ma-'+id);
-    if(!tile) return;
-    if(on){
-      tile.classList.add('unlocked','bright');
-      if(tag) tag.textContent = 'Unlocked';
-      if(hint) hint.textContent = 'Mirror is clear. Walk softly.';
-      if(aura) aura.style.opacity = '1';
-    }
-  }
-
-  // Canon mirrors
-  var fg = learned('forgood','for_good');
-  var wl = learned('wonderland','wonderland');
-  var dj = learned('dearjohn','dear_john');
-  var nr = learned('newromantics','new_romantics');
-
-  setMirror('forgood', fg);
-  setMirror('wonderland', wl);
-  setMirror('dearjohn', dj);
-  setMirror('newromantics', nr);
-
-  // Portals glow if any key learned
-  var anyCanon = fg||wl||dj||nr;
-  function glow(id){ var el=document.getElementById(id); if(el) el.style.opacity = anyCanon ? '1' : '0'; }
-  glow('ma-school'); glow('ma-four'); glow('ma-center');
-
-  // --- Yellow · Sigrid (Primadonna @10:36) tile wiring ---
-  (function(){
-    // Defaults (overridable via localStorage like on the Garlic page)
-    var YT_ID = 'uxTdS0Frwsk';   // Sigrid & Johanne Raabe covers (2021)
-    var YT_T  = 636;             // 10:36
-    try{
-      var lsId = localStorage.getItem('video.primadonna.id');
-      var lsTs = localStorage.getItem('video.primadonna.start');
-      if(lsId && lsId.trim()) YT_ID = lsId.trim();
-      if(lsTs && String(lsTs).trim() !== '') YT_T = Math.max(0, parseInt(lsTs,10)||0);
-    }catch(_){}
-
-    var tile = document.getElementById('m-yellow');
-    var tag  = document.getElementById('mt-yellow');
-    var hint = document.getElementById('mh-yellow');
-    var aura = document.getElementById('ma-yellow');
-    var go   = document.getElementById('go-yellow');
-
-    if(go){
-      var url = 'https://youtu.be/' + YT_ID + (YT_T ? ('?t='+YT_T) : '');
-      go.href = url;
-    }
-
-    var unlocked = false;
-    try{
-      unlocked = localStorage.getItem('color.key.yellow') === 'true' ||
-                 localStorage.getItem('garlic.sigrid.primadonna.played') === 'true';
-    }catch(_){}
-
-    if(unlocked){
-      tile.classList.add('unlocked','bright');
-      if(tag)  tag.textContent = 'Unlocked';
-      if(hint) hint.textContent = 'Mirror is warm. Walk softly.';
-      if(aura) aura.style.opacity = '1';
-    }else{
-      var nudged=false;
-      tile.addEventListener('pointerenter', function(){
-        if(nudged) return; nudged=true;
-        if(aura){ aura.style.opacity = '.65'; setTimeout(function(){ aura.style.opacity = '0'; }, 1200); }
-      });
-    }
-  })();
+  function pick(s){var m=String(s||"").match(/[#?&]k=([^&]+)/);return m?decodeURIComponent(m[1]):""}
+  var k=pick(location.hash)||pick(location.search);
+  if(!k)return;
+  if(!localStorage.getItem("mh.key")) localStorage.setItem("mh.key",JSON.stringify(k));
+  localStorage.setItem("mh.key.set","true");
+  localStorage.setItem("mh.unlock","true");
+  history.replaceState({},document.title,location.pathname);
 })();
+</script>
+
+<script>
+const LS_KEY="mh.key",LS_UNLOCK="mh.unlock",LS_NEXT="mh.next",LS_FACETS="mh.facets",LS_LOG="mh.moon.log"
+const locked=document.getElementById("locked"),app=document.getElementById("app")
+const keyInput=document.getElementById("keyInput"),tryKey=document.getElementById("tryKey")
+const overlay=document.getElementById("overlay"),archive=document.getElementById("archive")
+const truth=document.getElementById("truth")
+const badgeMoon=document.getElementById("badgeMoon"),panelMoon=document.getElementById("panelMoon"),closeMoon=document.getElementById("closeMoon"),listMoon=document.getElementById("listMoon")
+const keyBadge=document.getElementById("keyBadge"),panelKey=document.getElementById("panelKey"),closeKey=document.getElementById("closeKey"),gateStatus=document.getElementById("gateStatus"),transfer=document.getElementById("transfer"),copyStatus=document.getElementById("copyStatus")
+const START_DATE=new Date("2025-11-05T00:00:00-05:00").getTime()
+function jget(k,def){try{return JSON.parse(localStorage.getItem(k)||def)}catch(e){return JSON.parse(def)}}
+function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function phaseInfo(d){const syn=29.53058867,ref=new Date(Date.UTC(2000,0,6,18,14)).getTime();const days=(d.getTime()-ref)/86400000,age=((days%syn)+syn)%syn,frac=age/syn;const idx=Math.floor(frac*8+0.5)%8;const names=["New Moon","Waxing Crescent","First Quarter","Waxing Gibbous","Full Moon","Waning Gibbous","Last Quarter","Waning Crescent"];const glyphs=["🌑","🌒","🌓","🌔","🌕","🌖","🌗","🌘"];return {name:names[idx],emoji:glyphs[idx]}}
+function illuminaStamp(now){const diff=Math.floor((now.getTime()-START_DATE)/86400000);const day=diff+1,week=Math.max(1,Math.floor(diff/7)+1),wday=((diff%7)+1);const p=phaseInfo(now);return {label:"Illumina Day "+day+" (Week "+week+", Day "+wday+")",phase:p.emoji+" "+p.name}}
+function pulse(){overlay.style.opacity=1;setTimeout(()=>overlay.style.opacity=0,2800)}
+function renderArchive(){const facets=jget(LS_FACETS,"[]");if(facets.length)archive.innerText="Facets: "+facets.join(" • ")}
+function logMoon(kind,msg){const now=new Date(),stamp=illuminaStamp(now);const entry={ts:now.getTime(),phase:stamp.phase,illumina:stamp.label,kind:kind,msg:msg||""};const log=jget(LS_LOG,"[]");log.push(entry);jset(LS_LOG,log)}
+function renderMoon(){const rows=jget(LS_LOG,"[]").slice().reverse();listMoon.innerHTML="";if(!rows.length){listMoon.innerHTML='<div class="row"><div class="dim">No entries yet.</div></div>';return}rows.forEach(r=>{const row=document.createElement("div");row.className="row";const left=document.createElement("div");const a=document.createElement("div");a.textContent=r.phase+" · "+r.illumina;const b=document.createElement("div");b.className="dim";b.textContent=new Date(r.ts).toLocaleString();const c=document.createElement("div");c.className="dim";c.textContent=r.msg||"";left.appendChild(a);left.appendChild(b);left.appendChild(c);const actions=document.createElement("div");const copy=document.createElement("button");copy.className="btn";copy.textContent="copy";copy.onclick=()=>{const text=r.phase+" | "+r.illumina+" | "+new Date(r.ts).toISOString()+(r.msg?(" | "+r.msg):"");navigator.clipboard.writeText(text)};actions.appendChild(copy);row.appendChild(left);row.appendChild(actions);listMoon.appendChild(row)})}
+function unlockUI(){locked.style.display="none";app.classList.remove("hidden");app.setAttribute("aria-hidden","false");gateStatus.textContent="unlocked";transfer.classList.remove("hidden")}
+function checkUnlock(){const ok=jget(LS_UNLOCK,"false");if(ok){unlockUI()}}
+function doUnlock(val){const expect=jget(LS_KEY,"");if(expect&&val===expect){jset(LS_UNLOCK,true);unlockUI();logMoon("gate","unlocked");return true}return false}
+function genCode(){return Math.random().toString(36).slice(2,6)+"-"+Math.random().toString(36).slice(2,6)+"-"+Math.random().toString(36).slice(2,6)}
+function issueNext(who){const pack=jget(LS_NEXT,"{}");if(pack[who])return pack[who];const code=genCode();pack[who]=code;jset(LS_NEXT,pack);return code}
+tryKey.addEventListener("click",()=>{const v=keyInput.value.trim();if(doUnlock(v)){keyInput.value=""}})
+keyBadge.addEventListener("click",()=>{panelKey.style.display="flex"})
+closeKey.addEventListener("click",()=>{panelKey.style.display="none"})
+panelKey.addEventListener("click",e=>{if(e.target===panelKey)panelKey.style.display="none"})
+badgeMoon.addEventListener("click",()=>{panelMoon.style.display="flex";renderMoon()})
+closeMoon.addEventListener("click",()=>{panelMoon.style.display="none"})
+panelMoon.addEventListener("click",e=>{if(e.target===panelMoon)panelMoon.style.display="none"})
+truth.addEventListener("change",()=>{const val=truth.value.trim();if(!val)return;pulse();const old=jget(LS_FACETS,"[]");old.push(val);jset(LS_FACETS,old);renderArchive();logMoon("facet",val)})
+transfer.addEventListener("click",e=>{const t=e.target;if(t.tagName!=="BUTTON"||!t.dataset.who)return;const code=issueNext(t.dataset.who);navigator.clipboard.writeText(code);copyStatus.textContent=t.dataset.who+" key copied"})
+window.addEventListener("load",()=>{renderArchive();checkUnlock()})
 </script>
 </body>
 </html>
