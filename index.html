@@ -10,7 +10,6 @@
   :root{
     --bg0:#0e0b17; --bg1:#17122e; --bg2:#221b45;
     --ink:#efeaff; --inkd:#d9d3ff; --pearl:#ffffff; --accent:#c2b6ff;
-    --glass:#ffffff10;
   }
   html,body{height:100%;margin:0}
   body{
@@ -30,20 +29,9 @@
   .brand{font-weight:700; color:var(--pearl)}
   .crumbs a{color:var(--inkd); text-decoration:none; border-bottom:1px dotted #cfc9ff66}
 
-  .section{
-    width:min(1100px, 94vw);
-    margin: 0 auto;
-    padding: clamp(12px, 3vw, 28px);
-  }
-  .h{
-    margin: 0 0 8px; font-weight:700;
-    font-size: clamp(18px, 2.6vw, 24px); color: var(--pearl);
-    text-shadow: 0 10px 30px #c2b6ff33;
-  }
-  .grid{
-    display:grid; gap: clamp(12px, 2.4vw, 22px);
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
+  .section{width:min(1100px, 94vw); margin:0 auto; padding:clamp(12px,3vw,28px)}
+  .h{margin:0 0 8px; font-weight:700; font-size:clamp(18px,2.6vw,24px); color:var(--pearl); text-shadow:0 10px 30px #c2b6ff33}
+  .grid{display:grid; gap:clamp(12px,2.4vw,22px); grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 
   /* Tile */
   .tile{
@@ -64,7 +52,7 @@
   @keyframes sheen{0%,100%{transform:translateX(-1%)}50%{transform:translateX(1%)}}
 
   .row{display:flex; align-items:center; justify-content:space-between; gap:10px}
-  .name{font-weight:700; font-size: clamp(16px, 2.8vw, 20px); color:var(--pearl)}
+  .name{font-weight:700; font-size:clamp(16px,2.8vw,20px); color:var(--pearl)}
   .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid #ffffff44; background:linear-gradient(180deg,#ffffff22,#ffffff0d)}
   .hint{margin:8px 0 0; color:var(--inkd); font-size:13px}
 
@@ -118,7 +106,8 @@
 
   <section class="section" aria-label="Keys (mirror)">
     <div class="h">Keys (Mirror)</div>
-    <p class="hint" style="margin:6px 0 16px">When the canon is learned at School, mirrors glow here.</p>
+    <p class="hint" style="margin:6px 0 16px">When the canon is learned at School, mirrors glow here. Yellow glows when the color key is set.</p>
+
     <div class="grid">
       <!-- For Good (mirror) -->
       <article class="tile" id="m-forgood">
@@ -179,6 +168,22 @@
           </a>
         </div>
       </article>
+
+      <!-- Yellow · Sigrid (Primadonna @10:36) -->
+      <article class="tile" id="m-yellow" aria-label="Yellow · Sigrid (Primadonna)">
+        <div class="row">
+          <div class="name">Yellow · Sigrid</div>
+          <span class="tag" id="mt-yellow">Locked</span>
+        </div>
+        <p class="hint" id="mh-yellow">Glows after the Yellow key is set.</p>
+        <div class="plate">
+          <div class="aura" id="ma-yellow" aria-hidden="true"></div>
+          <a class="gate" id="go-yellow" href="#" aria-label="Open Sigrid · Primadonna (timestamp)">
+            <span class="keyicon" aria-hidden="true"></span>
+            Open Timestamp
+          </a>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -221,7 +226,7 @@
 
 <script>
 (function(){
-  // Normalize & read School key flags; mirrors glow when canon learned.
+  // --- helpers: normalize School "learned" flags (plain + snake) ---
   function learned(slugPlain, slugSnake){
     try{
       var a = localStorage.getItem('castle.key.'+slugPlain) === 'true';
@@ -247,6 +252,7 @@
     }
   }
 
+  // Canon mirrors
   var fg = learned('forgood','for_good');
   var wl = learned('wonderland','wonderland');
   var dj = learned('dearjohn','dear_john');
@@ -258,9 +264,52 @@
   setMirror('newromantics', nr);
 
   // Portals glow if any key learned
-  var any = fg||wl||dj||nr;
-  function glow(id){ var el=document.getElementById(id); if(el) el.style.opacity = any ? '1' : '0'; }
+  var anyCanon = fg||wl||dj||nr;
+  function glow(id){ var el=document.getElementById(id); if(el) el.style.opacity = anyCanon ? '1' : '0'; }
   glow('ma-school'); glow('ma-four'); glow('ma-center');
+
+  // --- Yellow · Sigrid (Primadonna @10:36) tile wiring ---
+  (function(){
+    // Defaults (overridable via localStorage like on the Garlic page)
+    var YT_ID = 'uxTdS0Frwsk';   // Sigrid & Johanne Raabe covers (2021)
+    var YT_T  = 636;             // 10:36
+    try{
+      var lsId = localStorage.getItem('video.primadonna.id');
+      var lsTs = localStorage.getItem('video.primadonna.start');
+      if(lsId && lsId.trim()) YT_ID = lsId.trim();
+      if(lsTs && String(lsTs).trim() !== '') YT_T = Math.max(0, parseInt(lsTs,10)||0);
+    }catch(_){}
+
+    var tile = document.getElementById('m-yellow');
+    var tag  = document.getElementById('mt-yellow');
+    var hint = document.getElementById('mh-yellow');
+    var aura = document.getElementById('ma-yellow');
+    var go   = document.getElementById('go-yellow');
+
+    if(go){
+      var url = 'https://youtu.be/' + YT_ID + (YT_T ? ('?t='+YT_T) : '');
+      go.href = url;
+    }
+
+    var unlocked = false;
+    try{
+      unlocked = localStorage.getItem('color.key.yellow') === 'true' ||
+                 localStorage.getItem('garlic.sigrid.primadonna.played') === 'true';
+    }catch(_){}
+
+    if(unlocked){
+      tile.classList.add('unlocked','bright');
+      if(tag)  tag.textContent = 'Unlocked';
+      if(hint) hint.textContent = 'Mirror is warm. Walk softly.';
+      if(aura) aura.style.opacity = '1';
+    }else{
+      var nudged=false;
+      tile.addEventListener('pointerenter', function(){
+        if(nudged) return; nudged=true;
+        if(aura){ aura.style.opacity = '.65'; setTimeout(function(){ aura.style.opacity = '0'; }, 1200); }
+      });
+    }
+  })();
 })();
 </script>
 </body>
