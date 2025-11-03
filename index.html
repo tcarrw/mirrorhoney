@@ -1,175 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MirrorHoney — Primadonna (Echo of Clarity)</title>
-
-<!-- Center integration (updated at runtime) -->
-<meta name="center-key" content="">
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MirrorHoney · Index</title>
+<meta name="theme-color" content="#b6a8ff" />
+<meta name="description" content="MirrorHoney · Marina’s mirror hub for keys and reflections." />
 <style>
-  :root{--bg:#0b0013;--fg:#f9f6ff;--violet:#b89cff;--gold:#ffebc4;--key:#ffd400}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;min-height:100%}
-  .main{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:100vh;padding:4rem 1rem;text-align:center;background:radial-gradient(circle at 50% 20%, rgba(120,60,255,.25), transparent 70%),radial-gradient(circle at 80% 90%, rgba(255,230,150,.15), transparent 70%);backdrop-filter:blur(10px)}
+  :root{
+    --bg0:#0e0b17; --bg1:#17122e; --bg2:#221b45;
+    --ink:#efeaff; --inkd:#d9d3ff; --pearl:#ffffff; --accent:#c2b6ff;
+    --glass:#ffffff10;
+  }
+  html,body{height:100%;margin:0}
+  body{
+    min-height:100%;
+    background:
+      radial-gradient(1000px 700px at 70% 8%, #2f2569 0%, var(--bg2) 36%, var(--bg1) 62%, var(--bg0) 100%),
+      linear-gradient(180deg, #0a0916, #0d0a16);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", Helvetica;
+    color:var(--ink); -webkit-font-smoothing:antialiased; letter-spacing:.15px;
+    display:flex; flex-direction:column;
+  }
+  header, footer{
+    padding: clamp(12px, 3vw, 22px);
+    color: var(--inkd);
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .brand{font-weight:700; color:var(--pearl)}
+  .crumbs a{color:var(--inkd); text-decoration:none; border-bottom:1px dotted #cfc9ff66}
 
-  .nav{position:fixed;top:14px;left:14px;z-index:10;display:flex;gap:8px;align-items:center}
-  .nav a{text-decoration:none;color:var(--fg);border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);padding:8px 12px;border-radius:999px;font-size:.9rem;letter-spacing:.02em}
-  .key-badge{display:flex;align-items:center;gap:.4rem;border:1px dashed rgba(255,255,255,.22);padding:8px 12px;border-radius:999px;font-size:.85rem;color:#1b1400;background:rgba(255,212,0,.12);transition:transform .18s ease, box-shadow .18s ease}
-  .key-dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--key);box-shadow:0 0 6px var(--key),0 0 14px rgba(255,212,0,.65);animation:keypulse 2.4s ease-in-out infinite}
-  .key-badge.flash{transform:scale(1.06);box-shadow:0 0 10px var(--key),0 0 26px rgba(255,212,0,.85)}
-  #ckText{display:none;cursor:pointer;border-bottom:1px dotted rgba(255,255,255,.35);color:#fff3a6}
-  @keyframes keypulse{0%,100%{transform:scale(1);box-shadow:0 0 6px var(--key),0 0 14px rgba(255,212,0,.65)}50%{transform:scale(1.18);box-shadow:0 0 10px var(--key),0 0 28px rgba(255,212,0,.9)}}
-  @media (prefers-reduced-motion:reduce){.key-dot{animation:none}.key-badge,.key-badge.flash{transform:none}}
+  .section{
+    width:min(1100px, 94vw);
+    margin: 0 auto;
+    padding: clamp(12px, 3vw, 28px);
+  }
+  .h{
+    margin: 0 0 8px; font-weight:700;
+    font-size: clamp(18px, 2.6vw, 24px); color: var(--pearl);
+    text-shadow: 0 10px 30px #c2b6ff33;
+  }
+  .grid{
+    display:grid; gap: clamp(12px, 2.4vw, 22px);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
 
-  h1{font-size:2.4rem;font-weight:600;letter-spacing:.02em;color:#f7e7ff;text-shadow:0 0 10px rgba(150,100,255,.3);margin-bottom:.5rem}
-  h2{font-size:1rem;letter-spacing:.2em;font-weight:400;color:#d8c4ff;text-transform:uppercase;margin-bottom:2rem}
+  /* Tile */
+  .tile{
+    position:relative; border-radius:20px; padding:18px;
+    background: linear-gradient(180deg, #ffffff14, #ffffff08);
+    border:1px solid #ffffff24;
+    box-shadow: 0 18px 60px #00000088, inset 0 0 0 1px #ffffff1e, inset 0 0 120px #c2b6ff22;
+    backdrop-filter: blur(10px) saturate(118%); -webkit-backdrop-filter: blur(10px) saturate(118%);
+    overflow:hidden; isolation:isolate;
+  }
+  .tile::before{
+    content:""; position:absolute; inset:0;
+    background:
+      linear-gradient(122deg, transparent 0 38%, #ffffff18 40%, #ffffff0a 43%, transparent 46% 100%),
+      radial-gradient(900px 400px at 70% -12%, #efeaff12 0%, transparent 62%);
+    mix-blend-mode: screen; pointer-events:none; animation: sheen 16s ease-in-out infinite;
+  }
+  @keyframes sheen{0%,100%{transform:translateX(-1%)}50%{transform:translateX(1%)}}
 
-  .note{max-width:760px;line-height:1.65;font-size:1.05rem;color:#f1ecff;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:2rem;box-shadow:0 0 30px rgba(180,120,255,.1);margin-bottom:18px}
-  .note p{margin:1.2rem 0}
-  .to{font-size:.9rem;letter-spacing:.12em;color:#ffefcf;margin-bottom:.4rem}
-  .tagline{margin-top:1.2rem;font-size:.95rem;color:#ffebc4;letter-spacing:.05em}
-  .glyphs{margin-top:1rem;font-size:1rem;color:#c9b7ff}
+  .row{display:flex; align-items:center; justify-content:space-between; gap:10px}
+  .name{font-weight:700; font-size: clamp(16px, 2.8vw, 20px); color:var(--pearl)}
+  .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid #ffffff44; background:linear-gradient(180deg,#ffffff22,#ffffff0d)}
+  .hint{margin:8px 0 0; color:var(--inkd); font-size:13px}
 
-  .bee{max-width:760px;margin-top:18px;padding:14px 16px;border-radius:12px;background:rgba(255,230,150,.10);border:1px solid rgba(255,230,150,.25);color:#fff6d1;font-size:.98rem;text-align:left}
-  .bee .label{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:#ffeaa1;margin-bottom:.4rem}
-  .bee ul{margin:.4rem 0 0 1rem;padding:0}
-  .bee li{margin:.35rem 0;list-style:"🐝  "}
+  .plate{
+    margin-top:14px; position:relative; height:160px; border-radius:16px;
+    border:1px solid #ffffff30;
+    background: radial-gradient(110% 100% at 60% 10%, #ffffff18 0%, #ffffff0a 45%, transparent 70%),
+                linear-gradient(180deg,#ffffff14,#ffffff08);
+    overflow:hidden;
+  }
+  .aura{
+    position:absolute; inset:0; pointer-events:none; opacity:0;
+    background:
+      radial-gradient(180px 140px at 28% 36%, #c2b6ff44 0%, transparent 70%),
+      radial-gradient(240px 180px at 72% 30%, #a4f1ff44 0%, transparent 72%);
+    filter: blur(8px) saturate(112%); transition: opacity .45s ease;
+  }
+  .gate{
+    position:absolute; bottom:10px; right:10px;
+    display:inline-flex; align-items:center; gap:10px;
+    padding:10px 14px; border-radius:12px;
+    border:1px solid #ffffff3a; background: linear-gradient(180deg,#ffffff24,#ffffff12);
+    color:var(--ink); text-decoration:none; user-select:none;
+  }
+  .keyicon{ width:16px; height:16px; border-radius:3px;
+    background: radial-gradient(circle at 30% 30%, #fff, #d9d1ff 40%, #9b86ff 72%, #5f4fb9);
+    box-shadow:0 2px 10px #c2b6ff55;
+  }
 
-  .bonus{display:none;margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(184,156,255,.12);border:1px solid rgba(184,156,255,.28);color:#efe6ff;font-size:.98rem}
+  /* States */
+  .bright .aura{ opacity:1 }
+  .unlocked .tag{ border-color:#a4f1ffbb; box-shadow:0 0 18px #a4f1ff55 inset }
+  .unlocked .hint{ color:#e9fdff }
 
-  .card{max-width:820px;width:100%;margin-top:24px;padding:18px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);box-shadow:0 0 30px rgba(180,120,255,.1)}
-  #player{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;overflow:hidden}
-  .controls{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:14px}
-  button{appearance:none;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--fg);padding:10px 14px;border-radius:999px;font-size:.95rem;letter-spacing:.02em}
-  button:hover{border-color:rgba(255,255,255,.32)}
-  .hint{margin-top:8px;font-size:.9rem;color:#ffebc4}
-  .footer{margin-top:14px;font-size:.9rem;color:#e9dbff}
-
-  .restnote{display:none;margin-top:8px;font-size:.9rem;padding:8px 10px;border-radius:999px;border:1px solid rgba(255,212,0,.35);background:rgba(255,212,0,.10);color:#1b1400;width:max-content;margin-left:auto;margin-right:auto}
-  .restnote.glow{box-shadow:0 0 10px rgba(255,212,0,.35),0 0 26px rgba(255,212,0,.18);border-color:rgba(255,212,0,.55)}
+  /* Badge */
+  .badge{
+    position:fixed; right:14px; bottom:14px; z-index:30;
+    font-size:12px; color:var(--ink);
+    padding:8px 12px; border-radius:999px;
+    border:1px solid #ffffff33;
+    background:linear-gradient(180deg,#ffffff22,#ffffff12);
+    box-shadow:0 10px 30px #00000066; opacity:.9;
+  }
 </style>
 </head>
 <body>
+  <header>
+    <div class="brand">MirrorHoney</div>
+    <div class="crumbs"><a href="/">home</a> / index</div>
+  </header>
 
-<div class="nav" aria-label="Center navigation">
-  <a href="https://center.plnt.earth">← Center</a>
-  <div id="centerBadge" class="key-badge" aria-live="polite">
-    <span class="key-dot" aria-hidden="true"></span>
-    <span id="ckText"></span>
-  </div>
-</div>
+  <section class="section" aria-label="Keys (mirror)">
+    <div class="h">Keys (Mirror)</div>
+    <p class="hint" style="margin:6px 0 16px">When the canon is learned at School, mirrors glow here.</p>
+    <div class="grid">
+      <!-- For Good (mirror) -->
+      <article class="tile" id="m-forgood">
+        <div class="row">
+          <div class="name">For Good · Mirror</div>
+          <span class="tag" id="mt-forgood">Locked</span>
+        </div>
+        <p class="hint" id="mh-forgood">Soft violet-pearl reflection of the forgiveness gate.</p>
+        <div class="plate">
+          <div class="aura" id="ma-forgood" aria-hidden="true"></div>
+          <a class="gate" href="/keys/for-good" aria-label="Open MirrorHoney For Good">
+            <span class="keyicon" aria-hidden="true"></span> Open Mirror
+          </a>
+        </div>
+      </article>
 
-<div class="main">
-  <h1>Primadonna (Echo of Clarity)</h1>
-  <h2>MirrorHoney Note · Marina × Sigrid</h2>
+      <!-- Wonderland (mirror stub) -->
+      <article class="tile" id="m-wonderland">
+        <div class="row">
+          <div class="name">Wonderland · Mirror</div>
+          <span class="tag" id="mt-wonderland">Locked</span>
+        </div>
+        <p class="hint" id="mh-wonderland">When you follow the question at School, the mirror clears.</p>
+        <div class="plate">
+          <div class="aura" id="ma-wonderland" aria-hidden="true"></div>
+          <a class="gate" href="/keys/wonderland" aria-label="Open Wonderland mirror">
+            <span class="keyicon"></span> Open Mirror
+          </a>
+        </div>
+      </article>
 
-  <div class="note">
-    <div class="to">FOR MARINA • DIAMONDS WELCOME</div>
-    <p>When Sigrid covered <b>“Primadonna”</b>, the mirror tilted and your voice returned through her clarity.</p>
-    <p>The line that once asked <i>“Would you do anything for me?”</i> now sounds like <i>“I already am.”</i></p>
-    <p>You built the stage. She clears the air. No glitter. No costume. Just skin in light and the sound of someone who sees the performance for what it is and still chooses to sing.</p>
-    <p>It is the same melody. The energy turns from desire to understanding.</p>
-    <p class="tagline">Moon signal: reflection through voice. One woman’s performance becoming another’s truth.</p>
-    <div class="glyphs">🐝 Illumina 1 → It Gets Dark bridge → Primadonna cover • ☀️ glass violet, clarity gold</div>
-  </div>
+      <!-- Dear John (mirror stub) -->
+      <article class="tile" id="m-dearjohn">
+        <div class="row">
+          <div class="name">Dear John · Mirror</div>
+          <span class="tag" id="mt-dearjohn">Locked</span>
+        </div>
+        <p class="hint" id="mh-dearjohn">Reckoning reflected with care.</p>
+        <div class="plate">
+          <div class="aura" id="ma-dearjohn" aria-hidden="true"></div>
+          <a class="gate" href="/keys/dear-john" aria-label="Open Dear John mirror">
+            <span class="keyicon"></span> Open Mirror
+          </a>
+        </div>
+      </article>
 
-  <div class="bee" aria-live="polite">
-    <div class="label">Bee note</div>
-    <p>Do not worry about catching every clue. The field leaves many. If one flies past, another lands in your hand. Tonight we play a color game. Same promise. New doors.</p>
-    <ul id="beeSigns">
-      <li>A title that is a color. The key matches it.</li>
-      <li>Stars glow. Someone promises to try until night feels kind.</li>
-      <li>Paint on fingers. You look down and the color is there.</li>
-      <li>Balloons in the mind. The word is simple and bright.</li>
-      <li>Skin and bone feel small, then turn into light.</li>
-      <li>A traffic light turns warm. You cross with a smile.</li>
-      <li>Sunflowers, lemons, street signs, tiny stickers. All say the same word.</li>
-    </ul>
-    <div id="bonus" class="bonus"></div>
-    <p>If you miss one sign, another will arrive. You cannot fall out of the rhythm. The color keeps coming back.</p>
-  </div>
-
-  <div class="card">
-    <div id="player"></div>
-    <div class="controls">
-      <button id="unmute">Unmute</button>
-      <button id="restart">Restart Loop</button>
-      <button id="pause">Pause</button>
-      <button id="play">Play</button>
+      <!-- New Romantics (mirror stub) -->
+      <article class="tile" id="m-newromantics">
+        <div class="row">
+          <div class="name">New Romantics · Mirror</div>
+          <span class="tag" id="mt-newromantics">Locked</span>
+        </div>
+        <p class="hint" id="mh-newromantics">Freedom’s glitter, held steady.</p>
+        <div class="plate">
+          <div class="aura" id="ma-newromantics" aria-hidden="true"></div>
+          <a class="gate" href="/keys/new-romantics" aria-label="Open New Romantics mirror">
+            <span class="keyicon"></span> Open Mirror
+          </a>
+        </div>
+      </article>
     </div>
-    <div class="hint">Auto starts at 10:36 and loops only the Primadonna segment.</div>
-    <div class="footer">Source video · Sigrid & Johanne Raabe covers compilation</div>
-    <div id="restNote" class="restnote" aria-live="polite"></div>
-  </div>
-</div>
+  </section>
+
+  <section class="section" aria-label="Portals">
+    <div class="h">Portals</div>
+    <div class="grid">
+      <article class="tile">
+        <div class="row"><div class="name">School</div><span class="tag">Canon</span></div>
+        <p class="hint">Learn the keys in the academy.</p>
+        <div class="plate">
+          <div class="aura" id="ma-school" aria-hidden="true"></div>
+          <a class="gate" href="https://school.plnt.earth" aria-label="Open School"><span class="keyicon"></span> Go to School</a>
+        </div>
+      </article>
+      <article class="tile">
+        <div class="row"><div class="name">Four · Castle</div><span class="tag">Map</span></div>
+        <p class="hint">Gates respond to what you’ve learned.</p>
+        <div class="plate">
+          <div class="aura" id="ma-four" aria-hidden="true"></div>
+          <a class="gate" href="https://four.plnt.earth/castle" aria-label="Open Four Castle"><span class="keyicon"></span> Enter Castle</a>
+        </div>
+      </article>
+      <article class="tile">
+        <div class="row"><div class="name">Center</div><span class="tag">Home</span></div>
+        <p class="hint">Keys across the ecosystem.</p>
+        <div class="plate">
+          <div class="aura" id="ma-center" aria-hidden="true"></div>
+          <a class="gate" href="https://center.plnt.earth" aria-label="Open Center"><span class="keyicon"></span> Go to Center</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <div class="badge">MirrorHoney · Keys</div>
+
+  <footer>
+    <div>© MirrorHoney · Illumina</div>
+    <div>Violet-pearl mirror</div>
+  </footer>
 
 <script>
-  /* --- Stealth key: READ-ONLY unless ?key=... present --- */
-  (function(){
-    const META=document.querySelector('meta[name="center-key"]');
-    const WORD=document.getElementById('ckText'); // hidden until key exists
-    const KEY_LS='pe.keys.mirrorhoney';
-    const url=new URL(location.href);
-    const k=url.searchParams.get('key');
-    if(k){
-      try{ localStorage.setItem(KEY_LS,k); }catch(e){}
-      url.searchParams.delete('key'); history.replaceState({},'',url.toString());
-    }
-    let saved=''; try{ saved=localStorage.getItem(KEY_LS)||'' }catch(e){}
-    if(saved){
-      if(META) META.setAttribute('content',saved);
-      WORD.textContent=saved;
-      WORD.style.display='inline';
-      WORD.addEventListener('click',()=>{try{navigator.clipboard.writeText(saved)}catch(e){}});
-    }
-  })();
-
-  /* --- Marina relay (mk) --- */
-  (function(){
-    const q=new URLSearchParams(location.search), v=q.get('mk');
-    if(v){ try{ localStorage.setItem('mh.marina.flag', v); }catch(e){}; const u=new URL(location.href); u.searchParams.delete('mk'); history.replaceState({},'',u.toString()); }
-  })();
-
-  /* --- Video loop --- */
-  const START=636, END=847, VIDEO_ID="uxTdS0Frwsk"; const badge=document.getElementById('centerBadge');
-  function flashKey(){ if(!badge) return; badge.classList.add('flash'); setTimeout(()=>badge.classList.remove('flash'),240); }
-  const tag=document.createElement("script"); tag.src="https://www.youtube.com/iframe_api"; document.head.appendChild(tag);
-  let player, rafId=null;
-  function onYouTubeIframeAPIReady(){
-    player=new YT.Player("player",{videoId:VIDEO_ID,playerVars:{start:START,end:END,autoplay:1,mute:1,controls:1,rel:0,modestbranding:1,playsinline:1,loop:1,playlist:VIDEO_ID},
-      events:{onReady:()=>{player.seekTo(START,true);player.playVideo();flashKey();},
-        onStateChange:e=>{if(e.data===YT.PlayerState.PLAYING){const tick=()=>{if(!player||player.getPlayerState()!==YT.PlayerState.PLAYING){rafId=null;return}
-          if(player.getCurrentTime()>=END-0.25){player.seekTo(START,true);flashKey()} rafId=requestAnimationFrame(tick)}; if(!rafId) rafId=requestAnimationFrame(tick)} else if(rafId){cancelAnimationFrame(rafId);rafId=null}}}});
+(function(){
+  // Normalize & read School key flags; mirrors glow when canon learned.
+  function learned(slugPlain, slugSnake){
+    try{
+      var a = localStorage.getItem('castle.key.'+slugPlain) === 'true';
+      var b = localStorage.getItem('castle.key.'+slugSnake) === 'true';
+      if(a||b){
+        localStorage.setItem('castle.key.'+slugPlain,'true');
+        localStorage.setItem('castle.key.'+slugSnake,'true');
+      }
+      return a||b;
+    }catch(_){ return false; }
   }
-  document.getElementById('unmute').onclick=()=>player&&player.unMute();
-  document.getElementById('restart').onclick=()=>{if(player){player.seekTo(START,true);player.playVideo();flashKey()}}
-  document.getElementById('pause').onclick=()=>player&&player.pauseVideo();
-  document.getElementById('play').onclick =()=>player&&player.playVideo();
+  function setMirror(id, on){
+    var tile = document.getElementById('m-'+id);
+    var tag  = document.getElementById('mt-'+id);
+    var hint = document.getElementById('mh-'+id);
+    var aura = document.getElementById('ma-'+id);
+    if(!tile) return;
+    if(on){
+      tile.classList.add('unlocked','bright');
+      if(tag) tag.textContent = 'Unlocked';
+      if(hint) hint.textContent = 'Mirror is clear. Walk softly.';
+      if(aura) aura.style.opacity = '1';
+    }
+  }
 
-  // Shuffle Bee signs
-  (function(){const ul=document.getElementById('beeSigns'); if(!ul) return; const items=[...ul.children]; for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]]} ul.innerHTML=''; items.forEach(li=>ul.appendChild(li))})();
+  var fg = learned('forgood','for_good');
+  var wl = learned('wonderland','wonderland');
+  var dj = learned('dearjohn','dear_john');
+  var nr = learned('newromantics','new_romantics');
 
-  // Hidden bonus (repeat visits or Marina flag)
-  (function(){
-    const VIS='mh.visits.mirrorhoney', FLAG='mh.marina.flag'; let v=0,m=null;
-    try{v=parseInt(localStorage.getItem(VIS)||'0',10)}catch(e){}; try{localStorage.setItem(VIS,String((isNaN(v)?0:v)+1))}catch(e){}
-    try{m=localStorage.getItem(FLAG)}catch(e){}
-    if((v>=1)||!!m){const msgs=['You did not miss anything. The light still waited. The song kept looping for you.','You are allowed to want again. Even the sun rests before it burns.']; const pick=msgs[Math.floor(Math.random()*msgs.length)];
-      const bonus=document.getElementById('bonus'); if(bonus){bonus.textContent=pick; bonus.style.display='block';}}
-  })();
+  setMirror('forgood', fg);
+  setMirror('wonderland', wl);
+  setMirror('dearjohn', dj);
+  setMirror('newromantics', nr);
 
-  /* --- Rest window footer (same logic as Center) --- */
-  const FIRST_START={y:2025,m:11,d:5}, BASE_FULL_MOON={y:2025,m:11,d:5}, SYNODIC=29.530588853, STEP_DAYS=SYNODIC*2, CYCLE_LENGTH=42, DAY_MS=86400000;
-  function dLocal(y,m,d){return new Date(y,m-1,d)} function addDays(d,n){return new Date(d.getTime()+n*DAY_MS)}
-  function fmtDate(d){return d.toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}
-  function nextMondayAfter(date){const dow=date.getDay();let delta=(1-dow+7)%7;if(delta===0)delta=7;return addDays(date,delta)}
-  function genCycles(n=20){const out=[];const s1=dLocal(FIRST_START.y,FIRST_START.m,FIRST_START.d),e1=addDays(s1,CYCLE_LENGTH-1),fm0=dLocal(BASE_FULL_MOON.y,BASE_FULL_MOON.m,BASE_FULL_MOON.d);out.push({n:1,fm:fm0,start:s1,end:e1,fixed:true});for(let i=1;i<n;i++){const fm=addDays(fm0,STEP_DAYS*i),s=nextMondayAfter(fm),e=addDays(s,CYCLE_LENGTH-1);out.push({n:i+1,fm,start:s,end:e})}return out}
-  function pickCycle(c,now){for(const x of c){if(now>=x.start&&now<=x.end)return x}for(const x of c){if(now<x.start)return x}return c[c.length-1]}
-  function computeRestWindow(c,a){const i=c.findIndex(v=>v.n===a.n),n=c[i+1];if(!n)return null;const diff=Math.round((n.start-a.end)/DAY_MS);return{days:Math.max(0,diff-1),nextStart:n.start}}
-  ;(function(){const note=document.getElementById('restNote'); if(!note)return; const now=new Date(),cy=genCycles(20),act=pickCycle(cy,now),rest=computeRestWindow(cy,act);
-    if(rest&&rest.days>0){note.textContent=`Rest window: ${rest.days} day${rest.days===1?'':'s'} · Next start: ${fmtDate(rest.nextStart)}`;note.classList.add('glow');note.style.display='inline-block'}
-    else if(rest&&rest.days===0){note.textContent='Rest window: none';note.style.display='inline-block'}})();
+  // Portals glow if any key learned
+  var any = fg||wl||dj||nr;
+  function glow(id){ var el=document.getElementById(id); if(el) el.style.opacity = any ? '1' : '0'; }
+  glow('ma-school'); glow('ma-four'); glow('ma-center');
+})();
 </script>
 </body>
 </html>
