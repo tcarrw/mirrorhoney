@@ -7,22 +7,20 @@
 :root{--bg:#0a0a0f;--ink:#fff;--line:rgba(255,255,255,.12);--pane:rgba(255,255,255,.08);--veil:rgba(12,12,18,.9)}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-.center{min-height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px 20px 100px}
+.center{min-height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:20px 20px 140px} /* extra bottom space for fixed badges */
 h1{font-size:1.25rem;margin:0 0 8px 0;font-weight:600;letter-spacing:.01em}
 p{opacity:.85;margin:4px 0}
 .lockveil{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.7));z-index:10}
 .lockcard{width:min(680px,92vw);background:rgba(15,15,22,.9);border:1px solid var(--line);border-radius:16px;padding:18px;backdrop-filter:blur(10px);text-align:left}
 .lockcard h2{margin:0 0 6px 0;font-size:1.05rem}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
-.input{background:transparent;border:none;border-bottom:1px solid var(--ink);outline:none;color:#fff;padding:6px 4px;width:100%;font-size:1rem}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;flex-wrap:wrap}
+.input{background:transparent;border:none;border-bottom:1px solid var(--ink);outline:none;color:#fff;padding:6px 4px;width:260px;font-size:1rem}
 .btn{background:var(--pane);border:1px solid var(--line);border-radius:10px;padding:8px 12px;color:#fff;cursor:pointer}
 .badge{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:var(--pane);border-radius:999px;padding:6px 10px;font-size:.9rem}
 .badge.ok{border-color:rgba(134,255,214,.55)}
 .badge.need{border-color:rgba(255,204,112,.6)}
 .stack{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.hint{opacity:.75}
 #overlay{position:fixed;inset:0;background:radial-gradient(circle at center,rgba(255,255,255,.12),rgba(255,255,255,.05),transparent);opacity:0;transition:opacity 2s;z-index:5}
-#archive{position:fixed;bottom:20px;width:100%;text-align:center;font-size:.92rem;opacity:.8}
 .panel{position:fixed;inset:0;display:none;align-items:flex-end;justify-content:center;background:linear-gradient(180deg,transparent,rgba(0,0,0,.45));z-index:30}
 .sheet{width:100%;max-width:600px;background:var(--veil);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:16px 16px 22px}
 .klabel{display:flex;align-items:center;gap:8px;font-weight:600}
@@ -31,7 +29,10 @@ p{opacity:.85;margin:4px 0}
 #schoolLink{display:none}
 .topright a{position:fixed;right:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:8px 10px;border-radius:999px;color:#fff;text-decoration:none;z-index:70}
 #xBadge{top:14px}#igBadge{top:54px}
-.youkey{position:fixed;left:16px;bottom:16px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;color:#fff;z-index:40;display:none}
+.youkey{position:fixed;left:16px;bottom:20px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;color:#fff;z-index:40;display:none}
+#badgeMoon{position:fixed;right:16px;bottom:80px;background:var(--pane);border:1px solid var(--line);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
+.keybadge{position:fixed;right:16px;bottom:24px;background:var(--pane);border:1px solid var(--line);border-radius:999px;padding:10px 14px;color:#fff;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
+.footerNote{position:fixed;left:14px;bottom:14px;font-size:.85rem;opacity:.65}
 .card{width:min(720px,94vw);margin:14px auto;background:rgba(12,12,18,.6);border:1px solid var(--line);border-radius:14px;padding:14px;backdrop-filter:blur(8px);text-align:left}
 .card h3{margin:0 0 6px 0;font-size:1.02rem}
 .rule{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);margin:8px 0}
@@ -40,10 +41,7 @@ p{opacity:.85;margin:4px 0}
 @keyframes spin{0%{transform:rotateX(0)rotateY(0)}100%{transform:rotateX(360deg)rotateY(360deg)}}
 .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
 .pill{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--pane);border-radius:999px;padding:8px 10px;font-size:.9rem}
-#badgeMoon{position:fixed;right:16px;bottom:72px;background:var(--pane);border:1px solid var(--line);backdrop-filter:blur(8px);border-radius:999px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
-.keybadge{position:fixed;right:16px;bottom:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:10px 14px;color:#fff;cursor:pointer;display:flex;gap:8px;align-items:center;z-index:20}
 #forMarinaBtn{position:fixed;left:16px;top:72px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:8px 10px;border-radius:999px;color:#fff;cursor:pointer;display:none;z-index:65}
-.footerNote{position:fixed;left:14px;bottom:14px;font-size:.85rem;opacity:.65}
 </style>
 </head>
 <body>
@@ -65,9 +63,10 @@ p{opacity:.85;margin:4px 0}
       <div id="bYellow" class="badge need">castle · yellow</div>
       <div id="bKendyl" class="badge need">kendyl · phrase</div>
     </div>
-    <p class="hint">Arrive from the castle, then enter the phrase you were given.</p>
-    <div class="row"><input id="keyInput" class="input" placeholder="enter phrase"><button id="tryKey" class="btn">confirm</button></div>
-    <div class="stack" style="margin-top:8px">
+    <p class="hint">Arrive from the castle, or enter the phrase you were given.</p>
+    <div class="row">
+      <input id="keyInput" class="input" placeholder="enter phrase">
+      <button id="tryKey" class="btn">confirm</button>
       <button id="toGarlic" class="btn">get the castle key</button>
     </div>
   </div>
@@ -76,7 +75,7 @@ p{opacity:.85;margin:4px 0}
 <button id="forMarinaBtn">for Marina</button>
 
 <div id="app" class="center hidden" aria-hidden="true">
-  <div id="youKey" class="youkey">🗝️ you are the key</div>
+  <div id="youKey" class="youkey">🗝️ marina is the key</div>
   <h1>Diamond Landing</h1>
   <p class="dim">cut clean · set warm · turn slowly</p>
   <div id="diamond"><div class="facet"></div></div>
@@ -103,7 +102,7 @@ p{opacity:.85;margin:4px 0}
     <h3>Preferences · Signals</h3>
     <div class="rule"></div>
     <p class="dim">YouTube Premium is my default — ad-free, simple, good value.</p>
-    <p class="dim">TikTok is for pulse and quick experiments.</p>
+    <p class="dim">TikTok is for pulse and quick experiments — <a href="https://www.tiktok.com/@illumina.t1" target="_blank" style="color:#fff;text-decoration:underline">@illumina.t1</a>.</p>
     <p class="dim">Instagram clues may appear at <a href="https://instagram.com/harry_spookies" target="_blank" style="color:#fff;text-decoration:underline">@harry_spookies</a>.</p>
     <p class="dim">X is a dark sky with stars — sometimes a moon. Find me at <a href="https://x.com/illuminatnotes" target="_blank" style="color:#fff;text-decoration:underline">@illuminatnotes</a>.</p>
   </div>
@@ -141,8 +140,8 @@ p{opacity:.85;margin:4px 0}
     <div id="transfer" class="hidden">
       <div class="row"><div class="klabel">issue next links</div><div class="dim">Marina →</div></div>
       <div class="row" id="targets">
-        <button data-who="taylor" class="btn">to Kendyl (School)</button>
-        <button data-who="four" class="btn">to Kendyl (Four · Alice)</button>
+        <button data-who="taylor" class="btn" disabled>to Kendyl (School)</button>
+        <button data-who="four" class="btn" disabled>to Kendyl (Four · Alice)</button>
       </div>
       <div class="row"><div class="dim">copies</div><div id="copyStatus" class="copy"></div></div>
     </div>
@@ -160,19 +159,19 @@ function genCode(){return Math.random().toString(36).slice(2,6)+"-"+Math.random(
 function pick(name){var m=String(location.search).match(new RegExp("[?&]"+name+"=([^&]+)"));return m?decodeURIComponent(m[1]):""}
 </script>
 
-<!-- Arrival: set yellow if coming from garlic; token or stored still doesn't unlock until both keys are present -->
+<!-- Arrival: mark Yellow if coming from Garlic; token does not auto-open; we still need at least one key to open -->
 <script>
 (function(){
   var src=pick("s"), k=(String(location.hash).match(/[#?&]k=([^&]+)/)||[])[1];
   if(src) localStorage.setItem("mh.src",JSON.stringify(src));
-  if(src && /^garlic\./.test(src)) localStorage.setItem("mh.k.yellow","true");   /* castle key arrives via Garlic */
-  if(k) localStorage.setItem("mh.key.set","true"); /* token present — we still require both keys */
+  if(src && /^garlic\./.test(src)) localStorage.setItem("mh.k.yellow","true");  /* Sigrid's key (storage) */
+  if(k) localStorage.setItem("mh.token","true"); /* token arrival (opens as 'a key') */
   history.replaceState({},document.title,location.pathname);
 })();
 </script>
 
 <script>
-const LS_UNLOCK="mh.unlock",LS_SET="mh.key.set",LS_YELLOW="mh.k.yellow",LS_KENDYL="mh.k.kendyl",LS_NEXT="mh.next",LS_FACETS="mh.facets",LS_LOG="mh.moon.log"
+const LS_UNLOCK="mh.unlock",LS_YELLOW="mh.k.yellow",LS_KENDYL="mh.k.kendyl",LS_TOKEN="mh.token",LS_NEXT="mh.next"
 const locked=document.getElementById("locked"),app=document.getElementById("app")
 const bYellow=document.getElementById("bYellow"),bKendyl=document.getElementById("bKendyl"),toGarlic=document.getElementById("toGarlic")
 const keyInput=document.getElementById("keyInput"),tryKey=document.getElementById("tryKey")
@@ -181,22 +180,32 @@ const keyBadge=document.getElementById("keyBadge"),panelKey=document.getElementB
 const youKey=document.getElementById("youKey"), forMarinaBtn=document.getElementById("forMarinaBtn"), forMarinaPanel=document.getElementById("forMarinaPanel"), closeFM=document.getElementById("closeFM")
 function jget(k,def){try{return JSON.parse(localStorage.getItem(k)||def)}catch(e){return JSON.parse(def)}}
 function jset(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function hasYellow(){return !!localStorage.getItem(LS_YELLOW)}
+function hasKendyl(){return !!localStorage.getItem(LS_KENDYL)}
+function hasToken(){return !!localStorage.getItem(LS_TOKEN)}
 function refreshChecklist(){
-  var hasY=!!localStorage.getItem(LS_YELLOW), hasK=!!localStorage.getItem(LS_KENDYL);
-  bYellow.className="badge "+(hasY?"ok":"need");
-  bKendyl.className="badge "+(hasK?"ok":"need");
+  bYellow.className="badge "+(hasYellow()?"ok":"need");
+  bKendyl.className="badge "+(hasKendyl()?"ok":"need");
 }
-function unlocked(){return !!localStorage.getItem(LS_UNLOCK)}
-function haveBoth(){return !!localStorage.getItem(LS_YELLOW) && !!localStorage.getItem(LS_KENDYL)}
+function canOpen(){return hasYellow() || hasKendyl() || hasToken()}          /* any key opens */
+function canIssue(){return hasYellow() && hasKendyl()}                        /* both required to issue Marina links */
 function unlockUI(){
-  locked.style.display="none"; app.classList.remove("hidden"); app.setAttribute("aria-hidden","false");
-  gateStatus.textContent="unlocked"; transfer.classList.remove("hidden");
-  if(youKey) youKey.style.display="inline-flex"; if(forMarinaBtn) forMarinaBtn.style.display="inline-flex";
+  locked.style.display="none";
+  app.classList.remove("hidden");
+  app.setAttribute("aria-hidden","false");
+  gateStatus.textContent="unlocked";
+  if(canIssue()){
+    transfer.classList.remove("hidden");
+    document.querySelectorAll('#targets .btn').forEach(b=>b.disabled=false);
+  }else{
+    transfer.classList.remove("hidden");
+    document.querySelectorAll('#targets .btn').forEach(b=>b.disabled=true);
+    copyStatus.textContent="both keys required to issue links";
+  }
+  if(youKey) youKey.style.display="inline-flex";
+  if(forMarinaBtn) forMarinaBtn.style.display="inline-flex";
 }
-function tryAuto(){
-  refreshChecklist();
-  if(haveBoth()){ jset(LS_UNLOCK,true); unlockUI() }
-}
+function tryAuto(){ refreshChecklist(); if(canOpen()){ jset(LS_UNLOCK,true); unlockUI() } }
 tryKey.addEventListener("click",function(){
   if(matchHash(keyInput.value,H.kendyl)){ localStorage.setItem(LS_KENDYL,"true"); keyInput.value=""; refreshChecklist(); tryAuto() }
 })
@@ -207,10 +216,7 @@ panelKey.addEventListener("click",function(e){if(e.target===panelKey)panelKey.st
 badgeMoon.addEventListener("click",function(){panelMoon.style.display="flex"})
 closeMoon.addEventListener("click",function(){panelMoon.style.display="none"})
 panelMoon.addEventListener("click",function(e){if(e.target===panelMoon)panelMoon.style.display="none"})
-function openFM(){forMarinaPanel.style.display="flex"} function closeFMf(){forMarinaPanel.style.display="none"}
-if(forMarinaBtn) forMarinaBtn.addEventListener("click",openFM); if(closeFM) closeFM.addEventListener("click",closeFMf)
-forMarinaPanel.addEventListener("click",function(e){if(e.target===forMarinaPanel)closeFMf()})
-window.addEventListener("load",function(){ refreshChecklist(); if(unlocked()) unlockUI() })
+window.addEventListener("load",function(){ refreshChecklist(); if(jget(LS_UNLOCK,"false")) unlockUI() })
 </script>
 </body>
 </html>
