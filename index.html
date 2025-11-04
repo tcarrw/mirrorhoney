@@ -9,9 +9,8 @@ html,body{
   margin:0;
   background:radial-gradient(circle at 50% 45%, #f8f5ff 0%, #f5e8ff 50%, #fff8e5 100%);
   font-family:'Segoe UI',sans-serif;color:#000;text-align:center;
-  overflow:hidden;
+  overflow-x:hidden;  /* allow vertical scroll */
 }
-/* soft moving ripple */
 body::before{
   content:"";
   position:fixed;
@@ -43,7 +42,7 @@ main{
 #text{
   font-size:1em;line-height:1.55em;opacity:.9;margin-bottom:1.4em;
 }
-section.note,section.formula{
+section.note,section.formula,section.scroll{
   background:rgba(255,255,255,0.65);
   backdrop-filter:blur(6px);
   padding:18px 24px;
@@ -57,6 +56,15 @@ section.formula textarea{
   border:1px solid rgba(0,0,0,0.1);border-radius:6px;
   padding:6px;font-family:'Segoe UI',sans-serif;font-size:0.9em;resize:vertical;
 }
+section.scroll{
+  max-width:600px;margin:4vh auto 8vh;padding:24px 28px;border-radius:12px;
+}
+section.scroll h2{text-align:center;margin-top:0;margin-bottom:.6em;font-weight:500;}
+section.scroll a{color:#000;text-decoration:none;font-weight:500;}
+section.scroll a:hover{text-decoration:underline;}
+section.scroll .intro{font-style:italic;opacity:.8;margin-bottom:.8em;text-align:center;}
+section.scroll ul{list-style:none;padding:0;margin:0;}
+section.scroll li{margin:.4em 0;}
 #footer{
   position:relative;z-index:1;
   text-align:center;font-size:.8em;opacity:.6;
@@ -100,6 +108,20 @@ section.formula textarea{
     This section doesn’t save data—it’s for reflection only.  
     Read it aloud if you want the page to mirror it back.</p>
     <textarea placeholder="example: I like calm light, honest words, and time to breathe."></textarea>
+  </section>
+
+  <section class="scroll">
+    <h2>🗝️ The Scroll of Keys</h2>
+    <p class="intro">Every key glows somewhere in the field. Follow them if you wish to travel the Cube.</p>
+    <ul>
+      <li><a href="https://four.plnt.earth"><strong>Four / Dagny — Heart Key</strong></a> · the first spark of connection</li>
+      <li><a href="https://wonder.plnt.earth"><strong>Wonder / Dua — Prism Key</strong></a> · design teaching light to move</li>
+      <li><a href="https://garlic.plnt.earth"><strong>Garlic / Taylor — School Key</strong></a> · learning turned into warmth</li>
+      <li><a href="https://honey.plnt.earth"><strong>Honey / Sabrina — Sweetness Key</strong></a> · connection after work</li>
+      <li><a href="https://flare.plnt.earth"><strong>Flare / Miley — Fire Key</strong></a> · truth as temperature</li>
+      <li><a href="https://motion.plnt.earth"><strong>Motion / Monique — Flow Key</strong></a> · movement remembering itself</li>
+      <li><a href="https://bridge.plnt.earth"><strong>Bridge / Ariana — Voice Key</strong></a> · the tone that unites them all</li>
+    </ul>
   </section>
 </main>
 
