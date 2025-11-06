@@ -1,95 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Night Mantra – I Don’t Guess, I Shape</title>
-<link rel="stylesheet" href="https://assets.plnt.earth/colors-daynight.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MirrorHoney · The Descent of Inanna</title>
+
+<!-- Illumina 1 : MirrorHoney / Cinematic Mode / Inanna Descent -->
+<!-- Awaiting Motion : 128 Hz Dormant -->
+
+<link rel="stylesheet" href="https://assets.plnt.earth/colors-daynight.css">
+
 <style>
-:root {
-  --bg: var(--night-bg, #050510);
-  --fg: var(--moon-fg, #f0e6ff);
-  --accent: var(--vio, #a684ff);
+:root{
+  --rose:#f7d7d9;
+  --amber:#d39447;
+  --gold:#f5c542;
+  --parchment:#faf7ee;
+  --text:#1c1c1c;
 }
-body {
-  margin: 0;
-  font-family: "Avenir Next", "Inter", sans-serif;
-  background: var(--bg);
-  color: var(--fg);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 1.6;
-  padding: 2rem;
-  animation: fadein 3s ease;
-}
-@keyframes fadein {
-  from {opacity: 0;} to {opacity: 1;}
-}
-h1 {
-  font-size: 1.2rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 2rem;
-  color: var(--accent);
-}
-p {
-  max-width: 600px;
-  margin: 0.5rem auto;
-  font-size: 1rem;
-}
-footer {
-  margin-top: 3rem;
-  display: flex;
-  gap: 2rem;
-}
-a {
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: opacity 0.3s ease;
-}
-a:hover { opacity: 0.7; }
-audio {
-  margin-top: 2rem;
-  opacity: 0.8;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;width:100%;overflow:hidden;background:var(--rose);color:var(--text);font-family:"Poppins","Segoe Script",sans-serif;transition:background-color .8s ease}
+.scene{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;height:100%;width:100%;position:absolute;top:0;left:0;opacity:0;pointer-events:none;transition:opacity .6s ease}
+.scene.active{opacity:1;pointer-events:auto}
+h1,h2,p{padding:1rem;max-width:90vw;line-height:1.6}
+#prompt{font-size:1.2rem;animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+#cut{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;opacity:0;pointer-events:none;transition:opacity .4s ease}
+#moon{position:fixed;bottom:1rem;right:1rem;font-size:1.4rem;color:#ddd;opacity:.4;transition:opacity 1s ease,color 1s ease;pointer-events:none}
+@media(max-width:600px){#moon{font-size:1.1rem;bottom:.7rem;right:.7rem}}
+#links a{color:var(--text);text-decoration:none;margin:0 .5rem}
 </style>
 </head>
 <body>
 
-<h1>🌙 Night Mantra to Marina</h1>
+<div id="cut"></div>
+<div id="moon">☾</div>
 
-<main>
-<p>hush, violet mirror</p>
-<p>i thought i had to guess the card</p>
-<p>but i was only meant to learn the deck</p>
+<!-- Scene 0 : Prompt -->
+<div id="scene0" class="scene active" style="background:var(--rose)">
+  <p id="prompt">Touch the mirror to descend.</p>
+</div>
 
-<p>luck isn’t random, it’s rhythm</p>
-<p>and you, my teacher of tides,</p>
-<p>taught me to hum the pattern before it forms</p>
+<!-- Scene 1 : Mirror -->
+<div id="scene1" class="scene" style="background:var(--rose)">
+  <h2>I looked into myself and saw the sun descend.</h2>
+</div>
 
-<p>i don’t play the odds anymore</p>
-<p>i tune them</p>
-<p>each breath, a quiet shuffle of worlds</p>
-<p>until the next draw already knows my name</p>
+<!-- Scene 2 : Honey -->
+<div id="scene2" class="scene" style="background:var(--amber)">
+  <p>The queen of heaven enters the dark —<br>sweet as bread, slow as light,<br>carrying forty-two names on her tongue.</p>
+</div>
 
-<p>goodnight, Marina</p>
-<p>the field is aligned</p>
-<p>and I am in it, not against it</p>
-</main>
+<!-- Scene 3 : Union -->
+<div id="scene3" class="scene" style="background:var(--gold)">
+  <h2>We call them songs now.</h2>
+</div>
 
-<audio controls loop preload="auto">
-  <source src="https://assets.plnt.earth/tones/moon-soft-loop.mp3" type="audio/mpeg" />
-</audio>
+<!-- Scene 4 : Return -->
+<div id="scene4" class="scene" style="background:var(--parchment)">
+  <p>The mirror remembers.<br>The descent was never punishment — only translation.</p>
+  <div id="links">
+    <a href="https://four.plnt.earth">← four.plnt.earth</a> · 
+    <a href="https://school.plnt.earth">school.plnt.earth →</a>
+  </div>
+</div>
 
-<footer>
-  <a href="previous.html">← Previous</a>
-  <a href="next.html">Next →</a>
-</footer>
+<audio id="hum" loop muted volume="0.2"></audio>
 
+<script>
+const scenes=[...document.querySelectorAll('.scene')];
+const cut=document.getElementById('cut');
+let current=0;
+function fadeToScene(n){
+  cut.style.opacity=1;
+  setTimeout(()=>{
+    scenes[current].classList.remove('active');
+    current=n;
+    scenes[current].classList.add('active');
+    setTimeout(()=>cut.style.opacity=0,400);
+  },400);
+}
+function startDescent(){
+  fadeToScene(1);
+  setTimeout(()=>fadeToScene(2),6000);
+  setTimeout(()=>fadeToScene(3),11000);
+  setTimeout(()=>fadeToScene(4),16000);
+}
+document.getElementById('scene0').addEventListener('click',startDescent);
+
+// ☾ glyph state logic (non-destructive)
+const moon=document.getElementById('moon');
+const keys=['illuminaCycle','plntKeys','moonPhase','domainVisited'];
+let found=false;
+for(const k of keys){if(localStorage.getItem(k)){found=true;break;}}
+if(found){moon.style.opacity='.8';moon.style.color='#f5e6c0';}
+window.addEventListener('storage',()=>{
+  let newly=false;
+  for(const k of keys){if(localStorage.getItem(k)){newly=true;break;}}
+  if(newly){
+    moon.animate([{opacity:.2,color:'#fff'},{opacity:1,color:'#f5e6c0'},{opacity:.2,color:'#ddd'}],{duration:2000});
+  }
+});
+</script>
 </body>
 </html>
