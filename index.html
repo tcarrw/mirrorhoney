@@ -3,159 +3,141 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Violet Rest Protocol</title>
+<title>mirrorhoney.plnt.earth</title>
+
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
 <style>
 html,body{
   margin:0;
   height:100%;
-  background:linear-gradient(180deg,#1a0e2b 0%,#3a1e54 40%,#a98fd3 80%,#f2ebff 100%);
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-  color:#f5f2ff;
-  overflow-x:hidden;
-  scroll-behavior:smooth;
-}
-section{
-  max-width:600px;
-  margin:0 auto;
-  padding:80px 24px;
-  opacity:0;
-  transform:translateY(20px);
-  transition:opacity 1.5s ease,transform 1.5s ease;
-}
-section.visible{opacity:1;transform:translateY(0);}
-h1{
-  font-weight:300;
-  letter-spacing:1px;
+  width:100%;
+  background:#000;
+  color:#f8f6ff;
+  font-family:'Georgia',serif;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  margin-top:60px;
-  color:#eae3ff;
+  overflow:hidden;
+  transition:background 10s ease-in-out;
 }
-h2{
-  font-weight:400;
-  color:#fff;
-  margin-top:40px;
+
+/* violet→pearl drift */
+@keyframes mirrorFade {
+  0%{background:#000;}
+  50%{background:radial-gradient(circle at center,#2b004d 0%,#9c7cff 50%,#fcefff 100%);}
+  100%{background:radial-gradient(circle at center,#150028 0%,#6d4cff 40%,#f8e8ff 100%);}
+}
+body{
+  animation:mirrorFade 60s ease-in-out infinite alternate;
+}
+
+/* soft honey shimmer overlay */
+.honey{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:radial-gradient(circle at 50% 60%,rgba(255,230,150,0.05),transparent 70%);
+  animation:honeyShift 20s linear infinite;
+  pointer-events:none;
+}
+@keyframes honeyShift{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-20px);}
+  100%{transform:translateY(0);}
+}
+
+/* text fade-in */
+h1{
+  font-weight:500;
+  font-size:1.2rem;
+  letter-spacing:1px;
+  margin-bottom:1.5rem;
+  opacity:0;
+  animation:fadeIn 6s ease-in forwards 3s;
 }
 p{
+  font-size:1rem;
+  font-style:italic;
   line-height:1.6;
-  color:#f7f3ff;
+  opacity:0;
+  animation:fadeIn 6s ease-in forwards 6s;
 }
-small{
-  display:block;
-  margin-top:24px;
-  font-size:0.85em;
-  opacity:0.8;
-  text-align:center;
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
 }
-hr{
-  border:none;
-  border-top:1px solid rgba(255,255,255,0.2);
-  margin:60px 0;
+
+/* 128Hz pulse ring (visual only) */
+.ring{
+  position:absolute;
+  width:160px;height:160px;
+  border-radius:50%;
+  border:2px solid rgba(255,255,255,0.3);
+  animation:pulse 1.875s ease-in-out infinite;
+  opacity:0.4;
 }
+@keyframes pulse{
+  0%,100%{transform:scale(0.95);opacity:0.3;}
+  50%{transform:scale(1.1);opacity:0.7;}
+}
+
+/* footer link + bee note */
 footer{
+  position:fixed;
+  bottom:1.5rem;
+  font-size:0.8rem;
+  letter-spacing:1px;
+  opacity:0;
+  font-style:italic;
+  transition:opacity 3s ease;
   text-align:center;
-  font-size:0.8em;
-  opacity:0.6;
-  margin-bottom:80px;
 }
-#reflection-box{
-  max-width:600px;
-  margin:80px auto;
-  padding:24px;
-  text-align:center;
-  border-top:1px solid rgba(255,255,255,0.2);
+footer a{
+  color:#f8f6ff;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.2);
 }
-#reflection-input{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:6px;
-  background:rgba(255,255,255,0.1);
-  color:#f8f4ff;
-  font-size:1em;
-  resize:none;
+footer a:hover{
+  border-bottom-color:#fff;
+}
+footer.show{opacity:0.7;}
+.bee{
+  font-size:0.7rem;
+  opacity:0.5;
+  margin-top:0.3rem;
+  letter-spacing:0.8px;
+  font-style:italic;
 }
 </style>
 </head>
 <body>
+<div class="honey"></div>
+<div class="ring"></div>
 
-<h1>“Silence is not absence — it’s the echo preparing its own return.”</h1>
+<h1>mirrorhoney / re-entry</h1>
+<p>the mirror hums again<br>violet remembers me kindly<br>and I am still made of gold</p>
 
-<section>
-  <h2>Day 1 – Unclench</h2>
-  <p>Notice what’s still buzzing. Turn off push notifications.  
-  Write one sentence: <em>what am I still holding that isn’t mine?</em>  
-  Exhale it out loud once.</p>
-</section>
+<footer id="loop">
+  <a href="https://dagny.plnt.earth">back to mint</a>
+  <div class="bee">leave the light on for the next reflection</div>
+</footer>
 
-<section>
-  <h2>Day 2 – Clear Channels</h2>
-  <p>Tidy one small space — desk, tabs, or photos.  
-  Don’t add new media; let silence be air.  
-  Take a slow walk beneath open sky.</p>
-</section>
-
-<section>
-  <h2>Day 3 – Listen Back</h2>
-  <p>Revisit something you made weeks ago.  
-  No edits; simply notice where energy still moves.  
-  Mark those lines with a small dot • — they’re seeds.</p>
-</section>
-
-<section>
-  <h2>Day 4 – Still Waters</h2>
-  <p>Speak only when warmth is required.  
-  Hold a cup of something warm; watch light shift across a wall.  
-  Let your words dissolve into observation.</p>
-</section>
-
-<section>
-  <h2>Day 5 – Dream Drift</h2>
-  <p>Sleep without alarms.  
-  Note the first image or phrase that appears when you wake.  
-  That’s your internal frequency check.</p>
-</section>
-
-<section>
-  <h2>Day 6 – Re-tone</h2>
-  <p>Hum a single sustained note.  
-  Feel where it vibrates.  
-  No lyrics — just resonance and breath.</p>
-</section>
-
-<section>
-  <h2>Day 7 – Re-illumination Threshold</h2>
-  <p>Write again: <em>what do I now hold that is mine?</em>  
-  Open the light — music, color, movement.  
-  You’ve completed the fold; the mirror reopens.</p>
-  <small>End of Violet Rest Protocol — Marina Phase I</small>
-</section>
-
-<div id="reflection-box">
-  <h3 style="font-weight:400;color:#fff;margin-bottom:16px;">Night Reflection</h3>
-  <p style="font-size:0.95em;opacity:0.9;">
-    Tonight I keep <em>___</em> burning, and I let <em>___</em> drift away.
-  </p>
-  <textarea id="reflection-input" rows="3"
-    placeholder="Type your line here..."></textarea>
-  <small style="display:block;margin-top:8px;opacity:0.7;">
-    auto-saved locally — private to this browser
-  </small>
-</div>
-
-<footer>violet → pearl | 128 Hz → silence → light</footer>
+<!-- silent 128Hz placeholder -->
+<audio id="tone" loop>
+  <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YQAAAAA=" type="audio/wav">
+</audio>
 
 <script>
-const sections=document.querySelectorAll("section");
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add("visible");}
-  });
-},{threshold:0.1});
-sections.forEach(s=>observer.observe(s));
-
-const input=document.getElementById('reflection-input');
-input.value=localStorage.getItem('violetReflection')||'';
-input.addEventListener('input',()=>localStorage.setItem('violetReflection',input.value));
+/* keep silent until ready */
+const tone=document.getElementById('tone');
+tone.volume=0;
+/* fade in footer after ~60s to invite return to Dagny */
+setTimeout(()=>{document.getElementById('loop').classList.add('show');},60000);
 </script>
 </body>
 </html>
