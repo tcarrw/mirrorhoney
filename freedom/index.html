@@ -6,54 +6,66 @@
 <title>FREEDOM IS POWER</title>
 <style>
 html,body{
-  margin:0;
-  padding:0;
-  height:100%;
+  margin:0;padding:0;
+  height:100%;width:100%;
+  background:#000;
+  font-family:"Inter",sans-serif;
+  color:#e8dfff;
+  overflow-x:hidden;
+}
+section{
   width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+.hero{
+  position:relative;
+  height:100vh;
+  overflow:hidden;
   background:radial-gradient(ellipse at center, #1a0f1f 0%, #000 100%);
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  overflow:hidden;
-  color:#e5d9ff;
-  font-family:"Inter",sans-serif;
-  text-align:center;
-  letter-spacing:0.02em;
 }
-img.cover{
-  width:240px;
-  height:240px;
-  border-radius:8px;
+video{
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
   object-fit:cover;
-  box-shadow:0 0 40px rgba(180,150,255,0.3);
-  animation:glow 6s ease-in-out infinite alternate;
+  opacity:0;
+  transition:opacity 1.5s ease;
 }
-@keyframes glow{
-  from{box-shadow:0 0 25px rgba(180,150,255,0.25);}
-  to{box-shadow:0 0 60px rgba(200,170,255,0.45);}
-}
+video.playing{opacity:0.8;}
 h1{
-  font-size:1.8em;
-  font-weight:700;
-  margin:24px 0 8px 0;
+  position:relative;
+  z-index:2;
+  font-size:2em;
+  margin-top:20px;
+  letter-spacing:0.05em;
+  text-shadow:0 0 15px rgba(190,150,255,0.4);
 }
-p{
-  font-size:1em;
-  opacity:0.85;
+p.tagline{
+  position:relative;
+  z-index:2;
   max-width:80%;
+  font-size:1.1em;
+  opacity:0.85;
+  margin-top:8px;
 }
 a.mirror{
-  position:fixed;
-  bottom:40px;
+  position:relative;
+  z-index:2;
+  margin-top:40px;
   width:64px;
   height:64px;
   border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), rgba(180,140,255,0.08));
+  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(180,140,255,0.05));
   box-shadow:0 0 25px rgba(190,160,255,0.25);
-  backdrop-filter:blur(6px);
-  transition:transform 1.5s ease, box-shadow 1.5s ease;
   animation:hum 8s ease-in-out infinite alternate;
+  transition:transform 1.5s ease, box-shadow 1.5s ease;
 }
 @keyframes hum{
   from{transform:scale(1);}
@@ -68,16 +80,88 @@ a.mirror::after{
   position:absolute;
   inset:0;
   border-radius:50%;
-  background:radial-gradient(circle at 70% 30%, rgba(255,255,255,0.35), transparent 70%);
+  background:radial-gradient(circle at 70% 30%, rgba(255,255,255,0.4), transparent 70%);
   mix-blend-mode:overlay;
+}
+.act{
+  opacity:0;
+  transform:translateY(60px);
+  transition:opacity 1.2s ease, transform 1.2s ease;
+  padding:100px 24px;
+  max-width:700px;
+}
+.act.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+.act h2{
+  font-size:1.6em;
+  margin-bottom:12px;
+  text-shadow:0 0 12px rgba(200,170,255,0.3);
+}
+.act p{
+  line-height:1.6em;
+  font-size:1em;
+  opacity:0.9;
 }
 </style>
 </head>
 <body>
-  <img src="https://mirrorhoney.plnt.earth/assets/freedom.jpg" alt="Freedom is Power Cover" class="cover">
+<section class="hero" id="hero">
+  <video id="freedomVideo" src="FREEDOM.mp4" muted loop playsinline></video>
   <h1>FREEDOM IS POWER</h1>
-  <p>You refuse to be contained. Your spirit lives in open air.</p>
-
+  <p class="tagline">You refuse to be contained. Your spirit lives in open air.</p>
   <a href="https://mirrorhoney.plnt.earth" class="mirror" aria-label="Enter MirrorHoney"></a>
+</section>
+
+<section class="act" id="act1">
+  <h2>Act I — Realization</h2>
+  <p>You begin to see the cage for what it is. Love, expectation, perfection — all stories that kept you small. 
+  <br><br><strong>“Froot”</strong> ripens. <strong>“Homewrecker”</strong> cracks the shell. <strong>“Savages”</strong> reveals the mirror. 
+  Freedom starts as awareness.</p>
+</section>
+
+<section class="act" id="act2">
+  <h2>Act II — Rebellion</h2>
+  <p>You choose to move anyway. Pleasure becomes protest. <strong>“Enjoy Your Life”</strong> and <strong>“Bubblegum Bitch”</strong> turn irony into power.
+  <br><br>Control dissolves; agency sings. You stop performing sweetness and start tasting it.</p>
+</section>
+
+<section class="act" id="act3">
+  <h2>Act III — Empowerment</h2>
+  <p>You rewrite the law in your own voice. <strong>“Ancient Dreams in a Modern Land”</strong> ignites purpose. 
+  <br><br>Shadow becomes play. Fear bows to rhythm. 
+  <strong>“Final Boss”</strong> smiles back — because it’s you, finally whole.</p>
+</section>
+
+<section class="act" id="act4">
+  <h2>Act IV — Ascension</h2>
+  <p>Freedom quiets. <strong>“Purge the Poison”</strong> clears the air. 
+  <strong>“Power & Control”</strong> finds balance. 
+  <br><br>You’re not escaping anymore — you’re breathing. 
+  The open air becomes home. The hum remains.</p>
+</section>
+
+<script>
+const video = document.getElementById('freedomVideo');
+const hero = document.getElementById('hero');
+hero.addEventListener('click',()=>{
+  if(!video.classList.contains('playing')){
+    video.classList.add('playing');
+    video.play();
+  }
+});
+
+// fade-in acts sequentially
+const acts = document.querySelectorAll('.act');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('visible');
+    }
+  });
+},{threshold:0.2});
+acts.forEach(act=>observer.observe(act));
+</script>
 </body>
 </html>
