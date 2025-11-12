@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FREEDOM IS POWER</title>
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  height:100%;
+  width:100%;
+  background:radial-gradient(ellipse at center, #1a0f1f 0%, #000 100%);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  color:#e5d9ff;
+  font-family:"Inter",sans-serif;
+  text-align:center;
+  letter-spacing:0.02em;
+}
+img.cover{
+  width:240px;
+  height:240px;
+  border-radius:8px;
+  object-fit:cover;
+  box-shadow:0 0 40px rgba(180,150,255,0.3);
+  animation:glow 6s ease-in-out infinite alternate;
+}
+@keyframes glow{
+  from{box-shadow:0 0 25px rgba(180,150,255,0.25);}
+  to{box-shadow:0 0 60px rgba(200,170,255,0.45);}
+}
+h1{
+  font-size:1.8em;
+  font-weight:700;
+  margin:24px 0 8px 0;
+}
+p{
+  font-size:1em;
+  opacity:0.85;
+  max-width:80%;
+}
+a.mirror{
+  position:fixed;
+  bottom:40px;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), rgba(180,140,255,0.08));
+  box-shadow:0 0 25px rgba(190,160,255,0.25);
+  backdrop-filter:blur(6px);
+  transition:transform 1.5s ease, box-shadow 1.5s ease;
+  animation:hum 8s ease-in-out infinite alternate;
+}
+@keyframes hum{
+  from{transform:scale(1);}
+  to{transform:scale(1.05);}
+}
+a.mirror:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 60px rgba(210,190,255,0.5);
+}
+a.mirror::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:radial-gradient(circle at 70% 30%, rgba(255,255,255,0.35), transparent 70%);
+  mix-blend-mode:overlay;
+}
+</style>
+</head>
+<body>
+  <img src="https://mirrorhoney.plnt.earth/assets/freedom.jpg" alt="Freedom is Power Cover" class="cover">
+  <h1>FREEDOM IS POWER</h1>
+  <p>You refuse to be contained. Your spirit lives in open air.</p>
+
+  <a href="https://mirrorhoney.plnt.earth" class="mirror" aria-label="Enter MirrorHoney"></a>
+</body>
+</html>
