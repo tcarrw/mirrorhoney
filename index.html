@@ -3,13 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MirrorHoney · Parallax Poem Engine</title>
+<title>MirrorHoney · Dual Video Poem Engine</title>
 <meta name="color-scheme" content="dark">
-
 <style>
-/* -------------------------------------------------------------
-   MIRRORHONEY CORE — Violet-Pearl + Honey-Gold + Parallax
--------------------------------------------------------------- */
 :root{
   --bg:#0b0e14;
   --ink:#f5f5ff;
@@ -20,7 +16,6 @@
   --maxw:780px;
 }
 
-/* Parallax layers */
 body{
   margin:0;
   background:var(--bg);
@@ -29,6 +24,7 @@ body{
   overflow-x:hidden;
 }
 
+/* PARALLAX */
 .parallax{
   position:fixed;
   top:0; left:0;
@@ -38,9 +34,7 @@ body{
   pointer-events:none;
   z-index:-10;
   opacity:0.22;
-  transform:translateZ(0);
 }
-
 #layer1{
   background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.35), transparent 60%);
 }
@@ -48,7 +42,7 @@ body{
   background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.25), transparent 70%);
 }
 
-/* Drift butterflies */
+/* BUTTERFLIES */
 .butterfly{
   position:fixed;
   width:24px; height:24px;
@@ -63,19 +57,38 @@ body{
   z-index:-5;
 }
 @keyframes float{
-  0%{transform:translate(0,0);}
-  50%{transform:translate(0,-18px);}
-  100%{transform:translate(0,0);}
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-18px);}
+  100%{transform:translateY(0);}
 }
 
-/* Main container */
+/* NAV */
+nav{
+  padding:14px 18px;
+  position:sticky;
+  top:0;
+  background:rgba(11,14,20,0.8);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--rule);
+  z-index:50;
+  display:flex;
+  gap:18px;
+  font-size:.9rem;
+}
+nav a{
+  color:var(--honey);
+  text-decoration:none;
+  transition:opacity .3s;
+}
+nav a:hover{opacity:.7;}
+
 main{
   max-width:var(--maxw);
   margin:0 auto;
-  padding:80px 18px 120px;
+  padding:60px 18px 120px;
 }
 
-/* Header */
+/* HEADERS */
 h1{
   margin:0 0 6px;
   font-size:1.9rem;
@@ -91,28 +104,64 @@ h2{
   color:var(--muted);
 }
 
-/* Video */
-#playerWrap{
-  position:sticky;
-  top:0;
-  padding-bottom:22px;
-  background:linear-gradient(to bottom,var(--bg) 60%,rgba(11,14,20,0));
-  z-index:10;
+/* BEE MESSAGE */
+#bee{
+  padding:14px 16px;
+  background:rgba(255,207,106,0.08);
+  border-left:3px solid var(--honey);
+  border-radius:6px;
+  margin-bottom:40px;
+  font-size:1rem;
+  color:var(--ink);
+  line-height:1.55;
 }
+#bee span{
+  color:var(--honey);
+  font-weight:600;
+}
+
+/* TOGGLE BUTTONS */
+#toggleWrap{
+  display:flex;
+  gap:10px;
+  margin-bottom:24px;
+}
+.toggle-btn{
+  padding:8px 14px;
+  border:1px solid var(--rule);
+  border-radius:6px;
+  background:rgba(255,255,255,0.06);
+  color:var(--ink);
+  font-size:.9rem;
+  cursor:pointer;
+  transition:background .3s, color .3s, border-color .3s;
+}
+.toggle-btn.active{
+  background:var(--mirror);
+  border-color:var(--mirror);
+  color:#000;
+}
+
+/* VIDEO */
+.video-block{display:none;}
+.video-block.active{display:block;}
+
 iframe{
   width:100%;
+  aspect-ratio:16/9;
   border:none;
   border-radius:12px;
-  aspect-ratio:16/9;
 }
 
-.tip{
-  font-size:.8rem;
-  margin-top:5px;
-  color:var(--muted);
+.tip{font-size:.8rem;color:var(--muted);margin-top:5px;}
+
+hr{
+  border:0;
+  border-top:1px solid var(--rule);
+  margin:50px 0;
 }
 
-/* Poem lines */
+/* LINES */
 #lyrics{
   padding-left:6px;
   border-left:1px solid var(--rule);
@@ -123,7 +172,6 @@ iframe{
   color:var(--muted);
   transition:color .35s ease, text-shadow .35s ease;
 }
-
 .line.active{
   color:var(--honey);
   text-shadow:
@@ -131,7 +179,7 @@ iframe{
     0 0 24px rgba(157,139,255,0.4);
 }
 
-/* Footer */
+/* FOOTER */
 footer{
   margin-top:80px;
   text-align:center;
@@ -139,41 +187,62 @@ footer{
   opacity:.75;
   font-size:.75rem;
 }
-hr{
-  border:0;
-  border-top:1px solid var(--rule);
-  margin:50px 0;
+footer .earth{
+  margin-top:20px;
+  font-size:.85rem;
+  color:var(--honey);
+  opacity:.9;
 }
 </style>
 </head>
-
 <body>
 
-<!-- Parallax layers -->
 <div id="layer1" class="parallax"></div>
 <div id="layer2" class="parallax"></div>
 
-<!-- Butterflies -->
 <div class="butterfly" style="top:20%;left:15%;animation-delay:0s;"></div>
 <div class="butterfly" style="top:60%;left:75%;animation-delay:2s;"></div>
 <div class="butterfly" style="top:40%;left:50%;animation-delay:4s;"></div>
 
+<nav>
+  <a href="https://time.plnt.earth">time.plnt.earth</a>
+  <a href="https://motion.plnt.earth">motion.plnt.earth</a>
+</nav>
+
 <main>
   <h1>MirrorHoney</h1>
-  <h2>Parallax Poem Engine · Gentle Drift Edition</h2>
+  <h2>Dual-Video Parallax Poem Engine</h2>
 
-  <!-- YouTube video (Marina – Lies) -->
-  <div id="playerWrap">
-    <iframe id="player"
-      src="https://www.youtube.com/embed/MsnlBtlimBA?si=UtFuzfktxk8KtLBC&enablejsapi=1"
-      allow="autoplay; encrypted-media"
-      allowfullscreen></iframe>
-    <div class="tip">Scroll softly · Lines glow at the right moment.</div>
+  <!-- BEE MESSAGE -->
+  <div id="bee">
+    <span>Bee:</span> I don’t know what’s happening, but let’s figure it out.  
+    This space is gentle. Move slowly. You’re safe here.
+  </div>
+
+  <!-- VIDEO TOGGLE -->
+  <div id="toggleWrap">
+    <button class="toggle-btn active" data-target="p1">Marina – Lies</button>
+    <button class="toggle-btn" data-target="p2">Sigrid – Dynamite (Acoustic)</button>
+  </div>
+
+  <!-- VIDEO 1 -->
+  <div id="p1" class="video-block active">
+    <iframe id="player1"
+      src="https://www.youtube.com/embed/MsnlBtlimBA?enablejsapi=1"
+      allow="autoplay; encrypted-media"></iframe>
+    <div class="tip">Video 1 — Marina “Lies”</div>
+  </div>
+
+  <!-- VIDEO 2 -->
+  <div id="p2" class="video-block">
+    <iframe id="player2"
+      src="https://www.youtube.com/embed/hKvbaZTAQN0?enablejsapi=1"
+      allow="autoplay; encrypted-media"></iframe>
+    <div class="tip">Video 2 — Sigrid “Dynamite (Acoustic)”</div>
   </div>
 
   <hr>
 
-  <!-- Your poem / text -->
   <div id="lyrics">
     <div class="line" data-t="0">[Your line 1]</div>
     <div class="line" data-t="6">[Your line 2]</div>
@@ -183,65 +252,80 @@ hr{
   </div>
 
   <footer>
-    MirrorHoney • Parallax · Drift · Poetic Timing · One File · No Libraries
+    MirrorHoney • Parallax • Drift • Poetic Sync • One File  
+    <div class="earth">
+      You’re grounded. You’re safe.  
+      Earth holds you while you explore.
+    </div>
   </footer>
 </main>
 
 <script>
-/* -------------------------------------------------------
-   YouTube API loader
--------------------------------------------------------- */
-let player;
-function onYouTubeIframeAPIReady(){
-  player = new YT.Player('player',{ events:{} });
-}
+/* LOAD YOUTUBE API */
 (function(){
   const tag=document.createElement('script');
   tag.src="https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
 })();
 
-/* -------------------------------------------------------
-   Timestamp sync engine
--------------------------------------------------------- */
-const lines = [...document.querySelectorAll('.line')];
-let lastActive = null;
+let players={};
+
+function onYouTubeIframeAPIReady(){
+  players.p1=new YT.Player('player1');
+  players.p2=new YT.Player('player2');
+}
+
+/* TOGGLE LOGIC */
+const buttons=[...document.querySelectorAll('.toggle-btn')];
+const blocks=[...document.querySelectorAll('.video-block')];
+let activePlayer='p1';
+
+buttons.forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    buttons.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const target=btn.dataset.target;
+    activePlayer=target;
+
+    blocks.forEach(block=>block.classList.remove('active'));
+    document.getElementById(target).classList.add('active');
+
+    if(players.p1) players.p1.pauseVideo();
+    if(players.p2) players.p2.pauseVideo();
+  });
+});
+
+/* SYNC ENGINE */
+const lines=[...document.querySelectorAll('.line')];
+let lastActive=null;
 
 function tick(){
-  if(!player || typeof player.getCurrentTime!=='function'){
-    requestAnimationFrame(tick);
-    return;
+  const player=players[activePlayer];
+  if(player && typeof player.getCurrentTime==='function'){
+    const t=player.getCurrentTime();
+    let active=null;
+    for(const ln of lines){
+      const at=parseFloat(ln.dataset.t);
+      if(t>=at) active=ln; else break;
+    }
+    if(active && active!==lastActive){
+      if(lastActive) lastActive.classList.remove('active');
+      active.classList.add('active');
+      lastActive=active;
+      active.scrollIntoView({behavior:'smooth', block:'center'});
+    }
   }
-
-  const t = player.getCurrentTime();
-  let active = null;
-
-  for(const ln of lines){
-    const at = parseFloat(ln.dataset.t||0);
-    if(t >= at) active = ln;
-    else break;
-  }
-
-  if(active && active !== lastActive){
-    if(lastActive) lastActive.classList.remove('active');
-    active.classList.add('active');
-    lastActive = active;
-    active.scrollIntoView({behavior:'smooth', block:'center'});
-  }
-
   requestAnimationFrame(tick);
 }
 tick();
 
-/* -------------------------------------------------------
-   Parallax scroll
--------------------------------------------------------- */
-window.addEventListener('scroll', ()=>{
-  const y = window.scrollY;
-  document.getElementById('layer1').style.transform = `translateY(${y * 0.15}px)`;
-  document.getElementById('layer2').style.transform = `translateY(${y * 0.25}px)`;
+/* PARALLAX */
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  document.getElementById('layer1').style.transform=`translateY(${y*0.15}px)`;
+  document.getElementById('layer2').style.transform=`translateY(${y*0.25}px)`;
 });
 </script>
-
 </body>
 </html>
