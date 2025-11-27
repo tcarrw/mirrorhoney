@@ -126,7 +126,7 @@ nav{
 nav a{ color:var(--honey); text-decoration:none; }
 
 /* -------------------------------------------------------------
-   VIDEO UNDERLAY — FIXED RESPONSIVE 16:9
+   VIDEO UNDERLAY — RESPONSIVE 16:9
 -------------------------------------------------------------- */
 #videoWrap{
   position:fixed; inset:0;
@@ -157,11 +157,10 @@ nav a{ color:var(--honey); text-decoration:none; }
 }
 
 /* -------------------------------------------------------------
-   GLASS POEM — MOVED TO 69%
+   GLASS POEM — Desktop: 69%, Mobile: center
 -------------------------------------------------------------- */
 #glass{
   position:fixed;
-  top:69%;               /* ← HERE is the change */
   left:50%;
   transform:translate(-50%, -50%);
   max-width:90%;
@@ -173,16 +172,24 @@ nav a{ color:var(--honey); text-decoration:none; }
   border:1px solid rgba(255,255,255,.15);
   z-index:20;
   display:none;
+
+  /* desktop default */
+  top:69%;
 }
 .line{
   opacity:0; transition:opacity 1.2s ease;
   font-size:1.45rem; line-height:1.5;
 }
-.line.active{opacity:1;}
 
+/* MOBILE OVERRIDE: center poem */
 @media(max-width:600px){
-  #glass{ padding:24px; }
-  .line{ font-size:1.15rem; }
+  #glass{
+    top:50%;
+    padding:24px;
+  }
+  .line{
+    font-size:1.15rem;
+  }
 }
 
 /* -------------------------------------------------------------
