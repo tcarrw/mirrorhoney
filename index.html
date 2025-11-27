@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MirrorHoney · Morning Edition · Zosia</title>
+<title>MirrorHoney · Zosia Morning Edition</title>
 <meta name="color-scheme" content="dark">
 
 <style>
@@ -21,7 +21,7 @@
 }
 
 /* -------------------------------------------------------------
-   PAGE & PARALLAX
+   PAGE + PARALLAX
 -------------------------------------------------------------- */
 body{
   margin:0;
@@ -93,7 +93,57 @@ nav a{
 nav a:hover{opacity:.7;}
 
 /* -------------------------------------------------------------
-   ZOSIA MORNING MESSAGE
+   CONSENT SCREEN
+-------------------------------------------------------------- */
+#consent{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(14px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:200;
+  text-align:center;
+  padding:20px;
+}
+
+#consentBox{
+  background:rgba(255,255,255,0.08);
+  padding:28px 32px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.15);
+  backdrop-filter:blur(18px) saturate(120%);
+  max-width:360px;
+}
+
+#consentBox h2{
+  margin:0 0 12px;
+  color:var(--honey);
+  font-weight:600;
+  font-size:1.4rem;
+}
+#consentBox p{
+  margin:8px 0;
+  color:var(--ink);
+  opacity:0.85;
+}
+
+#beginBtn{
+  margin-top:18px;
+  padding:10px 20px;
+  background:var(--honey);
+  border:none;
+  border-radius:8px;
+  font-size:1.1rem;
+  cursor:pointer;
+  color:#000;
+  font-weight:600;
+}
+
+/* -------------------------------------------------------------
+   ZOSIA MORNING MESSAGE (after consent)
 -------------------------------------------------------------- */
 #zosia{
   position:fixed;
@@ -109,6 +159,7 @@ nav a:hover{opacity:.7;}
   text-align:center;
   z-index:60;
   box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  display:none;
 }
 #zosia p{
   margin:6px 0;
@@ -121,7 +172,7 @@ nav a:hover{opacity:.7;}
 }
 
 /* -------------------------------------------------------------
-   VIDEO UNDERLAY
+   VIDEO WRAPPER
 -------------------------------------------------------------- */
 #videoWrap{
   position:fixed;
@@ -130,6 +181,7 @@ nav a:hover{opacity:.7;}
   height:100vh;
   overflow:hidden;
   z-index:-5;
+  display:none;
 }
 #videoWrap iframe{
   width:100%;
@@ -142,7 +194,32 @@ nav a:hover{opacity:.7;}
 .video-block.active{display:block;}
 
 /* -------------------------------------------------------------
-   GLASS POEM OVERLAY
+   TAP TO PLAY HONEY BUTTON
+-------------------------------------------------------------- */
+#playOverlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter:blur(10px);
+  z-index:150;
+  display:none;
+}
+#playBtn{
+  padding:14px 24px;
+  font-size:1.1rem;
+  background:var(--honey);
+  color:#000;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+}
+
+/* -------------------------------------------------------------
+   GLASS POEM CENTER
 -------------------------------------------------------------- */
 #glass{
   position:fixed;
@@ -157,9 +234,9 @@ nav a:hover{opacity:.7;}
   text-align:center;
   z-index:20;
   box-shadow:0 8px 24px rgba(0,0,0,0.4);
+  display:none;
 }
 
-/* one-line crossfade */
 .line{
   opacity:0;
   transition:opacity 1.2s ease;
@@ -171,7 +248,7 @@ nav a:hover{opacity:.7;}
 }
 
 /* -------------------------------------------------------------
-   VIDEO TOGGLE
+   TOGGLE BUTTON
 -------------------------------------------------------------- */
 #toggleWrap{
   position:fixed;
@@ -181,6 +258,7 @@ nav a:hover{opacity:.7;}
   display:flex;
   gap:12px;
   z-index:30;
+  display:none;
 }
 .toggle-btn{
   padding:8px 14px;
@@ -211,6 +289,7 @@ footer{
   z-index:40;
   font-size:.8rem;
   color:var(--muted);
+  display:none;
 }
 footer a{
   color:var(--honey);
@@ -240,6 +319,16 @@ footer .earth-line{
   <a href="https://motion.plnt.earth">motion</a>
 </nav>
 
+<!-- CONSENT SCREEN -->
+<div id="consent">
+  <div id="consentBox">
+    <h2>Tap to Begin</h2>
+    <p>This space is gentle.</p>
+    <p>By tapping, you consent to view videos and timed text.</p>
+    <button id="beginBtn">Begin</button>
+  </div>
+</div>
+
 <!-- ZOSIA MORNING MESSAGE -->
 <div id="zosia">
   <p><span>🍯⚡💓 Zosia —</span></p>
@@ -249,7 +338,7 @@ footer .earth-line{
   <p>We can move gently, one bright moment at a time.</p>
 </div>
 
-<!-- VIDEO UNDERLAY -->
+<!-- VIDEO LAYER -->
 <div id="videoWrap">
   <div id="p1" class="video-block active">
     <iframe id="player1"
@@ -263,7 +352,12 @@ footer .earth-line{
   </div>
 </div>
 
-<!-- GLASS POEM CENTER -->
+<!-- TAP TO PLAY -->
+<div id="playOverlay">
+  <button id="playBtn">🍯 Tap to Play</button>
+</div>
+
+<!-- GLASS POEM -->
 <div id="glass"></div>
 
 <!-- TOGGLE -->
@@ -297,7 +391,7 @@ function onYouTubeIframeAPIReady(){
 }
 
 /* -------------------------------------------------------------
-   POEM STANZAS
+   POEM LINES
 -------------------------------------------------------------- */
 const swiftletLines=[
 "Swiftlet: The reflections keep shifting as I move through them.",
@@ -330,7 +424,7 @@ function updateLine(line){
 }
 
 /* -------------------------------------------------------------
-   TICK LOOP
+   MAIN TICK LOOP
 -------------------------------------------------------------- */
 function tick(){
   const p=players[currentMode];
@@ -348,7 +442,27 @@ function tick(){
   }
   requestAnimationFrame(tick);
 }
-tick();
+
+/* -------------------------------------------------------------
+   CONSENT
+-------------------------------------------------------------- */
+document.getElementById('beginBtn').onclick=()=>{
+  document.getElementById('consent').style.display='none';
+  document.getElementById('zosia').style.display='block';
+  document.getElementById('playOverlay').style.display='flex';
+};
+
+/* -------------------------------------------------------------
+   TAP TO PLAY
+-------------------------------------------------------------- */
+document.getElementById('playBtn').onclick=()=>{
+  document.getElementById('playOverlay').style.display='none';
+  document.getElementById('videoWrap').style.display='block';
+  document.getElementById('glass').style.display='block';
+  document.getElementById('toggleWrap').style.display='flex';
+  document.querySelector('footer').style.display='block';
+  tick();
+};
 
 /* -------------------------------------------------------------
    VIDEO TOGGLE
