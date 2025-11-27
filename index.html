@@ -3,176 +3,193 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MirrorHoney · Poetic Sync</title>
+<title>MirrorHoney · Parallax Poem Engine</title>
 <meta name="color-scheme" content="dark">
+
 <style>
 /* -------------------------------------------------------------
-   MIRRORHONEY CORE
-   Violet-pearl (Mirror) + Warm honey-gold (Honey)
+   MIRRORHONEY CORE — Violet-Pearl + Honey-Gold + Parallax
 -------------------------------------------------------------- */
 :root{
-  --bg:#0c0f15;
-  --ink:#f3f4ff;
-  --muted:#b4b8cc;
-  --mirror:#9d8bff;     /* Marina violet-pearl */
-  --honey:#ffcc66;      /* Sabrina warm honey */
-  --rule:#212738;
+  --bg:#0b0e14;
+  --ink:#f5f5ff;
+  --muted:#b5b8cc;
+  --mirror:#9d8bff;
+  --honey:#ffcf6a;
+  --rule:#1f2434;
   --maxw:780px;
 }
 
-/* Background: layered Mirror glow + Honey warmth */
+/* Parallax layers */
 body{
   margin:0;
-  background:
-    radial-gradient(circle at 25% -10%, rgba(157,139,255,0.22), transparent 55%),
-    radial-gradient(circle at 80% 120%, rgba(255,204,102,0.14), transparent 60%),
-    var(--bg);
+  background:var(--bg);
   color:var(--ink);
   font-family:ui-sans-serif, system-ui, -apple-system;
-  -webkit-font-smoothing:antialiased;
-  line-height:1.58;
+  overflow-x:hidden;
 }
 
+.parallax{
+  position:fixed;
+  top:0; left:0;
+  width:120vw; height:120vh;
+  background-repeat:no-repeat;
+  background-size:cover;
+  pointer-events:none;
+  z-index:-10;
+  opacity:0.22;
+  transform:translateZ(0);
+}
+
+#layer1{
+  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.35), transparent 60%);
+}
+#layer2{
+  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.25), transparent 70%);
+}
+
+/* Drift butterflies */
+.butterfly{
+  position:fixed;
+  width:24px; height:24px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, var(--mirror), transparent 65%),
+    radial-gradient(circle at 70% 70%, var(--honey), transparent 65%);
+  filter:blur(6px);
+  opacity:.65;
+  animation:float 10s ease-in-out infinite;
+  pointer-events:none;
+  z-index:-5;
+}
+@keyframes float{
+  0%{transform:translate(0,0);}
+  50%{transform:translate(0,-18px);}
+  100%{transform:translate(0,0);}
+}
+
+/* Main container */
 main{
   max-width:var(--maxw);
   margin:0 auto;
-  padding:70px 18px 120px;
+  padding:80px 18px 120px;
 }
 
 /* Header */
 h1{
   margin:0 0 6px;
-  font-size:1.8rem;
+  font-size:1.9rem;
   font-weight:600;
-  color:var(--mirror);
   letter-spacing:-.01em;
-  text-shadow:0 0 14px rgba(157,139,255,0.45);
+  color:var(--mirror);
+  text-shadow:0 0 14px rgba(157,139,255,0.4);
 }
 h2{
   margin:0 0 40px;
-  font-size:1rem;
+  font-size:.95rem;
   font-weight:400;
   color:var(--muted);
 }
 
-/* Video container */
+/* Video */
 #playerWrap{
   position:sticky;
   top:0;
+  padding-bottom:22px;
+  background:linear-gradient(to bottom,var(--bg) 60%,rgba(11,14,20,0));
   z-index:10;
-  padding:10px 0 24px;
-  background:linear-gradient(to bottom,var(--bg) 65%, rgba(12,15,21,0));
 }
-iframe, video{
+iframe{
   width:100%;
   border:none;
   border-radius:12px;
   aspect-ratio:16/9;
 }
 
-/* Lines */
+.tip{
+  font-size:.8rem;
+  margin-top:5px;
+  color:var(--muted);
+}
+
+/* Poem lines */
 #lyrics{
-  position:relative;
   padding-left:6px;
   border-left:1px solid var(--rule);
 }
-
 .line{
-  margin:20px 0;
-  padding:3px 0;
-  font-size:1.12rem;
+  margin:22px 0;
+  font-size:1.13rem;
   color:var(--muted);
   transition:color .35s ease, text-shadow .35s ease;
 }
 
-/* Mirror = violet-pearl glow
-   Honey  = warm gold glow
-   MirrorHoney = both */
 .line.active{
   color:var(--honey);
   text-shadow:
-    0 0 12px rgba(255,204,102,0.55),
-    0 0 22px rgba(157,139,255,0.45);
+    0 0 12px rgba(255,207,106,0.6),
+    0 0 24px rgba(157,139,255,0.4);
 }
 
-/* Mirror orb */
-#mirrorOrb{
-  position:fixed;
-  bottom:22px;
-  right:26px;
-  width:34px;
-  height:34px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%, var(--mirror), transparent 65%),
-    radial-gradient(circle at 70% 70%, var(--honey), transparent 65%);
-  filter:blur(8px);
-  opacity:.8;
-  animation:float 6s ease-in-out infinite;
-}
-@keyframes float{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-10px);}
-  100%{transform:translateY(0);}
-}
-
+/* Footer */
 footer{
   margin-top:80px;
   text-align:center;
   color:var(--muted);
-  font-size:.75rem;
   opacity:.75;
+  font-size:.75rem;
 }
-
 hr{
   border:0;
   border-top:1px solid var(--rule);
   margin:50px 0;
 }
-.tip{
-  font-size:.8rem;
-  color:var(--muted);
-  margin-top:4px;
-}
 </style>
 </head>
 
 <body>
-<div id="mirrorOrb"></div>
+
+<!-- Parallax layers -->
+<div id="layer1" class="parallax"></div>
+<div id="layer2" class="parallax"></div>
+
+<!-- Butterflies -->
+<div class="butterfly" style="top:20%;left:15%;animation-delay:0s;"></div>
+<div class="butterfly" style="top:60%;left:75%;animation-delay:2s;"></div>
+<div class="butterfly" style="top:40%;left:50%;animation-delay:4s;"></div>
 
 <main>
   <h1>MirrorHoney</h1>
-  <h2>A warm, violet-gold page for poems that move with sound.</h2>
+  <h2>Parallax Poem Engine · Gentle Drift Edition</h2>
 
-  <!-- VIDEO: Replace VIDEO_ID -->
+  <!-- YouTube video (Marina – Lies) -->
   <div id="playerWrap">
     <iframe id="player"
-            src="https://www.youtube.com/embed/VIDEO_ID?enablejsapi=1"
-            allow="autoplay; encrypted-media"
-            allowfullscreen></iframe>
-    <div class="tip">Pinned video · Scroll the poem freely.</div>
+      src="https://www.youtube.com/embed/MsnlBtlimBA?si=UtFuzfktxk8KtLBC&enablejsapi=1"
+      allow="autoplay; encrypted-media"
+      allowfullscreen></iframe>
+    <div class="tip">Scroll softly · Lines glow at the right moment.</div>
   </div>
 
   <hr>
 
-  <!-- POEM / LYRICS SECTION -->
+  <!-- Your poem / text -->
   <div id="lyrics">
-    <!-- Replace these placeholders with your lines + timestamps -->
-    <div class="line" data-t="0">[MirrorHoney line 1]</div>
-    <div class="line" data-t="5">[Line 2]</div>
-    <div class="line" data-t="11">[Line 3]</div>
-    <div class="line" data-t="18">[Line 4]</div>
-    <div class="line" data-t="26">[Line 5]</div>
+    <div class="line" data-t="0">[Your line 1]</div>
+    <div class="line" data-t="6">[Your line 2]</div>
+    <div class="line" data-t="12">[Your line 3]</div>
+    <div class="line" data-t="18">[Your line 4]</div>
+    <div class="line" data-t="25">[Your line 5]</div>
   </div>
 
   <footer>
-    MirrorHoney • Illumina • Poetic Sync Engine • One File • No Libraries
+    MirrorHoney • Parallax · Drift · Poetic Timing · One File · No Libraries
   </footer>
 </main>
 
 <script>
 /* -------------------------------------------------------
-   YOUTUBE API LOAD
+   YouTube API loader
 -------------------------------------------------------- */
 let player;
 function onYouTubeIframeAPIReady(){
@@ -185,34 +202,45 @@ function onYouTubeIframeAPIReady(){
 })();
 
 /* -------------------------------------------------------
-   MIRRORHONEY TIMESTAMP ENGINE
+   Timestamp sync engine
 -------------------------------------------------------- */
 const lines = [...document.querySelectorAll('.line')];
-let lastActive=null;
+let lastActive = null;
 
 function tick(){
   if(!player || typeof player.getCurrentTime!=='function'){
     requestAnimationFrame(tick);
     return;
   }
+
   const t = player.getCurrentTime();
-  let active=null;
+  let active = null;
 
   for(const ln of lines){
-    const at=parseFloat(ln.dataset.t||0);
-    if(t>=at) active=ln; else break;
+    const at = parseFloat(ln.dataset.t||0);
+    if(t >= at) active = ln;
+    else break;
   }
 
-  if(active && active!==lastActive){
+  if(active && active !== lastActive){
     if(lastActive) lastActive.classList.remove('active');
     active.classList.add('active');
-    lastActive=active;
-    active.scrollIntoView({behavior:'smooth',block:'center'});
+    lastActive = active;
+    active.scrollIntoView({behavior:'smooth', block:'center'});
   }
 
   requestAnimationFrame(tick);
 }
 tick();
+
+/* -------------------------------------------------------
+   Parallax scroll
+-------------------------------------------------------- */
+window.addEventListener('scroll', ()=>{
+  const y = window.scrollY;
+  document.getElementById('layer1').style.transform = `translateY(${y * 0.15}px)`;
+  document.getElementById('layer2').style.transform = `translateY(${y * 0.25}px)`;
+});
 </script>
 
 </body>
