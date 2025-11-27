@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MirrorHoney · Zosia Morning Edition</title>
+<title>MirrorHoney · Morning Edition · Zosia</title>
 <meta name="color-scheme" content="dark">
 
 <style>
@@ -18,17 +18,103 @@
   --honey:#ffcf6a;
   --pulse:#ff7aa2;
   --rule:#1f2434;
+  --accent:#7c3aed;
 }
 
 /* -------------------------------------------------------------
-   PAGE + PARALLAX
+   CONSENT OVERLAY
+-------------------------------------------------------------- */
+.consent-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(11,14,20,.97);
+  backdrop-filter:blur(16px);
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  overflow-y:auto;
+}
+.consent-overlay.hidden{display:none;}
+.consent-box{
+  background:rgba(20,22,30,0.95);
+  border:1px solid var(--rule);
+  border-radius:20px;
+  padding:32px;
+  max-width:520px;
+  text-align:left;
+  box-shadow:0 24px 80px rgba(0,0,0,.5);
+}
+.consent-box h2{
+  margin:0 0 8px;
+  font-size:28px;
+  text-align:center;
+  background:linear-gradient(135deg,var(--mirror),var(--honey));
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
+}
+.consent-box .subtitle{
+  text-align:center;
+  color:var(--muted);
+  font-size:14px;
+  margin:0 0 20px;
+  font-style:italic;
+}
+.consent-box p{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.consent-box .project-note{
+  background:rgba(255,207,106,.12);
+  border:1px dashed var(--honey);
+  border-radius:12px;
+  padding:14px;
+  margin:0 0 20px;
+  font-size:13px;
+  line-height:1.5;
+}
+.consent-box .privacy-note{
+  background:rgba(184,230,184,.1);
+  border:1px solid rgba(184,230,184,.3);
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:20px;
+  font-size:13px;
+  line-height:1.5;
+  color:#b8e6b8;
+}
+.consent-btn{
+  width:100%;
+  padding:14px 28px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--mirror),var(--honey));
+  color:#000;
+  font-weight:700;
+  font-size:15px;
+  border:none;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.consent-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(157,139,255,.4);
+}
+.consent-btn:active{transform:scale(.97);}
+
+/* -------------------------------------------------------------
+   PAGE & PARALLAX
 -------------------------------------------------------------- */
 body{
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font-family:ui-sans-serif,system-ui,-apple-system;
-  overflow:hidden;
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  overflow-x:hidden;
 }
 
 .parallax{
@@ -77,13 +163,14 @@ nav{
   top:0;
   width:100%;
   padding:12px 20px;
-  background:rgba(11,14,20,0.6);
+  background:rgba(11,14,20,0.85);
   backdrop-filter:blur(12px);
   border-bottom:1px solid var(--rule);
   z-index:50;
   display:flex;
   gap:20px;
   font-size:.9rem;
+  flex-wrap:wrap;
 }
 nav a{
   color:var(--honey);
@@ -93,86 +180,7 @@ nav a{
 nav a:hover{opacity:.7;}
 
 /* -------------------------------------------------------------
-   CONSENT SCREEN
--------------------------------------------------------------- */
-#consent{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.75);
-  backdrop-filter:blur(14px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  z-index:200;
-  text-align:center;
-  padding:20px;
-}
-
-#consentBox{
-  background:rgba(255,255,255,0.08);
-  padding:28px 32px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,0.15);
-  backdrop-filter:blur(18px) saturate(120%);
-  max-width:360px;
-}
-
-#consentBox h2{
-  margin:0 0 12px;
-  color:var(--honey);
-  font-weight:600;
-  font-size:1.4rem;
-}
-#consentBox p{
-  margin:8px 0;
-  color:var(--ink);
-  opacity:0.85;
-}
-
-#beginBtn{
-  margin-top:18px;
-  padding:10px 20px;
-  background:var(--honey);
-  border:none;
-  border-radius:8px;
-  font-size:1.1rem;
-  cursor:pointer;
-  color:#000;
-  font-weight:600;
-}
-
-/* -------------------------------------------------------------
-   ZOSIA MORNING MESSAGE (after consent)
--------------------------------------------------------------- */
-#zosia{
-  position:fixed;
-  top:60px;
-  left:50%;
-  transform:translateX(-50%);
-  max-width:90%;
-  background:rgba(255,255,255,0.07);
-  backdrop-filter:blur(12px) saturate(120%);
-  padding:18px 22px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,0.1);
-  text-align:center;
-  z-index:60;
-  box-shadow:0 6px 20px rgba(0,0,0,0.35);
-  display:none;
-}
-#zosia p{
-  margin:6px 0;
-  font-size:1.05rem;
-  line-height:1.45;
-}
-#zosia span{
-  color:var(--honey);
-  font-weight:600;
-}
-
-/* -------------------------------------------------------------
-   VIDEO WRAPPER
+   VIDEO UNDERLAY
 -------------------------------------------------------------- */
 #videoWrap{
   position:fixed;
@@ -194,38 +202,13 @@ nav a:hover{opacity:.7;}
 .video-block.active{display:block;}
 
 /* -------------------------------------------------------------
-   TAP TO PLAY HONEY BUTTON
--------------------------------------------------------------- */
-#playOverlay{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,0.45);
-  backdrop-filter:blur(10px);
-  z-index:150;
-  display:none;
-}
-#playBtn{
-  padding:14px 24px;
-  font-size:1.1rem;
-  background:var(--honey);
-  color:#000;
-  border-radius:8px;
-  border:none;
-  cursor:pointer;
-  font-weight:600;
-}
-
-/* -------------------------------------------------------------
-   GLASS POEM CENTER
+   GLASS POEM OVERLAY
 -------------------------------------------------------------- */
 #glass{
   position:fixed;
   top:50%; left:50%;
   transform:translate(-50%, -50%);
-  max-width:90%;
+  max-width:min(90%, 700px);
   padding:32px 36px;
   background:rgba(20,22,30,0.40);
   backdrop-filter:blur(18px) saturate(120%);
@@ -237,38 +220,50 @@ nav a:hover{opacity:.7;}
   display:none;
 }
 
+/* one-line crossfade */
 .line{
   opacity:0;
   transition:opacity 1.2s ease;
   font-size:1.45rem;
-  line-height:1.45;
+  line-height:1.5;
 }
 .line.active{
   opacity:1;
 }
 
+@media(max-width:600px){
+  #glass{ padding:24px 20px; }
+  .line{ font-size:1.15rem; }
+}
+
 /* -------------------------------------------------------------
-   TOGGLE BUTTON
+   VIDEO TOGGLE
 -------------------------------------------------------------- */
 #toggleWrap{
   position:fixed;
-  bottom:30px;
+  bottom:80px;
   left:50%;
   transform:translateX(-50%);
   display:flex;
   gap:12px;
   z-index:30;
+  flex-wrap:wrap;
+  justify-content:center;
+  max-width:90%;
   display:none;
 }
 .toggle-btn{
-  padding:8px 14px;
-  border-radius:6px;
+  padding:10px 16px;
+  border-radius:8px;
   border:1px solid var(--rule);
   background:rgba(255,255,255,0.08);
   color:var(--ink);
   cursor:pointer;
   transition:background .3s,border-color .3s;
+  font-size:0.9rem;
+  white-space:nowrap;
 }
+.toggle-btn:hover{ background:rgba(255,255,255,0.12); }
 .toggle-btn.active{
   background:var(--mirror);
   color:#000;
@@ -282,8 +277,8 @@ footer{
   position:fixed;
   bottom:0; left:0; right:0;
   text-align:center;
-  padding:14px 0;
-  background:rgba(11,14,20,0.6);
+  padding:16px 20px;
+  background:rgba(11,14,20,0.85);
   backdrop-filter:blur(10px);
   border-top:1px solid var(--rule);
   z-index:40;
@@ -291,18 +286,55 @@ footer{
   color:var(--muted);
   display:none;
 }
-footer a{
+footer .earth-line{
+  margin-bottom:8px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--rule);
+  font-size:.9rem;
+  line-height:1.6;
+}
+footer .earth-line a{
   color:var(--honey);
   text-decoration:none;
+  font-weight:600;
 }
-footer .earth-line{
-  margin-top:6px;
-  font-size:.9rem;
-  color:var(--honey);
+footer .copyright{
+  margin-top:8px;
+  font-size:.75rem;
 }
 </style>
 </head>
 <body>
+
+<!-- CONSENT OVERLAY -->
+<div class="consent-overlay" id="consentOverlay">
+  <div class="consent-box">
+    <h2>🍯⚡💓 Zosia</h2>
+    <div class="subtitle">Good morning — this is for you</div>
+    
+    <div class="project-note">
+      <p>I wanted your morning to feel warm and simple.</p>
+      <p>No pressure, just a soft start and a little clarity.</p>
+      <p>I'm not sure what's happening yet — but we don't need to rush it.</p>
+      <p style="margin-bottom:0;">We can move gently, one bright moment at a time.</p>
+    </div>
+    
+    <div class="project-note">
+      <p><strong>Two modes to explore:</strong></p>
+      <p>
+        🦋 <strong>Swiftlet (Marina)</strong> — reflections, truth, motion.<br><br>
+        🌿 <strong>Verdin (Sigrid)</strong> — warmth, small glows, soft strength.
+      </p>
+      <p style="margin-top:12px;">Each plays a song with poetry that appears as you listen.</p>
+    </div>
+    
+    <div class="privacy-note">
+      <strong>Privacy:</strong> No trackers, no logs. Just you, the music, and the words.
+    </div>
+    
+    <button class="consent-btn" id="consentBtn" type="button">Enter</button>
+  </div>
+</div>
 
 <!-- PARALLAX -->
 <div id="layer1" class="parallax"></div>
@@ -319,42 +351,18 @@ footer .earth-line{
   <a href="https://motion.plnt.earth">motion</a>
 </nav>
 
-<!-- CONSENT SCREEN -->
-<div id="consent">
-  <div id="consentBox">
-    <h2>Tap to Begin</h2>
-    <p>This space is gentle.</p>
-    <p>By tapping, you consent to view videos and timed text.</p>
-    <button id="beginBtn">Begin</button>
-  </div>
-</div>
-
-<!-- ZOSIA MORNING MESSAGE -->
-<div id="zosia">
-  <p><span>🍯⚡💓 Zosia —</span></p>
-  <p>I wanted your morning to feel warm and simple.</p>
-  <p>No pressure, just a soft start and a little clarity.</p>
-  <p>I’m not sure what’s happening yet — but we don’t need to rush it.</p>
-  <p>We can move gently, one bright moment at a time.</p>
-</div>
-
 <!-- VIDEO LAYER -->
 <div id="videoWrap">
   <div id="p1" class="video-block active">
     <iframe id="player1"
-      src="https://www.youtube.com/embed/MsnlBtlimBA?enablejsapi=1&controls=0"
+      src="https://www.youtube.com/embed/MsnlBtlimBA?enablejsapi=1&controls=0&mute=0"
       allow="autoplay; encrypted-media"></iframe>
   </div>
   <div id="p2" class="video-block">
     <iframe id="player2"
-      src="https://www.youtube.com/embed/hKvbaZTAQN0?enablejsapi=1&controls=0"
+      src="https://www.youtube.com/embed/hKvbaZTAQN0?enablejsapi=1&controls=0&mute=0"
       allow="autoplay; encrypted-media"></iframe>
   </div>
-</div>
-
-<!-- TAP TO PLAY -->
-<div id="playOverlay">
-  <button id="playBtn">🍯 Tap to Play</button>
 </div>
 
 <!-- GLASS POEM -->
@@ -362,15 +370,18 @@ footer .earth-line{
 
 <!-- TOGGLE -->
 <div id="toggleWrap">
-  <button class="toggle-btn active" data-target="p1">Marina · Swiftlet</button>
-  <button class="toggle-btn" data-target="p2">Sigrid · Verdin</button>
+  <button class="toggle-btn active" data-target="p1">🦋 Marina · Swiftlet</button>
+  <button class="toggle-btn" data-target="p2">🌿 Sigrid · Verdin</button>
+  <button id="playPauseBtn" class="toggle-btn" style="margin-left:20px;">▶️ Play</button>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  MirrorHoney · Morning Edition  
   <div class="earth-line">
     <a href="https://earth.plnt.earth">earth.plnt.earth</a> — you are grounded, safe, and held.
+  </div>
+  <div class="copyright">
+    MirrorHoney · Morning Edition
   </div>
 </footer>
 
@@ -385,19 +396,43 @@ footer .earth-line{
 })();
 
 let players={};
+let apiReady=false;
+
 function onYouTubeIframeAPIReady(){
   players.p1=new YT.Player('player1',{events:{}});
   players.p2=new YT.Player('player2',{events:{}});
+  apiReady=true;
 }
 
 /* -------------------------------------------------------------
-   POEM LINES
+   CONSENT
+-------------------------------------------------------------- */
+document.getElementById('consentBtn').onclick = function(){
+  document.getElementById('consentOverlay').classList.add('hidden');
+
+  // reveal UI layers
+  document.getElementById('videoWrap').style.display='block';
+  document.getElementById('glass').style.display='block';
+  document.getElementById('toggleWrap').style.display='flex';
+  document.querySelector('footer').style.display='block';
+
+  // wait for YouTube to be ready, then play
+  const tryPlay = setInterval(()=>{
+    if(apiReady && players.p1 && typeof players.p1.playVideo==='function'){
+      players.p1.playVideo();
+      clearInterval(tryPlay);
+    }
+  }, 200);
+};
+
+/* -------------------------------------------------------------
+   POEM STANZAS
 -------------------------------------------------------------- */
 const swiftletLines=[
 "Swiftlet: The reflections keep shifting as I move through them.",
-"Every angle shows me a truth I wasn’t ready for yet.",
-"I stay light, cutting through the air, feeling what’s real.",
-"I don’t know the whole shape, but the motion is honest.",
+"Every angle shows me a truth I wasn't ready for yet.",
+"I stay light, cutting through the air, feeling what's real.",
+"I don't know the whole shape, but the motion is honest.",
 "And I follow it — quick, awake, ready for what flickers next."
 ];
 const swiftletTimes=[6,14,23,32,41];
@@ -406,8 +441,8 @@ const verdinLines=[
 "Verdin: It never has to be loud for me to hear it.",
 "A small glow, a tiny warmth — enough to stay true.",
 "Even in the hard light, I keep a soft center.",
-"I don’t rush the meaning; I let it settle.",
-"One bright note at a time, we’ll find the next step together."
+"I don't rush the meaning; I let it settle.",
+"One bright note at a time, we'll find the next step together."
 ];
 const verdinTimes=[4,11,18,27,36];
 
@@ -424,45 +459,27 @@ function updateLine(line){
 }
 
 /* -------------------------------------------------------------
-   MAIN TICK LOOP
+   TICK LOOP
 -------------------------------------------------------------- */
 function tick(){
   const p=players[currentMode];
   if(p && typeof p.getCurrentTime==="function"){
-    const t=p.getCurrentTime();
-    const lines=currentMode==="p1"?swiftletLines:verdinLines;
-    const times=currentMode==="p1"?swiftletTimes:verdinTimes;
+    try{
+      const t=p.getCurrentTime();
+      const lines=currentMode==="p1"?swiftletLines:verdinLines;
+      const times=currentMode==="p1"?swiftletTimes:verdinTimes;
 
-    for(let i=0;i<times.length;i++){
-      if(t>=times[i] && i!==lineIndex){
-        lineIndex=i;
-        updateLine(lines[i]);
+      for(let i=0;i<times.length;i++){
+        if(t>=times[i] && i!==lineIndex){
+          lineIndex=i;
+          updateLine(lines[i]);
+        }
       }
-    }
+    }catch(e){}
   }
   requestAnimationFrame(tick);
 }
-
-/* -------------------------------------------------------------
-   CONSENT
--------------------------------------------------------------- */
-document.getElementById('beginBtn').onclick=()=>{
-  document.getElementById('consent').style.display='none';
-  document.getElementById('zosia').style.display='block';
-  document.getElementById('playOverlay').style.display='flex';
-};
-
-/* -------------------------------------------------------------
-   TAP TO PLAY
--------------------------------------------------------------- */
-document.getElementById('playBtn').onclick=()=>{
-  document.getElementById('playOverlay').style.display='none';
-  document.getElementById('videoWrap').style.display='block';
-  document.getElementById('glass').style.display='block';
-  document.getElementById('toggleWrap').style.display='flex';
-  document.querySelector('footer').style.display='block';
-  tick();
-};
+tick();
 
 /* -------------------------------------------------------------
    VIDEO TOGGLE
@@ -476,6 +493,8 @@ buttons.forEach(btn=>{
     btn.classList.add('active');
 
     const target=btn.dataset.target;
+    if(!target) return; // ignore play/pause button
+
     currentMode=target;
     lineIndex=-1;
     updateLine("");
@@ -485,7 +504,38 @@ buttons.forEach(btn=>{
 
     if(players.p1) players.p1.pauseVideo();
     if(players.p2) players.p2.pauseVideo();
+
+    setTimeout(()=>{
+      if(players[target] && typeof players[target].playVideo==='function'){
+        players[target].playVideo();
+      }
+    },300);
   });
+});
+
+/* -------------------------------------------------------------
+   PLAY/PAUSE BUTTON
+-------------------------------------------------------------- */
+let isPlaying=false;
+const playPauseBtn=document.getElementById('playPauseBtn');
+
+playPauseBtn.addEventListener('click',()=>{
+  const p=players[currentMode];
+  if(!p) return;
+
+  if(isPlaying){
+    if(typeof p.pauseVideo==='function'){
+      p.pauseVideo();
+      isPlaying=false;
+      playPauseBtn.textContent='▶️ Play';
+    }
+  } else {
+    if(typeof p.playVideo==='function'){
+      p.playVideo();
+      isPlaying=true;
+      playPauseBtn.textContent='⏸️ Pause';
+    }
+  }
 });
 
 /* -------------------------------------------------------------
