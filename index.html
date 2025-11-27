@@ -126,7 +126,7 @@ nav{
 nav a{ color:var(--honey); text-decoration:none; }
 
 /* -------------------------------------------------------------
-   VIDEO UNDERLAY — FULLY FIXED RESPONSIVE 16:9
+   VIDEO UNDERLAY — FIXED RESPONSIVE 16:9
 -------------------------------------------------------------- */
 #videoWrap{
   position:fixed; inset:0;
@@ -134,7 +134,6 @@ nav a{ color:var(--honey); text-decoration:none; }
   z-index:-5;
   display:none;
 }
-
 .video-block{
   position:absolute; inset:0;
   display:none;
@@ -146,28 +145,32 @@ nav a{ color:var(--honey); text-decoration:none; }
   top:50%; left:50%;
   transform:translate(-50%, -50%);
   height:100vh;
-  width:177.78vh; /* 100vh × 16/9 */
+  width:177.78vh;
   pointer-events:none;
   object-fit:cover;
 }
 @media(min-aspect-ratio:16/9){
   #videoWrap iframe{
     width:100vw;
-    height:56.25vw; /* 100vw × 9/16 */
+    height:56.25vw;
   }
 }
 
 /* -------------------------------------------------------------
-   GLASS POEM
+   GLASS POEM — MOVED TO 69%
 -------------------------------------------------------------- */
 #glass{
-  position:fixed; top:50%; left:50%;
+  position:fixed;
+  top:69%;               /* ← HERE is the change */
+  left:50%;
   transform:translate(-50%, -50%);
-  max-width:90%; padding:32px;
+  max-width:90%;
+  padding:32px;
   text-align:center;
   background:rgba(20,22,30,.4);
   backdrop-filter:blur(18px);
-  border-radius:14px; border:1px solid rgba(255,255,255,.15);
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.15);
   z-index:20;
   display:none;
 }
@@ -218,7 +221,7 @@ footer a{ color:var(--honey); text-decoration:none; }
 </head>
 <body>
 
-<!-- CONSENT OVERLAY -->
+<!-- CONSENT -->
 <div class="consent-overlay" id="consentOverlay">
   <div class="consent-box">
     <h2>🍯⚡💓 Zosia</h2>
@@ -233,8 +236,8 @@ footer a{ color:var(--honey); text-decoration:none; }
 
     <div class="project-note">
       <p><strong>Two modes to explore:</strong></p>
-      🦋 <strong>Swiftlet (Marina)</strong> — motion + reflection<br><br>
-      🌿 <strong>Verdin (Sigrid)</strong> — warmth + clarity
+      🦋 <strong>Swiftlet (Marina)</strong><br><br>
+      🌿 <strong>Verdin (Sigrid)</strong>
     </div>
 
     <div class="privacy-note">No tracking. No data saved. Just you, music, and words.</div>
@@ -308,7 +311,7 @@ function onYouTubeIframeAPIReady(){
 }
 
 /* -------------------------------------------------------------
-   CONSENT → SHOW UI & START VIDEO WHEN READY
+   CONSENT → SHOW UI
 -------------------------------------------------------------- */
 document.getElementById('consentBtn').onclick=function(){
   document.getElementById('consentOverlay').classList.add('hidden');
@@ -349,7 +352,6 @@ let currentMode="p1";
 let lineIndex=-1;
 let cutPoints=[];
 
-/* EVEN SPLIT */
 function generateCutPoints(lines, duration){
   const step=duration/lines.length;
   return lines.map((_,i)=>step*i);
@@ -430,7 +432,6 @@ buttons.forEach(btn=>{
 let isPlaying=false;
 const playPauseBtn=document.getElementById('playPauseBtn');
 
-play_pause_btn:
 playPauseBtn.onclick=function(){
   const p=players[currentMode];
   if(!p) return;
