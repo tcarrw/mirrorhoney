@@ -28,7 +28,7 @@
   position:fixed; inset:0;
   background:rgba(11,14,20,.97);
   backdrop-filter:blur(16px);
-  z-index:1000;
+  z-index:20000;
   display:flex; align-items:center; justify-content:center;
   padding:20px;
 }
@@ -120,7 +120,7 @@ nav{
   background:rgba(11,14,20,.85);
   backdrop-filter:blur(12px);
   border-bottom:1px solid var(--rule);
-  display:flex; gap:20px; z-index:50;
+  display:flex; gap:20px; z-index:3000;
   flex-wrap:wrap;
 }
 nav a{ color:var(--honey); text-decoration:none; }
@@ -157,7 +157,7 @@ nav a{ color:var(--honey); text-decoration:none; }
 }
 
 /* -------------------------------------------------------------
-   GLASS POEM — Desktop: 69%, Mobile: center
+   GLASS POEM — FIXED: always visible
 -------------------------------------------------------------- */
 #glass{
   position:fixed;
@@ -166,19 +166,22 @@ nav a{ color:var(--honey); text-decoration:none; }
   max-width:90%;
   padding:32px;
   text-align:center;
-  background:rgba(20,22,30,.4);
-  backdrop-filter:blur(18px);
+  background:rgba(20,22,30,.45);
+  backdrop-filter:blur(22px) saturate(120%);
   border-radius:14px;
-  border:1px solid rgba(255,255,255,.15);
-  z-index:20;
+  border:1px solid rgba(255,255,255,.18);
+  z-index:9999;       /* ← NEVER behind the video */
   display:none;
 
-  /* desktop default */
+  /* desktop position */
   top:69%;
 }
+
 .line{
-  opacity:0; transition:opacity 1.2s ease;
-  font-size:1.45rem; line-height:1.5;
+  opacity:0;
+  transition:opacity 1.2s ease;
+  font-size:1.45rem;
+  line-height:1.5;
 }
 
 /* MOBILE OVERRIDE: center poem */
@@ -198,7 +201,7 @@ nav a{ color:var(--honey); text-decoration:none; }
 #toggleWrap{
   position:fixed; bottom:80px; left:50%;
   transform:translateX(-50%);
-  display:none; z-index:30;
+  display:none; z-index:4000;
   gap:12px; flex-wrap:wrap;
 }
 .toggle-btn{
@@ -222,6 +225,7 @@ footer{
   backdrop-filter:blur(10px);
   border-top:1px solid var(--rule);
   display:none;
+  z-index:2000;
 }
 footer a{ color:var(--honey); text-decoration:none; }
 </style>
