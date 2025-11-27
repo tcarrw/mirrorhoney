@@ -1,143 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>mirrorhoney.plnt.earth</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MirrorHoney · Poetic Sync</title>
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
 <style>
-html,body{
-  margin:0;
-  height:100%;
-  width:100%;
-  background:#000;
-  color:#f8f6ff;
-  font-family:'Georgia',serif;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  overflow:hidden;
-  transition:background 10s ease-in-out;
+/* -------------------------------------------------------------
+   MIRRORHONEY CORE
+   Violet-pearl (Mirror) + Warm honey-gold (Honey)
+-------------------------------------------------------------- */
+:root{
+  --bg:#0c0f15;
+  --ink:#f3f4ff;
+  --muted:#b4b8cc;
+  --mirror:#9d8bff;     /* Marina violet-pearl */
+  --honey:#ffcc66;      /* Sabrina warm honey */
+  --rule:#212738;
+  --maxw:780px;
 }
 
-/* violet→pearl drift */
-@keyframes mirrorFade {
-  0%{background:#000;}
-  50%{background:radial-gradient(circle at center,#2b004d 0%,#9c7cff 50%,#fcefff 100%);}
-  100%{background:radial-gradient(circle at center,#150028 0%,#6d4cff 40%,#f8e8ff 100%);}
-}
+/* Background: layered Mirror glow + Honey warmth */
 body{
-  animation:mirrorFade 60s ease-in-out infinite alternate;
+  margin:0;
+  background:
+    radial-gradient(circle at 25% -10%, rgba(157,139,255,0.22), transparent 55%),
+    radial-gradient(circle at 80% 120%, rgba(255,204,102,0.14), transparent 60%),
+    var(--bg);
+  color:var(--ink);
+  font-family:ui-sans-serif, system-ui, -apple-system;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.58;
 }
 
-/* soft honey shimmer overlay */
-.honey{
-  position:absolute;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:radial-gradient(circle at 50% 60%,rgba(255,230,150,0.05),transparent 70%);
-  animation:honeyShift 20s linear infinite;
-  pointer-events:none;
+main{
+  max-width:var(--maxw);
+  margin:0 auto;
+  padding:70px 18px 120px;
 }
-@keyframes honeyShift{
+
+/* Header */
+h1{
+  margin:0 0 6px;
+  font-size:1.8rem;
+  font-weight:600;
+  color:var(--mirror);
+  letter-spacing:-.01em;
+  text-shadow:0 0 14px rgba(157,139,255,0.45);
+}
+h2{
+  margin:0 0 40px;
+  font-size:1rem;
+  font-weight:400;
+  color:var(--muted);
+}
+
+/* Video container */
+#playerWrap{
+  position:sticky;
+  top:0;
+  z-index:10;
+  padding:10px 0 24px;
+  background:linear-gradient(to bottom,var(--bg) 65%, rgba(12,15,21,0));
+}
+iframe, video{
+  width:100%;
+  border:none;
+  border-radius:12px;
+  aspect-ratio:16/9;
+}
+
+/* Lines */
+#lyrics{
+  position:relative;
+  padding-left:6px;
+  border-left:1px solid var(--rule);
+}
+
+.line{
+  margin:20px 0;
+  padding:3px 0;
+  font-size:1.12rem;
+  color:var(--muted);
+  transition:color .35s ease, text-shadow .35s ease;
+}
+
+/* Mirror = violet-pearl glow
+   Honey  = warm gold glow
+   MirrorHoney = both */
+.line.active{
+  color:var(--honey);
+  text-shadow:
+    0 0 12px rgba(255,204,102,0.55),
+    0 0 22px rgba(157,139,255,0.45);
+}
+
+/* Mirror orb */
+#mirrorOrb{
+  position:fixed;
+  bottom:22px;
+  right:26px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%, var(--mirror), transparent 65%),
+    radial-gradient(circle at 70% 70%, var(--honey), transparent 65%);
+  filter:blur(8px);
+  opacity:.8;
+  animation:float 6s ease-in-out infinite;
+}
+@keyframes float{
   0%{transform:translateY(0);}
-  50%{transform:translateY(-20px);}
+  50%{transform:translateY(-10px);}
   100%{transform:translateY(0);}
 }
 
-/* text fade-in */
-h1{
-  font-weight:500;
-  font-size:1.2rem;
-  letter-spacing:1px;
-  margin-bottom:1.5rem;
-  opacity:0;
-  animation:fadeIn 6s ease-in forwards 3s;
-}
-p{
-  font-size:1rem;
-  font-style:italic;
-  line-height:1.6;
-  opacity:0;
-  animation:fadeIn 6s ease-in forwards 6s;
-}
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(10px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-/* 128Hz pulse ring (visual only) */
-.ring{
-  position:absolute;
-  width:160px;height:160px;
-  border-radius:50%;
-  border:2px solid rgba(255,255,255,0.3);
-  animation:pulse 1.875s ease-in-out infinite;
-  opacity:0.4;
-}
-@keyframes pulse{
-  0%,100%{transform:scale(0.95);opacity:0.3;}
-  50%{transform:scale(1.1);opacity:0.7;}
-}
-
-/* footer link + bee note */
 footer{
-  position:fixed;
-  bottom:1.5rem;
-  font-size:0.8rem;
-  letter-spacing:1px;
-  opacity:0;
-  font-style:italic;
-  transition:opacity 3s ease;
+  margin-top:80px;
   text-align:center;
+  color:var(--muted);
+  font-size:.75rem;
+  opacity:.75;
 }
-footer a{
-  color:#f8f6ff;
-  text-decoration:none;
-  border-bottom:1px solid rgba(255,255,255,0.2);
+
+hr{
+  border:0;
+  border-top:1px solid var(--rule);
+  margin:50px 0;
 }
-footer a:hover{
-  border-bottom-color:#fff;
-}
-footer.show{opacity:0.7;}
-.bee{
-  font-size:0.7rem;
-  opacity:0.5;
-  margin-top:0.3rem;
-  letter-spacing:0.8px;
-  font-style:italic;
+.tip{
+  font-size:.8rem;
+  color:var(--muted);
+  margin-top:4px;
 }
 </style>
 </head>
+
 <body>
-<div class="honey"></div>
-<div class="ring"></div>
+<div id="mirrorOrb"></div>
 
-<h1>mirrorhoney / re-entry</h1>
-<p>the mirror hums again<br>violet remembers me kindly<br>and I am still made of gold</p>
+<main>
+  <h1>MirrorHoney</h1>
+  <h2>A warm, violet-gold page for poems that move with sound.</h2>
 
-<footer id="loop">
-  <a href="https://dagny.plnt.earth">back to mint</a>
-  <div class="bee">leave the light on for the next reflection</div>
-</footer>
+  <!-- VIDEO: Replace VIDEO_ID -->
+  <div id="playerWrap">
+    <iframe id="player"
+            src="https://www.youtube.com/embed/VIDEO_ID?enablejsapi=1"
+            allow="autoplay; encrypted-media"
+            allowfullscreen></iframe>
+    <div class="tip">Pinned video · Scroll the poem freely.</div>
+  </div>
 
-<!-- silent 128Hz placeholder -->
-<audio id="tone" loop>
-  <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAIlYAAESsAAACABAAZGF0YQAAAAA=" type="audio/wav">
-</audio>
+  <hr>
+
+  <!-- POEM / LYRICS SECTION -->
+  <div id="lyrics">
+    <!-- Replace these placeholders with your lines + timestamps -->
+    <div class="line" data-t="0">[MirrorHoney line 1]</div>
+    <div class="line" data-t="5">[Line 2]</div>
+    <div class="line" data-t="11">[Line 3]</div>
+    <div class="line" data-t="18">[Line 4]</div>
+    <div class="line" data-t="26">[Line 5]</div>
+  </div>
+
+  <footer>
+    MirrorHoney • Illumina • Poetic Sync Engine • One File • No Libraries
+  </footer>
+</main>
 
 <script>
-/* keep silent until ready */
-const tone=document.getElementById('tone');
-tone.volume=0;
-/* fade in footer after ~60s to invite return to Dagny */
-setTimeout(()=>{document.getElementById('loop').classList.add('show');},60000);
+/* -------------------------------------------------------
+   YOUTUBE API LOAD
+-------------------------------------------------------- */
+let player;
+function onYouTubeIframeAPIReady(){
+  player = new YT.Player('player',{ events:{} });
+}
+(function(){
+  const tag=document.createElement('script');
+  tag.src="https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+})();
+
+/* -------------------------------------------------------
+   MIRRORHONEY TIMESTAMP ENGINE
+-------------------------------------------------------- */
+const lines = [...document.querySelectorAll('.line')];
+let lastActive=null;
+
+function tick(){
+  if(!player || typeof player.getCurrentTime!=='function'){
+    requestAnimationFrame(tick);
+    return;
+  }
+  const t = player.getCurrentTime();
+  let active=null;
+
+  for(const ln of lines){
+    const at=parseFloat(ln.dataset.t||0);
+    if(t>=at) active=ln; else break;
+  }
+
+  if(active && active!==lastActive){
+    if(lastActive) lastActive.classList.remove('active');
+    active.classList.add('active');
+    lastActive=active;
+    active.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  requestAnimationFrame(tick);
+}
+tick();
 </script>
+
 </body>
 </html>
