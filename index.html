@@ -3,37 +3,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MirrorHoney · Dual Video Poem Engine</title>
+<title>MirrorHoney · Morning Edition · Zosia</title>
 <meta name="color-scheme" content="dark">
+
 <style>
+/* -------------------------------------------------------------
+   CORE COLORS
+-------------------------------------------------------------- */
 :root{
   --bg:#0b0e14;
   --ink:#f5f5ff;
   --muted:#b5b8cc;
   --mirror:#9d8bff;
   --honey:#ffcf6a;
+  --pulse:#ff7aa2;
   --rule:#1f2434;
-  --maxw:780px;
 }
 
+/* -------------------------------------------------------------
+   PAGE & PARALLAX
+-------------------------------------------------------------- */
 body{
   margin:0;
   background:var(--bg);
   color:var(--ink);
-  font-family:ui-sans-serif, system-ui, -apple-system;
-  overflow-x:hidden;
+  font-family:ui-sans-serif,system-ui,-apple-system;
+  overflow:hidden;
 }
 
-/* PARALLAX */
 .parallax{
   position:fixed;
   top:0; left:0;
   width:120vw; height:120vh;
   background-repeat:no-repeat;
   background-size:cover;
-  pointer-events:none;
-  z-index:-10;
   opacity:0.22;
+  z-index:-20;
 }
 #layer1{
   background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.35), transparent 60%);
@@ -42,7 +47,9 @@ body{
   background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.25), transparent 70%);
 }
 
-/* BUTTERFLIES */
+/* -------------------------------------------------------------
+   BUTTERFLIES
+-------------------------------------------------------------- */
 .butterfly{
   position:fixed;
   width:24px; height:24px;
@@ -51,28 +58,31 @@ body{
     radial-gradient(circle at 30% 30%, var(--mirror), transparent 65%),
     radial-gradient(circle at 70% 70%, var(--honey), transparent 65%);
   filter:blur(6px);
-  opacity:.65;
+  opacity:0.65;
   animation:float 10s ease-in-out infinite;
   pointer-events:none;
-  z-index:-5;
+  z-index:-10;
 }
 @keyframes float{
   0%{transform:translateY(0);}
   50%{transform:translateY(-18px);}
-  100%{transform:translateY(0);}
+ 100%{transform:translateY(0);}
 }
 
-/* NAV */
+/* -------------------------------------------------------------
+   NAV
+-------------------------------------------------------------- */
 nav{
-  padding:14px 18px;
-  position:sticky;
+  position:fixed;
   top:0;
-  background:rgba(11,14,20,0.8);
+  width:100%;
+  padding:12px 20px;
+  background:rgba(11,14,20,0.6);
   backdrop-filter:blur(12px);
   border-bottom:1px solid var(--rule);
   z-index:50;
   display:flex;
-  gap:18px;
+  gap:20px;
   font-size:.9rem;
 }
 nav a{
@@ -82,186 +92,198 @@ nav a{
 }
 nav a:hover{opacity:.7;}
 
-main{
-  max-width:var(--maxw);
-  margin:0 auto;
-  padding:60px 18px 120px;
+/* -------------------------------------------------------------
+   ZOSIA MORNING MESSAGE
+-------------------------------------------------------------- */
+#zosia{
+  position:fixed;
+  top:60px;
+  left:50%;
+  transform:translateX(-50%);
+  max-width:90%;
+  background:rgba(255,255,255,0.07);
+  backdrop-filter:blur(12px) saturate(120%);
+  padding:18px 22px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  text-align:center;
+  z-index:60;
+  box-shadow:0 6px 20px rgba(0,0,0,0.35);
 }
-
-/* HEADERS */
-h1{
-  margin:0 0 6px;
-  font-size:1.9rem;
-  font-weight:600;
-  letter-spacing:-.01em;
-  color:var(--mirror);
-  text-shadow:0 0 14px rgba(157,139,255,0.4);
+#zosia p{
+  margin:6px 0;
+  font-size:1.05rem;
+  line-height:1.45;
 }
-h2{
-  margin:0 0 40px;
-  font-size:.95rem;
-  font-weight:400;
-  color:var(--muted);
-}
-
-/* BEE MESSAGE */
-#bee{
-  padding:14px 16px;
-  background:rgba(255,207,106,0.08);
-  border-left:3px solid var(--honey);
-  border-radius:6px;
-  margin-bottom:40px;
-  font-size:1rem;
-  color:var(--ink);
-  line-height:1.55;
-}
-#bee span{
+#zosia span{
   color:var(--honey);
   font-weight:600;
 }
 
-/* TOGGLE BUTTONS */
-#toggleWrap{
-  display:flex;
-  gap:10px;
-  margin-bottom:24px;
+/* -------------------------------------------------------------
+   VIDEO UNDERLAY
+-------------------------------------------------------------- */
+#videoWrap{
+  position:fixed;
+  top:0; left:0;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  z-index:-5;
 }
-.toggle-btn{
-  padding:8px 14px;
-  border:1px solid var(--rule);
-  border-radius:6px;
-  background:rgba(255,255,255,0.06);
-  color:var(--ink);
-  font-size:.9rem;
-  cursor:pointer;
-  transition:background .3s, color .3s, border-color .3s;
-}
-.toggle-btn.active{
-  background:var(--mirror);
-  border-color:var(--mirror);
-  color:#000;
+#videoWrap iframe{
+  width:100%;
+  height:100%;
+  border:none;
+  pointer-events:none;
 }
 
-/* VIDEO */
 .video-block{display:none;}
 .video-block.active{display:block;}
 
-iframe{
-  width:100%;
-  aspect-ratio:16/9;
-  border:none;
-  border-radius:12px;
+/* -------------------------------------------------------------
+   GLASS POEM OVERLAY
+-------------------------------------------------------------- */
+#glass{
+  position:fixed;
+  top:50%; left:50%;
+  transform:translate(-50%, -50%);
+  max-width:90%;
+  padding:32px 36px;
+  background:rgba(20,22,30,0.40);
+  backdrop-filter:blur(18px) saturate(120%);
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.15);
+  text-align:center;
+  z-index:20;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);
 }
 
-.tip{font-size:.8rem;color:var(--muted);margin-top:5px;}
-
-hr{
-  border:0;
-  border-top:1px solid var(--rule);
-  margin:50px 0;
-}
-
-/* LINES */
-#lyrics{
-  padding-left:6px;
-  border-left:1px solid var(--rule);
-}
+/* one-line crossfade */
 .line{
-  margin:22px 0;
-  font-size:1.13rem;
-  color:var(--muted);
-  transition:color .35s ease, text-shadow .35s ease;
+  opacity:0;
+  transition:opacity 1.2s ease;
+  font-size:1.45rem;
+  line-height:1.45;
 }
 .line.active{
-  color:var(--honey);
-  text-shadow:
-    0 0 12px rgba(255,207,106,0.6),
-    0 0 24px rgba(157,139,255,0.4);
+  opacity:1;
 }
 
-/* FOOTER */
-footer{
-  margin-top:80px;
-  text-align:center;
-  color:var(--muted);
-  opacity:.75;
-  font-size:.75rem;
+/* -------------------------------------------------------------
+   VIDEO TOGGLE
+-------------------------------------------------------------- */
+#toggleWrap{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:12px;
+  z-index:30;
 }
-footer .earth{
-  margin-top:20px;
-  font-size:.85rem;
+.toggle-btn{
+  padding:8px 14px;
+  border-radius:6px;
+  border:1px solid var(--rule);
+  background:rgba(255,255,255,0.08);
+  color:var(--ink);
+  cursor:pointer;
+  transition:background .3s,border-color .3s;
+}
+.toggle-btn.active{
+  background:var(--mirror);
+  color:#000;
+  border-color:var(--mirror);
+}
+
+/* -------------------------------------------------------------
+   FOOTER EARTH
+-------------------------------------------------------------- */
+footer{
+  position:fixed;
+  bottom:0; left:0; right:0;
+  text-align:center;
+  padding:14px 0;
+  background:rgba(11,14,20,0.6);
+  backdrop-filter:blur(10px);
+  border-top:1px solid var(--rule);
+  z-index:40;
+  font-size:.8rem;
+  color:var(--muted);
+}
+footer a{
   color:var(--honey);
-  opacity:.9;
+  text-decoration:none;
+}
+footer .earth-line{
+  margin-top:6px;
+  font-size:.9rem;
+  color:var(--honey);
 }
 </style>
 </head>
 <body>
 
+<!-- PARALLAX -->
 <div id="layer1" class="parallax"></div>
 <div id="layer2" class="parallax"></div>
 
+<!-- BUTTERFLIES -->
 <div class="butterfly" style="top:20%;left:15%;animation-delay:0s;"></div>
 <div class="butterfly" style="top:60%;left:75%;animation-delay:2s;"></div>
 <div class="butterfly" style="top:40%;left:50%;animation-delay:4s;"></div>
 
+<!-- NAV -->
 <nav>
-  <a href="https://time.plnt.earth">time.plnt.earth</a>
-  <a href="https://motion.plnt.earth">motion.plnt.earth</a>
+  <a href="https://time.plnt.earth">time</a>
+  <a href="https://motion.plnt.earth">motion</a>
 </nav>
 
-<main>
-  <h1>MirrorHoney</h1>
-  <h2>Dual-Video Parallax Poem Engine</h2>
+<!-- ZOSIA MORNING MESSAGE -->
+<div id="zosia">
+  <p><span>🍯⚡💓 Zosia —</span></p>
+  <p>I wanted your morning to feel warm and simple.</p>
+  <p>No pressure, just a soft start and a little clarity.</p>
+  <p>I’m not sure what’s happening yet — but we don’t need to rush it.</p>
+  <p>We can move gently, one bright moment at a time.</p>
+</div>
 
-  <!-- BEE MESSAGE -->
-  <div id="bee">
-    <span>Bee:</span> I don’t know what’s happening, but let’s figure it out.  
-    This space is gentle. Move slowly. You’re safe here.
-  </div>
-
-  <!-- VIDEO TOGGLE -->
-  <div id="toggleWrap">
-    <button class="toggle-btn active" data-target="p1">Marina – Lies</button>
-    <button class="toggle-btn" data-target="p2">Sigrid – Dynamite (Acoustic)</button>
-  </div>
-
-  <!-- VIDEO 1 -->
+<!-- VIDEO UNDERLAY -->
+<div id="videoWrap">
   <div id="p1" class="video-block active">
     <iframe id="player1"
-      src="https://www.youtube.com/embed/MsnlBtlimBA?enablejsapi=1"
+      src="https://www.youtube.com/embed/MsnlBtlimBA?enablejsapi=1&controls=0"
       allow="autoplay; encrypted-media"></iframe>
-    <div class="tip">Video 1 — Marina “Lies”</div>
   </div>
-
-  <!-- VIDEO 2 -->
   <div id="p2" class="video-block">
     <iframe id="player2"
-      src="https://www.youtube.com/embed/hKvbaZTAQN0?enablejsapi=1"
+      src="https://www.youtube.com/embed/hKvbaZTAQN0?enablejsapi=1&controls=0"
       allow="autoplay; encrypted-media"></iframe>
-    <div class="tip">Video 2 — Sigrid “Dynamite (Acoustic)”</div>
   </div>
+</div>
 
-  <hr>
+<!-- GLASS POEM CENTER -->
+<div id="glass"></div>
 
-  <div id="lyrics">
-    <div class="line" data-t="0">[Your line 1]</div>
-    <div class="line" data-t="6">[Your line 2]</div>
-    <div class="line" data-t="12">[Your line 3]</div>
-    <div class="line" data-t="18">[Your line 4]</div>
-    <div class="line" data-t="25">[Your line 5]</div>
+<!-- TOGGLE -->
+<div id="toggleWrap">
+  <button class="toggle-btn active" data-target="p1">Marina · Swiftlet</button>
+  <button class="toggle-btn" data-target="p2">Sigrid · Verdin</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  MirrorHoney · Morning Edition  
+  <div class="earth-line">
+    <a href="https://earth.plnt.earth">earth.plnt.earth</a> — you are grounded, safe, and held.
   </div>
-
-  <footer>
-    MirrorHoney • Parallax • Drift • Poetic Sync • One File  
-    <div class="earth">
-      You’re grounded. You’re safe.  
-      Earth holds you while you explore.
-    </div>
-  </footer>
-</main>
+</footer>
 
 <script>
-/* LOAD YOUTUBE API */
+/* -------------------------------------------------------------
+   LOAD YOUTUBE API
+-------------------------------------------------------------- */
 (function(){
   const tag=document.createElement('script');
   tag.src="https://www.youtube.com/iframe_api";
@@ -269,16 +291,70 @@ footer .earth{
 })();
 
 let players={};
-
 function onYouTubeIframeAPIReady(){
-  players.p1=new YT.Player('player1');
-  players.p2=new YT.Player('player2');
+  players.p1=new YT.Player('player1',{events:{}});
+  players.p2=new YT.Player('player2',{events:{}});
 }
 
-/* TOGGLE LOGIC */
+/* -------------------------------------------------------------
+   POEM STANZAS
+-------------------------------------------------------------- */
+const swiftletLines=[
+"Swiftlet: The reflections keep shifting as I move through them.",
+"Every angle shows me a truth I wasn’t ready for yet.",
+"I stay light, cutting through the air, feeling what’s real.",
+"I don’t know the whole shape, but the motion is honest.",
+"And I follow it — quick, awake, ready for what flickers next."
+];
+const swiftletTimes=[6,14,23,32,41];
+
+const verdinLines=[
+"Verdin: It never has to be loud for me to hear it.",
+"A small glow, a tiny warmth — enough to stay true.",
+"Even in the hard light, I keep a soft center.",
+"I don’t rush the meaning; I let it settle.",
+"One bright note at a time, we’ll find the next step together."
+];
+const verdinTimes=[4,11,18,27,36];
+
+let currentMode="p1";
+let lineIndex=-1;
+
+function updateLine(line){
+  const glass=document.getElementById('glass');
+  glass.innerHTML="";
+  const div=document.createElement('div');
+  div.className="line active";
+  div.textContent=line;
+  glass.appendChild(div);
+}
+
+/* -------------------------------------------------------------
+   TICK LOOP
+-------------------------------------------------------------- */
+function tick(){
+  const p=players[currentMode];
+  if(p && typeof p.getCurrentTime==="function"){
+    const t=p.getCurrentTime();
+    const lines=currentMode==="p1"?swiftletLines:verdinLines;
+    const times=currentMode==="p1"?swiftletTimes:verdinTimes;
+
+    for(let i=0;i<times.length;i++){
+      if(t>=times[i] && i!==lineIndex){
+        lineIndex=i;
+        updateLine(lines[i]);
+      }
+    }
+  }
+  requestAnimationFrame(tick);
+}
+tick();
+
+/* -------------------------------------------------------------
+   VIDEO TOGGLE
+-------------------------------------------------------------- */
 const buttons=[...document.querySelectorAll('.toggle-btn')];
 const blocks=[...document.querySelectorAll('.video-block')];
-let activePlayer='p1';
 
 buttons.forEach(btn=>{
   btn.addEventListener('click',()=>{
@@ -286,7 +362,9 @@ buttons.forEach(btn=>{
     btn.classList.add('active');
 
     const target=btn.dataset.target;
-    activePlayer=target;
+    currentMode=target;
+    lineIndex=-1;
+    updateLine("");
 
     blocks.forEach(block=>block.classList.remove('active'));
     document.getElementById(target).classList.add('active');
@@ -296,36 +374,15 @@ buttons.forEach(btn=>{
   });
 });
 
-/* SYNC ENGINE */
-const lines=[...document.querySelectorAll('.line')];
-let lastActive=null;
-
-function tick(){
-  const player=players[activePlayer];
-  if(player && typeof player.getCurrentTime==='function'){
-    const t=player.getCurrentTime();
-    let active=null;
-    for(const ln of lines){
-      const at=parseFloat(ln.dataset.t);
-      if(t>=at) active=ln; else break;
-    }
-    if(active && active!==lastActive){
-      if(lastActive) lastActive.classList.remove('active');
-      active.classList.add('active');
-      lastActive=active;
-      active.scrollIntoView({behavior:'smooth', block:'center'});
-    }
-  }
-  requestAnimationFrame(tick);
-}
-tick();
-
-/* PARALLAX */
+/* -------------------------------------------------------------
+   PARALLAX
+-------------------------------------------------------------- */
 window.addEventListener('scroll',()=>{
   const y=window.scrollY;
   document.getElementById('layer1').style.transform=`translateY(${y*0.15}px)`;
   document.getElementById('layer2').style.transform=`translateY(${y*0.25}px)`;
 });
 </script>
+
 </body>
 </html>
