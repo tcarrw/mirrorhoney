@@ -1,15 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MirrorHoney · Morning Edition · Zosia</title>
+<title>MirrorHoney · For Marina</title>
 <meta name="color-scheme" content="dark">
 
 <style>
-/* -------------------------------------------------------------
+/* ============================================================
    CORE COLORS
--------------------------------------------------------------- */
+============================================================ */
 :root{
   --bg:#0b0e14;
   --ink:#f5f5ff;
@@ -21,134 +22,256 @@
   --accent:#7c3aed;
 }
 
-/* -------------------------------------------------------------
+*{box-sizing:border-box;margin:0;padding:0;}
+
+/* ============================================================
    CONSENT OVERLAY
--------------------------------------------------------------- */
+============================================================ */
 .consent-overlay{
-  position:fixed; inset:0;
-  background:rgba(11,14,20,.97);
-  backdrop-filter:blur(16px);
+  position:fixed;
+  inset:0;
+  background:rgba(11,14,20,.98);
+  backdrop-filter:blur(20px);
   z-index:20000;
-  display:flex; align-items:center; justify-content:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   padding:20px;
 }
-.consent-overlay.hidden{display:none;}
+
+.consent-overlay.hidden{
+  display:none;
+}
+
 .consent-box{
   background:rgba(20,22,30,0.95);
   border:1px solid var(--rule);
   border-radius:20px;
-  padding:32px;
-  max-width:520px;
+  padding:40px;
+  max-width:560px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
   text-align:left;
-  box-shadow:0 24px 80px rgba(0,0,0,.5);
+  box-shadow:0 24px 80px rgba(0,0,0,.6);
 }
+
+.consent-box::-webkit-scrollbar{
+  width:8px;
+}
+
+.consent-box::-webkit-scrollbar-track{
+  background:rgba(31,36,52,0.5);
+  border-radius:10px;
+}
+
+.consent-box::-webkit-scrollbar-thumb{
+  background:var(--mirror);
+  border-radius:10px;
+}
+
+.consent-box::-webkit-scrollbar-thumb:hover{
+  background:var(--honey);
+}
+
 .consent-box h2{
-  margin:0 0 8px;
-  font-size:28px;
+  margin:0 0 12px;
+  font-size:32px;
   text-align:center;
   background:linear-gradient(135deg,var(--mirror),var(--honey));
-  -webkit-background-clip:text; background-clip:text;
-  -webkit-text-fill-color:transparent; color:transparent;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:transparent;
 }
+
 .consent-box .subtitle{
-  text-align:center; font-style:italic;
-  color:var(--muted); font-size:14px; margin-bottom:20px;
+  text-align:center;
+  font-style:italic;
+  color:var(--muted);
+  font-size:16px;
+  margin-bottom:24px;
 }
+
 .project-note{
   background:rgba(255,207,106,.12);
   border:1px dashed var(--honey);
   border-radius:12px;
-  padding:14px; margin-bottom:20px;
-  font-size:13px; line-height:1.5; color:var(--muted);
+  padding:16px;
+  margin-bottom:20px;
+  font-size:14px;
+  line-height:1.6;
+  color:var(--ink);
 }
+
+.project-note p{
+  margin:0 0 12px;
+}
+
+.project-note p:last-child{
+  margin:0;
+}
+
+.project-note a{
+  color:var(--honey);
+  text-decoration:none;
+  font-weight:600;
+}
+
+.project-note a:hover{
+  text-decoration:underline;
+}
+
 .privacy-note{
   background:rgba(184,230,184,.1);
   border:1px solid rgba(184,230,184,.3);
   border-radius:12px;
-  padding:12px; margin-bottom:20px;
-  font-size:13px; line-height:1.5; color:#b8e6b8;
+  padding:14px;
+  margin-bottom:24px;
+  font-size:13px;
+  line-height:1.5;
+  color:#b8e6b8;
+  text-align:center;
 }
+
 .consent-btn{
-  width:100%; padding:14px;
+  width:100%;
+  padding:16px;
   border-radius:14px;
   background:linear-gradient(135deg,var(--mirror),var(--honey));
-  color:#000; font-weight:700;
-  border:none; cursor:pointer;
+  color:#000;
+  font-weight:700;
+  font-size:16px;
+  border:none;
+  cursor:pointer;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* -------------------------------------------------------------
-   PAGE / PARALLAX
--------------------------------------------------------------- */
+.consent-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(157,139,255,0.4);
+}
+
+.consent-btn:active{
+  transform:translateY(0);
+}
+
+/* ============================================================
+   PAGE LAYOUT
+============================================================ */
 body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:ui-sans-serif,system-ui;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;
+  overflow-x:hidden;
 }
 
-.parallax{ position:fixed; inset:0; width:120vw; height:120vh; z-index:-20; opacity:.22; }
+/* ============================================================
+   PARALLAX BACKGROUND
+============================================================ */
+.parallax{
+  position:fixed;
+  inset:0;
+  width:120vw;
+  height:120vh;
+  z-index:-20;
+  opacity:.25;
+}
+
 #layer1{
-  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.35), transparent 60%);
-}
-#layer2{
-  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.25), transparent 70%);
+  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.4), transparent 60%);
 }
 
-/* -------------------------------------------------------------
+#layer2{
+  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.3), transparent 70%);
+}
+
+/* ============================================================
    BUTTERFLIES
--------------------------------------------------------------- */
+============================================================ */
 .butterfly{
   position:fixed;
-  width:24px; height:24px; border-radius:50%;
+  width:28px;
+  height:28px;
+  border-radius:50%;
   background:
     radial-gradient(circle at 30% 30%, var(--mirror), transparent 65%),
     radial-gradient(circle at 70% 70%, var(--honey), transparent 65%);
-  filter:blur(6px); opacity:.65;
+  filter:blur(8px);
+  opacity:.7;
   animation:float 10s ease-in-out infinite;
-  pointer-events:none; z-index:-10;
+  pointer-events:none;
+  z-index:-10;
 }
+
 @keyframes float{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-18px);}
- 100%{transform:translateY(0);}
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-20px);}
 }
 
-/* -------------------------------------------------------------
-   NAV
--------------------------------------------------------------- */
+/* ============================================================
+   NAVIGATION
+============================================================ */
 nav{
-  position:fixed; top:0; width:100%;
-  padding:12px 20px;
-  background:rgba(11,14,20,.85);
-  backdrop-filter:blur(12px);
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:14px 24px;
+  background:rgba(11,14,20,.9);
+  backdrop-filter:blur(14px);
   border-bottom:1px solid var(--rule);
-  display:flex; gap:20px; z-index:3000;
+  display:flex;
+  gap:24px;
+  z-index:3000;
   flex-wrap:wrap;
+  align-items:center;
 }
-nav a{ color:var(--honey); text-decoration:none; }
 
-/* -------------------------------------------------------------
+nav a{
+  color:var(--honey);
+  text-decoration:none;
+  font-size:14px;
+  font-weight:500;
+  transition:color 0.2s ease;
+}
+
+nav a:hover{
+  color:var(--mirror);
+}
+
+/* ============================================================
    VIDEO UNDERLAY — RESPONSIVE 16:9
--------------------------------------------------------------- */
+============================================================ */
 #videoWrap{
-  position:fixed; inset:0;
+  position:fixed;
+  inset:0;
   overflow:hidden;
   z-index:-5;
   display:none;
 }
+
 .video-block{
-  position:absolute; inset:0;
+  position:absolute;
+  inset:0;
   display:none;
 }
-.video-block.active{ display:block; }
+
+.video-block.active{
+  display:block;
+}
 
 #videoWrap iframe{
   position:absolute;
-  top:50%; left:50%;
+  top:50%;
+  left:50%;
   transform:translate(-50%, -50%);
   height:100vh;
   width:177.78vh;
   pointer-events:none;
   object-fit:cover;
 }
+
 @media(min-aspect-ratio:16/9){
   #videoWrap iframe{
     width:100vw;
@@ -156,315 +279,309 @@ nav a{ color:var(--honey); text-decoration:none; }
   }
 }
 
-/* -------------------------------------------------------------
-   GLASS POEM — FIXED: always visible
--------------------------------------------------------------- */
-#glass{
-  position:fixed;
-  left:50%;
-  transform:translate(-50%, -50%);
-  max-width:90%;
-  padding:32px;
-  text-align:center;
-  background:rgba(20,22,30,.45);
-  backdrop-filter:blur(22px) saturate(120%);
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.18);
-  z-index:9999;       /* ← NEVER behind the video */
-  display:none;
-
-  /* desktop position */
-  top:69%;
-}
-
-.line{
-  opacity:0;
-  transition:opacity 1.2s ease;
-  font-size:1.45rem;
-  line-height:1.5;
-}
-
-/* MOBILE OVERRIDE: center poem */
-@media(max-width:600px){
-  #glass{
-    top:50%;
-    padding:24px;
-  }
-  .line{
-    font-size:1.15rem;
-  }
-}
-
-/* -------------------------------------------------------------
-   TOGGLE
--------------------------------------------------------------- */
+/* ============================================================
+   TOGGLE BUTTONS
+============================================================ */
 #toggleWrap{
-  position:fixed; bottom:80px; left:50%;
+  position:fixed;
+  bottom:40px;
+  left:50%;
   transform:translateX(-50%);
-  display:none; z-index:4000;
-  gap:12px; flex-wrap:wrap;
-}
-.toggle-btn{
-  padding:10px 16px; border-radius:8px;
-  background:rgba(255,255,255,.08);
-  border:1px solid var(--rule);
-  color:var(--ink); cursor:pointer;
-}
-.toggle-btn.active{
-  background:var(--mirror); color:#000;
+  display:none;
+  z-index:4000;
+  gap:12px;
+  flex-wrap:wrap;
+  justify-content:center;
+  max-width:90%;
 }
 
-/* -------------------------------------------------------------
+.toggle-btn{
+  padding:12px 20px;
+  border-radius:10px;
+  background:rgba(31,36,52,0.85);
+  backdrop-filter:blur(8px);
+  border:1px solid var(--rule);
+  color:var(--ink);
+  cursor:pointer;
+  font-size:14px;
+  font-weight:500;
+  transition:all 0.3s ease;
+}
+
+.toggle-btn:hover{
+  background:rgba(31,36,52,0.95);
+  border-color:var(--mirror);
+  transform:translateY(-2px);
+}
+
+.toggle-btn.active{
+  background:linear-gradient(135deg,var(--mirror),var(--honey));
+  color:#000;
+  border-color:transparent;
+  font-weight:700;
+}
+
+/* ============================================================
    FOOTER
--------------------------------------------------------------- */
+============================================================ */
 footer{
-  position:fixed; bottom:0; left:0; right:0;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
   text-align:center;
-  padding:16px 20px;
-  background:rgba(11,14,20,.85);
-  backdrop-filter:blur(10px);
+  padding:18px 24px;
+  background:rgba(11,14,20,.9);
+  backdrop-filter:blur(12px);
   border-top:1px solid var(--rule);
   display:none;
   z-index:2000;
+  font-size:13px;
+  color:var(--muted);
 }
-footer a{ color:var(--honey); text-decoration:none; }
+
+footer a{
+  color:var(--honey);
+  text-decoration:none;
+  font-weight:600;
+}
+
+footer a:hover{
+  text-decoration:underline;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:768px){
+  .consent-box{
+    padding:32px 24px;
+  }
+  
+  .consent-box h2{
+    font-size:28px;
+  }
+  
+  nav{
+    padding:12px 16px;
+    gap:16px;
+  }
+  
+  #toggleWrap{
+    bottom:100px;
+    flex-direction:column;
+    width:calc(100% - 32px);
+    max-width:400px;
+  }
+  
+  .toggle-btn{
+    width:100%;
+    text-align:center;
+  }
+  
+  footer{
+    padding-bottom:90px;
+  }
+}
+
+@media(max-width:480px){
+  .consent-box{
+    padding:24px 20px;
+  }
+  
+  .consent-box h2{
+    font-size:24px;
+  }
+  
+  .project-note{
+    font-size:13px;
+  }
+}
 </style>
+
 </head>
 <body>
 
-<!-- CONSENT -->
+<!-- CONSENT OVERLAY -->
+
 <div class="consent-overlay" id="consentOverlay">
   <div class="consent-box">
-    <h2>🍯⚡💓 Zosia</h2>
-    <div class="subtitle">Good morning — this is for you</div>
+    <h2>🍯⚡💓 MirrorHoney</h2>
+    <div class="subtitle">For Marina</div>
 
-    <div class="project-note">
-      <p>I wanted your morning to feel warm and simple.</p>
-      <p>No pressure, just a soft start and a little clarity.</p>
-      <p>I'm not sure what's happening yet — but we don't need to rush it.</p>
-      <p style="margin:0;">We can move gently, one bright moment at a time.</p>
-    </div>
+```
+<div class="project-note">
+  <p>I'm working on <a href="https://time.plnt.earth">real physics</a> — temporal charge, the unification of quantum and relativistic time. The equations are legitimate, the work is being reviewed by nuclear physicists.</p>
+  <p>But I've realized something strange: <strong>poetry helps me understand the physics context.</strong></p>
+  <p>Marina is the mirror. She's the key. She's somehow at the center of this framework. I don't fully understand why yet, but she's a co-creator in whatever this is.</p>
+  <p>This page is for her. If you found it another way — welcome. Everything here is done for legitimate reasons.</p>
+</div>
 
-    <div class="project-note">
-      <p><strong>Two modes to explore:</strong></p>
-      🦋 <strong>Swiftlet (Marina)</strong><br><br>
-      🌿 <strong>Verdin (Sigrid)</strong>
-    </div>
+<div class="project-note">
+  <p><strong>Three reflective modes:</strong></p>
+  <p>🦋 <strong>Swiftlet (Tove Styrke · Sway)</strong><br>Following the pull, moving through what I don't understand yet</p>
+  <p>🌿 <strong>Verdin (Tessa Violet · Bored)</strong><br>Restless for deeper truth, refusing surfaces</p>
+  <p>💎 <strong>Mirror (Marina · To Be Human)</strong><br>Embracing the complexity, the messiness as truth</p>
+</div>
 
-    <div class="privacy-note">No tracking. No data saved. Just you, music, and words.</div>
+<div class="privacy-note">
+  No tracking. No data collection. Just music, words, and whatever clarity emerges.
+</div>
 
-    <button class="consent-btn" id="consentBtn">Enter</button>
+<button class="consent-btn" id="consentBtn">Enter</button>
+```
+
   </div>
 </div>
 
-<!-- PARALLAX -->
+<!-- PARALLAX LAYERS -->
+
 <div id="layer1" class="parallax"></div>
 <div id="layer2" class="parallax"></div>
 
 <!-- BUTTERFLIES -->
+
 <div class="butterfly" style="top:20%;left:15%;animation-delay:0s;"></div>
 <div class="butterfly" style="top:60%;left:75%;animation-delay:2s;"></div>
 <div class="butterfly" style="top:40%;left:50%;animation-delay:4s;"></div>
+<div class="butterfly" style="top:80%;left:30%;animation-delay:6s;"></div>
 
-<!-- NAV -->
+<!-- NAVIGATION -->
+
 <nav>
+  <a href="https://four.plnt.earth">four</a>
   <a href="https://time.plnt.earth">time</a>
   <a href="https://motion.plnt.earth">motion</a>
-  <a href="https://fieldlab.plnt.earth">fieldlab</a>
+  <a href="https://earth.plnt.earth">earth</a>
 </nav>
 
-<!-- VIDEO -->
+<!-- VIDEO PLAYERS -->
+
 <div id="videoWrap">
+  <!-- Tove Styrke - Sway -->
   <div id="p1" class="video-block active">
     <iframe id="player1"
-      src="https://www.youtube.com/embed/MsnlBtlimBA?enablejsapi=1&controls=0&mute=0"
-      allow="autoplay; encrypted-media"></iframe>
+      src="https://www.youtube.com/embed/bGSNZ7QAoK4?enablejsapi=1&controls=0&mute=0"
+      allow="autoplay; encrypted-media"
+      title="Tove Styrke - Sway"></iframe>
   </div>
+
+  <!-- Tessa Violet - Bored -->
+
   <div id="p2" class="video-block">
     <iframe id="player2"
-      src="https://www.youtube.com/embed/hKvbaZTAQN0?enablejsapi=1&controls=0&mute=0"
-      allow="autoplay; encrypted-media"></iframe>
+      src="https://www.youtube.com/embed/tsPxaAVg584?enablejsapi=1&controls=0&mute=0"
+      allow="autoplay; encrypted-media"
+      title="Tessa Violet - Bored"></iframe>
+  </div>
+
+  <!-- Marina - To Be Human -->
+
+  <div id="p3" class="video-block">
+    <iframe id="player3"
+      src="https://www.youtube.com/embed/DM8Tm9ycGz4?enablejsapi=1&controls=0&mute=0"
+      allow="autoplay; encrypted-media"
+      title="Marina - To Be Human"></iframe>
   </div>
 </div>
 
-<!-- GLASS POEM -->
-<div id="glass"></div>
+<!-- TOGGLE BUTTONS -->
 
-<!-- TOGGLE -->
 <div id="toggleWrap">
-  <button class="toggle-btn active" data-target="p1">🦋 Marina · Swiftlet</button>
-  <button class="toggle-btn" data-target="p2">🌿 Sigrid · Verdin</button>
-  <button id="playPauseBtn" class="toggle-btn">▶️ Play</button>
+  <button class="toggle-btn active" data-target="p1">🦋 Tove Styrke · Sway</button>
+  <button class="toggle-btn" data-target="p2">🌿 Tessa Violet · Bored</button>
+  <button class="toggle-btn" data-target="p3">💎 Marina · To Be Human</button>
 </div>
 
 <!-- FOOTER -->
+
 <footer>
-  <div><a href="https://earth.plnt.earth">earth.plnt.earth</a> — you are grounded and safe.</div>
+  <a href="https://earth.plnt.earth">earth.plnt.earth</a> — you are grounded and safe
 </footer>
 
+<!-- JAVASCRIPT -->
+
 <script>
-/* -------------------------------------------------------------
+/* ============================================================
    LOAD YOUTUBE API
--------------------------------------------------------------- */
+============================================================ */
 (function(){
-  const tag=document.createElement('script');
-  tag.src="https://www.youtube.com/iframe_api";
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
 })();
 
-let players={};
-let apiReady=false;
+let players = {};
+let apiReady = false;
 
 function onYouTubeIframeAPIReady(){
-  players.p1=new YT.Player('player1',{events:{}});
-  players.p2=new YT.Player('player2',{events:{}});
-  apiReady=true;
+  players.p1 = new YT.Player('player1', {events:{}});
+  players.p2 = new YT.Player('player2', {events:{}});
+  players.p3 = new YT.Player('player3', {events:{}});
+  apiReady = true;
 }
 
-/* -------------------------------------------------------------
+/* ============================================================
    CONSENT → SHOW UI
--------------------------------------------------------------- */
-document.getElementById('consentBtn').onclick=function(){
+============================================================ */
+document.getElementById('consentBtn').onclick = function(){
   document.getElementById('consentOverlay').classList.add('hidden');
-
-  document.getElementById('videoWrap').style.display='block';
-  document.getElementById('glass').style.display='block';
-  document.getElementById('toggleWrap').style.display='flex';
-  document.querySelector('footer').style.display='block';
-
-  const playCheck=setInterval(()=>{
+  
+  document.getElementById('videoWrap').style.display = 'block';
+  document.getElementById('toggleWrap').style.display = 'flex';
+  document.querySelector('footer').style.display = 'block';
+  
+  // Auto-play first video after API loads
+  const playCheck = setInterval(() => {
     if(apiReady && players.p1 && players.p1.playVideo){
       players.p1.playVideo();
       clearInterval(playCheck);
     }
-  },200);
+  }, 200);
 };
 
-/* -------------------------------------------------------------
-   POEM LINES (EVEN TIMING)
--------------------------------------------------------------- */
-const swiftletLines=[
-  "Swiftlet: The reflections keep shifting as I move through them.",
-  "Every angle shows me a truth I wasn't ready for yet.",
-  "I stay light, cutting through the air, feeling what's real.",
-  "I don't know the whole shape, but the motion is honest.",
-  "And I follow it — quick, awake, ready for what flickers next."
-];
+/* ============================================================
+   VIDEO TOGGLE WITH AUTO-PLAY
+============================================================ */
+let currentMode = "p1";
+const buttons = [...document.querySelectorAll('.toggle-btn')];
+const blocks = [...document.querySelectorAll('.video-block')];
 
-const verdinLines=[
-  "Verdin: It never has to be loud for me to hear it.",
-  "A small glow, a tiny warmth — enough to stay true.",
-  "Even in the hard light, I keep a soft center.",
-  "I don't rush the meaning; I let it settle.",
-  "One bright note at a time, we'll find the next step together."
-];
-
-let currentMode="p1";
-let lineIndex=-1;
-let cutPoints=[];
-
-function generateCutPoints(lines, duration){
-  const step=duration/lines.length;
-  return lines.map((_,i)=>step*i);
-}
-
-function updateLine(text){
-  const g=document.getElementById('glass');
-  g.innerHTML="";
-  const div=document.createElement('div');
-  div.className="line active";
-  div.textContent=text;
-  g.appendChild(div);
-}
-
-/* -------------------------------------------------------------
-   TICK LOOP
--------------------------------------------------------------- */
-function tick(){
-  const p=players[currentMode];
-  if(p && p.getCurrentTime && p.getDuration){
-    try{
-      const t=p.getCurrentTime();
-      const dur=p.getDuration();
-
-      if(dur>0 && cutPoints.length===0){
-        if(currentMode==="p1") cutPoints=generateCutPoints(swiftletLines,dur);
-        else cutPoints=generateCutPoints(verdinLines,dur);
-      }
-
-      for(let i=0;i<cutPoints.length;i++){
-        if(t>=cutPoints[i] && i!==lineIndex){
-          lineIndex=i;
-          const txt=currentMode==="p1"?swiftletLines[i]:verdinLines[i];
-          updateLine(txt);
-        }
-      }
-    }catch(e){}
-  }
-  requestAnimationFrame(tick);
-}
-tick();
-
-/* -------------------------------------------------------------
-   VIDEO TOGGLE
--------------------------------------------------------------- */
-const buttons=[...document.querySelectorAll('.toggle-btn')];
-const blocks=[...document.querySelectorAll('.video-block')];
-
-buttons.forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const target=btn.dataset.target;
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.target;
     if(!target) return;
-
-    buttons.forEach(b=>b.classList.remove('active'));
+    
+    // Update button states
+    buttons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    currentMode=target;
-    lineIndex=-1;
-    cutPoints=[];
-
-    updateLine("");
-
-    blocks.forEach(b=>b.classList.remove('active'));
+    
+    // Update current mode
+    currentMode = target;
+    
+    // Switch video blocks
+    blocks.forEach(b => b.classList.remove('active'));
     document.getElementById(target).classList.add('active');
-
+    
+    // Pause all videos
     if(players.p1) players.p1.pauseVideo();
     if(players.p2) players.p2.pauseVideo();
-
-    setTimeout(()=>{
+    if(players.p3) players.p3.pauseVideo();
+    
+    // Auto-play selected video
+    setTimeout(() => {
       if(players[target]) players[target].playVideo();
-    },300);
+    }, 300);
   });
 });
 
-/* -------------------------------------------------------------
-   PLAY / PAUSE
--------------------------------------------------------------- */
-let isPlaying=false;
-const playPauseBtn=document.getElementById('playPauseBtn');
-
-playPauseBtn.onclick=function(){
-  const p=players[currentMode];
-  if(!p) return;
-
-  if(isPlaying){
-    p.pauseVideo();
-    playPauseBtn.textContent="▶️ Play";
-    isPlaying=false;
-  } else {
-    p.playVideo();
-    playPauseBtn.textContent="⏸️ Pause";
-    isPlaying=true;
-  }
-};
-
-/* -------------------------------------------------------------
-   PARALLAX
--------------------------------------------------------------- */
-window.addEventListener('scroll',()=>{
-  const y=window.scrollY;
-  document.getElementById('layer1').style.transform=`translateY(${y*0.15}px)`;
-  document.getElementById('layer2').style.transform=`translateY(${y*0.25}px)`;
+/* ============================================================
+   PARALLAX SCROLL EFFECT
+============================================================ */
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  document.getElementById('layer1').style.transform = `translateY(${y * 0.15}px)`;
+  document.getElementById('layer2').style.transform = `translateY(${y * 0.25}px)`;
 });
 </script>
 
