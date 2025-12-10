@@ -479,7 +479,7 @@ footer a:hover{
   <!-- Tove Styrke - Sway -->
   <div id="p1" class="video-block active">
     <iframe id="player1"
-      src="https://www.youtube.com/embed/bGSNZ7QAoK4?enablejsapi=1&controls=0&mute=0"
+      src="https://www.youtube.com/embed/bGSNZ7QAoK4?enablejsapi=1&controls=0&mute=0&autoplay=1"
       allow="autoplay; encrypted-media"
       title="Tove Styrke - Sway"></iframe>
   </div>
@@ -488,7 +488,7 @@ footer a:hover{
 
   <div id="p2" class="video-block">
     <iframe id="player2"
-      src="https://www.youtube.com/embed/tsPxaAVg584?enablejsapi=1&controls=0&mute=0"
+      src="https://www.youtube.com/embed/tsPxaAVg584?enablejsapi=1&controls=0&mute=0&autoplay=1"
       allow="autoplay; encrypted-media"
       title="Tessa Violet - Bored"></iframe>
   </div>
@@ -497,7 +497,7 @@ footer a:hover{
 
   <div id="p3" class="video-block">
     <iframe id="player3"
-      src="https://www.youtube.com/embed/DM8Tm9ycGz4?enablejsapi=1&controls=0&mute=0"
+      src="https://www.youtube.com/embed/DM8Tm9ycGz4?enablejsapi=1&controls=0&mute=0&autoplay=1"
       allow="autoplay; encrypted-media"
       title="Marina - To Be Human"></iframe>
   </div>
@@ -573,8 +573,10 @@ function playNextVideo(){
     nextMode = "p1"; // Loop back to start
   }
   
-  // Switch to next video
-  switchToVideo(nextMode);
+  // Small delay before switching to allow current video to fully end
+  setTimeout(() => {
+    switchToVideo(nextMode);
+  }, 500);
 }
 
 function switchToVideo(target){
@@ -595,10 +597,26 @@ function switchToVideo(target){
   if(players.p2) players.p2.pauseVideo();
   if(players.p3) players.p3.pauseVideo();
   
-  // Play selected video
-  setTimeout(() => {
-    if(players[target]) players[target].playVideo();
-  }, 300);
+  // Play selected video with retry logic
+  let attempts = 0;
+  const maxAttempts = 10;
+  
+  const tryPlay = setInterval(() => {
+    attempts++;
+    
+    if(players[target] && players[target].playVideo){
+      try{
+        players[target].playVideo();
+        clearInterval(tryPlay);
+      }catch(e){
+        console.log('Retry play attempt', attempts);
+      }
+    }
+    
+    if(attempts >= maxAttempts){
+      clearInterval(tryPlay);
+    }
+  }, 200);
 }
 
 /* ============================================================
