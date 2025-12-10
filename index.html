@@ -245,7 +245,7 @@ nav a:hover{
 ============================================================ */
 #videoWrap{
   position:fixed;
-  top:50%;
+  top:calc(50% - 10px);
   left:50%;
   transform:translate(-50%, -50%);
   width:85vw;
@@ -533,10 +533,72 @@ let players = {};
 let apiReady = false;
 
 function onYouTubeIframeAPIReady(){
-  players.p1 = new YT.Player('player1', {events:{}});
-  players.p2 = new YT.Player('player2', {events:{}});
-  players.p3 = new YT.Player('player3', {events:{}});
+  players.p1 = new YT.Player('player1', {
+    events: {
+      'onStateChange': onPlayerStateChange
+    }
+  });
+  players.p2 = new YT.Player('player2', {
+    events: {
+      'onStateChange': onPlayerStateChange
+    }
+  });
+  players.p3 = new YT.Player('player3', {
+    events: {
+      'onStateChange': onPlayerStateChange
+    }
+  });
   apiReady = true;
+}
+
+/* ============================================================
+   AUTO-QUEUE & LOOP
+============================================================ */
+function onPlayerStateChange(event){
+  // When video ends, play next in queue
+  if(event.data === YT.PlayerState.ENDED){
+    playNextVideo();
+  }
+}
+
+function playNextVideo(){
+  let nextMode;
+  
+  // Determine next video in queue
+  if(currentMode === "p1"){
+    nextMode = "p2";
+  } else if(currentMode === "p2"){
+    nextMode = "p3";
+  } else if(currentMode === "p3"){
+    nextMode = "p1"; // Loop back to start
+  }
+  
+  // Switch to next video
+  switchToVideo(nextMode);
+}
+
+function switchToVideo(target){
+  // Update button states
+  buttons.forEach(b => b.classList.remove('active'));
+  const targetBtn = document.querySelector(`[data-target="${target}"]`);
+  if(targetBtn) targetBtn.classList.add('active');
+  
+  // Update current mode
+  currentMode = target;
+  
+  // Switch video blocks
+  blocks.forEach(b => b.classList.remove('active'));
+  document.getElementById(target).classList.add('active');
+  
+  // Pause all videos
+  if(players.p1) players.p1.pauseVideo();
+  if(players.p2) players.p2.pauseVideo();
+  if(players.p3) players.p3.pauseVideo();
+  
+  // Play selected video
+  setTimeout(() => {
+    if(players[target]) players[target].playVideo();
+  }, 300);
 }
 
 /* ============================================================
@@ -570,26 +632,7 @@ buttons.forEach(btn => {
     const target = btn.dataset.target;
     if(!target) return;
     
-    // Update button states
-    buttons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    
-    // Update current mode
-    currentMode = target;
-    
-    // Switch video blocks
-    blocks.forEach(b => b.classList.remove('active'));
-    document.getElementById(target).classList.add('active');
-    
-    // Pause all videos
-    if(players.p1) players.p1.pauseVideo();
-    if(players.p2) players.p2.pauseVideo();
-    if(players.p3) players.p3.pauseVideo();
-    
-    // Auto-play selected video
-    setTimeout(() => {
-      if(players[target]) players[target].playVideo();
-    }, 300);
+    switchToVideo(target);
   });
 });
 
