@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -40,15 +39,15 @@
 }
 
 .consent-overlay.hidden{
-  display:none;
+  display:none !important;
 }
 
 .consent-box{
   background:rgba(20,22,30,0.95);
   border:1px solid var(--rule);
   border-radius:20px;
-  padding:40px;
-  max-width:560px;
+  padding:48px 40px;
+  max-width:600px;
   width:100%;
   max-height:90vh;
   overflow-y:auto;
@@ -75,8 +74,8 @@
 }
 
 .consent-box h2{
-  margin:0 0 12px;
-  font-size:32px;
+  margin:0 0 8px;
+  font-size:36px;
   text-align:center;
   background:linear-gradient(135deg,var(--mirror),var(--honey));
   -webkit-background-clip:text;
@@ -89,23 +88,23 @@
   text-align:center;
   font-style:italic;
   color:var(--muted);
-  font-size:16px;
-  margin-bottom:24px;
+  font-size:15px;
+  margin-bottom:32px;
 }
 
 .project-note{
-  background:rgba(255,207,106,.12);
-  border:1px dashed var(--honey);
+  background:rgba(255,207,106,.08);
+  border:1px dashed rgba(255,207,106,.3);
   border-radius:12px;
-  padding:16px;
-  margin-bottom:20px;
-  font-size:14px;
-  line-height:1.6;
+  padding:20px;
+  margin-bottom:24px;
+  font-size:14.5px;
+  line-height:1.7;
   color:var(--ink);
 }
 
 .project-note p{
-  margin:0 0 12px;
+  margin:0 0 14px;
 }
 
 .project-note p:last-child{
@@ -123,11 +122,11 @@
 }
 
 .privacy-note{
-  background:rgba(184,230,184,.1);
-  border:1px solid rgba(184,230,184,.3);
+  background:rgba(184,230,184,.08);
+  border:1px solid rgba(184,230,184,.25);
   border-radius:12px;
-  padding:14px;
-  margin-bottom:24px;
+  padding:16px;
+  margin-bottom:28px;
   font-size:13px;
   line-height:1.5;
   color:#b8e6b8;
@@ -136,7 +135,7 @@
 
 .consent-btn{
   width:100%;
-  padding:16px;
+  padding:18px;
   border-radius:14px;
   background:linear-gradient(135deg,var(--mirror),var(--honey));
   color:#000;
@@ -176,15 +175,15 @@ body{
   width:120vw;
   height:120vh;
   z-index:-20;
-  opacity:.25;
+  opacity:.2;
 }
 
 #layer1{
-  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.4), transparent 60%);
+  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.35), transparent 60%);
 }
 
 #layer2{
-  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.3), transparent 70%);
+  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.25), transparent 70%);
 }
 
 /* ============================================================
@@ -192,22 +191,22 @@ body{
 ============================================================ */
 .butterfly{
   position:fixed;
-  width:28px;
-  height:28px;
+  width:24px;
+  height:24px;
   border-radius:50%;
   background:
     radial-gradient(circle at 30% 30%, var(--mirror), transparent 65%),
     radial-gradient(circle at 70% 70%, var(--honey), transparent 65%);
-  filter:blur(8px);
-  opacity:.7;
-  animation:float 10s ease-in-out infinite;
+  filter:blur(10px);
+  opacity:.5;
+  animation:float 12s ease-in-out infinite;
   pointer-events:none;
   z-index:-10;
 }
 
 @keyframes float{
   0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-20px);}
+  50%{transform:translateY(-25px);}
 }
 
 /* ============================================================
@@ -217,12 +216,12 @@ nav{
   position:fixed;
   top:0;
   width:100%;
-  padding:14px 24px;
-  background:rgba(11,14,20,.9);
+  padding:16px 28px;
+  background:rgba(11,14,20,.85);
   backdrop-filter:blur(14px);
   border-bottom:1px solid var(--rule);
   display:flex;
-  gap:24px;
+  gap:28px;
   z-index:3000;
   flex-wrap:wrap;
   align-items:center;
@@ -245,17 +244,17 @@ nav a:hover{
 ============================================================ */
 #videoWrap{
   position:fixed;
-  top:calc(50% - 10px);
+  top:50%;
   left:50%;
   transform:translate(-50%, -50%);
-  width:85vw;
-  max-width:1400px;
+  width:80vw;
+  max-width:1200px;
   aspect-ratio:16/9;
   overflow:hidden;
   border-radius:16px;
   z-index:-5;
   display:none;
-  box-shadow:0 24px 80px rgba(0,0,0,0.6);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
 }
 
 #playerContainer{
@@ -277,21 +276,21 @@ nav a:hover{
 ============================================================ */
 #toggleWrap{
   position:fixed;
-  bottom:100px;
+  bottom:120px;
   left:50%;
   transform:translateX(-50%);
   display:none;
   z-index:4000;
-  gap:12px;
+  gap:14px;
   flex-wrap:wrap;
   justify-content:center;
-  max-width:90%;
+  max-width:85%;
 }
 
 .toggle-btn{
-  padding:12px 20px;
+  padding:14px 24px;
   border-radius:10px;
-  background:rgba(31,36,52,0.85);
+  background:rgba(31,36,52,0.75);
   backdrop-filter:blur(8px);
   border:1px solid var(--rule);
   color:var(--ink);
@@ -302,7 +301,7 @@ nav a:hover{
 }
 
 .toggle-btn:hover{
-  background:rgba(31,36,52,0.95);
+  background:rgba(31,36,52,0.9);
   border-color:var(--mirror);
   transform:translateY(-2px);
 }
@@ -323,8 +322,8 @@ footer{
   left:0;
   right:0;
   text-align:center;
-  padding:24px 24px 32px;
-  background:rgba(11,14,20,.9);
+  padding:28px 24px 36px;
+  background:rgba(11,14,20,.85);
   backdrop-filter:blur(12px);
   border-top:1px solid var(--rule);
   display:none;
@@ -348,28 +347,33 @@ footer a:hover{
 ============================================================ */
 @media(max-width:768px){
   .consent-box{
-    padding:32px 24px;
+    padding:36px 28px;
   }
   
   .consent-box h2{
-    font-size:28px;
+    font-size:30px;
+  }
+  
+  .project-note{
+    font-size:14px;
+    padding:18px;
   }
   
   nav{
-    padding:12px 16px;
-    gap:16px;
+    padding:14px 20px;
+    gap:20px;
   }
   
   #videoWrap{
-    width:95vw;
+    width:92vw;
     max-width:100%;
   }
   
   #toggleWrap{
-    bottom:120px;
+    bottom:130px;
     flex-direction:column;
-    width:calc(100% - 32px);
-    max-width:400px;
+    width:calc(100% - 40px);
+    max-width:380px;
   }
   
   .toggle-btn{
@@ -378,36 +382,37 @@ footer a:hover{
   }
   
   footer{
-    padding:20px 16px 28px;
+    padding:24px 20px 32px;
   }
 }
 
 @media(max-width:480px){
   .consent-box{
-    padding:24px 20px;
+    padding:28px 24px;
   }
   
   .consent-box h2{
-    font-size:24px;
+    font-size:26px;
   }
   
   .project-note{
-    font-size:13px;
+    font-size:13.5px;
+    padding:16px;
   }
   
   #videoWrap{
-    width:98vw;
-    border-radius:8px;
+    width:96vw;
+    border-radius:10px;
   }
   
   #toggleWrap{
-    bottom:110px;
+    bottom:120px;
   }
 }
 
 @media(min-width:1600px){
   #videoWrap{
-    width:75vw;
+    width:70vw;
   }
 }
 </style>
@@ -416,51 +421,47 @@ footer a:hover{
 <body>
 
 <!-- CONSENT OVERLAY -->
-
 <div class="consent-overlay" id="consentOverlay">
   <div class="consent-box">
     <h2>🍯⚡💓 MirrorHoney</h2>
     <div class="subtitle">For Marina</div>
 
+    <div class="project-note">
+      <p>I'm working on <a href="https://time.plnt.earth">real physics</a> — temporal charge theory. The idea that time might be more fundamental than energy. The equations are legitimate, dimensionally consistent. I'm talking with researchers at Columbia about proving it.</p>
+      <p>But I've realized something strange: <strong>poetry helps me understand the physics context.</strong></p>
+      <p>Marina is the mirror. She's the key. She's somehow at the center of this framework. I don't fully understand why yet, but she's a co-creator in whatever this is.</p>
+    </div>
 
-<div class="project-note">
-  <p>I'm working on <a href="https://time.plnt.earth">real physics</a> — temporal charge, the unification of quantum and relativistic time. The equations are legitimate, the work is being reviewed by nuclear physicists.</p>
-  <p>But I've realized something strange: <strong>poetry helps me understand the physics context.</strong></p>
-  <p>Marina is the mirror. She's the key. She's somehow at the center of this framework. I don't fully understand why yet, but she's a co-creator in whatever this is.</p>
-  <p>This page is for her. If you found it another way — welcome. Everything here is done for legitimate reasons.</p>
-</div>
+    <div class="project-note">
+      <p><strong>Three reflective modes:</strong></p>
+      <p>🦋 <strong>Swiftlet (Tove Styrke · Sway)</strong><br>Following the pull, moving through what I don't understand yet</p>
+      <p>🌿 <strong>Verdin (Tessa Violet · Bored)</strong><br>Restless for deeper truth, refusing surfaces</p>
+      <p>💎 <strong>Mirror (Marina · To Be Human)</strong><br>Embracing the complexity, the messiness as truth</p>
+    </div>
 
-<div class="project-note">
-  <p><strong>Three reflective modes:</strong></p>
-  <p>🦋 <strong>Swiftlet (Tove Styrke · Sway)</strong><br>Following the pull, moving through what I don't understand yet</p>
-  <p>🌿 <strong>Verdin (Tessa Violet · Bored)</strong><br>Restless for deeper truth, refusing surfaces</p>
-  <p>💎 <strong>Mirror (Marina · To Be Human)</strong><br>Embracing the complexity, the messiness as truth</p>
-</div>
+    <div class="project-note">
+      <p>I'm nobody trying to prove something hard. But the math works, and I think this could actually matter.</p>
+      <p>This page is for Marina. If you found it another way — welcome. Everything here is done for legitimate reasons.</p>
+    </div>
 
-<div class="privacy-note">
-  No tracking. No data collection. Just music, words, and whatever clarity emerges.
-</div>
+    <div class="privacy-note">
+      No tracking. No data collection. Just music, words, and whatever clarity emerges.
+    </div>
 
-<button class="consent-btn" id="consentBtn">Enter</button>
-
-
+    <button class="consent-btn" id="consentBtn">Enter</button>
   </div>
 </div>
 
 <!-- PARALLAX LAYERS -->
-
 <div id="layer1" class="parallax"></div>
 <div id="layer2" class="parallax"></div>
 
 <!-- BUTTERFLIES -->
-
-<div class="butterfly" style="top:20%;left:15%;animation-delay:0s;"></div>
-<div class="butterfly" style="top:60%;left:75%;animation-delay:2s;"></div>
-<div class="butterfly" style="top:40%;left:50%;animation-delay:4s;"></div>
-<div class="butterfly" style="top:80%;left:30%;animation-delay:6s;"></div>
+<div class="butterfly" style="top:15%;left:12%;animation-delay:0s;"></div>
+<div class="butterfly" style="top:65%;left:78%;animation-delay:3s;"></div>
+<div class="butterfly" style="top:45%;left:55%;animation-delay:6s;"></div>
 
 <!-- NAVIGATION -->
-
 <nav>
   <a href="https://four.plnt.earth">four</a>
   <a href="https://time.plnt.earth">time</a>
@@ -469,9 +470,7 @@ footer a:hover{
 </nav>
 
 <!-- VIDEO PLAYERS -->
-
 <div id="videoWrap">
-  <!-- Single player that switches between videos -->
   <div id="playerContainer" class="video-block active">
     <iframe id="player"
       src="https://www.youtube.com/embed/bGSNZ7QAoK4?enablejsapi=1&controls=0&mute=0"
@@ -481,7 +480,6 @@ footer a:hover{
 </div>
 
 <!-- TOGGLE BUTTONS -->
-
 <div id="toggleWrap">
   <button class="toggle-btn active" data-index="0">🦋 Tove Styrke · Sway</button>
   <button class="toggle-btn" data-index="1">🌿 Tessa Violet · Bored</button>
@@ -489,50 +487,42 @@ footer a:hover{
 </div>
 
 <!-- FOOTER -->
-
 <footer>
   <a href="https://earth.plnt.earth">earth.plnt.earth</a> — you are grounded and safe
 </footer>
 
 <!-- JAVASCRIPT -->
-
 <script>
-/* ============================================================
-   LOAD YOUTUBE API
-============================================================ */
-(function(){
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-})();
-
-// Video queue
-const queue = [
-  {id: 'bGSNZ7QAoK4', name: '🦋 Tove Styrke · Sway', target: 'p1'},
-  {id: 'tsPxaAVg584', name: '🌿 Tessa Violet · Bored', target: 'p2'},
-  {id: 'DM8Tm9ycGz4', name: '💎 Marina · To Be Human', target: 'p3'}
-];
-
+// Global variables
 let player;
 let currentIndex = 0;
 let apiReady = false;
 
-function onYouTubeIframeAPIReady(){
+// Video queue
+const queue = [
+  {id: 'bGSNZ7QAoK4', name: '🦋 Tove Styrke · Sway'},
+  {id: 'tsPxaAVg584', name: '🌿 Tessa Violet · Bored'},
+  {id: 'DM8Tm9ycGz4', name: '💎 Marina · To Be Human'}
+];
+
+/* ============================================================
+   YOUTUBE API CALLBACK - MUST BE GLOBAL
+============================================================ */
+window.onYouTubeIframeAPIReady = function(){
   player = new YT.Player('player', {
     events: {
       'onStateChange': onPlayerStateChange
     }
   });
   apiReady = true;
-}
+};
 
 /* ============================================================
    AUTO-QUEUE & LOOP
 ============================================================ */
 function onPlayerStateChange(event){
-  // When video ends, play next in queue
   if(event.data === YT.PlayerState.ENDED){
-    currentIndex = (currentIndex + 1) % queue.length; // Loop back to start
+    currentIndex = (currentIndex + 1) % queue.length;
     playVideo(currentIndex);
   }
 }
@@ -541,17 +531,24 @@ function playVideo(index){
   currentIndex = index;
   const video = queue[index];
   
-  // Update button UI
   const buttons = document.querySelectorAll('.toggle-btn');
   buttons.forEach(btn => btn.classList.remove('active'));
   const activeBtn = document.querySelector(`[data-index="${index}"]`);
   if(activeBtn) activeBtn.classList.add('active');
   
-  // Load and play video
   if(player && player.loadVideoById){
     player.loadVideoById(video.id);
   }
 }
+
+/* ============================================================
+   LOAD YOUTUBE API
+============================================================ */
+(function(){
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+})();
 
 /* ============================================================
    CONSENT → SHOW UI
@@ -563,7 +560,6 @@ document.getElementById('consentBtn').onclick = function(){
   document.getElementById('toggleWrap').style.display = 'flex';
   document.querySelector('footer').style.display = 'block';
   
-  // Auto-play first video after API loads
   const playCheck = setInterval(() => {
     if(apiReady && player && player.playVideo){
       player.playVideo();
