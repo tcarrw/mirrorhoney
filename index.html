@@ -16,14 +16,12 @@
   --honey:#ffcf6a;
   --pulse:#ff7aa2;
   --rule:#1f2434;
-  --accent:#7c3aed;
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
 
 html,body{
   height:100%;
-  margin:0;
   background:var(--bg);
   color:var(--ink);
   font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;
@@ -36,15 +34,13 @@ body.consent-lock{
 }
 
 /* ============================================================
-   NAVIGATION
+   NAV
 ============================================================ */
 nav{
   position:fixed;
-  top:0;
-  left:0;
-  right:0;
+  top:0;left:0;right:0;
   padding:14px 24px;
-  background:rgba(11,14,20,.9);
+  background:rgba(11,14,20,.92);
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
   border-bottom:1px solid var(--rule);
@@ -60,62 +56,27 @@ nav a{
   text-decoration:none;
   font-size:14px;
   font-weight:600;
-  transition:color .2s ease;
 }
-
 nav a:hover{color:var(--mirror);}
 
 /* ============================================================
-   VIDEO UNDERLAY — ALWAYS PRESENT, NEVER AUTOPLAYS
-============================================================ */
-#videoWrap{
-  position:fixed;
-  top:calc(50% + 12px);
-  left:50%;
-  transform:translate(-50%, -50%);
-  width:85vw;
-  max-width:1400px;
-  aspect-ratio:16/9;
-  overflow:hidden;
-  border-radius:16px;
-  z-index:1;
-  display:block;
-  box-shadow:0 24px 80px rgba(0,0,0,0.6);
-}
-
-#playerContainer{
-  position:absolute;
-  inset:0;
-}
-
-#videoWrap iframe{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  border:none;
-  pointer-events:auto; /* controls must always work */
-}
-
-/* ============================================================
-   PARALLAX BACKGROUND
+   PARALLAX
 ============================================================ */
 .parallax{
   position:fixed;
   inset:0;
   width:120vw;
   height:120vh;
-  z-index:0;
   opacity:.25;
+  z-index:0;
   pointer-events:none;
 }
 
 #layer1{
-  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.4), transparent 60%);
+  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,.4), transparent 60%);
 }
-
 #layer2{
-  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.3), transparent 70%);
+  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,.3), transparent 70%);
 }
 
 /* ============================================================
@@ -142,6 +103,32 @@ nav a:hover{color:var(--mirror);}
 }
 
 /* ============================================================
+   VIDEO — NO TRANSFORM (CRITICAL FIX)
+============================================================ */
+#videoWrap{
+  position:fixed;
+  inset:0;
+  margin:auto;
+  width:85vw;
+  max-width:1400px;
+  aspect-ratio:16/9;
+  height:auto;
+  overflow:hidden;
+  border-radius:16px;
+  z-index:0;
+  box-shadow:0 24px 80px rgba(0,0,0,.6);
+}
+
+#videoWrap iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:none;
+  pointer-events:auto;
+}
+
+/* ============================================================
    TOGGLE BUTTONS
 ============================================================ */
 #toggleWrap{
@@ -154,13 +141,12 @@ nav a:hover{color:var(--mirror);}
   gap:12px;
   flex-wrap:wrap;
   justify-content:center;
-  max-width:92%;
 }
 
 .toggle-btn{
   padding:12px 20px;
   border-radius:10px;
-  background:rgba(31,36,52,0.85);
+  background:rgba(31,36,52,.85);
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
   border:1px solid var(--rule);
@@ -168,13 +154,6 @@ nav a:hover{color:var(--mirror);}
   cursor:pointer;
   font-size:14px;
   font-weight:700;
-  transition:all .25s ease;
-}
-
-.toggle-btn:hover{
-  background:rgba(31,36,52,0.95);
-  border-color:var(--mirror);
-  transform:translateY(-2px);
 }
 
 .toggle-btn.active{
@@ -188,11 +167,8 @@ nav a:hover{color:var(--mirror);}
 ============================================================ */
 footer{
   position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  text-align:center;
-  padding:24px 24px 32px;
+  bottom:0;left:0;right:0;
+  padding:22px 24px 30px;
   background:rgba(11,14,20,.9);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
@@ -201,204 +177,134 @@ footer{
   z-index:2000;
   font-size:13px;
   color:var(--muted);
+  text-align:center;
 }
 
 footer a{
   color:var(--honey);
-  text-decoration:none;
   font-weight:700;
+  text-decoration:none;
 }
 
-footer a:hover{text-decoration:underline;}
-
 /* ============================================================
-   CONSENT OVERLAY — CLICK-THROUGH EXCEPT BOX
-   (controls remain usable even while overlay is visible)
+   CONTENT OVERLAY (ABOVE VIDEO — FIXED)
 ============================================================ */
-.consent-overlay{
+.content-overlay{
   position:fixed;
   inset:0;
-  z-index:20000;
+  z-index:10000;
   display:flex;
   align-items:center;
   justify-content:center;
   padding:20px;
-  background:rgba(0,0,0,0.55);
+  background:rgba(0,0,0,.55);
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
-  pointer-events:none; /* pass through to video controls */
+  isolation:isolate;
+  pointer-events:none;
 }
 
-.consent-overlay.hidden{display:none;}
+.content-overlay.hidden{display:none;}
 
-.consent-box{
-  width:min(680px, 100%);
+.content-box{
+  width:min(700px,100%);
   max-height:86vh;
   overflow:auto;
+  padding:28px 26px;
   border-radius:22px;
-  background:rgba(20,22,30,0.62);
-  border:1px solid rgba(255,255,255,0.25);
+  background:rgba(20,22,30,.62);
+  border:1px solid rgba(255,255,255,.25);
   backdrop-filter:blur(20px);
   -webkit-backdrop-filter:blur(20px);
-  box-shadow:0 30px 90px rgba(0,0,0,0.65);
-  padding:28px 26px;
-  pointer-events:auto; /* only the box captures clicks */
+  box-shadow:0 30px 90px rgba(0,0,0,.65);
+  pointer-events:auto;
 }
 
-/* Universal readability over any video */
-.consent-box,
-.consent-box *{
+/* White text with black outline */
+.content-box,
+.content-box *{
   color:#fff;
-  -webkit-text-stroke: 1px #000;
+  -webkit-text-stroke:1px #000;
   text-shadow:
     0 1px 0 #000,
     0 -1px 0 #000,
     1px 0 0 #000,
     -1px 0 0 #000,
     1px 1px 0 #000,
-    -1px 1px 0 #000,
-    1px -1px 0 #000,
-    -1px -1px 0 #000;
+    -1px 1px 0 #000;
 }
 
-.consent-box h2{
-  margin:0 0 6px;
-  font-size:30px;
+.content-box h2{
   text-align:center;
-  letter-spacing:.2px;
+  margin-bottom:6px;
+  font-size:30px;
 }
 
-.consent-box .subtitle{
+.subtitle{
   text-align:center;
   font-style:italic;
-  font-size:15px;
   margin-bottom:18px;
-  opacity:.95;
 }
 
-.consent-section{
+.section{
   margin:14px 0;
-  padding:14px 14px;
+  padding:14px;
   border-radius:14px;
-  background:rgba(0,0,0,0.18);
-  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.18);
 }
 
-.consent-section h3{
-  margin:0 0 10px;
-  font-size:16px;
-  text-transform:uppercase;
-  letter-spacing:.6px;
-}
-
-.consent-section p{
-  margin:0 0 10px;
+.section p{
+  margin-bottom:10px;
   font-size:14px;
   line-height:1.6;
 }
-
-.consent-section p:last-child{margin:0;}
+.section p:last-child{margin-bottom:0;}
 
 .cast{
   display:grid;
   gap:10px;
 }
-
 .cast-item{
-  padding:12px 12px;
+  padding:12px;
   border-radius:14px;
-  background:rgba(0,0,0,0.16);
-  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(0,0,0,.16);
+  border:1px solid rgba(255,255,255,.16);
 }
-
-.cast-item .name{
-  font-weight:900;
-  font-size:14px;
-  letter-spacing:.2px;
-  margin-bottom:6px;
-}
-
-.cast-item .desc{
-  font-size:13px;
-  line-height:1.55;
-  opacity:.98;
-}
-
-.privacy-note{
-  margin-top:12px;
-  padding:12px 12px;
-  border-radius:14px;
-  background:rgba(0,0,0,0.16);
-  border:1px solid rgba(184,230,184,0.35);
-}
-
-.privacy-note p{
-  margin:0;
-  font-size:13px;
-  line-height:1.5;
-}
+.cast-item .name{font-weight:900;margin-bottom:4px;}
+.cast-item .desc{font-size:13px;line-height:1.55;}
 
 .primary-cta{
   margin-top:16px;
   width:100%;
-  padding:14px 16px;
+  padding:14px;
   border-radius:14px;
   border:0;
-  cursor:pointer;
-  font-size:15px;
   font-weight:900;
+  cursor:pointer;
   color:#000;
   background:linear-gradient(135deg,var(--mirror),var(--honey));
-  transition:transform .18s ease, box-shadow .18s ease;
-  -webkit-text-stroke: 0 transparent;
+  -webkit-text-stroke:0;
   text-shadow:none;
-}
-
-.primary-cta:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 28px rgba(157,139,255,0.38);
-}
-
-.primary-cta:active{transform:translateY(0);}
-
-.note-small{
-  margin-top:10px;
-  font-size:12px;
-  line-height:1.45;
-  opacity:.95;
 }
 
 /* ============================================================
    RESPONSIVE
 ============================================================ */
 @media(max-width:768px){
-  nav{padding:12px 16px;gap:14px;}
-  #videoWrap{width:95vw; border-radius:12px;}
-  #toggleWrap{
-    bottom:124px;
-    flex-direction:column;
-    width:calc(100% - 32px);
-    max-width:420px;
-  }
-  .toggle-btn{width:100%; text-align:center;}
-  .consent-box{padding:22px 18px;}
-  .consent-box h2{font-size:26px;}
+  #videoWrap{width:95vw;}
+  .content-box{padding:22px 18px;}
+  .content-box h2{font-size:26px;}
+  #toggleWrap{flex-direction:column;width:calc(100% - 32px);}
 }
-
 @media(max-width:480px){
-  #videoWrap{width:98vw; border-radius:10px;}
-  .consent-box h2{font-size:24px;}
-}
-
-@media(min-width:1600px){
-  #videoWrap{width:75vw;}
+  #videoWrap{width:98vw;}
 }
 </style>
 </head>
 
 <body class="consent-lock">
 
-<!-- NAV -->
 <nav>
   <a href="https://four.plnt.earth">four</a>
   <a href="https://time.plnt.earth">time</a>
@@ -408,185 +314,105 @@ footer a:hover{text-decoration:underline;}
   <a href="https://earth.plnt.earth">earth</a>
 </nav>
 
-<!-- PARALLAX -->
 <div id="layer1" class="parallax"></div>
 <div id="layer2" class="parallax"></div>
 
-<!-- BUTTERFLIES -->
-<div class="butterfly" style="top:20%;left:15%;animation-delay:0s;"></div>
-<div class="butterfly" style="top:60%;left:75%;animation-delay:2s;"></div>
-<div class="butterfly" style="top:40%;left:50%;animation-delay:4s;"></div>
-<div class="butterfly" style="top:80%;left:30%;animation-delay:6s;"></div>
+<div class="butterfly" style="top:20%;left:15%;"></div>
+<div class="butterfly" style="top:60%;left:75%;"></div>
+<div class="butterfly" style="top:40%;left:50%;"></div>
 
-<!-- VIDEO (paused until user presses Enter & Play) -->
-<div id="videoWrap" aria-label="Video player">
-  <div id="playerContainer">
-    <iframe
-      id="player"
-      src="https://www.youtube.com/embed/bGSNZ7QAoK4?enablejsapi=1&controls=1&rel=0&playsinline=1"
-      allow="autoplay; encrypted-media; picture-in-picture"
-      title="MirrorHoney Player"></iframe>
-  </div>
+<div id="videoWrap">
+  <iframe
+    id="player"
+    src="https://www.youtube.com/embed/bGSNZ7QAoK4?enablejsapi=1&controls=1&rel=0"
+    allow="encrypted-media; picture-in-picture"
+    title="MirrorHoney Player"></iframe>
 </div>
 
-<!-- TOGGLES -->
 <div id="toggleWrap">
   <button class="toggle-btn active" data-index="0">🦋 Tove Styrke · Sway</button>
   <button class="toggle-btn" data-index="1">🌿 Tessa Violet · Bored</button>
   <button class="toggle-btn" data-index="2">💎 Marina · To Be Human</button>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <a href="https://earth.plnt.earth">earth.plnt.earth</a> — you are grounded and safe
 </footer>
 
-<!-- CONSENT / CONTEXT OVERLAY -->
-<div class="consent-overlay" id="consentOverlay">
-  <div class="consent-box" role="dialog" aria-modal="true" aria-label="Context and consent">
+<div class="content-overlay" id="contentOverlay">
+  <div class="content-box">
     <h2>🍯⚡💓 MirrorHoney</h2>
     <div class="subtitle">For Marina</div>
 
-    <div class="consent-section">
+    <div class="section">
       <p>This page sits at the intersection of curiosity, physics, and music.</p>
-      <p>I’m exploring whether existing physics — especially how time is framed — can be re-examined in ways that are clearer or more intuitive. The mathematics involved is familiar; the perspective is still being tested. I’m actively checking my reasoning, seeking feedback, and treating this as an exploratory process rather than a conclusion.</p>
-      <p>This work uses a mix of tools and supports. I use AI as a thinking aid, alongside my own background, reading, and reflection. I’m also working with qualified professionals to stay grounded while pursuing difficult questions. This project is not a replacement for expertise; it’s an attempt to reach it responsibly.</p>
-      <p>Music appears here as a cognitive aid, not as evidence. Over time, thirteen artists consistently influenced how I stayed oriented while working. I call them “mirrors” — equal, non-hierarchical, and personal. The structure emerged gradually through observation, not design. The language here is metaphorical by design, used to organize experience rather than assert belief.</p>
-      <p>Some of the underlying ideas and equations have been shared informally with experts, who encouraged careful validation and collaboration with appropriate specialists. I’m currently looking for curious, qualified people who can help point me toward the right conversations and institutions.</p>
-      <p>I’m motivated by the idea that better understanding time could change how we think about limits — but this work is exploratory, uncertain, and grounded in existing science.</p>
-      <p>This page exists to provide context before content.</p>
+      <p>I’m exploring whether existing physics — especially how time is framed — can be re-examined in clearer, more intuitive ways. The mathematics is familiar; the perspective is still being tested.</p>
+      <p>I use AI as a thinking aid alongside my own background and work with qualified professionals to stay grounded. This is an attempt to reach expertise responsibly, not replace it.</p>
+      <p>Music appears here as a cognitive aid, not evidence. Thirteen artists emerged as consistent “mirrors” through observation, not design. The language is metaphorical by intent.</p>
+      <p>I’m motivated by the idea that better understanding time could change how we think about limits — but this work is exploratory and uncertain.</p>
     </div>
 
-    <div class="consent-section">
-      <h3>The Cast (domain names as characters)</h3>
+    <div class="section">
+      <h3>The Cast</h3>
       <div class="cast">
-        <div class="cast-item">
-          <div class="name">time.plnt.earth</div>
-          <div class="desc">The theorist. Obsessed with framing, invariants, and the shape of “why.”</div>
-        </div>
-        <div class="cast-item">
-          <div class="name">motion.plnt.earth</div>
-          <div class="desc">The mover. Rhythm, flow, systems, momentum — proof by movement.</div>
-        </div>
-        <div class="cast-item">
-          <div class="name">darkenergy.plnt.earth</div>
-          <div class="desc">The unknown force. Expansion without explanation. The question that won’t sit still.</div>
-        </div>
-        <div class="cast-item">
-          <div class="name">contact.plnt.earth</div>
-          <div class="desc">The signal. Where questions go when they need another human.</div>
-        </div>
-        <div class="cast-item">
-          <div class="name">earth.plnt.earth</div>
-          <div class="desc">The anchor. Grounding, context, and the reminder to stay safe in reality.</div>
-        </div>
+        <div class="cast-item"><div class="name">time.plnt.earth</div><div class="desc">The theorist.</div></div>
+        <div class="cast-item"><div class="name">motion.plnt.earth</div><div class="desc">The mover.</div></div>
+        <div class="cast-item"><div class="name">darkenergy.plnt.earth</div><div class="desc">The unknown force.</div></div>
+        <div class="cast-item"><div class="name">contact.plnt.earth</div><div class="desc">The signal.</div></div>
+        <div class="cast-item"><div class="name">earth.plnt.earth</div><div class="desc">The anchor.</div></div>
       </div>
     </div>
 
-    <div class="privacy-note">
-      <p><strong>Privacy:</strong> No tracking. No data collection. No logs. This overlay is context only.</p>
-    </div>
-
-    <button class="primary-cta" id="enterPlayBtn">Enter &amp; Play</button>
-    <div class="note-small">Controls remain available at all times. Use the three buttons to jump between songs; the queue loops by default.</div>
+    <button class="primary-cta" id="enterPlay">Enter &amp; Play</button>
   </div>
 </div>
 
 <script>
-const queue = [
-  { id: 'bGSNZ7QAoK4', label: '🦋 Tove Styrke · Sway' },
-  { id: 'tsPxaAVg584', label: '🌿 Tessa Violet · Bored' },
-  { id: 'DM8Tm9ycGz4', label: '💎 Marina · To Be Human' }
+const queue=[
+  {id:'bGSNZ7QAoK4'},
+  {id:'tsPxaAVg584'},
+  {id:'DM8Tm9ycGz4'}
 ];
 
-let player;
-let apiReady = false;
-let started = false;
-let currentIndex = 0;
+let player,apiReady=false,started=false,currentIndex=0;
 
 function onYouTubeIframeAPIReady(){
-  player = new YT.Player('player', {
-    events: { 'onStateChange': onPlayerStateChange }
-  });
-  apiReady = true;
+  player=new YT.Player('player',{events:{onStateChange:onState}});
+  apiReady=true;
 }
 
 (function(){
-  const tag = document.createElement('script');
-  tag.src = 'https://www.youtube.com/iframe_api';
+  const tag=document.createElement('script');
+  tag.src='https://www.youtube.com/iframe_api';
   document.head.appendChild(tag);
 })();
 
-function onPlayerStateChange(event){
+function onState(e){
   if(!started) return;
-  if(event.data === YT.PlayerState.ENDED){
-    currentIndex = (currentIndex + 1) % queue.length;
-    playVideo(currentIndex, true);
+  if(e.data===YT.PlayerState.ENDED){
+    currentIndex=(currentIndex+1)%queue.length;
+    playVideo(currentIndex);
   }
 }
 
-function setActiveButton(index){
-  document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
-  const activeBtn = document.querySelector(`.toggle-btn[data-index="${index}"]`);
-  if(activeBtn) activeBtn.classList.add('active');
+function playVideo(i){
+  currentIndex=i;
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.toggle-btn[data-index="${i}"]`).classList.add('active');
+  player.loadVideoById(queue[i].id);
 }
 
-function playVideo(index, autoplay){
-  currentIndex = index;
-  setActiveButton(index);
-  if(player && player.loadVideoById){
-    player.loadVideoById({ videoId: queue[index].id, suggestedQuality: 'hd1080' });
-    if(!autoplay && player.pauseVideo) player.pauseVideo();
-  }
-}
-
-function beginPlayback(){
-  started = true;
-
+document.getElementById('enterPlay').onclick=()=>{
+  started=true;
   document.body.classList.remove('consent-lock');
-  document.getElementById('consentOverlay').classList.add('hidden');
+  document.getElementById('contentOverlay').classList.add('hidden');
+  document.getElementById('toggleWrap').style.display='flex';
+  document.querySelector('footer').style.display='block';
+  if(apiReady) player.playVideo();
+};
 
-  document.getElementById('toggleWrap').style.display = 'flex';
-  document.querySelector('footer').style.display = 'block';
-
-  const startCheck = setInterval(() => {
-    if(apiReady && player && player.playVideo){
-      try{
-        player.playVideo();
-      }catch(e){}
-      clearInterval(startCheck);
-    }
-  }, 100);
-}
-
-document.getElementById('enterPlayBtn').addEventListener('click', () => {
-  if(!apiReady){
-    const wait = setInterval(() => {
-      if(apiReady){
-        clearInterval(wait);
-        beginPlayback();
-      }
-    }, 80);
-    return;
-  }
-  beginPlayback();
-});
-
-document.querySelectorAll('.toggle-btn').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    if(!started) return;
-    const idx = Number(btn.getAttribute('data-index'));
-    if(Number.isFinite(idx)) playVideo(idx, true);
-  });
-});
-
-/* Keep parallax subtle; avoid interfering with controls */
-window.addEventListener('scroll', () => {
-  const y = window.scrollY || 0;
-  const l1 = document.getElementById('layer1');
-  const l2 = document.getElementById('layer2');
-  if(l1) l1.style.transform = `translateY(${y * 0.15}px)`;
-  if(l2) l2.style.transform = `translateY(${y * 0.25}px)`;
+document.querySelectorAll('.toggle-btn').forEach((b,i)=>{
+  b.onclick=()=>{ if(started) playVideo(i); };
 });
 </script>
 
