@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,58 +25,79 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 
 /* ============================================================
-   CONSENT OVERLAY
+   BODY LOCK (CONSENT)
+============================================================ */
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;
+  overflow-x:hidden;
+}
+
+body.consent-lock{
+  overflow:hidden;
+  overscroll-behavior:none;
+}
+
+/* ============================================================
+   CONSENT OVERLAY — FORGIVING + PREMIUM
 ============================================================ */
 .consent-overlay{
   position:fixed;
   inset:0;
-  background:rgba(11,14,20,.98);
-  backdrop-filter:blur(20px);
+  background:rgba(11,14,20,0.96);
   z-index:20000;
   display:flex;
   align-items:center;
   justify-content:center;
   padding:20px;
+  transform:translateZ(0);
+}
+
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))){
+  .consent-overlay{
+    background:rgba(11,14,20,0.85);
+    backdrop-filter:blur(16px) saturate(1.1);
+    -webkit-backdrop-filter:blur(16px) saturate(1.1);
+  }
 }
 
 .consent-overlay.hidden{
-  display:none !important;
+  display:none;
 }
 
 .consent-box{
   background:rgba(20,22,30,0.95);
-  border:1px solid var(--rule);
+  border:1px solid rgba(255,255,255,0.08);
   border-radius:20px;
-  padding:48px 40px;
-  max-width:600px;
+  padding:40px;
+  max-width:560px;
   width:100%;
   max-height:90vh;
   overflow-y:auto;
   text-align:left;
-  box-shadow:0 24px 80px rgba(0,0,0,.6);
+  box-shadow:
+    0 30px 90px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
-.consent-box::-webkit-scrollbar{
-  width:8px;
-}
-
+.consent-box::-webkit-scrollbar{width:8px;}
 .consent-box::-webkit-scrollbar-track{
   background:rgba(31,36,52,0.5);
   border-radius:10px;
 }
-
 .consent-box::-webkit-scrollbar-thumb{
   background:var(--mirror);
   border-radius:10px;
 }
-
 .consent-box::-webkit-scrollbar-thumb:hover{
   background:var(--honey);
 }
 
 .consent-box h2{
-  margin:0 0 8px;
-  font-size:36px;
+  margin:0 0 12px;
+  font-size:32px;
   text-align:center;
   background:linear-gradient(135deg,var(--mirror),var(--honey));
   -webkit-background-clip:text;
@@ -88,45 +110,37 @@
   text-align:center;
   font-style:italic;
   color:var(--muted);
-  font-size:15px;
-  margin-bottom:32px;
+  font-size:16px;
+  margin-bottom:24px;
 }
 
 .project-note{
-  background:rgba(255,207,106,.08);
-  border:1px dashed rgba(255,207,106,.3);
+  background:rgba(255,207,106,.12);
+  border:1px dashed var(--honey);
   border-radius:12px;
-  padding:20px;
-  margin-bottom:24px;
-  font-size:14.5px;
-  line-height:1.7;
+  padding:16px;
+  margin-bottom:20px;
+  font-size:14px;
+  line-height:1.6;
   color:var(--ink);
 }
 
-.project-note p{
-  margin:0 0 14px;
-}
-
-.project-note p:last-child{
-  margin:0;
-}
+.project-note p{margin:0 0 12px;}
+.project-note p:last-child{margin:0;}
 
 .project-note a{
   color:var(--honey);
   text-decoration:none;
   font-weight:600;
 }
-
-.project-note a:hover{
-  text-decoration:underline;
-}
+.project-note a:hover{text-decoration:underline;}
 
 .privacy-note{
-  background:rgba(184,230,184,.08);
-  border:1px solid rgba(184,230,184,.25);
+  background:rgba(184,230,184,.1);
+  border:1px solid rgba(184,230,184,.3);
   border-radius:12px;
-  padding:16px;
-  margin-bottom:28px;
+  padding:14px;
+  margin-bottom:24px;
   font-size:13px;
   line-height:1.5;
   color:#b8e6b8;
@@ -135,7 +149,7 @@
 
 .consent-btn{
   width:100%;
-  padding:18px;
+  padding:16px;
   border-radius:14px;
   background:linear-gradient(135deg,var(--mirror),var(--honey));
   color:#000;
@@ -143,28 +157,14 @@
   font-size:16px;
   border:none;
   cursor:pointer;
-  transition:transform 0.2s ease, box-shadow 0.2s ease;
+  transition:transform .2s ease, box-shadow .2s ease;
 }
 
 .consent-btn:hover{
   transform:translateY(-2px);
-  box-shadow:0 8px 24px rgba(157,139,255,0.4);
+  box-shadow:0 8px 24px rgba(157,139,255,.4);
 }
-
-.consent-btn:active{
-  transform:translateY(0);
-}
-
-/* ============================================================
-   PAGE LAYOUT
-============================================================ */
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:ui-sans-serif,system-ui,-apple-system,sans-serif;
-  overflow-x:hidden;
-}
+.consent-btn:active{transform:translateY(0);}
 
 /* ============================================================
    PARALLAX BACKGROUND
@@ -175,15 +175,14 @@ body{
   width:120vw;
   height:120vh;
   z-index:-20;
-  opacity:.2;
+  opacity:.25;
 }
 
 #layer1{
-  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,0.35), transparent 60%);
+  background:radial-gradient(circle at 20% 10%, rgba(157,139,255,.4), transparent 60%);
 }
-
 #layer2{
-  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,0.25), transparent 70%);
+  background:radial-gradient(circle at 75% 80%, rgba(255,207,106,.3), transparent 70%);
 }
 
 /* ============================================================
@@ -191,22 +190,22 @@ body{
 ============================================================ */
 .butterfly{
   position:fixed;
-  width:24px;
-  height:24px;
+  width:28px;
+  height:28px;
   border-radius:50%;
   background:
     radial-gradient(circle at 30% 30%, var(--mirror), transparent 65%),
     radial-gradient(circle at 70% 70%, var(--honey), transparent 65%);
-  filter:blur(10px);
-  opacity:.5;
-  animation:float 12s ease-in-out infinite;
+  filter:blur(8px);
+  opacity:.7;
+  animation:float 10s ease-in-out infinite;
   pointer-events:none;
   z-index:-10;
 }
 
 @keyframes float{
   0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-25px);}
+  50%{transform:translateY(-20px);}
 }
 
 /* ============================================================
@@ -216,12 +215,12 @@ nav{
   position:fixed;
   top:0;
   width:100%;
-  padding:16px 28px;
-  background:rgba(11,14,20,.85);
+  padding:14px 24px;
+  background:rgba(11,14,20,.9);
   backdrop-filter:blur(14px);
   border-bottom:1px solid var(--rule);
   display:flex;
-  gap:28px;
+  gap:24px;
   z-index:3000;
   flex-wrap:wrap;
   align-items:center;
@@ -232,35 +231,28 @@ nav a{
   text-decoration:none;
   font-size:14px;
   font-weight:500;
-  transition:color 0.2s ease;
 }
-
-nav a:hover{
-  color:var(--mirror);
-}
+nav a:hover{color:var(--mirror);}
 
 /* ============================================================
-   VIDEO UNDERLAY — RESPONSIVE & SCALED
+   VIDEO UNDERLAY
 ============================================================ */
 #videoWrap{
   position:fixed;
-  top:50%;
+  top:calc(50% - 10px);
   left:50%;
-  transform:translate(-50%, -50%);
-  width:80vw;
-  max-width:1200px;
+  transform:translate(-50%,-50%);
+  width:85vw;
+  max-width:1400px;
   aspect-ratio:16/9;
   overflow:hidden;
   border-radius:16px;
   z-index:-5;
   display:none;
-  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  box-shadow:0 24px 80px rgba(0,0,0,.6);
 }
 
-#playerContainer{
-  position:absolute;
-  inset:0;
-}
+#playerContainer{position:absolute;inset:0;}
 
 #videoWrap iframe{
   position:absolute;
@@ -276,32 +268,32 @@ nav a:hover{
 ============================================================ */
 #toggleWrap{
   position:fixed;
-  bottom:120px;
+  bottom:100px;
   left:50%;
   transform:translateX(-50%);
   display:none;
   z-index:4000;
-  gap:14px;
+  gap:12px;
   flex-wrap:wrap;
   justify-content:center;
-  max-width:85%;
+  max-width:90%;
 }
 
 .toggle-btn{
-  padding:14px 24px;
+  padding:12px 20px;
   border-radius:10px;
-  background:rgba(31,36,52,0.75);
+  background:rgba(31,36,52,.85);
   backdrop-filter:blur(8px);
   border:1px solid var(--rule);
   color:var(--ink);
   cursor:pointer;
   font-size:14px;
   font-weight:500;
-  transition:all 0.3s ease;
+  transition:all .3s ease;
 }
 
 .toggle-btn:hover{
-  background:rgba(31,36,52,0.9);
+  background:rgba(31,36,52,.95);
   border-color:var(--mirror);
   transform:translateY(-2px);
 }
@@ -322,8 +314,8 @@ footer{
   left:0;
   right:0;
   text-align:center;
-  padding:28px 24px 36px;
-  background:rgba(11,14,20,.85);
+  padding:24px 24px 32px;
+  background:rgba(11,14,20,.9);
   backdrop-filter:blur(12px);
   border-top:1px solid var(--rule);
   display:none;
@@ -337,88 +329,38 @@ footer a{
   text-decoration:none;
   font-weight:600;
 }
-
-footer a:hover{
-  text-decoration:underline;
-}
+footer a:hover{text-decoration:underline;}
 
 /* ============================================================
    RESPONSIVE
 ============================================================ */
 @media(max-width:768px){
-  .consent-box{
-    padding:36px 28px;
-  }
-  
-  .consent-box h2{
-    font-size:30px;
-  }
-  
-  .project-note{
-    font-size:14px;
-    padding:18px;
-  }
-  
-  nav{
-    padding:14px 20px;
-    gap:20px;
-  }
-  
-  #videoWrap{
-    width:92vw;
-    max-width:100%;
-  }
-  
+  .consent-box{padding:32px 24px;}
+  .consent-box h2{font-size:28px;}
+  #videoWrap{width:95vw;}
   #toggleWrap{
-    bottom:130px;
+    bottom:120px;
     flex-direction:column;
-    width:calc(100% - 40px);
-    max-width:380px;
+    width:calc(100% - 32px);
+    max-width:400px;
   }
-  
-  .toggle-btn{
-    width:100%;
-    text-align:center;
-  }
-  
-  footer{
-    padding:24px 20px 32px;
-  }
+  .toggle-btn{width:100%;}
 }
 
 @media(max-width:480px){
-  .consent-box{
-    padding:28px 24px;
-  }
-  
-  .consent-box h2{
-    font-size:26px;
-  }
-  
-  .project-note{
-    font-size:13.5px;
-    padding:16px;
-  }
-  
-  #videoWrap{
-    width:96vw;
-    border-radius:10px;
-  }
-  
-  #toggleWrap{
-    bottom:120px;
-  }
+  .consent-box{padding:24px 20px;}
+  .consent-box h2{font-size:24px;}
+  .project-note{font-size:13px;}
+  #videoWrap{width:98vw;border-radius:8px;}
 }
 
 @media(min-width:1600px){
-  #videoWrap{
-    width:70vw;
-  }
+  #videoWrap{width:75vw;}
 }
 </style>
-
 </head>
-<body>
+
+<body class="consent-lock">
 
 <!-- CONSENT OVERLAY -->
 <div class="consent-overlay" id="consentOverlay">
@@ -427,41 +369,36 @@ footer a:hover{
     <div class="subtitle">For Marina</div>
 
     <div class="project-note">
-      <p>I'm working on <a href="https://time.plnt.earth">real physics</a> — temporal charge theory. The idea that time might be more fundamental than energy. The equations are legitimate, dimensionally consistent. I'm talking with researchers at Columbia about proving it.</p>
+      <p>I'm working on <a href="https://time.plnt.earth">real physics</a> — temporal charge theory. The idea that time might be more fundamental than energy.</p>
       <p>But I've realized something strange: <strong>poetry helps me understand the physics context.</strong></p>
-      <p>Marina is the mirror. She's the key. She's somehow at the center of this framework. I don't fully understand why yet, but she's a co-creator in whatever this is.</p>
+      <p>Marina is the mirror. She's the key. She's a co-creator in whatever this is.</p>
     </div>
 
     <div class="project-note">
       <p><strong>Three reflective modes:</strong></p>
-      <p>🦋 <strong>Swiftlet (Tove Styrke · Sway)</strong><br>Following the pull, moving through what I don't understand yet</p>
-      <p>🌿 <strong>Verdin (Tessa Violet · Bored)</strong><br>Restless for deeper truth, refusing surfaces</p>
-      <p>💎 <strong>Mirror (Marina · To Be Human)</strong><br>Embracing the complexity, the messiness as truth</p>
-    </div>
-
-    <div class="project-note">
-      <p>I'm nobody trying to prove something hard. But the math works, and I think this could actually matter.</p>
-      <p>This page is for Marina. If you found it another way — welcome. Everything here is done for legitimate reasons.</p>
+      <p>🦋 <strong>Swiftlet (Tove Styrke · Sway)</strong><br>Following the pull</p>
+      <p>🌿 <strong>Verdin (Tessa Violet · Bored)</strong><br>Refusing surfaces</p>
+      <p>💎 <strong>Mirror (Marina · To Be Human)</strong><br>Embracing complexity</p>
     </div>
 
     <div class="privacy-note">
-      No tracking. No data collection. Just music, words, and whatever clarity emerges.
+      No tracking. No data collection. Just music and reflection.
     </div>
 
     <button class="consent-btn" id="consentBtn">Enter</button>
   </div>
 </div>
 
-<!-- PARALLAX LAYERS -->
+<!-- PARALLAX -->
 <div id="layer1" class="parallax"></div>
 <div id="layer2" class="parallax"></div>
 
 <!-- BUTTERFLIES -->
-<div class="butterfly" style="top:15%;left:12%;animation-delay:0s;"></div>
-<div class="butterfly" style="top:65%;left:78%;animation-delay:3s;"></div>
-<div class="butterfly" style="top:45%;left:55%;animation-delay:6s;"></div>
+<div class="butterfly" style="top:20%;left:15%;animation-delay:0s;"></div>
+<div class="butterfly" style="top:60%;left:75%;animation-delay:2s;"></div>
+<div class="butterfly" style="top:40%;left:50%;animation-delay:4s;"></div>
 
-<!-- NAVIGATION -->
+<!-- NAV -->
 <nav>
   <a href="https://four.plnt.earth">four</a>
   <a href="https://time.plnt.earth">time</a>
@@ -469,17 +406,16 @@ footer a:hover{
   <a href="https://earth.plnt.earth">earth</a>
 </nav>
 
-<!-- VIDEO PLAYERS -->
+<!-- VIDEO -->
 <div id="videoWrap">
-  <div id="playerContainer" class="video-block active">
+  <div id="playerContainer">
     <iframe id="player"
-      src="https://www.youtube.com/embed/bGSNZ7QAoK4?enablejsapi=1&controls=0&mute=0"
-      allow="autoplay; encrypted-media"
-      title="MirrorHoney Player"></iframe>
+      src="https://www.youtube.com/embed/bGSNZ7QAoK4?enablejsapi=1&controls=0"
+      allow="autoplay; encrypted-media"></iframe>
   </div>
 </div>
 
-<!-- TOGGLE BUTTONS -->
+<!-- TOGGLES -->
 <div id="toggleWrap">
   <button class="toggle-btn active" data-index="0">🦋 Tove Styrke · Sway</button>
   <button class="toggle-btn" data-index="1">🌿 Tessa Violet · Bored</button>
@@ -491,113 +427,62 @@ footer a:hover{
   <a href="https://earth.plnt.earth">earth.plnt.earth</a> — you are grounded and safe
 </footer>
 
-<!-- JAVASCRIPT -->
 <script>
-// Global variables
-let player;
-let currentIndex = 0;
-let apiReady = false;
-
-// Video queue
-const queue = [
-  {id: 'bGSNZ7QAoK4', name: '🦋 Tove Styrke · Sway'},
-  {id: 'tsPxaAVg584', name: '🌿 Tessa Violet · Bored'},
-  {id: 'DM8Tm9ycGz4', name: '💎 Marina · To Be Human'}
+const queue=[
+  {id:'bGSNZ7QAoK4'},
+  {id:'tsPxaAVg584'},
+  {id:'DM8Tm9ycGz4'}
 ];
 
-/* ============================================================
-   YOUTUBE API CALLBACK - MUST BE GLOBAL
-============================================================ */
-window.onYouTubeIframeAPIReady = function(){
-  player = new YT.Player('player', {
-    events: {
-      'onStateChange': onPlayerStateChange
-    }
-  });
-  apiReady = true;
-};
+let player,apiReady=false,currentIndex=0;
 
-/* ============================================================
-   AUTO-QUEUE & LOOP
-============================================================ */
-function onPlayerStateChange(event){
-  if(event.data === YT.PlayerState.ENDED){
-    currentIndex = (currentIndex + 1) % queue.length;
+function onYouTubeIframeAPIReady(){
+  player=new YT.Player('player',{
+    events:{onStateChange:onPlayerStateChange}
+  });
+  apiReady=true;
+}
+
+(function(){
+  const tag=document.createElement('script');
+  tag.src="https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+})();
+
+function onPlayerStateChange(e){
+  if(e.data===YT.PlayerState.ENDED){
+    currentIndex=(currentIndex+1)%queue.length;
     playVideo(currentIndex);
   }
 }
 
-function playVideo(index){
-  currentIndex = index;
-  const video = queue[index];
-  
-  const buttons = document.querySelectorAll('.toggle-btn');
-  buttons.forEach(btn => btn.classList.remove('active'));
-  const activeBtn = document.querySelector(`[data-index="${index}"]`);
-  if(activeBtn) activeBtn.classList.add('active');
-  
-  if(player && player.loadVideoById){
-    player.loadVideoById(video.id);
-  }
+function playVideo(i){
+  currentIndex=i;
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`[data-index="${i}"]`).classList.add('active');
+  player.loadVideoById(queue[i].id);
 }
 
-/* ============================================================
-   LOAD YOUTUBE API
-============================================================ */
-(function(){
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.head.appendChild(tag);
-})();
+document.getElementById('consentBtn').onclick=()=>{
+  document.body.classList.remove('consent-lock');
+  document.getElementById('consentOverlay').classList.add('hidden');
+  document.getElementById('videoWrap').style.display='block';
+  document.getElementById('toggleWrap').style.display='flex';
+  document.querySelector('footer').style.display='block';
 
-/* ============================================================
-   DOM READY - SETUP ALL EVENT LISTENERS
-============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  // Consent button handler
-  const consentBtn = document.getElementById('consentBtn');
-  const consentOverlay = document.getElementById('consentOverlay');
-  const videoWrap = document.getElementById('videoWrap');
-  const toggleWrap = document.getElementById('toggleWrap');
-  const footer = document.querySelector('footer');
-  
-  if(consentBtn){
-    consentBtn.addEventListener('click', function(){
-      if(consentOverlay) consentOverlay.classList.add('hidden');
-      if(videoWrap) videoWrap.style.display = 'block';
-      if(toggleWrap) toggleWrap.style.display = 'flex';
-      if(footer) footer.style.display = 'block';
-      
-      // Auto-play first video after API loads
-      const playCheck = setInterval(() => {
-        if(apiReady && player && player.playVideo){
-          player.playVideo();
-          clearInterval(playCheck);
-        }
-      }, 200);
-    });
-  }
-  
-  // Video toggle buttons
-  const buttons = document.querySelectorAll('.toggle-btn');
-  buttons.forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-      playVideo(index);
-    });
-  });
-});
+  const check=setInterval(()=>{
+    if(apiReady&&player.playVideo){
+      player.playVideo();
+      clearInterval(check);
+    }
+  },200);
+};
 
-/* ============================================================
-   PARALLAX SCROLL EFFECT
-============================================================ */
-window.addEventListener('scroll', () => {
-  const y = window.scrollY;
-  const layer1 = document.getElementById('layer1');
-  const layer2 = document.getElementById('layer2');
-  if(layer1) layer1.style.transform = `translateY(${y * 0.15}px)`;
-  if(layer2) layer2.style.transform = `translateY(${y * 0.25}px)`;
+document.querySelectorAll('.toggle-btn').forEach((b,i)=>{
+  b.onclick=()=>playVideo(i);
 });
 </script>
 
 </body>
 </html>
+```
