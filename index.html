@@ -551,27 +551,34 @@ function playVideo(index){
 })();
 
 /* ============================================================
-   CONSENT → SHOW UI
-============================================================ */
-document.getElementById('consentBtn').onclick = function(){
-  document.getElementById('consentOverlay').classList.add('hidden');
-  
-  document.getElementById('videoWrap').style.display = 'block';
-  document.getElementById('toggleWrap').style.display = 'flex';
-  document.querySelector('footer').style.display = 'block';
-  
-  const playCheck = setInterval(() => {
-    if(apiReady && player && player.playVideo){
-      player.playVideo();
-      clearInterval(playCheck);
-    }
-  }, 200);
-};
-
-/* ============================================================
-   VIDEO TOGGLE BUTTONS
+   DOM READY - SETUP ALL EVENT LISTENERS
 ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
+  // Consent button handler
+  const consentBtn = document.getElementById('consentBtn');
+  const consentOverlay = document.getElementById('consentOverlay');
+  const videoWrap = document.getElementById('videoWrap');
+  const toggleWrap = document.getElementById('toggleWrap');
+  const footer = document.querySelector('footer');
+  
+  if(consentBtn){
+    consentBtn.addEventListener('click', function(){
+      if(consentOverlay) consentOverlay.classList.add('hidden');
+      if(videoWrap) videoWrap.style.display = 'block';
+      if(toggleWrap) toggleWrap.style.display = 'flex';
+      if(footer) footer.style.display = 'block';
+      
+      // Auto-play first video after API loads
+      const playCheck = setInterval(() => {
+        if(apiReady && player && player.playVideo){
+          player.playVideo();
+          clearInterval(playCheck);
+        }
+      }, 200);
+    });
+  }
+  
+  // Video toggle buttons
   const buttons = document.querySelectorAll('.toggle-btn');
   buttons.forEach((btn, index) => {
     btn.addEventListener('click', () => {
@@ -585,8 +592,10 @@ document.addEventListener('DOMContentLoaded', () => {
 ============================================================ */
 window.addEventListener('scroll', () => {
   const y = window.scrollY;
-  document.getElementById('layer1').style.transform = `translateY(${y * 0.15}px)`;
-  document.getElementById('layer2').style.transform = `translateY(${y * 0.25}px)`;
+  const layer1 = document.getElementById('layer1');
+  const layer2 = document.getElementById('layer2');
+  if(layer1) layer1.style.transform = `translateY(${y * 0.15}px)`;
+  if(layer2) layer2.style.transform = `translateY(${y * 0.25}px)`;
 });
 </script>
 
